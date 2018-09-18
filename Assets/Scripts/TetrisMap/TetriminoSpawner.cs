@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TetrominoSpawner : MonoBehaviour {
+public class TetriminoSpawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
