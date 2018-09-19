@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4174769992511172}
   - component: {fileID: 114708550263071082}
   m_Layer: 0
-  m_Name: TetrominoSpawner
+  m_Name: TetriminoSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
