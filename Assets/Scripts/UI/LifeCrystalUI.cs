@@ -11,12 +11,13 @@ public class LifeCrystalUI : MonoBehaviour
     ////////////////////////////////////////////////// Private variables
     /// <summary>
     /// Enum for cell types
+    /// <para/> [Empty = 0, Life = 1, Gold = 2, Ame = 3]
     /// </summary>
     public enum CellType{Empty, Life, Gold, Ame };
     /// <summary>
     /// Image renderers of cells
-    /// <para/> First index = vertical position (0 on the bottom)
-    /// <para/> Second index = horizontal position (0 on the left)
+    /// <para/> First index = horizontal position (0 on the bottom)
+    /// <para/> Second index = vertical position (0 on the left)
     /// </summary>
     Image[][] cellImg;
     /// <summary>
@@ -29,8 +30,8 @@ public class LifeCrystalUI : MonoBehaviour
     Vector3 pivotPosition;
     /// <summary>
     /// Current cell state (enum Color)
-    /// <para/> First index = vertical position (0 on the bottom)
-    /// <para/> Second index = horizontal position (0 on the left)
+    /// <para/> First index = horizontal position (0 on the bottom)
+    /// <para/> Second index = vertical position (0 on the left)
     /// </summary>
     CellType[][] cell;
     ////////////////////////////////////////////////// Public variables
@@ -47,7 +48,7 @@ public class LifeCrystalUI : MonoBehaviour
     /// </summary>
     public GameObject rowObj;
     /// <summary>
-    /// LifeCrystal enabled?
+    /// LifeCrystal enabled if isDead == false
     /// </summary>
     public bool isDead;
     /// <summary>
@@ -89,15 +90,15 @@ public class LifeCrystalUI : MonoBehaviour
     {
         if (isDead) return;
 
-        for (int i = height - 1; i >= 0; i--)
+        for (int y = height - 1; y >= 0; y--)
         {
-            for (int j = 2; j >= 0; j--)
+            for (int x = 2; x >= 0; x--)
             {
-                if (dmg > 0 && lifeCount > 0 && cell[i][j] != CellType.Empty)
+                if (dmg > 0 && lifeCount > 0 && cell[x][y] != CellType.Empty)
                 {
-                    if (cell[i][j] == CellType.Gold)
+                    if (cell[x][y] == CellType.Gold)
                         goldCount--;
-                    updateCell(j, i, CellType.Empty);
+                    updateCell(x, y, CellType.Empty);
                     dmg--;
                     lifeCount--;
                 }
@@ -138,13 +139,13 @@ public class LifeCrystalUI : MonoBehaviour
         }
 
         int redLifeIndex = 0;
-        for (int i = 0; i < height; i++)
-            for (int j = 0; j < 3; j++)
+        for (int y = 0; y < height; y++)
+            for (int x = 0; x < 3; x++)
             {
-                if (cell[i][j] == CellType.Life)
+                if (cell[x][y] == CellType.Life)
                 {
                     if (mixer[redLifeIndex] == 1)
-                        updateCell(j, i, CellType.Gold);
+                        updateCell(x, y, CellType.Gold);
                     redLifeIndex++;
                 }
             }
@@ -191,11 +192,11 @@ public class LifeCrystalUI : MonoBehaviour
         if (goldCount < gold)
             return false;
         goldCount -= gold;
-        for (int i = height - 1; i >= 0; i--)
-            for (int j = 2; j >= 0; j--)
-                if (cell[i][j] == CellType.Gold && gold > 0)
+        for (int y = height - 1; y >= 0; y--)
+            for (int x = 2; x >= 0; x--)
+                if (cell[x][y] == CellType.Gold && gold > 0)
                 {
-                    updateCell(j, i, CellType.Life);
+                    updateCell(x, y, CellType.Life);
                     gold--;
                 }
         return true;
@@ -214,19 +215,13 @@ public class LifeCrystalUI : MonoBehaviour
         height = 8;
         lifeCount = 24;
         goldCount = 0;
-        cell = new CellType[height][];
-        for (int i = 0; i < height; i++)
-            cell[i] = new CellType[3];
-        for (int i = 0; i < height; i++)
-            for (int j = 0; j < 3; j++)
-                cell[i][j] = CellType.Life;
-        cellImg = new Image[height][];
-        for (int i = 0; i < height; i++)
-            cellImg[i] = new Image[3];
+        cell = new CellType[3][] { new CellType[height], new CellType[height], new CellType[height] };
+        for (int y = 0; y < height; y++)
+            for (int x = 0; x < 3; x++)
+                cell[x][y] = CellType.Life;
+        cellImg = new Image[3][] { new Image[height], new Image[height], new Image[height] };
         for (int i = 0; i < 3 * height; i++)
-        {
-            cellImg[i / 3][i % 3] = transform.Find("Cells").Find("LC" + (i + 1).ToString("00")).GetComponent<Image>();
-        }
+            cellImg[i % 3][i / 3] = transform.Find("Cells").Find("LC" + (i + 1).ToString("00")).GetComponent<Image>();
     }
 	/// <summary>
     /// Runs each frame
@@ -244,10 +239,10 @@ public class LifeCrystalUI : MonoBehaviour
     /// <param name="value"></param>
     void updateCell(int x, int y, CellType value)
     {
-        cell[y][x] = value;
-        cellImg[y][x].sprite = cellSprites[(int)value];
-        cellImg[y][x].transform.localPosition = pivotPosition + gridSize * new Vector3(x, y, 0);
-        cellImg[y][x].enabled = value == CellType.Empty ? false : true;
+        cell[x][y] = value;
+        cellImg[x][y].sprite = cellSprites[(int)value];
+        cellImg[x][y].transform.localPosition = pivotPosition + gridSize * new Vector3(x, y, 0);
+        cellImg[x][y].enabled = value == CellType.Empty ? false : true;
     }
     /// <summary>
     /// Runs when life goes below zero
@@ -260,7 +255,7 @@ public class LifeCrystalUI : MonoBehaviour
     /// Simulates a block drop and find where to drop it
     /// </summary>
     /// <param name="grid">Shape of the dropping block
-    /// <para/> grid[Y][X]
+    /// <para/> grid[X][Y]
     /// <para/> X: 0~2 (0 on the bottom)
     /// <para/> Y: 0~(height-1) (0 on the left)</param>
     /// <returns>Vector2(drop position(0~2), drop depth(0~height))</returns>
@@ -286,41 +281,37 @@ public class LifeCrystalUI : MonoBehaviour
                 depth = 0;
             blockTexture[x] = depth;
         }
-        for (int j = 0; j <= 2; j++)
+        for (int x = 0; x <= 2; x++)
         {
             int depth = 0;
-            for (int i = height - 1; i >= 0; i--)
+            for (int y = height - 1; y >= 0; y--)
             {
-                if (cell[i][j] == 0)
+                if (cell[x][y] == 0)
                     depth++;
                 else
                     break;
             }
-            emptyTexture[j] = depth;
+            emptyTexture[x] = depth;
         }
-        for (int k = 0; k < 3; k++)
-            print("k=" + k + ", " + emptyTexture[k]);
-        for (int k = 0; k < bWidth; k++)
-            print("k=" + k + ", " + emptyTexture[k]);
 
         ///////////////////////////////calculates possible drops
         int[] dropDepth = new int[4 - bWidth];
-        for (int i = 0; i < 4 - bWidth; i++)
+        for (int x = 0; x < 4 - bWidth; x++)
         {
-            int maxDepth = emptyTexture[i] + blockTexture[0];
-            for (int x = 1; x < bWidth; x++)
+            int maxDepth = emptyTexture[x] + blockTexture[0];
+            for (int bx = 1; bx < bWidth; bx++)
             {
-                if (maxDepth > emptyTexture[i + x] + blockTexture[x])
-                    maxDepth = emptyTexture[i + x] + blockTexture[x];
+                if (maxDepth > emptyTexture[x + bx] + blockTexture[bx])
+                    maxDepth = emptyTexture[x + bx] + blockTexture[bx];
             }
-            dropDepth[i] = maxDepth;
+            dropDepth[x] = maxDepth;
         }
         int realPosition = 0, realDepth = dropDepth[0];
-        for (int i = 1; i < 4 - bWidth; i++)
-            if (realDepth < dropDepth[i])
+        for (int x = 1; x < 4 - bWidth; x++)
+            if (realDepth < dropDepth[x])
             {
-                realPosition = i;
-                realDepth = dropDepth[i];
+                realPosition = x;
+                realDepth = dropDepth[x];
             }
 
         return new Vector2Int(realPosition, realDepth);
@@ -333,7 +324,6 @@ public class LifeCrystalUI : MonoBehaviour
     /// <returns>Null</returns>
     IEnumerator DropBlock(LifeCrystal frag, Vector2Int dropxy)
     {
-        print(dropxy);
         int bWidth = frag.grid.Length;
         int bHeight = frag.grid[0].Length;
         List<Vector2Int> droppingCells = new List<Vector2Int>(0);
@@ -344,13 +334,13 @@ public class LifeCrystalUI : MonoBehaviour
                 if (frag.grid[x][y] != CellType.Empty)
                 {
                     updateCell(dropxy.x + x, height - dropxy.y + y, frag.grid[x][y]);
-                    droppingCells.Add(new Vector2Int(height - dropxy.y + y, dropxy.x + x));
+                    droppingCells.Add(new Vector2Int(dropxy.x + x, height - dropxy.y + y));
                     lifeCount++;
                 }
             }
         foreach (Vector2Int block in droppingCells)
         {
-            cellImg[block.x][block.y].transform.localPosition = pivotPosition + gridSize * new Vector3(block.y, block.x + dropxy.y, 0);
+            cellImg[block.x][block.y].transform.localPosition = pivotPosition + gridSize * new Vector3(block.x, block.y + dropxy.y, 0);
         }
         yield return new WaitForSeconds(0.05f);
 
