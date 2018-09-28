@@ -9,17 +9,17 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1828279651310640}
+  m_RootGameObject: {fileID: 1930818555787314}
   m_IsPrefabAsset: 1
---- !u!1 &1828279651310640
+--- !u!1 &1930818555787314
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4174769992511172}
-  - component: {fileID: 114708550263071082}
+  - component: {fileID: 4625643684679394}
+  - component: {fileID: 114194866421644552}
   m_Layer: 0
   m_Name: TetriminoSpawner
   m_TagString: Untagged
@@ -27,12 +27,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4174769992511172
+--- !u!4 &4625643684679394
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1828279651310640}
+  m_GameObject: {fileID: 1930818555787314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,14 +40,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114708550263071082
+--- !u!114 &114194866421644552
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1828279651310640}
+  m_GameObject: {fileID: 1930818555787314}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47d7361e314e48c489ecf897284be41d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tetriminoes:
+  - {fileID: 114851979720776072, guid: ae83e2da964009040b28d5cf2dc0c005, type: 2}
+  - {fileID: 114826030636358216, guid: 1f5bb4ba4a682f14daf423ec3826f307, type: 2}
+  - {fileID: 114568813863931164, guid: 7b6deb9891716bf4dab3b397f5e07ae6, type: 2}
+  - {fileID: 114426654816215182, guid: 5fe7b9cfe8ee4ef45ba6caae7bfcdd3c, type: 2}
+  - {fileID: 114491658978157548, guid: 5103895df6a85964aa1f8aaeb7115696, type: 2}
+  - {fileID: 114813872723638092, guid: dfde2a88976e71b45b094b126823a49f, type: 2}
+  - {fileID: 114116348516849362, guid: 40858eb0c94aa6c45be70d235179724b, type: 2}

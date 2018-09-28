@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114733631161331600}
   m_Layer: 0
   m_Name: MapManager
-  m_TagString: Untagged
+  m_TagString: MapManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,3 +51,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9719103beb138e041b0a7ec9e24aefb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tetrisMapSize: 1
+  tetrisMapCoord: {x: 0, y: 0, z: 0}
+  speed: 0
+  gravity: 0
+  collapseTime: 0
+  fallTime: 0
+  gameOver: 0
+  currentTetrimino: {fileID: 0}
