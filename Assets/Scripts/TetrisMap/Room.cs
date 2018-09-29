@@ -11,7 +11,7 @@ public class Room : MonoBehaviour
     /// Room's Location on tetris map.
     /// Not related to real location.
     /// </summary>
-    public Vector3 mapLocation;
+    public Vector3 mapCoord;
     /// <summary>
     /// Door info per rooms.
     /// 0 for up, 1 for down.

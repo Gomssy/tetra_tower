@@ -36,7 +36,7 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Absolute coordinates on tetris map.
     /// </summary>
-    public static Room[,] mapCoord = new Room[width, height];
+    public static Room[,] mapGrid = new Room[width, height];
     /// <summary>
     /// Tetris Y axis coordinates on Unity.
     /// </summary>
@@ -84,9 +84,9 @@ public class MapManager : MonoBehaviour {
     {
         for (int i = 0; i < TE.rooms.Length; i++)
         {
-            if (TE.rooms[i].transform.position.x < mapLeftEnd.transform.position.x)
+            if (TE.rooms[i].mapCoord.x < 0)
                 return -1;
-            else if (TE.rooms[i].transform.position.x > mapRightEnd.transform.position.x)
+            else if (TE.rooms[i].mapCoord.x > width - 1)
                 return 1;
         }
         return 0;
@@ -101,17 +101,16 @@ public class MapManager : MonoBehaviour {
         {
             if (IsRightTetrimino(TE) == 1)
             {
-                TE.transform.position += new Vector3(-tetrisMapSize, 0, 0);
+                TE.mapCoord += new Vector3(-1, 0, 0);
             }
             else if (IsRightTetrimino(TE) == -1)
             {
-                TE.transform.position += new Vector3(tetrisMapSize, 0, 0);
+                TE.mapCoord += new Vector3(1, 0, 0);
             }
             else
                 break;
         }
     }
-
     /// <summary>
     /// Delete one row.
     /// </summary>
@@ -120,8 +119,8 @@ public class MapManager : MonoBehaviour {
     {
         for(int x = 0; x < width; x++)
         {
-            Destroy(mapCoord[x, row].gameObject);
-            mapCoord[x, row] = null;
+            Destroy(mapGrid[x, row].gameObject);
+            mapGrid[x, row] = null;
         }
     }
     /// <summary>
@@ -134,8 +133,8 @@ public class MapManager : MonoBehaviour {
         {
             for(int x = 0; x < width; x++)
             {
-                mapCoord[x, y - 1] = mapCoord[x, y];
-                mapCoord[x, y] = null;
+                mapGrid[x, y - 1] = mapGrid[x, y];
+                mapGrid[x, y] = null;
             }
         }
     }
@@ -147,7 +146,7 @@ public class MapManager : MonoBehaviour {
     public static bool IsRowFull(int row)
     {
         for (int x = 0; x < width; x++)
-            if (mapCoord[x, row] != null && mapCoord[x, row].specialRoomType == Room.SpecialRoomType.Boss)
+            if (mapGrid[x, row] != null && mapGrid[x, row].specialRoomType == Room.SpecialRoomType.Boss)
                 return false;
         return true;
     }
@@ -190,24 +189,49 @@ public class MapManager : MonoBehaviour {
     {
 
     }
-    public void TetriminoMove(Tetrimino TE)
+    /*public void TetriminoMove(Tetrimino TE)
     {
-        if(Input.GetKeyDown(KeyCode.LeftArrow) && inTetris)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && inTetris)
         {
             TE.transform.position += new Vector3(-tetrisMapSize, 0, 0);
-            if(IsRightTetrimino(TE) != 0)
+            if (IsRightTetrimino(TE) != 0)
                 TE.transform.position += new Vector3(tetrisMapSize, 0, 0);
         }
-        else if(Input.GetKeyDown(KeyCode.RightArrow) && inTetris)
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && inTetris)
         {
             TE.transform.position += new Vector3(tetrisMapSize, 0, 0);
             if (IsRightTetrimino(TE) != 0)
                 TE.transform.position += new Vector3(-tetrisMapSize, 0, 0);
         }
+    }*/
+    public void TetriminoMove(Tetrimino TE)
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && inTetris)
+        {
+            TE.mapCoord += new Vector3(-1, 0, 0);
+            SetRoomMapCoord(currentTetrimino);
+            if (IsRightTetrimino(TE) != 0)
+                TE.mapCoord += new Vector3(1, 0, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && inTetris)
+        {
+            TE.mapCoord += new Vector3(1, 0, 0);
+            SetRoomMapCoord(currentTetrimino);
+            if (IsRightTetrimino(TE) != 0)
+                TE.mapCoord += new Vector3(-1, 0, 0);
+        }
+        SetRoomMapCoord(currentTetrimino);
     }
     public void TetriminoRotate(Tetrimino TE)
     {
 
+    }
+    public void SetRoomMapCoord(Tetrimino TE)
+    {
+        for (int i = 0; i < TE.rooms.Length; i++)
+        {
+            TE.rooms[i].mapCoord = TE.mapCoord + TE.rooms[i].transform.localPosition;
+        }
     }
     public void InitiateTetrimino()
     {
@@ -217,18 +241,15 @@ public class MapManager : MonoBehaviour {
     /*
      * Test
      * */
-    public void SpawnBossTetrimino()
-    {
-        spawnBossTetrimino = true;
-    }
+
     // Use this for initialization
     void Start () {
         inTetris = true;
     }
-	
-	// Update is called once per frame
-	void Update () {
-        TetriminoMove(currentTetrimino);
-	}
 
+    // Update is called once per frame
+    void Update() {
+        TetriminoMove(currentTetrimino);
+        currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
+    }
 }

@@ -39,6 +39,8 @@ public class TetriminoSpawner : MonoBehaviour {
                 randomTetrimino = TetriminoRandomizer();
             MM.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MM.tetrisMapCoord + MM.tetrisMapSize * new Vector3(randomPosition, MapManager.realHeight + 1, MM.tetrisMapCoord.z), Quaternion.identity);
             MM.MakeTetriminoRightPlace(MM.currentTetrimino);
+            MM.currentTetrimino.mapCoord = (MM.currentTetrimino.transform.position - MM.tetrisMapCoord) / MM.tetrisMapSize;
+            MM.SetRoomMapCoord(MM.currentTetrimino);
         }
     }
     /// <summary>
@@ -65,17 +67,10 @@ public class TetriminoSpawner : MonoBehaviour {
         return count;
     }
 
-
-
     /*
      * Test
      * */
-    public void ChangeTetrimino()
-    {
-        var MM = GameObject.FindGameObjectWithTag("MapManager").GetComponent<MapManager>();
-        Destroy(MM.currentTetrimino.gameObject);
-        MakeTetrimino();
-    }
+
     // Use this for initialization
     void Start () {
         MakeTetrimino();
