@@ -9,17 +9,17 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1448191776064200}
+  m_RootGameObject: {fileID: 1519889983907966}
   m_IsPrefabAsset: 1
---- !u!1 &1448191776064200
+--- !u!1 &1519889983907966
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4856635854947610}
-  - component: {fileID: 114733631161331600}
+  - component: {fileID: 4821016865928708}
+  - component: {fileID: 114144154128578016}
   m_Layer: 0
   m_Name: MapManager
   m_TagString: MapManager
@@ -27,12 +27,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4856635854947610
+--- !u!4 &4821016865928708
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1448191776064200}
+  m_GameObject: {fileID: 1519889983907966}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,17 +40,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114733631161331600
+--- !u!114 &114144154128578016
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1448191776064200}
+  m_GameObject: {fileID: 1519889983907966}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9719103beb138e041b0a7ec9e24aefb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inTetris: 0
   tetrisMapSize: 1
   tetrisMapCoord: {x: 0, y: 0, z: 0}
   speed: 0
@@ -58,4 +59,9 @@ MonoBehaviour:
   collapseTime: 0
   fallTime: 0
   gameOver: 0
+  spawnBossTetrimino: 0
+  tetrisMap: {fileID: 1922867542630168, guid: 668207ef06c134e40b24375977c2c930, type: 2}
+  mapLeftEnd: {fileID: 1580782092139588, guid: 668207ef06c134e40b24375977c2c930, type: 2}
+  mapRightEnd: {fileID: 1042490470800312, guid: 668207ef06c134e40b24375977c2c930,
+    type: 2}
   currentTetrimino: {fileID: 0}

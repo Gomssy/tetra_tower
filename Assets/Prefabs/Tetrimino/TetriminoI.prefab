@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4907672861611838}
   - component: {fileID: 212420025513127278}
+  - component: {fileID: 114896605901929710}
   m_Layer: 0
   m_Name: Room3
   m_TagString: Untagged
@@ -36,6 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4959807369913172}
   - component: {fileID: 212152418876382836}
+  - component: {fileID: 114128992769977540}
   m_Layer: 0
   m_Name: Room1
   m_TagString: Untagged
@@ -52,6 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4417427676875474}
   - component: {fileID: 212396526213553696}
+  - component: {fileID: 114753577101051656}
   m_Layer: 0
   m_Name: Room2
   m_TagString: Untagged
@@ -68,6 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4193237758475062}
   - component: {fileID: 212803665595841428}
+  - component: {fileID: 114323397412866622}
   m_Layer: 0
   m_Name: Room4
   m_TagString: Untagged
@@ -160,6 +164,57 @@ Transform:
   m_Father: {fileID: 4885249480576364}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114128992769977540
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1267037633818366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f935789f55ec07f4ca6b334fba78ddb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapLocation: {x: 0, y: 0, z: 0}
+  doorInfo: 
+  stage: 0
+  roomConcept: 0
+  itemRoomType: 0
+  specialRoomType: 0
+--- !u!114 &114323397412866622
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1794754551034900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f935789f55ec07f4ca6b334fba78ddb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapLocation: {x: 0, y: 0, z: 0}
+  doorInfo: 
+  stage: 0
+  roomConcept: 0
+  itemRoomType: 0
+  specialRoomType: 0
+--- !u!114 &114753577101051656
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1278771435863926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f935789f55ec07f4ca6b334fba78ddb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapLocation: {x: 0, y: 0, z: 0}
+  doorInfo: 
+  stage: 0
+  roomConcept: 0
+  itemRoomType: 0
+  specialRoomType: 0
 --- !u!114 &114851979720776072
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -176,6 +231,28 @@ MonoBehaviour:
   roomConcept: 0
   isBossTetrimino: 0
   tetriminoType: 0
+  rooms:
+  - {fileID: 114128992769977540}
+  - {fileID: 114753577101051656}
+  - {fileID: 114896605901929710}
+  - {fileID: 114323397412866622}
+--- !u!114 &114896605901929710
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1215456992061978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f935789f55ec07f4ca6b334fba78ddb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapLocation: {x: 0, y: 0, z: 0}
+  doorInfo: 
+  stage: 0
+  roomConcept: 0
+  itemRoomType: 0
+  specialRoomType: 0
 --- !u!212 &212152418876382836
 SpriteRenderer:
   m_ObjectHideFlags: 1

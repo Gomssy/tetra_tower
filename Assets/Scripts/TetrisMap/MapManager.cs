@@ -7,9 +7,14 @@ public class MapManager : MonoBehaviour {
     /*
      * variables
      * */
-     /// <summary>
-     /// Tetris map's size.
-     /// </summary>
+    /// <summary>
+    /// If camera is at tetris map, it is true.
+    /// If camera is at player, it is false.
+    /// </summary>
+    public bool inTetris;
+    /// <summary>
+    /// Tetris map's size.
+    /// </summary>
     public float tetrisMapSize = 1;
     /// <summary>
     /// Tetris map's coordinates.
@@ -32,7 +37,6 @@ public class MapManager : MonoBehaviour {
     /// Absolute coordinates on tetris map.
     /// </summary>
     public static Room[,] mapCoord = new Room[width, height];
-    
     /// <summary>
     /// Tetris Y axis coordinates on Unity.
     /// </summary>
@@ -41,6 +45,15 @@ public class MapManager : MonoBehaviour {
     /// Current state of game.
     /// </summary>
     public bool gameOver = false;
+    /// <summary>
+    /// Choose to make a boss tetrimino or not.
+    /// </summary>
+    public bool spawnBossTetrimino = false;
+    /// <summary>
+    /// Tetris map.
+    /// </summary>
+    public GameObject tetrisMap;
+    public GameObject mapLeftEnd, mapRightEnd;
     /// <summary>
     /// Current tetrimino waiting for falling.
     /// </summary>
@@ -62,6 +75,43 @@ public class MapManager : MonoBehaviour {
         return new Vector3(Mathf.Round(coord.x), Mathf.Round(coord.y), coord.z);
     }
     */
+    /// <summary>
+    /// Check if tetrimino is in right x coordinate.
+    /// </summary>
+    /// <param name="TE">-1 for over left end, 1 for over right end, 0 for right place.</param>
+    /// <returns></returns>
+    public int IsRightTetrimino(Tetrimino TE)
+    {
+        for (int i = 0; i < TE.rooms.Length; i++)
+        {
+            if (TE.rooms[i].transform.position.x < mapLeftEnd.transform.position.x)
+                return -1;
+            else if (TE.rooms[i].transform.position.x > mapRightEnd.transform.position.x)
+                return 1;
+        }
+        return 0;
+    }
+    /// <summary>
+    /// Make Tetrimino in right X coordinate.
+    /// </summary>
+    /// <param name="TE">Tetrimino.</param>
+    public void MakeTetriminoRightPlace(Tetrimino TE)
+    {
+        while (true)
+        {
+            if (IsRightTetrimino(TE) == 1)
+            {
+                TE.transform.position += new Vector3(-tetrisMapSize, 0, 0);
+            }
+            else if (IsRightTetrimino(TE) == -1)
+            {
+                TE.transform.position += new Vector3(tetrisMapSize, 0, 0);
+            }
+            else
+                break;
+        }
+    }
+
     /// <summary>
     /// Delete one row.
     /// </summary>
@@ -109,10 +159,7 @@ public class MapManager : MonoBehaviour {
         GameObject[] tetriminoes = GameObject.FindGameObjectsWithTag("Tetrimino");
         foreach(GameObject child in tetriminoes)
         {
-            int count = 0;
-            foreach (Transform t in child.transform)
-                count++;
-            if (count == 0)
+            if(child.transform.childCount == 0)
                 Destroy(child.gameObject);
         }
     }
@@ -139,9 +186,24 @@ public class MapManager : MonoBehaviour {
     {
 
     }
-    public void TetriminoMove(Tetrimino TE)
+    public void GhostDown()
     {
 
+    }
+    public void TetriminoMove(Tetrimino TE)
+    {
+        if(Input.GetKeyDown(KeyCode.LeftArrow) && inTetris)
+        {
+            TE.transform.position += new Vector3(-tetrisMapSize, 0, 0);
+            if(IsRightTetrimino(TE) != 0)
+                TE.transform.position += new Vector3(tetrisMapSize, 0, 0);
+        }
+        else if(Input.GetKeyDown(KeyCode.RightArrow) && inTetris)
+        {
+            TE.transform.position += new Vector3(tetrisMapSize, 0, 0);
+            if (IsRightTetrimino(TE) != 0)
+                TE.transform.position += new Vector3(-tetrisMapSize, 0, 0);
+        }
     }
     public void TetriminoRotate(Tetrimino TE)
     {
@@ -152,15 +214,21 @@ public class MapManager : MonoBehaviour {
 
     }
 
-
+    /*
+     * Test
+     * */
+    public void SpawnBossTetrimino()
+    {
+        spawnBossTetrimino = true;
+    }
     // Use this for initialization
     void Start () {
-
-	}
+        inTetris = true;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		
+        TetriminoMove(currentTetrimino);
 	}
 
 }

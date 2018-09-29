@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Tetrimino : MonoBehaviour {
 
+    /*
+     * variables
+     * */
     /// <summary>
     /// Tetrimino's Location on tetris map.
     /// Not related to real location.
@@ -14,7 +17,7 @@ public class Tetrimino : MonoBehaviour {
     /// </summary>
     public int stage;
     /// <summary>
-    /// Tetrimino room's concept.
+    /// Tetrimino's room concept.
     /// </summary>
     public int roomConcept;
     /// <summary>
@@ -24,11 +27,19 @@ public class Tetrimino : MonoBehaviour {
     /// <summary>
     /// Enum for tetriminno types.
     /// </summary>
-    public enum TetriminoType { I, O, T, J, L, S, Z };
+    public enum TetriminoType { I, O, T, J, L, S, Z, Boss };
     /// <summary>
     /// Tetrimino types.
     /// </summary>
     public TetriminoType tetriminoType;
+    /// <summary>
+    /// Each rooms for this tetrimino.
+    /// </summary>
+    public Room[] rooms;
+
+    /*
+     * functions
+     * */
 
 
 

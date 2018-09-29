@@ -10,8 +10,11 @@ public class TetriminoSpawner : MonoBehaviour {
      /// <summary>
      /// All tetriminoes.
      /// </summary>
-    public Tetrimino[] tetriminoes = new Tetrimino[7];
+    public Tetrimino[] tetriminoes;
 
+    /// <summary>
+    /// Save probability of which tetrimino will be made next.
+    /// </summary>
     int[] randomTetrimino = { 1, 1, 1, 1, 1, 1, 1 };
 
     /*
@@ -26,11 +29,22 @@ public class TetriminoSpawner : MonoBehaviour {
         if (!MM.gameOver)
         {
             int randomPosition = Random.Range(0, MapManager.width);
-            int randomTetrimino = TetriminoRandomizer();
+            int randomTetrimino;
+            if (MM.spawnBossTetrimino)
+            {
+                randomTetrimino = 7;
+                MM.spawnBossTetrimino = false;
+            }
+            else
+                randomTetrimino = TetriminoRandomizer();
             MM.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MM.tetrisMapCoord + MM.tetrisMapSize * new Vector3(randomPosition, MapManager.realHeight + 1, MM.tetrisMapCoord.z), Quaternion.identity);
+            MM.MakeTetriminoRightPlace(MM.currentTetrimino);
         }
     }
-
+    /// <summary>
+    /// Logic for random tetrimino.
+    /// </summary>
+    /// <returns>Tetrimino that would be made next.</returns>
     int TetriminoRandomizer()
     {
         int sum = 0, count;
@@ -52,6 +66,10 @@ public class TetriminoSpawner : MonoBehaviour {
     }
 
 
+
+    /*
+     * Test
+     * */
     public void ChangeTetrimino()
     {
         var MM = GameObject.FindGameObjectWithTag("MapManager").GetComponent<MapManager>();
