@@ -52,11 +52,11 @@ public class PlayerController : MonoBehaviour {
         {
             if (isGrounded)
             {
-                vertical = jumpSpeed;
+                vertical = jumpSpeed * Time.fixedDeltaTime;
             }
             else if (isJumpable)
             {
-                vertical = doubleJumpSpeed;
+                vertical = doubleJumpSpeed * Time.fixedDeltaTime;
                 isJumpable = false;
             }
         }
@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour {
     bool IsGrounded()   // Is player grounded?
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, groundLayer);
-        Debug.DrawRay(transform.position, rayDistance* Vector2.down, Color.white);
+        Debug.DrawRay(transform.position, rayDistance * Vector2.down, Color.white);
         return hit.collider != null;
     }
 }

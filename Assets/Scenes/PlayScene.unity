@@ -339,8 +339,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 300
-  jumpSpeed: 10
-  doubleJumpSpeed: 10
+  jumpSpeed: 400
+  doubleJumpSpeed: 400
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
