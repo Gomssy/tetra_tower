@@ -228,7 +228,7 @@ public class LifeCrystalUI : MonoBehaviour
     /// </summary>
 	void FixedUpdate ()
     {
-        textUI.text = "Life: " + lifeCount + ", Gold: " + goldCount;
+        //textUI.text = "Life: " + lifeCount + ", Gold: " + goldCount;
     }
     ////////////////////////////////////////////////// Hidden functions
     /// <summary>

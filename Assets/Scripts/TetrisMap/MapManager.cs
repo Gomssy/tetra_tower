@@ -7,11 +7,7 @@ public class MapManager : MonoBehaviour {
     /*
      * variables
      * */
-    /// <summary>
-    /// If camera is at tetris map, it is true.
-    /// If camera is at player, it is false.
-    /// </summary>
-    public bool inTetris;
+
     /// <summary>
     /// Tetris map's size.
     /// </summary>
@@ -206,14 +202,14 @@ public class MapManager : MonoBehaviour {
     }*/
     public void TetriminoMove(Tetrimino TE)
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && inTetris)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && GameManager.gameState == GameManager.GameState.Tetris)
         {
             TE.mapCoord += new Vector3(-1, 0, 0);
             SetRoomMapCoord(currentTetrimino);
             if (IsRightTetrimino(TE) != 0)
                 TE.mapCoord += new Vector3(1, 0, 0);
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && inTetris)
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && GameManager.gameState == GameManager.GameState.Tetris)
         {
             TE.mapCoord += new Vector3(1, 0, 0);
             SetRoomMapCoord(currentTetrimino);
@@ -244,7 +240,7 @@ public class MapManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        inTetris = true;
+        
     }
 
     // Update is called once per frame
