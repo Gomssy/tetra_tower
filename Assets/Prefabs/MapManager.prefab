@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9719103beb138e041b0a7ec9e24aefb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inTetris: 0
+  grid: {fileID: 0}
   tetrisMapSize: 1
   tetrisMapCoord: {x: 0, y: 0, z: 0}
   speed: 0
@@ -60,8 +60,7 @@ MonoBehaviour:
   fallTime: 0
   gameOver: 0
   spawnBossTetrimino: 0
-  tetrisMap: {fileID: 1922867542630168, guid: 668207ef06c134e40b24375977c2c930, type: 2}
-  mapLeftEnd: {fileID: 1580782092139588, guid: 668207ef06c134e40b24375977c2c930, type: 2}
-  mapRightEnd: {fileID: 1042490470800312, guid: 668207ef06c134e40b24375977c2c930,
-    type: 2}
+  tetrisMap: {fileID: 0}
   currentTetrimino: {fileID: 0}
+  halfRoomList:
+  - {fileID: 114931030853536078, guid: 279f5b34ed5c53545990e499c74cbbe7, type: 2}
