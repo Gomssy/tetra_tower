@@ -37,12 +37,14 @@ public class TetriminoSpawner : MonoBehaviour {
             }
             else
                 randomTetrimino = TetriminoRandomizer();
-            MM.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MM.tetrisMapCoord + MM.tetrisMapSize * new Vector3(randomPosition, MapManager.realHeight + 1, MM.tetrisMapCoord.z), Quaternion.identity);
+            //MM.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MM.tetrisMapCoord + MM.tetrisMapSize * new Vector3(randomPosition, MapManager.realHeight + 1, MM.tetrisMapCoord.z), Quaternion.identity);
+            MM.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MM.tetrisMapCoord + MM.tetrisMapSize * new Vector3(0, 0, 0), Quaternion.identity);
             MM.MakeTetriminoRightPlace(MM.currentTetrimino);
             MM.currentTetrimino.mapCoord = (MM.currentTetrimino.transform.position - MM.tetrisMapCoord) / MM.tetrisMapSize;
             MM.SetRoomMapCoord(MM.currentTetrimino);
         }
     }
+
     /// <summary>
     /// Logic for random tetrimino.
     /// </summary>

@@ -8,6 +8,7 @@ public class MapManager : MonoBehaviour {
      * variables
      * */
 
+    public Transform grid;
     /// <summary>
     /// Tetris map's size.
     /// </summary>
@@ -49,12 +50,14 @@ public class MapManager : MonoBehaviour {
     /// Tetris map.
     /// </summary>
     public GameObject tetrisMap;
-    public GameObject mapLeftEnd, mapRightEnd;
     /// <summary>
     /// Current tetrimino waiting for falling.
     /// </summary>
     public Tetrimino currentTetrimino;
-
+    /// <summary>
+    /// List for the half Room candidates.
+    /// </summary>
+    public HalfRoom[] halfRoomList;
 
     /*
      * functions
@@ -74,15 +77,15 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Check if tetrimino is in right x coordinate.
     /// </summary>
-    /// <param name="TE">-1 for over left end, 1 for over right end, 0 for right place.</param>
+    /// <param name="te">-1 for over left end, 1 for over right end, 0 for right place.</param>
     /// <returns></returns>
-    public int IsRightTetrimino(Tetrimino TE)
+    public int IsRightTetrimino(Tetrimino te)
     {
-        for (int i = 0; i < TE.rooms.Length; i++)
+        for (int i = 0; i < te.rooms.Length; i++)
         {
-            if (TE.rooms[i].mapCoord.x < 0)
+            if (te.rooms[i].mapCoord.x < 0)
                 return -1;
-            else if (TE.rooms[i].mapCoord.x > width - 1)
+            else if (te.rooms[i].mapCoord.x > width - 1)
                 return 1;
         }
         return 0;
@@ -90,18 +93,18 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Make Tetrimino in right X coordinate.
     /// </summary>
-    /// <param name="TE">Tetrimino.</param>
-    public void MakeTetriminoRightPlace(Tetrimino TE)
+    /// <param name="te">Tetrimino.</param>
+    public void MakeTetriminoRightPlace(Tetrimino te)
     {
         while (true)
         {
-            if (IsRightTetrimino(TE) == 1)
+            if (IsRightTetrimino(te) == 1)
             {
-                TE.mapCoord += new Vector3(-1, 0, 0);
+                te.mapCoord += new Vector3(-1, 0, 0);
             }
-            else if (IsRightTetrimino(TE) == -1)
+            else if (IsRightTetrimino(te) == -1)
             {
-                TE.mapCoord += new Vector3(1, 0, 0);
+                te.mapCoord += new Vector3(1, 0, 0);
             }
             else
                 break;
@@ -161,8 +164,8 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Update rooms coordinates on mapCoord.
     /// </summary>
-    /// <param name="TE">Tetrimino you want to update on map.</param>
-    public void UpdateMap(Tetrimino TE)
+    /// <param name="te">Tetrimino you want to update on map.</param>
+    public void UpdateMap(Tetrimino te)
     {
         
     }
@@ -177,7 +180,7 @@ public class MapManager : MonoBehaviour {
 
 
 
-    public void TetriminoDown(Tetrimino TE)
+    public void TetriminoDown(Tetrimino te)
     {
 
     }
@@ -185,58 +188,77 @@ public class MapManager : MonoBehaviour {
     {
 
     }
-    /*public void TetriminoMove(Tetrimino TE)
+    /*public void TetriminoMove(Tetrimino te)
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow) && inTetris)
         {
-            TE.transform.position += new Vector3(-tetrisMapSize, 0, 0);
-            if (IsRightTetrimino(TE) != 0)
-                TE.transform.position += new Vector3(tetrisMapSize, 0, 0);
+            te.transform.position += new Vector3(-tetrisMapSize, 0, 0);
+            if (IsRightTetrimino(te) != 0)
+                te.transform.position += new Vector3(tetrisMapSize, 0, 0);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow) && inTetris)
         {
-            TE.transform.position += new Vector3(tetrisMapSize, 0, 0);
-            if (IsRightTetrimino(TE) != 0)
-                TE.transform.position += new Vector3(-tetrisMapSize, 0, 0);
+            te.transform.position += new Vector3(tetrisMapSize, 0, 0);
+            if (IsRightTetrimino(te) != 0)
+                te.transform.position += new Vector3(-tetrisMapSize, 0, 0);
         }
     }*/
-    public void TetriminoMove(Tetrimino TE)
+    public void TetriminoMove(Tetrimino te)
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow) && GameManager.gameState == GameManager.GameState.Tetris)
         {
-            TE.mapCoord += new Vector3(-1, 0, 0);
+            te.mapCoord += new Vector3(-1, 0, 0);
             SetRoomMapCoord(currentTetrimino);
-            if (IsRightTetrimino(TE) != 0)
-                TE.mapCoord += new Vector3(1, 0, 0);
+            if (IsRightTetrimino(te) != 0)
+                te.mapCoord += new Vector3(1, 0, 0);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow) && GameManager.gameState == GameManager.GameState.Tetris)
         {
-            TE.mapCoord += new Vector3(1, 0, 0);
+            te.mapCoord += new Vector3(1, 0, 0);
             SetRoomMapCoord(currentTetrimino);
-            if (IsRightTetrimino(TE) != 0)
-                TE.mapCoord += new Vector3(-1, 0, 0);
+            if (IsRightTetrimino(te) != 0)
+                te.mapCoord += new Vector3(-1, 0, 0);
         }
         SetRoomMapCoord(currentTetrimino);
     }
-    public void TetriminoRotate(Tetrimino TE)
+    public void TetriminoRotate(Tetrimino te)
     {
 
     }
-    public void SetRoomMapCoord(Tetrimino TE)
+    public void SetRoomMapCoord(Tetrimino te)
     {
-        for (int i = 0; i < TE.rooms.Length; i++)
+        for (int i = 0; i < te.rooms.Length; i++)
         {
-            TE.rooms[i].mapCoord = TE.mapCoord + TE.rooms[i].transform.localPosition;
+            te.rooms[i].mapCoord = te.mapCoord + te.rooms[i].transform.localPosition;
         }
     }
-    public void InitiateTetrimino()
+    public void CreateRoom(Tetrimino te)
     {
-
+        for (int i = 0; i < te.rooms.Length; i++)
+        {
+            te.rooms[i].transform.parent = grid;
+            te.rooms[i].transform.localScale = new Vector3(1, 1, 1);
+            HalfRoom halfRoomUp = Instantiate(halfRoomList[Random.Range(0, halfRoomList.Length)], te.rooms[i].transform.position + new Vector3(0, 12, 0),
+                                              Quaternion.identity, te.rooms[i].transform);
+            HalfRoom halfRoomDown = Instantiate(halfRoomList[Random.Range(0, halfRoomList.Length)], te.rooms[i].transform.position + new Vector3(0, 0, 0),
+                                                Quaternion.identity, te.rooms[i].transform);
+        }
+        Destroy(te.gameObject);
     }
 
     /*
      * Test
      * */
+    
+    public void Test()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            CreateRoom(currentTetrimino);
+        }
+    }
+
+
 
     // Use this for initialization
     void Start () {
@@ -245,7 +267,8 @@ public class MapManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        TetriminoMove(currentTetrimino);
-        currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
+        Test();
+        //TetriminoMove(currentTetrimino);
+        //currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
     }
 }
