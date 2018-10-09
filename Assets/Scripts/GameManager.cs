@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        gameState = GameState.Ingame;
+        gameState = GameState.Tetris;
     }
 	
 	// Update is called once per frame

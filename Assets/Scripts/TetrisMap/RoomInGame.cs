@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HalfRoom : MonoBehaviour {
+public class RoomInGame : MonoBehaviour {
 
     /// <summary>
     /// The enum for door information.

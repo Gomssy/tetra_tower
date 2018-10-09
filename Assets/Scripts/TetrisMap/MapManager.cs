@@ -12,7 +12,7 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Tetris map's size.
     /// </summary>
-    public float tetrisMapSize = 1;
+    public float tetrisMapSize;
     /// <summary>
     /// Tetris map's coordinates.
     /// </summary>
@@ -55,9 +55,17 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public Tetrimino currentTetrimino;
     /// <summary>
-    /// List for the half Room candidates.
+    /// List for the normal Room candidates.
     /// </summary>
-    public HalfRoom[] halfRoomList;
+    public RoomInGame[] normalRoomList;
+    /// <summary>
+    /// List for the item Room candidates.
+    /// </summary>
+    public RoomInGame[] itemRoomList;
+    /// <summary>
+    /// List for the special Room candidates.
+    /// </summary>
+    public RoomInGame[] specialRoomList;
 
     /*
      * functions
@@ -74,6 +82,14 @@ public class MapManager : MonoBehaviour {
         return new Vector3(Mathf.Round(coord.x), Mathf.Round(coord.y), coord.z);
     }
     */
+    public void MoveTetriminoMapCoord(Tetrimino te, Vector3 coord)
+    {
+        for(int i = 0; i < te.rooms.Length; i++)
+        {
+            te.rooms[i].mapCoord += coord;
+        }
+        te.mapCoord += coord;
+    }
     /// <summary>
     /// Check if tetrimino is in right x coordinate.
     /// </summary>
@@ -85,7 +101,7 @@ public class MapManager : MonoBehaviour {
         {
             if (te.rooms[i].mapCoord.x < 0)
                 return -1;
-            else if (te.rooms[i].mapCoord.x > width - 1)
+            else if (te.rooms[i].mapCoord.x > 9)
                 return 1;
         }
         return 0;
@@ -98,16 +114,22 @@ public class MapManager : MonoBehaviour {
     {
         while (true)
         {
+            Debug.Log(te.rooms[3].mapCoord);
             if (IsRightTetrimino(te) == 1)
             {
-                te.mapCoord += new Vector3(-1, 0, 0);
+                Debug.Log("Move Left");
+                MoveTetriminoMapCoord(te, new Vector3(-1, 0, 0));
             }
             else if (IsRightTetrimino(te) == -1)
             {
-                te.mapCoord += new Vector3(1, 0, 0);
+                Debug.Log("Move Right");
+                MoveTetriminoMapCoord(te, new Vector3(1, 0, 0));
             }
             else
-                break;
+            {
+                Debug.Log("return");
+                return;
+            }
         }
     }
     /// <summary>
@@ -188,38 +210,20 @@ public class MapManager : MonoBehaviour {
     {
 
     }
-    /*public void TetriminoMove(Tetrimino te)
-    {
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && inTetris)
-        {
-            te.transform.position += new Vector3(-tetrisMapSize, 0, 0);
-            if (IsRightTetrimino(te) != 0)
-                te.transform.position += new Vector3(tetrisMapSize, 0, 0);
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && inTetris)
-        {
-            te.transform.position += new Vector3(tetrisMapSize, 0, 0);
-            if (IsRightTetrimino(te) != 0)
-                te.transform.position += new Vector3(-tetrisMapSize, 0, 0);
-        }
-    }*/
     public void TetriminoMove(Tetrimino te)
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow) && GameManager.gameState == GameManager.GameState.Tetris)
         {
-            te.mapCoord += new Vector3(-1, 0, 0);
-            SetRoomMapCoord(currentTetrimino);
+            MoveTetriminoMapCoord(te, new Vector3(-1, 0, 0));
             if (IsRightTetrimino(te) != 0)
-                te.mapCoord += new Vector3(1, 0, 0);
+                MoveTetriminoMapCoord(te, new Vector3(1, 0, 0));
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow) && GameManager.gameState == GameManager.GameState.Tetris)
         {
-            te.mapCoord += new Vector3(1, 0, 0);
-            SetRoomMapCoord(currentTetrimino);
+            MoveTetriminoMapCoord(te, new Vector3(1, 0, 0));
             if (IsRightTetrimino(te) != 0)
-                te.mapCoord += new Vector3(-1, 0, 0);
+                MoveTetriminoMapCoord(te, new Vector3(-1, 0, 0));
         }
-        SetRoomMapCoord(currentTetrimino);
     }
     public void TetriminoRotate(Tetrimino te)
     {
@@ -229,7 +233,7 @@ public class MapManager : MonoBehaviour {
     {
         for (int i = 0; i < te.rooms.Length; i++)
         {
-            te.rooms[i].mapCoord = te.mapCoord + te.rooms[i].transform.localPosition;
+            te.rooms[i].mapCoord = te.mapCoord + (te.rooms[i].transform.localPosition / tetrisMapSize);
         }
     }
     public void CreateRoom(Tetrimino te)
@@ -237,11 +241,11 @@ public class MapManager : MonoBehaviour {
         for (int i = 0; i < te.rooms.Length; i++)
         {
             te.rooms[i].transform.parent = grid;
-            te.rooms[i].transform.localScale = new Vector3(1, 1, 1);
-            HalfRoom halfRoomUp = Instantiate(halfRoomList[Random.Range(0, halfRoomList.Length)], te.rooms[i].transform.position + new Vector3(0, 12, 0),
-                                              Quaternion.identity, te.rooms[i].transform);
-            HalfRoom halfRoomDown = Instantiate(halfRoomList[Random.Range(0, halfRoomList.Length)], te.rooms[i].transform.position + new Vector3(0, 0, 0),
-                                                Quaternion.identity, te.rooms[i].transform);
+            if (te.rooms[i].itemRoomType != 0) ;
+            else if (te.rooms[i].specialRoomType != Room.SpecialRoomType.Normal)
+                Instantiate(specialRoomList[(int)te.rooms[i].specialRoomType], te.rooms[i].transform.position, Quaternion.identity, te.rooms[i].transform);
+            else
+                Instantiate(normalRoomList[Random.Range(0, normalRoomList.Length)], te.rooms[i].transform.position, Quaternion.identity, te.rooms[i].transform);
         }
         Destroy(te.gameObject);
     }
@@ -249,7 +253,7 @@ public class MapManager : MonoBehaviour {
     /*
      * Test
      * */
-    
+
     public void Test()
     {
         if(Input.GetKeyDown(KeyCode.Alpha0))
@@ -268,7 +272,7 @@ public class MapManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         Test();
-        //TetriminoMove(currentTetrimino);
-        //currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
+        TetriminoMove(currentTetrimino);
+        currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
     }
 }

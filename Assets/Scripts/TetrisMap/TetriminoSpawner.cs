@@ -21,7 +21,7 @@ public class TetriminoSpawner : MonoBehaviour {
      * functions
      * */
     /// <summary>
-    /// Make new Tetrimino on top.
+    /// Make new Tetrimino at top.
     /// </summary>
     public void MakeTetrimino()
     {
@@ -37,11 +37,35 @@ public class TetriminoSpawner : MonoBehaviour {
             }
             else
                 randomTetrimino = TetriminoRandomizer();
-            //MM.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MM.tetrisMapCoord + MM.tetrisMapSize * new Vector3(randomPosition, MapManager.realHeight + 1, MM.tetrisMapCoord.z), Quaternion.identity);
-            MM.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MM.tetrisMapCoord + MM.tetrisMapSize * new Vector3(0, 0, 0), Quaternion.identity);
-            MM.MakeTetriminoRightPlace(MM.currentTetrimino);
+            MM.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MM.tetrisMapCoord + MM.tetrisMapSize * new Vector3(randomPosition, MapManager.realHeight + 1, MM.tetrisMapCoord.z), Quaternion.identity);
             MM.currentTetrimino.mapCoord = (MM.currentTetrimino.transform.position - MM.tetrisMapCoord) / MM.tetrisMapSize;
             MM.SetRoomMapCoord(MM.currentTetrimino);
+            MM.MakeTetriminoRightPlace(MM.currentTetrimino);
+        }
+    }
+    /// <summary>
+    /// Make initial Tetrimino at bottom.
+    /// </summary>
+    public void MakeInitialTetrimino()
+    {
+        var MM = GameObject.FindGameObjectWithTag("MapManager").GetComponent<MapManager>();
+        if (!MM.gameOver)
+        {
+            int randomPosition = Random.Range(0, MapManager.width);
+            int randomTetrimino;
+            if (MM.spawnBossTetrimino)
+            {
+                randomTetrimino = 7;
+                MM.spawnBossTetrimino = false;
+            }
+            else
+                randomTetrimino = TetriminoRandomizer();
+            MM.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MM.tetrisMapCoord + MM.tetrisMapSize * new Vector3(randomPosition, 0, MM.tetrisMapCoord.z), Quaternion.identity);
+            MM.currentTetrimino.rooms[Random.Range(0, MM.currentTetrimino.rooms.Length)].specialRoomType = Room.SpecialRoomType.Start;
+            MM.currentTetrimino.mapCoord = (MM.currentTetrimino.transform.position - MM.tetrisMapCoord) / MM.tetrisMapSize;
+            MM.SetRoomMapCoord(MM.currentTetrimino);
+            MM.MakeTetriminoRightPlace(MM.currentTetrimino);
+            MM.CreateRoom(MM.currentTetrimino);
         }
     }
 
@@ -75,6 +99,7 @@ public class TetriminoSpawner : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        MakeInitialTetrimino();
         MakeTetrimino();
 	}
 	

@@ -35,7 +35,7 @@ public class Room : MonoBehaviour
     /// <summary>
     /// Enum for special room types.
     /// </summary>
-    public enum SpecialRoomType { Normal, Boss, BothSide, Gold, Amethyst };
+    public enum SpecialRoomType { Boss, BothSide, Gold, Amethyst, Start, Normal };
     /// <summary>
     /// Special room types.
     /// </summary>
