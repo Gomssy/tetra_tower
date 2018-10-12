@@ -67,6 +67,7 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public RoomInGame[] specialRoomList;
     public bool controlCurrentTetrimino = false;
+    public Room startRoom;
 
     /*
      * functions
@@ -393,11 +394,12 @@ public class MapManager : MonoBehaviour {
         {
             UpdateMap(currentTetrimino);
             te.rooms[i].transform.parent = grid;
+            te.rooms[i].transform.position += new Vector3(0, 0, -2);
             if (te.rooms[i].itemRoomType != 0) ;
             else if (te.rooms[i].specialRoomType != Room.SpecialRoomType.Normal)
-                Instantiate(specialRoomList[(int)te.rooms[i].specialRoomType], te.rooms[i].transform.position, Quaternion.identity, te.rooms[i].transform);
+                Instantiate(specialRoomList[(int)te.rooms[i].specialRoomType], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
             else
-                Instantiate(normalRoomList[Random.Range(0, normalRoomList.Length)], te.rooms[i].transform.position, Quaternion.identity, te.rooms[i].transform);
+                Instantiate(normalRoomList[Random.Range(0, normalRoomList.Length)], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
         }
         Destroy(te.gameObject);
     }
@@ -405,17 +407,6 @@ public class MapManager : MonoBehaviour {
     /*
      * Test
      * */
-
-    public void Test()
-    {
-        if(Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            for (int x = 0; x < width; x++)
-                for (int y = 0; y < height; y++)
-                    if (mapGrid[x, y] != null)
-                        Debug.Log(new Vector3(x, y, 0));
-        }
-    }
     void Awake()
     {
         Tetrimino.rotationInformation[0].horizontalLength = new int[4] { 1, 4, 1, 4 };  //I
@@ -439,7 +430,6 @@ public class MapManager : MonoBehaviour {
     void Update() {
         if(controlCurrentTetrimino)
         {
-            Test();
             TetriminoControl(currentTetrimino);
             currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z * tetrisMapSize);
             //currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;

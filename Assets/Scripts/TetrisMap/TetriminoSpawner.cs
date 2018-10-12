@@ -60,16 +60,10 @@ public class TetriminoSpawner : MonoBehaviour {
         if (!MM.gameOver)
         {
             int randomPosition = Random.Range(0, MapManager.width);
-            int randomTetrimino;
-            if (MM.spawnBossTetrimino)
-            {
-                randomTetrimino = 7;
-                MM.spawnBossTetrimino = false;
-            }
-            else
-                randomTetrimino = TetriminoRandomizer();
+            int randomTetrimino = TetriminoRandomizer();
             MM.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MM.tetrisMapCoord + MM.tetrisMapSize * new Vector3(randomPosition, 0, MM.tetrisMapCoord.z), Quaternion.identity);
-            MM.currentTetrimino.rooms[Random.Range(0, MM.currentTetrimino.rooms.Length)].specialRoomType = Room.SpecialRoomType.Start;
+            MM.startRoom = MM.currentTetrimino.rooms[Random.Range(0, MM.currentTetrimino.rooms.Length)];
+            MM.startRoom.specialRoomType = Room.SpecialRoomType.Start;
             MM.currentTetrimino.mapCoord = (MM.currentTetrimino.transform.position - MM.tetrisMapCoord) / MM.tetrisMapSize;
             MM.SetRoomMapCoord(MM.currentTetrimino);
             MM.MakeTetriminoRightPlace(MM.currentTetrimino);
@@ -112,8 +106,6 @@ public class TetriminoSpawner : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        MakeInitialTetrimino();
-        MakeTetrimino();
 	}
 	
 	// Update is called once per frame
