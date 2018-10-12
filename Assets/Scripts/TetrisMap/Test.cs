@@ -7,14 +7,14 @@ public class Test : MonoBehaviour {
 
     public void ChangeTetrimino()
     {
-        var MM = GameObject.FindGameObjectWithTag("MapManager").GetComponent<MapManager>();
-        var TS = GameObject.FindGameObjectWithTag("TetriminoSpawner").GetComponent<TetriminoSpawner>();
+        var MM = GameObject.Find("MapManager").GetComponent<MapManager>();
+        var TS = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
         Destroy(MM.currentTetrimino.gameObject);
         TS.MakeTetrimino();
     }
     public void SpawnBossTetrimino()
     {
-        var MM = GameObject.FindGameObjectWithTag("MapManager").GetComponent<MapManager>();
+        var MM = GameObject.Find("MapManager").GetComponent<MapManager>();
         MM.spawnBossTetrimino = true;
     }
 

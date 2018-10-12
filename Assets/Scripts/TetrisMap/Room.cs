@@ -48,10 +48,4 @@ public class Room : MonoBehaviour
     {
 
     }
-
-    void Awake()
-    {
-        doorInfo = new int[2] { 0, 0 };
-    }
-
 }

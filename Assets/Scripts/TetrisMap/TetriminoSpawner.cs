@@ -25,7 +25,7 @@ public class TetriminoSpawner : MonoBehaviour {
     /// </summary>
     public void MakeTetrimino()
     {
-        var MM = GameObject.FindGameObjectWithTag("MapManager").GetComponent<MapManager>();
+        var MM = GameObject.Find("MapManager").GetComponent<MapManager>();
         if (!MM.gameOver)
         {
             int randomPosition = Random.Range(0, MapManager.width);
@@ -41,6 +41,14 @@ public class TetriminoSpawner : MonoBehaviour {
             MM.currentTetrimino.mapCoord = (MM.currentTetrimino.transform.position - MM.tetrisMapCoord) / MM.tetrisMapSize;
             MM.SetRoomMapCoord(MM.currentTetrimino);
             MM.MakeTetriminoRightPlace(MM.currentTetrimino);
+            for(int i = 0; i < MM.currentTetrimino.rotatedPosition.Length;i++)
+            {
+                if (Tetrimino.rotationInformation[(int)MM.currentTetrimino.tetriminoType].horizontalLength[i] + MM.currentTetrimino.mapCoord.x > MapManager.width)
+                    MM.currentTetrimino.rotatedPosition[i] = MapManager.width - Tetrimino.rotationInformation[(int)MM.currentTetrimino.tetriminoType].horizontalLength[i];
+                else
+                    MM.currentTetrimino.rotatedPosition[i] = (int)MM.currentTetrimino.mapCoord.x;
+            }
+            MM.controlCurrentTetrimino = true;
         }
     }
     /// <summary>
@@ -48,7 +56,7 @@ public class TetriminoSpawner : MonoBehaviour {
     /// </summary>
     public void MakeInitialTetrimino()
     {
-        var MM = GameObject.FindGameObjectWithTag("MapManager").GetComponent<MapManager>();
+        var MM = GameObject.Find("MapManager").GetComponent<MapManager>();
         if (!MM.gameOver)
         {
             int randomPosition = Random.Range(0, MapManager.width);
@@ -65,6 +73,11 @@ public class TetriminoSpawner : MonoBehaviour {
             MM.currentTetrimino.mapCoord = (MM.currentTetrimino.transform.position - MM.tetrisMapCoord) / MM.tetrisMapSize;
             MM.SetRoomMapCoord(MM.currentTetrimino);
             MM.MakeTetriminoRightPlace(MM.currentTetrimino);
+            for (int i = 0; i < MM.currentTetrimino.rooms.Length; i++)
+            {
+                MM.currentTetrimino.transform.position = MM.currentTetrimino.mapCoord * MM.tetrisMapSize + MM.tetrisMapCoord;
+            }
+            MM.UpdateMap(MM.currentTetrimino);
             MM.CreateRoom(MM.currentTetrimino);
         }
     }

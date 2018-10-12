@@ -36,17 +36,22 @@ public class Tetrimino : MonoBehaviour {
     /// Each rooms for this tetrimino.
     /// </summary>
     public Room[] rooms;
+    /// <summary>
+    /// Tetrimino rotated angle.
+    /// </summary>
+    public int rotatedAngle = 0;
+    /// <summary>
+    /// Tetrimino rotated position;
+    /// </summary>
+    public int[] rotatedPosition = { 0, 0, 0, 0 };
+    public struct RotationInformation
+    {
+        public int[] horizontalLength;
+    }
+    public static RotationInformation[] rotationInformation = new RotationInformation[7];
 
     /*
      * functions
      * */
-
-
-
-
-
-
-
-
 
 }
