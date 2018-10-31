@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// Healthbar manager
@@ -51,10 +53,6 @@ public class LifeCrystalUI : MonoBehaviour
     /// LifeCrystal enabled if isDead == false
     /// </summary>
     public bool isDead;
-    /// <summary>
-    /// Text output, for debugging purpose
-    /// </summary>
-    public Text textUI;
     ////////////////////////////////////////////////// Protected variables
     private int lifeCount, goldCount, height;
     /// <summary>
@@ -98,7 +96,7 @@ public class LifeCrystalUI : MonoBehaviour
                 {
                     if (cell[x][y] == CellType.Gold)
                         goldCount--;
-                    updateCell(x, y, CellType.Empty);
+                    UpdateCell(x, y, CellType.Empty);
                     dmg--;
                     lifeCount--;
                 }
@@ -145,7 +143,7 @@ public class LifeCrystalUI : MonoBehaviour
                 if (cell[x][y] == CellType.Life)
                 {
                     if (mixer[redLifeIndex] == 1)
-                        updateCell(x, y, CellType.Gold);
+                        UpdateCell(x, y, CellType.Gold);
                     redLifeIndex++;
                 }
             }
@@ -173,7 +171,7 @@ public class LifeCrystalUI : MonoBehaviour
     {
         if (isDead) return false;
         
-        Vector2Int dropxy = dropSimulation(frag.grid);
+        Vector2Int dropxy = DropSimulation(frag.grid);
         if (dropxy.y == 0) return false;
 
         StartCoroutine(DropBlock(frag, dropxy));
@@ -196,10 +194,41 @@ public class LifeCrystalUI : MonoBehaviour
             for (int x = 2; x >= 0; x--)
                 if (cell[x][y] == CellType.Gold && gold > 0)
                 {
-                    updateCell(x, y, CellType.Life);
+                    UpdateCell(x, y, CellType.Life);
                     gold--;
                 }
         return true;
+    }
+    /// <summary>
+    /// Adds a new row to LifeCrystalUI
+    /// </summary>
+    public void AddNewRow()
+    {
+        if (height >= 33) return;
+        GameObject newRow = Instantiate(rowObj, pivotPosition + gridSize * new Vector3(0, height, 0), Quaternion.Euler(Vector3.zero), transform.Find("Frame"));
+        newRow.name = "Row" + height;
+
+        CellType[][] temp = new CellType[3][] { new CellType[height + 1], new CellType[height + 1], new CellType[height + 1] };
+        Image[][] temp2 = new Image[3][] { new Image[height + 1], new Image[height + 1], new Image[height + 1] };
+
+        for (int i = 0; i < 3; i++)
+        {
+            Array.Copy(cell[i], temp[i], height + 1);
+            Array.Copy(cellImg[i], temp2[i], height + 1);
+        }
+        cell = temp; cellImg = temp2;
+        cell[0][height] = cell[1][height] = cell[2][height] = CellType.Empty;
+
+        GameObject[] newCells = new GameObject[3];
+        for (int i = 0; i < 3; i++)
+        {
+            newCells[i] = Instantiate(cellObj, pivotPosition + gridSize * new Vector3(i - 1, height, 0),
+                Quaternion.Euler(Vector3.zero), transform.Find("Cells"));
+            newCells[i].name = "LC" + (1 + 3 * height + i).ToString("00");
+            cellImg[i][height] = newCells[i].GetComponent<Image>();
+            UpdateCell(i, height, 0);
+        }
+        height++;
     }
     ////////////////////////////////////////////////// Basic functions
     /// <summary>
@@ -237,7 +266,7 @@ public class LifeCrystalUI : MonoBehaviour
     /// <param name="x">X position of the cell to update: 0~2 (0 on the left)</param>
     /// <param name="y">Y position of the cell to update: 0~(height-1) (0 on the bottom)</param>
     /// <param name="value"></param>
-    void updateCell(int x, int y, CellType value)
+    void UpdateCell(int x, int y, CellType value)
     {
         cell[x][y] = value;
         cellImg[x][y].sprite = cellSprites[(int)value];
@@ -259,7 +288,7 @@ public class LifeCrystalUI : MonoBehaviour
     /// <para/> X: 0~2 (0 on the bottom)
     /// <para/> Y: 0~(height-1) (0 on the left)</param>
     /// <returns>Vector2(drop position(0~2), drop depth(0~height))</returns>
-    Vector2Int dropSimulation(CellType[][] grid)
+    Vector2Int DropSimulation(CellType[][] grid)
     {
         int bWidth = grid.Length;
         int bHeight = grid[0].Length;
@@ -333,7 +362,7 @@ public class LifeCrystalUI : MonoBehaviour
             {
                 if (frag.grid[x][y] != CellType.Empty)
                 {
-                    updateCell(dropxy.x + x, height - dropxy.y + y, frag.grid[x][y]);
+                    UpdateCell(dropxy.x + x, height - dropxy.y + y, frag.grid[x][y]);
                     droppingCells.Add(new Vector2Int(dropxy.x + x, height - dropxy.y + y));
                     lifeCount++;
                 }
