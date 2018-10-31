@@ -14,7 +14,13 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        gameState = GameState.Ingame;
+        gameState = GameState.Tetris;
+        var TS = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
+        TS.MakeInitialTetrimino();
+        Vector2 coord = GameObject.Find("MapManager").GetComponent<MapManager>().startRoom.transform.position;
+
+        GameObject.Find("Player").transform.position = new Vector2(coord.x, coord.y) + new Vector2(3, 3);
+
     }
 	
 	// Update is called once per frame

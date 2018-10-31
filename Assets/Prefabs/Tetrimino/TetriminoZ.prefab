@@ -180,7 +180,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 0
+  specialRoomType: 5
 --- !u!114 &114116348516849362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -218,7 +218,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 0
+  specialRoomType: 5
 --- !u!114 &114930072884505966
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -235,7 +235,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 0
+  specialRoomType: 5
 --- !u!114 &114970417993025404
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -252,7 +252,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 0
+  specialRoomType: 5
 --- !u!212 &212024274712184554
 SpriteRenderer:
   m_ObjectHideFlags: 1
