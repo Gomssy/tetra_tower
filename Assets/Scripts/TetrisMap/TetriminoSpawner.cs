@@ -73,6 +73,7 @@ public class TetriminoSpawner : MonoBehaviour {
             }
             MM.UpdateMap(MM.currentTetrimino);
             MM.CreateRoom(MM.currentTetrimino);
+            MakeTetrimino();
         }
     }
 
@@ -106,6 +107,7 @@ public class TetriminoSpawner : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
 	}
 	
 	// Update is called once per frame

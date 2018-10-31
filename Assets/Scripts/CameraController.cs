@@ -5,6 +5,13 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
 
+    /*
+     * If camera is in Tetris view, ideal position is (108, 240, -2)
+     * size 300
+     * */
+
+
+
     GameManager.GameState lastGameState;
 
     Vector3 destination;
