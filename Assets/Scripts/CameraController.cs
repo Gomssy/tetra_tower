@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour {
 
 
     /*
-     * If camera is in Tetris view, ideal position is (108, 240, -2)
+     * If camera is in Tetris view, ideal position is (108, 240, -1)
      * size 300
      * */
 
@@ -55,6 +55,10 @@ public class CameraController : MonoBehaviour {
 
     void GotoDestination()
     {
+        // TODO: Change this.
+        Vector3 pos = GameObject.Find("Player").transform.position;
+        pos.z = -1;
+        transform.position = pos;
     }
 
 
