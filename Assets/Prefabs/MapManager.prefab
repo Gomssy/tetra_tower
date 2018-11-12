@@ -63,11 +63,15 @@ MonoBehaviour:
   tetrisMap: {fileID: 0}
   currentTetrimino: {fileID: 0}
   normalRoomList:
-  - {fileID: 114608209787691684, guid: 702a2175c3762fd4b9bc1fac0357a1a0, type: 2}
+  - {fileID: 114867965473581566, guid: 3c35322ac2c308d49aadf20738b69c8b, type: 2}
+  - {fileID: 114492511082352868, guid: ab849dd6d89e7254f83aac30e7b19a30, type: 2}
+  - {fileID: 114559990482232978, guid: 8a277fab4c930814a89f83d11e915f3b, type: 2}
   itemRoomList: []
   specialRoomList:
   - {fileID: 114076836714455396, guid: 1ec0004bbafe6764d9462251b866e6e6, type: 2}
   - {fileID: 114589998919791384, guid: fe17cba28f910e54faf7b866f86bfd3e, type: 2}
   - {fileID: 114834209009617488, guid: f6834170b7152ee4db0dc7e165dcca70, type: 2}
   - {fileID: 114310635400106216, guid: 7da800d1a4355fd4aa02e3518cd9e1fb, type: 2}
-  - {fileID: 114495009210863316, guid: 4b147f1162668f44aa55982681399aec, type: 2}
+  - {fileID: 114422406439171286, guid: 8fddb267ac5bdf84b9def0dab7ff2071, type: 2}
+  controlCurrentTetrimino: 0
+  startRoom: {fileID: 0}
