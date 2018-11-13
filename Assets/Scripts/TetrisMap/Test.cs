@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Test : MonoBehaviour {
 
+    public static Vector3 tetrisCameraCoord = new Vector3(180, 240, -1);
+    public static float tetrisMapSize = 300;
 
     public void ChangeTetrimino()
     {
@@ -30,5 +32,13 @@ public class Test : MonoBehaviour {
             ChangeTetrimino();
         if (Input.GetKeyDown(KeyCode.Alpha2))
             SpawnBossTetrimino();
-	}
+        if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState != GameManager.GameState.Tetris)
+        {
+            GameManager.gameState = GameManager.GameState.Tetris;
+            GameObject.Find("Main Camera").transform.position = tetrisCameraCoord;
+            GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize = tetrisMapSize;
+        }
+        else if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Tetris)
+            GameManager.gameState = GameManager.GameState.Ingame;
+    }
 }
