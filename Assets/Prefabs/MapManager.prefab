@@ -66,12 +66,31 @@ MonoBehaviour:
   - {fileID: 114867965473581566, guid: 3c35322ac2c308d49aadf20738b69c8b, type: 2}
   - {fileID: 114492511082352868, guid: ab849dd6d89e7254f83aac30e7b19a30, type: 2}
   - {fileID: 114559990482232978, guid: 8a277fab4c930814a89f83d11e915f3b, type: 2}
-  itemRoomList: []
+  - {fileID: 114408584516131240, guid: 5712fafd2b645fe488586143d15320c3, type: 2}
+  - {fileID: 114595926560157356, guid: e755ae028f96c11478d088a2fbc15284, type: 2}
+  - {fileID: 114782876047334178, guid: b2aea3753aeb72e48877392a65019c75, type: 2}
+  - {fileID: 114470026489049436, guid: 1b7e15c651b43934ba83bf5af546dac8, type: 2}
+  - {fileID: 114863265537427244, guid: bcdfbba992e4b5c40a05376093119de1, type: 2}
+  - {fileID: 114949247335388822, guid: 342cab59f70a5b342a805799c5ae6207, type: 2}
+  - {fileID: 114484571057831710, guid: 1c41b406c1de80c4e93930331d2fa697, type: 2}
+  - {fileID: 114743815453509364, guid: f0254b56972e32745aef8a6fd6e5f500, type: 2}
+  - {fileID: 114788150064050122, guid: 6ed897f0c1013fc4883f7bf0db7b4e1a, type: 2}
+  - {fileID: 114377614119600362, guid: a3477b8af02171c478e610b1347cfa30, type: 2}
+  - {fileID: 114471976571779658, guid: a02cf80bd4dc5bf4eb59b598c282b924, type: 2}
+  - {fileID: 114416208672800444, guid: bc907848815150142844bfc2c5587c9f, type: 2}
+  - {fileID: 114966549601019394, guid: 0c232948c60d71447838601bcd333755, type: 2}
+  - {fileID: 114151492124372836, guid: c77255b74b15422448c3752f223cf177, type: 2}
+  - {fileID: 114869574872569484, guid: 478354a3449548a44ba40d516d1cc3cd, type: 2}
+  - {fileID: 114518681048152984, guid: 5d9d617a37ddce4448c92cca0946ab18, type: 2}
+  - {fileID: 114849596069850384, guid: bfa57985877d23b46929238f077b40df, type: 2}
+  itemRoomList:
+  - {fileID: 114748839344937290, guid: 7da800d1a4355fd4aa02e3518cd9e1fb, type: 2}
   specialRoomList:
-  - {fileID: 114076836714455396, guid: 1ec0004bbafe6764d9462251b866e6e6, type: 2}
+  - {fileID: 114422406439171286, guid: 8fddb267ac5bdf84b9def0dab7ff2071, type: 2}
+  - {fileID: 114177111557011372, guid: 2514de8c1d17b734592b5fe2cdc74560, type: 2}
+  - {fileID: 114835259102846824, guid: ea5defee5777b0044b3d684971c1dc40, type: 2}
+  - {fileID: 114582147988528222, guid: 8e573eb3b8b071c47a4ee92adf1a9644, type: 2}
   - {fileID: 114589998919791384, guid: fe17cba28f910e54faf7b866f86bfd3e, type: 2}
   - {fileID: 114834209009617488, guid: f6834170b7152ee4db0dc7e165dcca70, type: 2}
-  - {fileID: 114310635400106216, guid: 7da800d1a4355fd4aa02e3518cd9e1fb, type: 2}
-  - {fileID: 114422406439171286, guid: 8fddb267ac5bdf84b9def0dab7ff2071, type: 2}
   controlCurrentTetrimino: 0
   startRoom: {fileID: 0}
