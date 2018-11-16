@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
         TS.MakeInitialTetrimino();
         Vector2 coord = GameObject.Find("MapManager").GetComponent<MapManager>().startRoom.transform.position;
 
-        GameObject.Find("Player").transform.position = new Vector2(coord.x, coord.y) + new Vector2(3, 3);
+        //GameObject.Find("Player").transform.position = new Vector2(coord.x, coord.y) + new Vector2(3, 3);
 
     }
 	

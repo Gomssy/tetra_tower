@@ -7,11 +7,15 @@ public class TetriminoSpawner : MonoBehaviour {
     /*
      * variables
      * */
-     /// <summary>
-     /// All tetriminoes.
-     /// </summary>
+    MapManager MM;
+    /// <summary>
+    /// All tetriminoes.
+    /// </summary>
     public Tetrimino[] tetriminoes;
-
+    /// <summary>
+    /// All ghosts.
+    /// </summary>
+    public Tetrimino[] ghosts;
     /// <summary>
     /// Save probability of which tetrimino will be made next.
     /// </summary>
@@ -25,7 +29,6 @@ public class TetriminoSpawner : MonoBehaviour {
     /// </summary>
     public void MakeTetrimino()
     {
-        var MM = GameObject.Find("MapManager").GetComponent<MapManager>();
         if (!MM.gameOver)
         {
             int randomPosition = Random.Range(0, MapManager.width);
@@ -41,14 +44,15 @@ public class TetriminoSpawner : MonoBehaviour {
             MM.currentTetrimino.mapCoord = (MM.currentTetrimino.transform.position - MM.tetrisMapCoord) / MM.tetrisMapSize;
             MM.SetRoomMapCoord(MM.currentTetrimino);
             MM.MakeTetriminoRightPlace(MM.currentTetrimino);
-            for(int i = 0; i < MM.currentTetrimino.rotatedPosition.Length;i++)
+            for(int i = 0; i < MM.currentTetrimino.rotatedPosition.Length; i++)
             {
                 if (Tetrimino.rotationInformation[(int)MM.currentTetrimino.tetriminoType].horizontalLength[i] + MM.currentTetrimino.mapCoord.x > MapManager.width)
                     MM.currentTetrimino.rotatedPosition[i] = MapManager.width - Tetrimino.rotationInformation[(int)MM.currentTetrimino.tetriminoType].horizontalLength[i];
                 else
                     MM.currentTetrimino.rotatedPosition[i] = (int)MM.currentTetrimino.mapCoord.x;
             }
-            MM.controlCurrentTetrimino = true;
+            MakeGhost(MM.currentTetrimino, randomTetrimino);
+            //MM.controlCurrentTetrimino = true;
         }
     }
     /// <summary>
@@ -56,7 +60,6 @@ public class TetriminoSpawner : MonoBehaviour {
     /// </summary>
     public void MakeInitialTetrimino()
     {
-        var MM = GameObject.Find("MapManager").GetComponent<MapManager>();
         if (!MM.gameOver)
         {
             int randomPosition = Random.Range(0, MapManager.width);
@@ -75,6 +78,20 @@ public class TetriminoSpawner : MonoBehaviour {
             MM.CreateRoom(MM.currentTetrimino);
             MakeTetrimino();
         }
+    }
+    /// <summary>
+    /// Make ghost for tetrimino
+    /// </summary>
+    /// <param name="te">Which tetrimino to make ghost</param>
+    public void MakeGhost(Tetrimino te, int ghostType)
+    {
+        MM.currentGhost = Instantiate(ghosts[ghostType], te.transform.position, Quaternion.identity);
+        MM.currentGhost.mapCoord = te.mapCoord;
+        for(int i = 0; i < te.rooms.Length; i++)
+        {
+            MM.currentGhost.rooms[i].mapCoord = te.rooms[i].mapCoord;
+        }
+        MM.TetriminoMapCoordDown(MM.currentGhost);
     }
 
     /// <summary>
@@ -104,7 +121,10 @@ public class TetriminoSpawner : MonoBehaviour {
     /*
      * Test
      * */
-
+    private void Awake()
+    {
+        MM = GameObject.Find("MapManager").GetComponent<MapManager>();
+    }
     // Use this for initialization
     void Start () {
 

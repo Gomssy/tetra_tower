@@ -60,3 +60,5 @@ MonoBehaviour:
   - {fileID: 114813872723638092, guid: dfde2a88976e71b45b094b126823a49f, type: 2}
   - {fileID: 114116348516849362, guid: 40858eb0c94aa6c45be70d235179724b, type: 2}
   - {fileID: 114953302277862202, guid: bd086e7cd95d6774583cbacdf6d8e445, type: 2}
+  ghostRoom: {fileID: 114797574393229602, guid: a60932c06704df540adaf84e1482c1d6,
+    type: 2}

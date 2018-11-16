@@ -4,23 +4,26 @@ using UnityEngine;
 
 public class Test : MonoBehaviour {
 
+    MapManager MM;
+    TetriminoSpawner TS;
     public static Vector3 tetrisCameraCoord = new Vector3(180, 240, -1);
     public static float tetrisMapSize = 300;
 
     public void ChangeTetrimino()
     {
-        var MM = GameObject.Find("MapManager").GetComponent<MapManager>();
-        var TS = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
         Destroy(MM.currentTetrimino.gameObject);
         TS.MakeTetrimino();
     }
     public void SpawnBossTetrimino()
     {
-        var MM = GameObject.Find("MapManager").GetComponent<MapManager>();
         MM.spawnBossTetrimino = true;
     }
 
-
+    private void Awake()
+    {
+        MM = GameObject.Find("MapManager").GetComponent<MapManager>();
+        TS = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
+    }
     // Use this for initialization
     void Start () {
 

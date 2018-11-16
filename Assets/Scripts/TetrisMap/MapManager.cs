@@ -8,6 +8,7 @@ public class MapManager : MonoBehaviour {
      * variables
      * */
 
+    TetriminoSpawner TS;
     public Transform grid;
     /// <summary>
     /// Tetris map's size.
@@ -54,6 +55,10 @@ public class MapManager : MonoBehaviour {
     /// Current tetrimino waiting for falling.
     /// </summary>
     public Tetrimino currentTetrimino;
+    /// <summary>
+    /// Current ghost following currentTetrimino.
+    /// </summary>
+    public Tetrimino currentGhost;
     /// <summary>
     /// List for the normal Room candidates.
     /// </summary>
@@ -121,9 +126,7 @@ public class MapManager : MonoBehaviour {
                 MoveTetriminoMapCoord(te, new Vector3(1, 0, 0));
             }
             else
-            {
                 return;
-            }
         }
     }
     /// <summary>
@@ -303,29 +306,28 @@ public class MapManager : MonoBehaviour {
     public void TetriminoMapCoordDown(Tetrimino te)
     {
         //controlCurrentTetrimino = false;
-        while (IsRightTetrimino(currentTetrimino) == 0)
+        while (IsRightTetrimino(te) == 0)
         {
-            Debug.Log(IsRightTetrimino(currentTetrimino));
-            MoveTetriminoMapCoord(currentTetrimino, new Vector3(0, -1, 0));
+            MoveTetriminoMapCoord(te, new Vector3(0, -1, 0));
         }
-        Debug.Log(IsRightTetrimino(currentTetrimino));
-        MoveTetriminoMapCoord(currentTetrimino, new Vector3(0, 1, 0));
-        EndTetrimino(currentTetrimino);
-        //StartCoroutine(TetriminoDown(currentTetrimino));
+        MoveTetriminoMapCoord(te, new Vector3(0, 1, 0));
+        if(te == currentTetrimino)
+            EndTetrimino(currentTetrimino);
+        //StartCoroutine(TetriminoDown(te));
     }
     public void EndTetrimino(Tetrimino te)
     {
-        var TS = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
         currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z * tetrisMapSize);
         UpdateMap(te);
         CreateRoom(currentTetrimino);
         DeleteFullRows();
+        Destroy(currentGhost.gameObject);
         TS.MakeTetrimino();
     }
     /// <summary>
     /// Get tetrimino down.
     /// </summary>
-    /// <param name="te">Which tetrimino's real position move.</param>
+    /// <param name="te">Which tetrimino to move.</param>
     public IEnumerator TetriminoDown(Tetrimino te)
     {
         while(true)
@@ -333,10 +335,6 @@ public class MapManager : MonoBehaviour {
             if(currentTetrimino)
             yield return null;
         }
-    }
-    public void GhostDown()
-    {
-
     }
     //완성해야됨
 
@@ -416,10 +414,12 @@ public class MapManager : MonoBehaviour {
         Tetrimino.rotationInformation[4].horizontalLength = new int[4] { 2, 3, 2, 3 };  //L
         Tetrimino.rotationInformation[5].horizontalLength = new int[4] { 3, 2, 3, 2 };  //S
         Tetrimino.rotationInformation[6].horizontalLength = new int[4] { 3, 2, 3, 2 };  //Z
+        Tetrimino.rotationInformation[7].horizontalLength = new int[4] { 1, 1, 1, 1 };  //Boss
         for (int i = 0; i < tetrisYCoord.Length; i++)
         {
             tetrisYCoord[i] = i * 24;
         }
+        TS = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
     }
     // Use this for initialization
     void Start () {
@@ -428,11 +428,13 @@ public class MapManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if(controlCurrentTetrimino)
+        TetriminoControl(currentTetrimino);
+        currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z * tetrisMapSize);
+        if(currentGhost != null)
         {
-            TetriminoControl(currentTetrimino);
-            currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z * tetrisMapSize);
-            //currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
+            //GhostDown(currentGhost, currentTetrimino);
+            currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z * tetrisMapSize);
         }
+        //currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
     }
 }
