@@ -108,6 +108,22 @@ public class MapManager : MonoBehaviour {
                 return 3;
         }
         return 0;
+    }   
+    /// <summary>
+    /// Check if ghost is at right place.
+    /// </summary>
+    /// <param name="te">Ghost to check</param>
+    /// <returns>True for right place, false for wrong place</returns>
+    public bool IsRightGhost(Tetrimino te)
+    {
+        for (int i = 0; i < te.rooms.Length; i++)
+        {
+            if (te.rooms[i].mapCoord.y < 0)
+                return false;
+            else if (MapManager.mapGrid[(int)te.rooms[i].mapCoord.x, (int)te.rooms[i].mapCoord.y] != null)
+                return false;
+        }
+        return true;
     }
     /// <summary>
     /// Make Tetrimino in right X coordinate.
@@ -273,12 +289,22 @@ public class MapManager : MonoBehaviour {
             if (te.rooms[i].mapCoord.y < minY)
                 minY = te.rooms[i].mapCoord.y;
         }
+        te.mapCoord = new Vector3(te.rotatedPosition[te.rotatedAngle], te.mapCoord.y, te.mapCoord.z);
         for (int i = 0; i < te.rooms.Length; i++)
         {
+            //te.rooms[i].mapCoord += new Vector3(-(minX - te.mapCoord.x), -(minY - te.mapCoord.y), 0);
             te.rooms[i].mapCoord += new Vector3(-(minX - te.mapCoord.x), -(minY - te.mapCoord.y), 0);
             te.rooms[i].transform.position = (te.rooms[i].mapCoord - te.mapCoord) * tetrisMapSize + te.transform.position;
         }
-        te.mapCoord = new Vector3(te.rotatedPosition[te.rotatedAngle], te.mapCoord.y, te.mapCoord.z);
+        /*for(int i = 0; i < te.rooms.Length; i++)
+        {
+            if(te.rooms[i].mapCoord.x > 9)
+            {
+                for (int j = 0; j < te.rooms.Length; j++)
+                    te.rooms[i].mapCoord += new Vector3(0, -1, 0);
+                i = 0;
+            }
+        }*/
     }
     /// <summary>
     /// Move tetrimino as the amount of coord.
@@ -336,14 +362,32 @@ public class MapManager : MonoBehaviour {
             yield return null;
         }
     }
+    /// <summary>
+    /// Get ghost down.
+    /// </summary>
+    /// <param name="ghost">Which ghost to move.</param>
+    /// <param name="te">Which tetrimino you'd like to sink with ghost.</param>
+    public void GhostDown(Tetrimino ghost, Tetrimino te)
+    {
+        /*if(ghost.rotatedAngle != te.rotatedAngle)
+            TetriminoRotate(ghost, te.rotatedAngle - ghost.rotatedAngle);*/
+        currentGhost.mapCoord = currentTetrimino.mapCoord;
+        for (int i = 0; i < currentGhost.rooms.Length; i++)
+        {
+            currentGhost.rooms[i].mapCoord = currentTetrimino.rooms[i].mapCoord;
+            currentGhost.rooms[i].transform.position = (currentGhost.rooms[i].mapCoord - currentGhost.mapCoord) * tetrisMapSize + currentGhost.transform.position;
+        }
+
+        while (IsRightGhost(ghost))
+        {
+            MoveTetriminoMapCoord(ghost, new Vector3(0, -1, 0));
+        }
+        MoveTetriminoMapCoord(ghost, new Vector3(0, 1, 0));
+    }
     //완성해야됨
 
 
-
-
-
-
-
+        
 
     /// <summary>
     /// Press Left arrow/Right arrow to move left/right, Space to drop.
@@ -405,6 +449,7 @@ public class MapManager : MonoBehaviour {
     /*
      * Test
      * */
+
     void Awake()
     {
         Tetrimino.rotationInformation[0].horizontalLength = new int[4] { 1, 4, 1, 4 };  //I
@@ -432,7 +477,7 @@ public class MapManager : MonoBehaviour {
         currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z * tetrisMapSize);
         if(currentGhost != null)
         {
-            //GhostDown(currentGhost, currentTetrimino);
+            GhostDown(currentGhost, currentTetrimino);
             currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z * tetrisMapSize);
         }
         //currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
