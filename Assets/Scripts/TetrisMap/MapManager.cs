@@ -36,13 +36,17 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public static Room[,] mapGrid = new Room[width, height];
     /// <summary>
-    /// Tetris Y axis coordinates on Unity.
-    /// </summary>
-    public static float[] tetrisYCoord = new float[height];
-    /// <summary>
     /// Current state of game.
     /// </summary>
     public bool gameOver = false;
+    /// <summary>
+    /// Check if tetrimino is falling.
+    /// </summary>
+    public bool isTetriminoFalling = false;
+    /// <summary>
+    /// Tetris Y axis coordinates on Unity.
+    /// </summary>
+    public static float[] tetrisYCoord = new float[height];
     /// <summary>
     /// Choose to make a boss tetrimino or not.
     /// </summary>
@@ -213,7 +217,14 @@ public class MapManager : MonoBehaviour {
     {
         for(int i = 0; i < te.rooms.Length; i++)
         {
+            if ((int)te.rooms[i].mapCoord.y > 19)
+            {
+                gameOver = true;
+                Debug.Log("Game Over");
+                return;
+            }
             mapGrid[(int)te.rooms[i].mapCoord.x, (int)te.rooms[i].mapCoord.y] = te.rooms[i];
+
         }
     }
     /// <summary>
@@ -337,18 +348,23 @@ public class MapManager : MonoBehaviour {
             MoveTetriminoMapCoord(te, new Vector3(0, -1, 0));
         }
         MoveTetriminoMapCoord(te, new Vector3(0, 1, 0));
-        if(te == currentTetrimino)
-            EndTetrimino(currentTetrimino);
-        //StartCoroutine(TetriminoDown(te));
+        isTetriminoFalling = true;
+        StartCoroutine(TetriminoDown(te));
+        //EndTetrimino(currentTetrimino);
     }
+    /// <summary>
+    /// End tetrimino's falling and make rooms and new tetrimino.
+    /// </summary>
+    /// <param name="te">Tetrimino you want to end.</param>
     public void EndTetrimino(Tetrimino te)
     {
-        currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z * tetrisMapSize);
+        te.transform.position = new Vector3(te.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)te.mapCoord.y], te.mapCoord.z * tetrisMapSize);
         UpdateMap(te);
-        CreateRoom(currentTetrimino);
+        CreateRoom(te);
         DeleteFullRows();
         Destroy(currentGhost.gameObject);
         TS.MakeTetrimino();
+        isTetriminoFalling = false;
     }
     /// <summary>
     /// Get tetrimino down.
@@ -356,18 +372,19 @@ public class MapManager : MonoBehaviour {
     /// <param name="te">Which tetrimino to move.</param>
     public IEnumerator TetriminoDown(Tetrimino te)
     {
-        while(true)
+        while(te.transform.position.y > tetrisYCoord[(int)te.mapCoord.y])
         {
-            if(currentTetrimino)
-            yield return null;
+            yield return new WaitForSeconds(0.2f);
+            te.transform.position += new Vector3(0, -24, 0);
         }
+        EndTetrimino(currentTetrimino);
     }
     /// <summary>
     /// Get ghost down.
     /// </summary>
     /// <param name="ghost">Which ghost to move.</param>
     /// <param name="te">Which tetrimino you'd like to sink with ghost.</param>
-    public void GhostDown(Tetrimino ghost, Tetrimino te)
+    public void GhostControl(Tetrimino ghost, Tetrimino te)
     {
         /*if(ghost.rotatedAngle != te.rotatedAngle)
             TetriminoRotate(ghost, te.rotatedAngle - ghost.rotatedAngle);*/
@@ -377,7 +394,6 @@ public class MapManager : MonoBehaviour {
             currentGhost.rooms[i].mapCoord = currentTetrimino.rooms[i].mapCoord;
             currentGhost.rooms[i].transform.position = (currentGhost.rooms[i].mapCoord - currentGhost.mapCoord) * tetrisMapSize + currentGhost.transform.position;
         }
-
         while (IsRightGhost(ghost))
         {
             MoveTetriminoMapCoord(ghost, new Vector3(0, -1, 0));
@@ -397,6 +413,7 @@ public class MapManager : MonoBehaviour {
     {
         if(Input.GetKeyDown(KeyCode.Space) && GameManager.gameState == GameManager.GameState.Tetris)
         {
+            isTetriminoFalling = true;
             TetriminoMapCoordDown(currentTetrimino);
             //StartCoroutine(TetriminoDown(currentTetrimino));
         }
@@ -473,13 +490,21 @@ public class MapManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        TetriminoControl(currentTetrimino);
-        currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z * tetrisMapSize);
-        if(currentGhost != null)
+        if (!gameOver)
         {
-            GhostDown(currentGhost, currentTetrimino);
-            currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z * tetrisMapSize);
+            if(!isTetriminoFalling)
+            {
+                TetriminoControl(currentTetrimino);
+                if(!isTetriminoFalling)
+                    currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z * tetrisMapSize);
+            }
+           if(currentGhost != null)
+            {
+                GhostControl(currentGhost, currentTetrimino);
+                currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z * tetrisMapSize);
+            }
+            //currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
         }
-        //currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
+
     }
 }

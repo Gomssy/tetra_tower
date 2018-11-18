@@ -91,7 +91,6 @@ public class TetriminoSpawner : MonoBehaviour {
         {
             MM.currentGhost.rooms[i].mapCoord = te.rooms[i].mapCoord;
         }
-        MM.TetriminoMapCoordDown(MM.currentGhost);
     }
 
     /// <summary>

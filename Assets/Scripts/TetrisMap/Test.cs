@@ -12,6 +12,7 @@ public class Test : MonoBehaviour {
     public void ChangeTetrimino()
     {
         Destroy(MM.currentTetrimino.gameObject);
+        Destroy(MM.currentGhost.gameObject);
         TS.MakeTetrimino();
     }
     public void SpawnBossTetrimino()
