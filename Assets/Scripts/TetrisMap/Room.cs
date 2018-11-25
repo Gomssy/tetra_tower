@@ -31,11 +31,12 @@ public class Room : MonoBehaviour
     /// <summary>
     /// Item room type per rooms.
     /// 0 for normal room, 1~ for item rooms.
+    /// </summary>
     public int itemRoomType;
     /// <summary>
     /// Enum for special room types.
     /// </summary>
-    public enum SpecialRoomType { Boss, BothSide, Gold, Amethyst, Start, Normal };
+    public enum SpecialRoomType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal };
     /// <summary>
     /// Special room types.
     /// </summary>

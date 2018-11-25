@@ -8,6 +8,7 @@ public class MapManager : MonoBehaviour {
      * variables
      * */
 
+    TetriminoSpawner TS;
     public Transform grid;
     /// <summary>
     /// Tetris map's size.
@@ -20,13 +21,15 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Tetrimino falling speed.
     /// </summary>
-    public float speed;
+    public float fallSpeed = -0.1f;
+    public float initialFallSpeed = -0.1f;
     /// <summary>
     /// Tetrimino falling gravity.
     /// </summary>
-    public float gravity;
+    public float gravity = 0.98f;
     public float collapseTime;
     public float fallTime;
+    float initialFallTime;
 
     public static int height = 24, width = 10, realHeight = height - 5;
 
@@ -35,13 +38,17 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public static Room[,] mapGrid = new Room[width, height];
     /// <summary>
-    /// Tetris Y axis coordinates on Unity.
-    /// </summary>
-    public static float[] tetrisYCoord = new float[height];
-    /// <summary>
     /// Current state of game.
     /// </summary>
     public bool gameOver = false;
+    /// <summary>
+    /// Check if tetrimino is falling.
+    /// </summary>
+    public bool isTetriminoFalling = false;
+    /// <summary>
+    /// Tetris Y axis coordinates on Unity.
+    /// </summary>
+    public static float[] tetrisYCoord = new float[height];
     /// <summary>
     /// Choose to make a boss tetrimino or not.
     /// </summary>
@@ -55,13 +62,17 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public Tetrimino currentTetrimino;
     /// <summary>
+    /// Current ghost following currentTetrimino.
+    /// </summary>
+    public Tetrimino currentGhost;
+    /// <summary>
     /// List for the normal Room candidates.
     /// </summary>
     public RoomInGame[] normalRoomList;
-    /// <summary>
+    /*/// <summary>
     /// List for the item Room candidates.
     /// </summary>
-    public RoomInGame[] itemRoomList;
+    public RoomInGame[] itemRoomList;*/
     /// <summary>
     /// List for the special Room candidates.
     /// </summary>
@@ -103,6 +114,22 @@ public class MapManager : MonoBehaviour {
                 return 3;
         }
         return 0;
+    }   
+    /// <summary>
+    /// Check if ghost is at right place.
+    /// </summary>
+    /// <param name="te">Ghost to check</param>
+    /// <returns>True for right place, false for wrong place</returns>
+    public bool IsRightGhost(Tetrimino te)
+    {
+        for (int i = 0; i < te.rooms.Length; i++)
+        {
+            if (te.rooms[i].mapCoord.y < 0)
+                return false;
+            else if (MapManager.mapGrid[(int)te.rooms[i].mapCoord.x, (int)te.rooms[i].mapCoord.y] != null)
+                return false;
+        }
+        return true;
     }
     /// <summary>
     /// Make Tetrimino in right X coordinate.
@@ -121,9 +148,7 @@ public class MapManager : MonoBehaviour {
                 MoveTetriminoMapCoord(te, new Vector3(1, 0, 0));
             }
             else
-            {
                 return;
-            }
         }
     }
     /// <summary>
@@ -194,7 +219,14 @@ public class MapManager : MonoBehaviour {
     {
         for(int i = 0; i < te.rooms.Length; i++)
         {
+            if ((int)te.rooms[i].mapCoord.y > 19)
+            {
+                gameOver = true;
+                Debug.Log("Game Over");
+                return;
+            }
             mapGrid[(int)te.rooms[i].mapCoord.x, (int)te.rooms[i].mapCoord.y] = te.rooms[i];
+
         }
     }
     /// <summary>
@@ -270,12 +302,22 @@ public class MapManager : MonoBehaviour {
             if (te.rooms[i].mapCoord.y < minY)
                 minY = te.rooms[i].mapCoord.y;
         }
+        te.mapCoord = new Vector3(te.rotatedPosition[te.rotatedAngle], te.mapCoord.y, te.mapCoord.z);
         for (int i = 0; i < te.rooms.Length; i++)
         {
+            //te.rooms[i].mapCoord += new Vector3(-(minX - te.mapCoord.x), -(minY - te.mapCoord.y), 0);
             te.rooms[i].mapCoord += new Vector3(-(minX - te.mapCoord.x), -(minY - te.mapCoord.y), 0);
             te.rooms[i].transform.position = (te.rooms[i].mapCoord - te.mapCoord) * tetrisMapSize + te.transform.position;
         }
-        te.mapCoord = new Vector3(te.rotatedPosition[te.rotatedAngle], te.mapCoord.y, te.mapCoord.z);
+        /*for(int i = 0; i < te.rooms.Length; i++)
+        {
+            if(te.rooms[i].mapCoord.x > 9)
+            {
+                for (int j = 0; j < te.rooms.Length; j++)
+                    te.rooms[i].mapCoord += new Vector3(0, -1, 0);
+                i = 0;
+            }
+        }*/
     }
     /// <summary>
     /// Move tetrimino as the amount of coord.
@@ -290,12 +332,6 @@ public class MapManager : MonoBehaviour {
         }
         te.mapCoord += coord;
     }
-
-
-
-
-
-    //완성해야됨
     /// <summary>
     /// Get tetrimino's mapCoord down.
     /// </summary>
@@ -303,50 +339,67 @@ public class MapManager : MonoBehaviour {
     public void TetriminoMapCoordDown(Tetrimino te)
     {
         //controlCurrentTetrimino = false;
-        while (IsRightTetrimino(currentTetrimino) == 0)
+        while (IsRightTetrimino(te) == 0)
         {
-            Debug.Log(IsRightTetrimino(currentTetrimino));
-            MoveTetriminoMapCoord(currentTetrimino, new Vector3(0, -1, 0));
+            MoveTetriminoMapCoord(te, new Vector3(0, -1, 0));
         }
-        Debug.Log(IsRightTetrimino(currentTetrimino));
-        MoveTetriminoMapCoord(currentTetrimino, new Vector3(0, 1, 0));
-        EndTetrimino(currentTetrimino);
-        //StartCoroutine(TetriminoDown(currentTetrimino));
+        MoveTetriminoMapCoord(te, new Vector3(0, 1, 0));
+        isTetriminoFalling = true;
+        initialFallTime = Time.time;
+        StartCoroutine(TetriminoDown(te));
+        //EndTetrimino(currentTetrimino);
     }
+    /// <summary>
+    /// End tetrimino's falling and make rooms and new tetrimino.
+    /// </summary>
+    /// <param name="te">Tetrimino you want to end.</param>
     public void EndTetrimino(Tetrimino te)
     {
-        var TS = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
-        currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z * tetrisMapSize);
+        te.transform.position = new Vector3(te.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)te.mapCoord.y], te.mapCoord.z * tetrisMapSize);
+        fallSpeed = initialFallSpeed;
         UpdateMap(te);
-        CreateRoom(currentTetrimino);
+        CreateRoom(te);
         DeleteFullRows();
+        Destroy(currentGhost.gameObject);
         TS.MakeTetrimino();
+        isTetriminoFalling = false;
     }
     /// <summary>
     /// Get tetrimino down.
     /// </summary>
-    /// <param name="te">Which tetrimino's real position move.</param>
+    /// <param name="te">Which tetrimino to move.</param>
     public IEnumerator TetriminoDown(Tetrimino te)
     {
-        while(true)
+        while(te.transform.position.y > tetrisYCoord[(int)te.mapCoord.y])
         {
-            if(currentTetrimino)
-            yield return null;
+            yield return new WaitForSeconds(0.01f);
+            fallTime = Time.time - initialFallTime;
+            fallSpeed += gravity * fallTime * fallTime;
+            te.transform.position += new Vector3(0, -fallSpeed, 0);
         }
+        EndTetrimino(currentTetrimino);
     }
-    public void GhostDown()
+    /// <summary>
+    /// Get ghost down.
+    /// </summary>
+    /// <param name="ghost">Which ghost to move.</param>
+    /// <param name="te">Which tetrimino you'd like to sink with ghost.</param>
+    public void GhostControl(Tetrimino ghost, Tetrimino te)
     {
-
+        /*if(ghost.rotatedAngle != te.rotatedAngle)
+            TetriminoRotate(ghost, te.rotatedAngle - ghost.rotatedAngle);*/
+        currentGhost.mapCoord = currentTetrimino.mapCoord;
+        for (int i = 0; i < currentGhost.rooms.Length; i++)
+        {
+            currentGhost.rooms[i].mapCoord = currentTetrimino.rooms[i].mapCoord;
+            currentGhost.rooms[i].transform.position = (currentGhost.rooms[i].mapCoord - currentGhost.mapCoord) * tetrisMapSize + currentGhost.transform.position;
+        }
+        while (IsRightGhost(ghost))
+        {
+            MoveTetriminoMapCoord(ghost, new Vector3(0, -1, 0));
+        }
+        MoveTetriminoMapCoord(ghost, new Vector3(0, 1, 0));
     }
-    //완성해야됨
-
-
-
-
-
-
-
-
     /// <summary>
     /// Press Left arrow/Right arrow to move left/right, Space to drop.
     /// </summary>
@@ -355,6 +408,7 @@ public class MapManager : MonoBehaviour {
     {
         if(Input.GetKeyDown(KeyCode.Space) && GameManager.gameState == GameManager.GameState.Tetris)
         {
+            isTetriminoFalling = true;
             TetriminoMapCoordDown(currentTetrimino);
             //StartCoroutine(TetriminoDown(currentTetrimino));
         }
@@ -395,19 +449,21 @@ public class MapManager : MonoBehaviour {
             UpdateMap(currentTetrimino);
             te.rooms[i].transform.parent = grid;
             te.rooms[i].transform.position += new Vector3(0, 0, -2);
-            if (te.rooms[i].itemRoomType != 0) ;
-            else if (te.rooms[i].specialRoomType != Room.SpecialRoomType.Normal)
+            if (te.rooms[i].specialRoomType != Room.SpecialRoomType.Normal)
+            {
                 Instantiate(specialRoomList[(int)te.rooms[i].specialRoomType], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
+            }
             else
                 Instantiate(normalRoomList[Random.Range(0, normalRoomList.Length)], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
         }
         Destroy(te.gameObject);
     }
+    /*public void UpgradeRoom(Tetrimino te, Room.SpecialRoomType)
+    {
 
-    /*
-     * Test
-     * */
-    void Awake()
+    }*/
+
+    void Awake ()
     {
         Tetrimino.rotationInformation[0].horizontalLength = new int[4] { 1, 4, 1, 4 };  //I
         Tetrimino.rotationInformation[1].horizontalLength = new int[4] { 2, 2, 2, 2 };  //O
@@ -416,10 +472,12 @@ public class MapManager : MonoBehaviour {
         Tetrimino.rotationInformation[4].horizontalLength = new int[4] { 2, 3, 2, 3 };  //L
         Tetrimino.rotationInformation[5].horizontalLength = new int[4] { 3, 2, 3, 2 };  //S
         Tetrimino.rotationInformation[6].horizontalLength = new int[4] { 3, 2, 3, 2 };  //Z
+        Tetrimino.rotationInformation[7].horizontalLength = new int[4] { 1, 1, 1, 1 };  //Boss
         for (int i = 0; i < tetrisYCoord.Length; i++)
         {
             tetrisYCoord[i] = i * 24;
         }
+        TS = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
     }
     // Use this for initialization
     void Start () {
@@ -428,11 +486,21 @@ public class MapManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if(controlCurrentTetrimino)
+        if (!gameOver)
         {
-            TetriminoControl(currentTetrimino);
-            currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z * tetrisMapSize);
+            if(!isTetriminoFalling)
+            {
+                TetriminoControl(currentTetrimino);
+                if(!isTetriminoFalling)
+                    currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z * tetrisMapSize);
+            }
+           if(currentGhost != null)
+            {
+                GhostControl(currentGhost, currentTetrimino);
+                currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z * tetrisMapSize);
+            }
             //currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
         }
+
     }
 }

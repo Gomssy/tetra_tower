@@ -48,7 +48,7 @@ public class Tetrimino : MonoBehaviour {
     {
         public int[] horizontalLength;
     }
-    public static RotationInformation[] rotationInformation = new RotationInformation[7];
+    public static RotationInformation[] rotationInformation = new RotationInformation[8];
 
     /*
      * functions
