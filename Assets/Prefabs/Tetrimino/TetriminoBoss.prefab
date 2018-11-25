@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4326677061616058}
-  - component: {fileID: 114953302277862202}
+  - component: {fileID: 114725924278317946}
   m_Layer: 0
   m_Name: TetriminoBoss
   m_TagString: Tetrimino
@@ -87,8 +87,8 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 0
---- !u!114 &114953302277862202
+  specialRoomType: 5
+--- !u!114 &114725924278317946
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1690644780631946}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd1dc16b46613744db6b1b22af43a6d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a5e689aa2f6ba040908d66cf6e49094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mapCoord: {x: 0, y: 0, z: 0}
@@ -106,6 +106,8 @@ MonoBehaviour:
   tetriminoType: 7
   rooms:
   - {fileID: 114058333184934226}
+  rotatedAngle: 0
+  rotatedPosition: 00000000000000000000000000000000
 --- !u!212 &212305400664589542
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -70,7 +70,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4122900828095350}
-  - component: {fileID: 114426654816215182}
+  - component: {fileID: 114050247151628558}
   m_Layer: 0
   m_Name: TetriminoO
   m_TagString: Tetrimino
@@ -164,6 +164,29 @@ Transform:
   m_Father: {fileID: 4122900828095350}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114050247151628558
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1599875259397162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a5e689aa2f6ba040908d66cf6e49094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapCoord: {x: 0, y: 0, z: 0}
+  stage: 0
+  roomConcept: 0
+  isBossTetrimino: 0
+  tetriminoType: 1
+  rooms:
+  - {fileID: 114533639654252892}
+  - {fileID: 114213829136544718}
+  - {fileID: 114908975501692068}
+  - {fileID: 114152283449124112}
+  rotatedAngle: 0
+  rotatedPosition: 00000000000000000000000000000000
 --- !u!114 &114152283449124112
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -180,7 +203,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
+  specialRoomType: 6
 --- !u!114 &114213829136544718
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -197,28 +220,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
---- !u!114 &114426654816215182
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1599875259397162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6178b7e82dee01944993bbfb219fd0e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mapCoord: {x: 0, y: 0, z: 0}
-  stage: 0
-  roomConcept: 0
-  isBossTetrimino: 0
-  tetriminoType: 1
-  rooms:
-  - {fileID: 114533639654252892}
-  - {fileID: 114213829136544718}
-  - {fileID: 114908975501692068}
-  - {fileID: 114152283449124112}
+  specialRoomType: 6
 --- !u!114 &114533639654252892
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -235,7 +237,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
+  specialRoomType: 6
 --- !u!114 &114908975501692068
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -252,7 +254,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
+  specialRoomType: 6
 --- !u!212 &212207191686043862
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -57,7 +57,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
+  specialRoomType: 0
 --- !u!212 &212869044712785006
 SpriteRenderer:
   m_ObjectHideFlags: 1

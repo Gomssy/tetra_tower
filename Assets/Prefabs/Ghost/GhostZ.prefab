@@ -70,7 +70,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4716984633859238}
-  - component: {fileID: 114437822575329484}
+  - component: {fileID: 114714828130834384}
   m_Layer: 0
   m_Name: GhostZ
   m_TagString: Tetrimino
@@ -198,7 +198,7 @@ MonoBehaviour:
   roomConcept: 0
   itemRoomType: 0
   specialRoomType: 5
---- !u!114 &114437822575329484
+--- !u!114 &114714828130834384
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1660984219625002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6178b7e82dee01944993bbfb219fd0e6, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a5e689aa2f6ba040908d66cf6e49094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mapCoord: {x: 0, y: 0, z: 0}
@@ -215,10 +215,10 @@ MonoBehaviour:
   isBossTetrimino: 0
   tetriminoType: 6
   rooms:
+  - {fileID: 114733784849854298}
   - {fileID: 114201829585522972}
   - {fileID: 114846600314032394}
   - {fileID: 114122411231735484}
-  - {fileID: 114733784849854298}
   rotatedAngle: 0
   rotatedPosition: 00000000000000000000000000000000
 --- !u!114 &114733784849854298

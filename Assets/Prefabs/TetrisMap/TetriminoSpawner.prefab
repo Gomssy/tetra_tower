@@ -52,13 +52,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tetriminoes:
-  - {fileID: 114851979720776072, guid: ae83e2da964009040b28d5cf2dc0c005, type: 2}
-  - {fileID: 114826030636358216, guid: 1f5bb4ba4a682f14daf423ec3826f307, type: 2}
-  - {fileID: 114568813863931164, guid: 7b6deb9891716bf4dab3b397f5e07ae6, type: 2}
-  - {fileID: 114426654816215182, guid: 5fe7b9cfe8ee4ef45ba6caae7bfcdd3c, type: 2}
-  - {fileID: 114491658978157548, guid: 5103895df6a85964aa1f8aaeb7115696, type: 2}
-  - {fileID: 114813872723638092, guid: dfde2a88976e71b45b094b126823a49f, type: 2}
-  - {fileID: 114116348516849362, guid: 40858eb0c94aa6c45be70d235179724b, type: 2}
-  - {fileID: 114953302277862202, guid: bd086e7cd95d6774583cbacdf6d8e445, type: 2}
-  ghostRoom: {fileID: 114797574393229602, guid: a60932c06704df540adaf84e1482c1d6,
-    type: 2}
+  - {fileID: 114984013789810744, guid: ae83e2da964009040b28d5cf2dc0c005, type: 2}
+  - {fileID: 114102666305218160, guid: 1f5bb4ba4a682f14daf423ec3826f307, type: 2}
+  - {fileID: 114580369929242780, guid: 7b6deb9891716bf4dab3b397f5e07ae6, type: 2}
+  - {fileID: 114050247151628558, guid: 5fe7b9cfe8ee4ef45ba6caae7bfcdd3c, type: 2}
+  - {fileID: 114735100100628106, guid: 5103895df6a85964aa1f8aaeb7115696, type: 2}
+  - {fileID: 114136320919795954, guid: dfde2a88976e71b45b094b126823a49f, type: 2}
+  - {fileID: 114659339528811892, guid: 40858eb0c94aa6c45be70d235179724b, type: 2}
+  - {fileID: 114725924278317946, guid: bd086e7cd95d6774583cbacdf6d8e445, type: 2}
+  ghosts:
+  - {fileID: 114053834765157022, guid: 4422a70761bf0ac4884c66372948586e, type: 2}
+  - {fileID: 114537953624067400, guid: d5817275e3767a64781b72bcebb0ef8a, type: 2}
+  - {fileID: 114736330393983872, guid: 47e8f93d4209f34478b17a16248c8d0b, type: 2}
+  - {fileID: 114947735366378556, guid: 8344e57989c72184ab94ae0131761045, type: 2}
+  - {fileID: 114899122583804542, guid: c9c06793c7ca051448105a02e6071c28, type: 2}
+  - {fileID: 114189149810088422, guid: 325dd059e71f73542b872ad9735499c9, type: 2}
+  - {fileID: 114714828130834384, guid: 818f089e5ff4b8a4aa2cbb5570f5f36e, type: 2}
+  - {fileID: 114905444694596716, guid: e494db59dc163164da23ae1ad850f540, type: 2}

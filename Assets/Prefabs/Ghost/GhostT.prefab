@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4700052749380560}
-  - component: {fileID: 114092561358859646}
+  - component: {fileID: 114189149810088422}
   m_Layer: 0
   m_Name: GhostT
   m_TagString: Tetrimino
@@ -164,29 +164,6 @@ Transform:
   m_Father: {fileID: 4700052749380560}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114092561358859646
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1778553666691550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6178b7e82dee01944993bbfb219fd0e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mapCoord: {x: 0, y: 0, z: 0}
-  stage: 0
-  roomConcept: 0
-  isBossTetrimino: 0
-  tetriminoType: 2
-  rooms:
-  - {fileID: 114791520742199662}
-  - {fileID: 114284208054585426}
-  - {fileID: 114567680594745634}
-  - {fileID: 114176652732079518}
-  rotatedAngle: 0
-  rotatedPosition: 00000000000000000000000000000000
 --- !u!114 &114176652732079518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -204,6 +181,29 @@ MonoBehaviour:
   roomConcept: 0
   itemRoomType: 0
   specialRoomType: 5
+--- !u!114 &114189149810088422
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1778553666691550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a5e689aa2f6ba040908d66cf6e49094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapCoord: {x: 0, y: 0, z: 0}
+  stage: 0
+  roomConcept: 0
+  isBossTetrimino: 0
+  tetriminoType: 2
+  rooms:
+  - {fileID: 114791520742199662}
+  - {fileID: 114284208054585426}
+  - {fileID: 114567680594745634}
+  - {fileID: 114176652732079518}
+  rotatedAngle: 0
+  rotatedPosition: 00000000000000000000000000000000
 --- !u!114 &114284208054585426
 MonoBehaviour:
   m_ObjectHideFlags: 1

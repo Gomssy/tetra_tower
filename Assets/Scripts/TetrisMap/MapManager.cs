@@ -21,13 +21,15 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Tetrimino falling speed.
     /// </summary>
-    public float speed;
+    public float fallSpeed = -0.1f;
+    public float initialFallSpeed = -0.1f;
     /// <summary>
     /// Tetrimino falling gravity.
     /// </summary>
-    public float gravity;
+    public float gravity = 0.98f;
     public float collapseTime;
     public float fallTime;
+    float initialFallTime;
 
     public static int height = 24, width = 10, realHeight = height - 5;
 
@@ -67,10 +69,10 @@ public class MapManager : MonoBehaviour {
     /// List for the normal Room candidates.
     /// </summary>
     public RoomInGame[] normalRoomList;
-    /// <summary>
+    /*/// <summary>
     /// List for the item Room candidates.
     /// </summary>
-    public RoomInGame[] itemRoomList;
+    public RoomInGame[] itemRoomList;*/
     /// <summary>
     /// List for the special Room candidates.
     /// </summary>
@@ -330,12 +332,6 @@ public class MapManager : MonoBehaviour {
         }
         te.mapCoord += coord;
     }
-
-
-
-
-
-    //완성해야됨
     /// <summary>
     /// Get tetrimino's mapCoord down.
     /// </summary>
@@ -349,6 +345,7 @@ public class MapManager : MonoBehaviour {
         }
         MoveTetriminoMapCoord(te, new Vector3(0, 1, 0));
         isTetriminoFalling = true;
+        initialFallTime = Time.time;
         StartCoroutine(TetriminoDown(te));
         //EndTetrimino(currentTetrimino);
     }
@@ -359,6 +356,7 @@ public class MapManager : MonoBehaviour {
     public void EndTetrimino(Tetrimino te)
     {
         te.transform.position = new Vector3(te.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)te.mapCoord.y], te.mapCoord.z * tetrisMapSize);
+        fallSpeed = initialFallSpeed;
         UpdateMap(te);
         CreateRoom(te);
         DeleteFullRows();
@@ -374,8 +372,10 @@ public class MapManager : MonoBehaviour {
     {
         while(te.transform.position.y > tetrisYCoord[(int)te.mapCoord.y])
         {
-            yield return new WaitForSeconds(0.2f);
-            te.transform.position += new Vector3(0, -24, 0);
+            yield return new WaitForSeconds(0.01f);
+            fallTime = Time.time - initialFallTime;
+            fallSpeed += gravity * fallTime * fallTime;
+            te.transform.position += new Vector3(0, -fallSpeed, 0);
         }
         EndTetrimino(currentTetrimino);
     }
@@ -400,11 +400,6 @@ public class MapManager : MonoBehaviour {
         }
         MoveTetriminoMapCoord(ghost, new Vector3(0, 1, 0));
     }
-    //완성해야됨
-
-
-        
-
     /// <summary>
     /// Press Left arrow/Right arrow to move left/right, Space to drop.
     /// </summary>
@@ -454,20 +449,21 @@ public class MapManager : MonoBehaviour {
             UpdateMap(currentTetrimino);
             te.rooms[i].transform.parent = grid;
             te.rooms[i].transform.position += new Vector3(0, 0, -2);
-            if (te.rooms[i].itemRoomType != 0) ;
-            else if (te.rooms[i].specialRoomType != Room.SpecialRoomType.Normal)
+            if (te.rooms[i].specialRoomType != Room.SpecialRoomType.Normal)
+            {
                 Instantiate(specialRoomList[(int)te.rooms[i].specialRoomType], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
+            }
             else
                 Instantiate(normalRoomList[Random.Range(0, normalRoomList.Length)], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
         }
         Destroy(te.gameObject);
     }
+    /*public void UpgradeRoom(Tetrimino te, Room.SpecialRoomType)
+    {
 
-    /*
-     * Test
-     * */
+    }*/
 
-    void Awake()
+    void Awake ()
     {
         Tetrimino.rotationInformation[0].horizontalLength = new int[4] { 1, 4, 1, 4 };  //I
         Tetrimino.rotationInformation[1].horizontalLength = new int[4] { 2, 2, 2, 2 };  //O

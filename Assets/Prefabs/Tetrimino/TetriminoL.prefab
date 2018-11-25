@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4673972717886742}
-  - component: {fileID: 114568813863931164}
+  - component: {fileID: 114580369929242780}
   m_Layer: 0
   m_Name: TetriminoL
   m_TagString: Tetrimino
@@ -180,7 +180,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
+  specialRoomType: 6
 --- !u!114 &114135637264954520
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -197,7 +197,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
+  specialRoomType: 6
 --- !u!114 &114317610525364840
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -214,7 +214,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
+  specialRoomType: 6
 --- !u!114 &114346591663730294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -231,8 +231,8 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
---- !u!114 &114568813863931164
+  specialRoomType: 6
+--- !u!114 &114580369929242780
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -240,7 +240,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1409840693504816}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6178b7e82dee01944993bbfb219fd0e6, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a5e689aa2f6ba040908d66cf6e49094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mapCoord: {x: 0, y: 0, z: 0}
@@ -253,6 +253,8 @@ MonoBehaviour:
   - {fileID: 114135637264954520}
   - {fileID: 114317610525364840}
   - {fileID: 114077791275824818}
+  rotatedAngle: 0
+  rotatedPosition: 00000000000000000000000000000000
 --- !u!212 &212148613173218532
 SpriteRenderer:
   m_ObjectHideFlags: 1

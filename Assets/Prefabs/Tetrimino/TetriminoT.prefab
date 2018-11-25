@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4747878049517392}
-  - component: {fileID: 114813872723638092}
+  - component: {fileID: 114136320919795954}
   m_Layer: 0
   m_Name: TetriminoT
   m_TagString: Tetrimino
@@ -180,7 +180,30 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
+  specialRoomType: 6
+--- !u!114 &114136320919795954
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1216064749225226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a5e689aa2f6ba040908d66cf6e49094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapCoord: {x: 0, y: 0, z: 0}
+  stage: 0
+  roomConcept: 0
+  isBossTetrimino: 0
+  tetriminoType: 2
+  rooms:
+  - {fileID: 114609423914388260}
+  - {fileID: 114555629497930862}
+  - {fileID: 114250342630536598}
+  - {fileID: 114030767890393412}
+  rotatedAngle: 0
+  rotatedPosition: 00000000000000000000000000000000
 --- !u!114 &114250342630536598
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -197,7 +220,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
+  specialRoomType: 6
 --- !u!114 &114555629497930862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -214,7 +237,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
+  specialRoomType: 6
 --- !u!114 &114609423914388260
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -231,28 +254,7 @@ MonoBehaviour:
   stage: 0
   roomConcept: 0
   itemRoomType: 0
-  specialRoomType: 5
---- !u!114 &114813872723638092
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1216064749225226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6178b7e82dee01944993bbfb219fd0e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mapCoord: {x: 0, y: 0, z: 0}
-  stage: 0
-  roomConcept: 0
-  isBossTetrimino: 0
-  tetriminoType: 2
-  rooms:
-  - {fileID: 114609423914388260}
-  - {fileID: 114555629497930862}
-  - {fileID: 114250342630536598}
-  - {fileID: 114030767890393412}
+  specialRoomType: 6
 --- !u!212 &212172714904819908
 SpriteRenderer:
   m_ObjectHideFlags: 1
