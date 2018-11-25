@@ -36,13 +36,13 @@ public class Test : MonoBehaviour {
             ChangeTetrimino();
         if (Input.GetKeyDown(KeyCode.Alpha2))
             SpawnBossTetrimino();
-        if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState != GameManager.GameState.Tetris)
+        /*if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState != GameManager.GameState.Tetris)
         {
             GameManager.gameState = GameManager.GameState.Tetris;
             GameObject.Find("Main Camera").transform.position = tetrisCameraCoord;
             GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize = tetrisMapSize;
         }
         else if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Tetris)
-            GameManager.gameState = GameManager.GameState.Ingame;
+            GameManager.gameState = GameManager.GameState.Ingame;*/
     }
 }

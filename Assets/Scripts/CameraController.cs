@@ -5,12 +5,16 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
     public LayerMask roomLayer;
     public GameObject player;
+    public GameObject mainCamera;
+    public GameObject tetrisCamera;
     /*
      * If camera is in Tetris view, ideal position is (108, 240, -1)
      * size 300
      * */
     readonly float camX = 9.5f;
     readonly float camY = 4f;
+    private Vector3 cameraTetrisCoord = new Vector3(108, 240, -1);
+    private float cameraTetrisSize = 300f;
 
 
     GameManager.GameState lastGameState;
@@ -23,12 +27,17 @@ public class CameraController : MonoBehaviour {
     {
         lastGameState = GameManager.GameState.Ingame;
         destination = transform.position;
+        /*mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        tetrisCamera = GameObject.Find("Tetris Camera").GetComponent<Camera>();*/
+        tetrisCamera.transform.position = cameraTetrisCoord;
+        tetrisCamera.transform.localScale = new Vector3(cameraTetrisSize, cameraTetrisSize, 1);
+        tetrisCamera.GetComponent<Camera>().enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (lastGameState != GameManager.gameState)
+        /*if (lastGameState != GameManager.gameState)
         {
             StartCoroutine("ChangeScene");
             lastGameState = GameManager.gameState;
@@ -36,9 +45,9 @@ public class CameraController : MonoBehaviour {
         else if (lastGameState == GameManager.GameState.Ingame)
         {
             SetDestination();
-        }
-
-        GotoDestination();
+        }*/
+        ChangeState();
+        //GotoDestination();
     }
 
 
@@ -100,7 +109,7 @@ public class CameraController : MonoBehaviour {
         if (Camera.main != null)
         {
             Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(posx, posy, 0), 2f * Time.deltaTime);
-            Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, -10); //카메라를 원래 z축으로 이동
+            Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, -1); //카메라를 원래 z축으로 이동
         }
         //  Camera.main.transform.position = new Vector3(posx, posy, -10);
 
@@ -152,6 +161,20 @@ public class CameraController : MonoBehaviour {
 
         return -1;
     }
-
-
+    public void ChangeState()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Ingame)
+        {
+            GameManager.gameState = GameManager.GameState.Tetris;
+            tetrisCamera.GetComponent<Camera>().enabled = true;
+            mainCamera.GetComponent<Camera>().enabled = false;
+        }
+        else if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Tetris)
+        {
+            GameManager.gameState = GameManager.GameState.Ingame;
+            tetrisCamera.GetComponent<Camera>().enabled = false;
+            mainCamera.GetComponent<Camera>().enabled = true;
+            GotoDestination();
+        }
+    }
 }

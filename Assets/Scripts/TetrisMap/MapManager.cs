@@ -454,7 +454,9 @@ public class MapManager : MonoBehaviour {
                 Instantiate(specialRoomList[(int)te.rooms[i].specialRoomType], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
             }
             else
+            {
                 Instantiate(normalRoomList[Random.Range(0, normalRoomList.Length)], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
+            }
         }
         Destroy(te.gameObject);
     }
