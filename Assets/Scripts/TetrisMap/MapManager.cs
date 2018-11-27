@@ -9,6 +9,9 @@ public class MapManager : MonoBehaviour {
      * */
 
     TetriminoSpawner TS;
+    /// <summary>
+    /// Grid showing tiles.
+    /// </summary>
     public Transform grid;
     /// <summary>
     /// Tetris map's size.
@@ -21,15 +24,31 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Tetrimino falling speed.
     /// </summary>
-    public float fallSpeed = -0.1f;
+    private float fallSpeed = -0.1f;
+    /// <summary>
+    /// Tetrimino's initial falling speed.
+    /// </summary>
     public float initialFallSpeed = -0.1f;
     /// <summary>
     /// Tetrimino falling gravity.
     /// </summary>
     public float gravity = 0.98f;
+    /// <summary>
+    /// Time Tetrimino has fallen.
+    /// </summary>
+    private float fallTime;
+    /// <summary>
+    /// Time tetrimino has started to fall.
+    /// </summary>
+    private float initialFallTime;
+    /// <summary>
+    /// The time taken for a press to be collapsed.
+    /// </summary>
     public float collapseTime;
-    public float fallTime;
-    float initialFallTime;
+    /// <summary>
+    /// Time press has started to collapsed.
+    /// </summary>
+    private float initialCollapseTime;
 
     public static int height = 24, width = 10, realHeight = height - 5;
 
@@ -40,11 +59,15 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Current state of game.
     /// </summary>
-    public bool gameOver = false;
+    public bool gameOver;
     /// <summary>
     /// Check if tetrimino is falling.
     /// </summary>
     public bool isTetriminoFalling = false;
+    /// <summary>
+    /// Check if this row is being deleted.
+    /// </summary>
+    public bool[] isRowDeleting = new bool[20];
     /// <summary>
     /// Tetris Y axis coordinates on Unity.
     /// </summary>
@@ -57,6 +80,10 @@ public class MapManager : MonoBehaviour {
     /// Tetris map.
     /// </summary>
     public GameObject tetrisMap;
+    /// <summary>
+    /// Presses one row.
+    /// </summary>
+    public GameObject tetrisPress;
     /// <summary>
     /// Current tetrimino waiting for falling.
     /// </summary>
@@ -152,31 +179,48 @@ public class MapManager : MonoBehaviour {
         }
     }
     /// <summary>
-    /// Delete one row.
+    /// Find and delete full rows.
     /// </summary>
-    /// <param name="row">Rows wanted to be deleted.</param>
-    public void DeleteRow(int row)
+    public void DeleteFullRows()
     {
+        for(int y = realHeight; y >= 0; y--)
+        {
+            if (IsRowFull(y) && !isRowDeleting[y])
+            {
+                isRowDeleting[y] = true;
+                initialCollapseTime = Time.time;
+                GameObject leftPress = Instantiate(tetrisPress, new Vector3(0, y * 24, 0), Quaternion.identity);
+                leftPress.GetComponent<Press>().isLeft = true;
+                GameObject rightPress = Instantiate(tetrisPress, new Vector3(240, y * 24, 0), Quaternion.identity);
+                rightPress.GetComponent<Press>().isLeft = false;
+                StartCoroutine(TetrisPress(y, leftPress, rightPress));
+                /*for (int x = 0; x < width; x++)
+                {
+                    Destroy(mapGrid[x, y].gameObject);
+                    mapGrid[x, y] = null;
+                }
+                DecreaseRowsAbove(y);*/
+            }
+        }
+    }
+    public IEnumerator TetrisPress(int row, GameObject leftPress, GameObject rightPress)
+    {
+        while (Time.time - initialCollapseTime < collapseTime)
+        {
+            yield return new WaitForSeconds(0.01f);
+            float collapseRate = (Time.time - initialCollapseTime) / collapseTime;
+            leftPress.transform.localScale = new Vector3(collapseRate * 20, 1, 1);
+            rightPress.transform.localScale = new Vector3(-collapseRate * 20, 1, 1);
+        }
         for (int x = 0; x < width; x++)
         {
             Destroy(mapGrid[x, row].gameObject);
             mapGrid[x, row] = null;
         }
-    }
-    public void DeleteFullRows()
-    {
-        for(int y = realHeight; y >= 0; y--)
-        {
-            if (IsRowFull(y))
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    Destroy(mapGrid[x, y].gameObject);
-                    mapGrid[x, y] = null;
-                }
-                DecreaseRowsAbove(y);
-            }
-        }
+        isRowDeleting[row] = false;
+        DecreaseRowsAbove(row);
+        Destroy(leftPress);
+        Destroy(rightPress);
     }
     /// <summary>
     /// Decrease all rows above this row.
@@ -483,7 +527,7 @@ public class MapManager : MonoBehaviour {
     }
     // Use this for initialization
     void Start () {
-
+        
     }
 
     // Update is called once per frame
