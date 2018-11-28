@@ -7,15 +7,18 @@ public class Press : MonoBehaviour
     /*
      * variables
      * */
-
     /// <summary>
-    /// If this press is on left side or not.
+    /// Time press has started to collapsed.
     /// </summary>
-    public bool isLeft;
+    public float initialCollapseTime;
+    /// <summary>
+    /// Time press has started to collapsed.
+    /// </summary>
+    public int row;
 
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		
 	}
 	

@@ -45,10 +45,6 @@ public class MapManager : MonoBehaviour {
     /// The time taken for a press to be collapsed.
     /// </summary>
     public float collapseTime;
-    /// <summary>
-    /// Time press has started to collapsed.
-    /// </summary>
-    private float initialCollapseTime;
 
     public static int height = 24, width = 10, realHeight = height - 5;
 
@@ -83,7 +79,7 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Presses one row.
     /// </summary>
-    public GameObject tetrisPress;
+    public Press press;
     /// <summary>
     /// Current tetrimino waiting for falling.
     /// </summary>
@@ -188,12 +184,13 @@ public class MapManager : MonoBehaviour {
             if (IsRowFull(y) && !isRowDeleting[y])
             {
                 isRowDeleting[y] = true;
-                initialCollapseTime = Time.time;
-                GameObject leftPress = Instantiate(tetrisPress, new Vector3(0, y * 24, 0), Quaternion.identity);
-                leftPress.GetComponent<Press>().isLeft = true;
-                GameObject rightPress = Instantiate(tetrisPress, new Vector3(240, y * 24, 0), Quaternion.identity);
-                rightPress.GetComponent<Press>().isLeft = false;
-                StartCoroutine(TetrisPress(y, leftPress, rightPress));
+                Press leftPress = Instantiate(press, new Vector3(0, y * 24, 0), Quaternion.identity);
+                Press rightPress = Instantiate(press, new Vector3(240, y * 24, 0), Quaternion.identity);
+                leftPress.initialCollapseTime = Time.time;
+                leftPress.row = y;
+                rightPress.initialCollapseTime = Time.time;
+                rightPress.row = y;
+                StartCoroutine(TetrisPress(leftPress.initialCollapseTime, leftPress, rightPress));
                 /*for (int x = 0; x < width; x++)
                 {
                     Destroy(mapGrid[x, y].gameObject);
@@ -203,7 +200,7 @@ public class MapManager : MonoBehaviour {
             }
         }
     }
-    public IEnumerator TetrisPress(int row, GameObject leftPress, GameObject rightPress)
+    public IEnumerator TetrisPress(float initialCollapseTime, Press leftPress, Press rightPress)
     {
         while (Time.time - initialCollapseTime < collapseTime)
         {
@@ -212,6 +209,13 @@ public class MapManager : MonoBehaviour {
             leftPress.transform.localScale = new Vector3(collapseRate * 20, 1, 1);
             rightPress.transform.localScale = new Vector3(-collapseRate * 20, 1, 1);
         }
+        while (leftPress.transform.localScale.x > 1)
+        {
+            yield return new WaitForSeconds(0.01f);
+            leftPress.transform.localScale -= new Vector3(5, 0, 0);
+            rightPress.transform.localScale -= new Vector3(-5, 0, 0);
+        }
+        int row = leftPress.GetComponent<Press>().row;
         for (int x = 0; x < width; x++)
         {
             Destroy(mapGrid[x, row].gameObject);
@@ -219,8 +223,8 @@ public class MapManager : MonoBehaviour {
         }
         isRowDeleting[row] = false;
         DecreaseRowsAbove(row);
-        Destroy(leftPress);
-        Destroy(rightPress);
+        Destroy(leftPress.gameObject);
+        Destroy(rightPress.gameObject);
     }
     /// <summary>
     /// Decrease all rows above this row.
@@ -240,6 +244,15 @@ public class MapManager : MonoBehaviour {
                     mapGrid[x, y - 1].transform.position += new Vector3(0, -tetrisMapSize, 0);
                 }
 
+            }
+        }
+        Press[] presses = FindObjectsOfType<Press>();
+        foreach(Press child in presses)
+        {
+            if (child.row > row)
+            {
+                child.row -= 1;
+                child.transform.position += new Vector3(0, -24, 0);
             }
         }
     }
@@ -421,6 +434,8 @@ public class MapManager : MonoBehaviour {
             fallSpeed += gravity * fallTime * fallTime;
             te.transform.position += new Vector3(0, -fallSpeed, 0);
         }
+        GameObject camera = GameObject.Find("Tetris Camera");
+        StartCoroutine(Shake(10, camera.transform.position, camera));
         EndTetrimino(currentTetrimino);
     }
     /// <summary>
@@ -508,6 +523,23 @@ public class MapManager : MonoBehaviour {
     {
 
     }*/
+    public IEnumerator Shake(float _amount, Vector3 originPos, GameObject camera)
+    {
+        float amount = _amount;
+        while (amount > 0)
+        {
+            //transform.localPosition = (Vector3)Random.insideUnitCircle * amount + originPos;
+
+            camera.transform.localPosition = new Vector3(0.2f * Random.insideUnitCircle.x * amount + originPos.x, Random.insideUnitCircle.y * amount + originPos.y, originPos.z);
+
+            //transform.localPosition = new Vector3(Random.insideUnitCircle.x * amount + originPos.x, originPos.y, originPos.z);
+            //transform.localPosition = new Vector3(originPos.x, Random.insideUnitCircle.y * amount + originPos.y, originPos.z);
+            amount -= _amount / 25;
+            //Debug.Log(amount);
+            yield return null;
+        }
+        camera.transform.localPosition = originPos;
+    }
 
     void Awake ()
     {
