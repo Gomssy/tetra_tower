@@ -6,7 +6,8 @@ public class Test : MonoBehaviour {
 
     MapManager MM;
     TetriminoSpawner TS;
-    public static Vector3 tetrisCameraCoord = new Vector3(180, 240, -1);
+    public static Vector3 tetrisCameraCoord = new Vector3(180, 
+        0, -1);
     public static float tetrisMapSize = 300;
 
     public void ChangeTetrimino()
