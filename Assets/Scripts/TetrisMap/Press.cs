@@ -12,14 +12,30 @@ public class Press : MonoBehaviour
     /// </summary>
     public float initialCollapseTime;
     /// <summary>
-    /// Time press has started to collapsed.
+    /// Row the press is accounting for.
     /// </summary>
     public int row;
+    /// <summary>
+    /// Lowest empty row below this press.
+    /// </summary>
+    public int bottomRow;
+    /// <summary>
+    /// Created order of this press between simultaneously created presses.
+    /// </summary>
+    public int createdOrder;
+    /// <summary>
+    /// Number of presses created simultaneously with this press.
+    /// </summary>
+    public int simultaneouslyCreatedPressNumber;
+    /// <summary>
+    /// Check if this press is on left side or not.
+    /// </summary>
+    public bool isLeft;
 
 
     // Use this for initialization
     void Start () {
-		
+
 	}
 	
 	// Update is called once per frame

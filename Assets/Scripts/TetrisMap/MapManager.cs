@@ -8,7 +8,7 @@ public class MapManager : MonoBehaviour {
      * variables
      * */
 
-    TetriminoSpawner TS;
+    TetriminoSpawner tetriminoSpawner;
     /// <summary>
     /// Grid showing tiles.
     /// </summary>
@@ -67,7 +67,7 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Tetris Y axis coordinates on Unity.
     /// </summary>
-    public static float[] tetrisYCoord = new float[height];
+    public float[] tetrisYCoord = new float[height];
     /// <summary>
     /// Choose to make a boss tetrimino or not.
     /// </summary>
@@ -106,18 +106,6 @@ public class MapManager : MonoBehaviour {
     /*
      * functions
      * */
-    /*
-    /// <summary>
-    /// Set coordinates to integer.
-    /// Only use it for mapCoord adjustment.
-    /// </summary>
-    /// <param name="coord">Room's map coordinates.</param>
-    /// <returns></returns>
-    public static Vector3 AdjustMapCoord(Vector3 coord)
-    {
-        return new Vector3(Mathf.Round(coord.x), Mathf.Round(coord.y), coord.z);
-    }
-    */
     /// <summary>
     /// Check if tetrimino is in right x coordinate.
     /// </summary>
@@ -174,12 +162,16 @@ public class MapManager : MonoBehaviour {
                 return;
         }
     }
+    
+
     /// <summary>
     /// Find full rows and create presses.
     /// </summary>
     public void DeleteFullRows()
     {
-        for(int y = realHeight; y >= 0; y--)
+        int order = 0;
+        ArrayList simultaneousPress = new ArrayList(); 
+        for (int y = 0; y < realHeight; y++)
         {
             if (IsRowFull(y) && !isRowDeleting[y])
             {
@@ -187,21 +179,25 @@ public class MapManager : MonoBehaviour {
                 Press leftPress = Instantiate(press, new Vector3(0, y * tetrisMapSize, 0), Quaternion.identity);
                 Press rightPress = Instantiate(press, new Vector3(10 * tetrisMapSize, y * tetrisMapSize, 0), Quaternion.identity);
                 leftPress.initialCollapseTime = Time.time;
-                leftPress.row = y;
                 rightPress.initialCollapseTime = Time.time;
-                rightPress.row = y;
+                leftPress.isLeft = true;
+                rightPress.isLeft = false;
+                leftPress.row = y;
+                leftPress.bottomRow = y;
+                leftPress.createdOrder = order;
+                simultaneousPress.Add(leftPress);
                 StartCoroutine(TetrisPress(leftPress.initialCollapseTime, leftPress, rightPress));
-                /*for (int x = 0; x < width; x++)
-                {
-                    Destroy(mapGrid[x, y].gameObject);
-                    mapGrid[x, y] = null;
-                }
-                DecreaseRowsAbove(y);*/
+                order++;
             }
+        }
+        foreach(Press child in simultaneousPress)
+        {
+            child.simultaneouslyCreatedPressNumber = order - 1;
         }
     }
     /// <summary>
-    /// Extend press than collapse press.
+    /// Extend and collapse press.
+    /// When other presses are remain, than reduce their bottom rows.
     /// </summary>
     /// <param name="initialCollapseTime">Initial time that collapse has started.</param>
     /// <param name="leftPress">Left press.</param>
@@ -216,65 +212,65 @@ public class MapManager : MonoBehaviour {
             leftPress.transform.localScale = new Vector3(collapseRate * 20, 1, 1);
             rightPress.transform.localScale = new Vector3(-collapseRate * 20, 1, 1);
         }
-        int row = leftPress.GetComponent<Press>().row;
+        int row = leftPress.row;
+        Press[] presses = FindObjectsOfType<Press>();
+        foreach (Press child in presses)
+        {
+            if (child.isLeft && child.row > row)
+            {
+                child.bottomRow -= 1;
+            }
+        }
         for (int x = 0; x < width; x++)
         {
             Destroy(mapGrid[x, row].gameObject);
             mapGrid[x, row] = null;
         }
-        isRowDeleting[row] = false;
         while (leftPress.transform.localScale.x > 1)
         {
             yield return new WaitForSeconds(0.01f);
             leftPress.transform.localScale -= new Vector3(3, 0, 0);
             rightPress.transform.localScale -= new Vector3(-3, 0, 0);
         }
-        StartCoroutine(DecreaseYCoord(row + 1));
-        //DecreaseRowsAbove(row);
+        isRowDeleting[row] = false;
+        if (leftPress.createdOrder == leftPress.simultaneouslyCreatedPressNumber)
+        {
+            StartCoroutine(DecreaseYCoord(row, leftPress.bottomRow));
+        }
         Destroy(leftPress.gameObject);
         Destroy(rightPress.gameObject);
     }
     /// <summary>
-    /// Decrease all rows above this row.
-    /// This only changes mapCoord.
+    /// Decrease all empty rows between top row and bottom row.
+    /// Changes mapCoord.
     /// </summary>
-    /// <param name="row">Row that will be underneath.</param>
-    public void DecreaseRowsAbove(int row)
+    /// <param name="top">Top end of the empty rows.</param>
+    /// <param name="bottom">Bottom end of the empty rows.</param>
+    public void DecreaseRowsAbove(int top, int bottom)
     {
-        for(int y = row; y < realHeight; y++)
+        for(int i = bottom; i <= top; i++)
         {
-            for(int x = 0; x < width; x++)
+            for(int y = bottom; !isRowDeleting[y] && y < realHeight; y++)
             {
-                if (mapGrid[x, y] != null && mapGrid[x, y].transform.parent)
+                for(int x = 0; x < width; x++)
                 {
-                    mapGrid[x, y - 1] = mapGrid[x, y];
-                    mapGrid[x, y] = null;
-                    mapGrid[x, y - 1].mapCoord += new Vector3(0, -1, 0);
-                    //mapGrid[x, y - 1].transform.position += new Vector3(0, -tetrisMapSize, 0);
-
-                    Vector3 coord = mapGrid[x, y - 1].mapCoord;
-                    mapGrid[x, y - 1].transform.position = new Vector3(coord.x * tetrisMapSize, tetrisYCoord[(int)coord.y], mapGrid[x, y - 1].transform.position.z);
+                    if (y > 0 && mapGrid[x, y] != null && mapGrid[x, y].transform.parent)
+                    {
+                        mapGrid[x, y - 1] = mapGrid[x, y];
+                        mapGrid[x, y] = null;
+                        mapGrid[x, y - 1].mapCoord += new Vector3(0, -1, 0);
+                    }
                 }
-
             }
         }
-        Press[] presses = FindObjectsOfType<Press>();
-        foreach(Press child in presses)
-        {
-            if (child.row > row)
-            {
-                child.row -= 1;
-                child.transform.position += new Vector3(0, -tetrisMapSize, 0);
-            }
-        }
+        SetRoomsYCoord();
     }
     /// <summary>
-    /// Set all rooms' mapCoord above ths row to tetrisYCoord.
+    /// Set all rooms' mapCoord to tetrisYCoord.
     /// </summary>
-    /// <param name="row">Row that will be underneath</param>
-    public void SetRoomsYCoord(int row)
+    public void SetRoomsYCoord()
     {
-        for (int y = row; y < realHeight; y++)
+        for (int y = 0; y < realHeight; y++)
         {
             for (int x = 0; x < width; x++)
             {
@@ -283,35 +279,48 @@ public class MapManager : MonoBehaviour {
                     Vector3 coord = mapGrid[x, y].mapCoord;
                     mapGrid[x, y].transform.position = new Vector3(coord.x * tetrisMapSize, tetrisYCoord[(int)coord.y], mapGrid[x, y].transform.position.z);
                 }
-
             }
         }
     }
     /// <summary>
-    /// Decreae all tetrisYCoord abobe this row.
+    /// Decrease tetris' y coord.
+    /// Changes real position.
     /// </summary>
-    /// <param name="y">Row that will be underneath.</param>
+    /// <param name="top">Top end of the empty row.</param>
+    /// <param name="bottom">Bottom end of the empty row.</param>
     /// <returns></returns>
-    public IEnumerator DecreaseYCoord(int y)
+    public IEnumerator DecreaseYCoord(int top, int bottom)
     {
         float yInitialTime = Time.time;
         float yFallTime = 0, yFallSpeed = 0;
-        while (tetrisYCoord[y] > (y - 1) * tetrisMapSize)
+        int row = 0;
+        for(int i = 0; i < realHeight; i++)
+        {
+            if (IsRowEmpty(i))
+            {
+                row = i + 1;
+                break;
+            }
+        }
+        while (tetrisYCoord[top + 1] > bottom * tetrisMapSize)
         {
             yield return new WaitForSeconds(0.01f);
+            if (isRowDeleting[top + 1])
+                break;
             yFallTime = Time.time - yInitialTime;
             yFallSpeed += gravity * yFallTime * yFallTime;
-            for(int i = y; i < realHeight; i++)
+            for(int i = row; !isRowDeleting[i] && i < realHeight; i++)
             {
-                tetrisYCoord[i] -= yFallSpeed;
+                if(tetrisYCoord[i] > 0 && tetrisYCoord[i] > tetrisYCoord[i - 1])
+                    tetrisYCoord[i] -= yFallSpeed;
             }
-            SetRoomsYCoord(y);
+            SetRoomsYCoord();
         }
-        for (int i = y; i < height; i++)
+        for (int i = 0; i < height; i++)
         {
             tetrisYCoord[i] = i * tetrisMapSize;
         }
-        DecreaseRowsAbove(y);
+        DecreaseRowsAbove(top, bottom);
     }
     /// <summary>
     /// Check row if it is full.
@@ -322,6 +331,18 @@ public class MapManager : MonoBehaviour {
     {
         for (int x = 0; x < width; x++)
             if (mapGrid[x, row] == null || mapGrid[x, row].specialRoomType == Room.SpecialRoomType.Boss)
+                return false;
+        return true;
+    }
+    /// <summary>
+    /// Check row if it is empty.
+    /// </summary>
+    /// <param name="row">Row you want to check.</param>
+    /// <returns></returns>
+    public static bool IsRowEmpty(int row)
+    {
+        for (int x = 0; x < width; x++)
+            if (mapGrid[x, row] != null)
                 return false;
         return true;
     }
@@ -460,7 +481,6 @@ public class MapManager : MonoBehaviour {
         MoveTetriminoMapCoord(te, new Vector3(0, 1, 0));
         isTetriminoFalling = true;
         initialFallTime = Time.time;
-        Debug.Log(te.mapCoord);
         StartCoroutine(TetriminoDown(te));
         //EndTetrimino(currentTetrimino);
     }
@@ -476,7 +496,7 @@ public class MapManager : MonoBehaviour {
         CreateRoom(te);
         DeleteFullRows();
         Destroy(currentGhost.gameObject);
-        TS.MakeTetrimino();
+        tetriminoSpawner.MakeTetrimino();
         isTetriminoFalling = false;
     }
     /// <summary>
@@ -628,7 +648,11 @@ public class MapManager : MonoBehaviour {
         {
             tetrisYCoord[i] = i * tetrisMapSize;
         }
-        TS = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
+        for (int i = 0; i < isRowDeleting.Length; i++)
+        {
+            isRowDeleting[i] = false;
+        }
+        tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
     }
     // Use this for initialization
     void Start () {
