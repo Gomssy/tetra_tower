@@ -36,6 +36,8 @@ public class Tetrimino : MonoBehaviour {
     /// Each rooms for this tetrimino.
     /// </summary>
     public Room[] rooms;
+    public int notNormalRoomCount = 0;
+    public int itemRoomIndex = -1;
     /// <summary>
     /// Tetrimino rotated angle.
     /// </summary>

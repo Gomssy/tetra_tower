@@ -46,7 +46,7 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public float collapseTime;
 
-    public static int height = 24, width = 10, realHeight = height - 5;
+    public const int height = 24, width = 10, realHeight = 19;
 
     /// <summary>
     /// Absolute coordinates on tetris map.
@@ -63,11 +63,15 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Check if this row is being deleted.
     /// </summary>
-    public bool[] isRowDeleting = new bool[20];
+    private static bool[] isRowDeleting = new bool[20];
     /// <summary>
     /// Tetris Y axis coordinates on Unity.
     /// </summary>
-    public float[] tetrisYCoord = new float[height];
+    private static float[] tetrisYCoord = new float[height];
+    /// <summary>
+    /// Array that saves presses.
+    /// </summary>
+    public Press[] presses = new Press[realHeight];
     /// <summary>
     /// Choose to make a boss tetrimino or not.
     /// </summary>
@@ -89,6 +93,10 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public Tetrimino currentGhost;
     /// <summary>
+    /// Enum for special room types.
+    /// </summary>
+    public enum SpecialRoomType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal };
+    /// <summary>
     /// List for the normal Room candidates.
     /// </summary>
     public RoomInGame[] normalRoomList;
@@ -97,11 +105,14 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public RoomInGame[] itemRoomList;*/
     /// <summary>
-    /// List for the special Room candidates.
+    /// Array for the special Room candidates.
     /// </summary>
     public RoomInGame[] specialRoomList;
-    public bool controlCurrentTetrimino = false;
     public Room startRoom;
+    /// <summary>
+    /// Queue that saves rooms waiting for upgrade tetrimino.
+    /// </summary>
+    public Queue<SpecialRoomType> roomsWaiting = new Queue<SpecialRoomType>();
 
     /*
      * functions
@@ -185,6 +196,7 @@ public class MapManager : MonoBehaviour {
                 leftPress.row = y;
                 leftPress.bottomRow = y;
                 leftPress.createdOrder = order;
+                presses[y] = leftPress;
                 simultaneousPress.Add(leftPress);
                 StartCoroutine(TetrisPress(leftPress.initialCollapseTime, leftPress, rightPress));
                 order++;
@@ -213,12 +225,12 @@ public class MapManager : MonoBehaviour {
             rightPress.transform.localScale = new Vector3(-collapseRate * 20, 1, 1);
         }
         int row = leftPress.row;
-        Press[] presses = FindObjectsOfType<Press>();
-        foreach (Press child in presses)
+        for(int i = row + 1; i < realHeight; i++)
         {
-            if (child.isLeft && child.row > row)
+            if(isRowDeleting[i])
             {
-                child.bottomRow -= 1;
+                presses[i].bottomRow = leftPress.bottomRow + i - row - 1;
+                break;
             }
         }
         for (int x = 0; x < width; x++)
@@ -237,6 +249,8 @@ public class MapManager : MonoBehaviour {
         {
             StartCoroutine(DecreaseYCoord(row, leftPress.bottomRow));
         }
+        presses[row] = null;
+        UpgradeRoom(SpecialRoomType.Item);
         Destroy(leftPress.gameObject);
         Destroy(rightPress.gameObject);
     }
@@ -294,6 +308,7 @@ public class MapManager : MonoBehaviour {
         float yInitialTime = Time.time;
         float yFallTime = 0, yFallSpeed = 0;
         int row = 0;
+        bool shakeCamera = true;
         for(int i = 0; i < realHeight; i++)
         {
             if (IsRowEmpty(i))
@@ -306,7 +321,10 @@ public class MapManager : MonoBehaviour {
         {
             yield return new WaitForSeconds(0.01f);
             if (isRowDeleting[top + 1])
+            {
+                shakeCamera = false;
                 break;
+            }
             yFallTime = Time.time - yInitialTime;
             yFallSpeed += gravity * yFallTime * yFallTime;
             for(int i = row; !isRowDeleting[i] && i < realHeight; i++)
@@ -315,6 +333,11 @@ public class MapManager : MonoBehaviour {
                     tetrisYCoord[i] -= yFallSpeed;
             }
             SetRoomsYCoord();
+        }
+        if (shakeCamera)
+        {
+            GameObject camera = GameObject.Find("Tetris Camera");
+            StartCoroutine(CameraShake(5 * (top - bottom + 1), camera.transform.position, camera));
         }
         for (int i = 0; i < height; i++)
         {
@@ -330,7 +353,7 @@ public class MapManager : MonoBehaviour {
     public static bool IsRowFull(int row)
     {
         for (int x = 0; x < width; x++)
-            if (mapGrid[x, row] == null || mapGrid[x, row].specialRoomType == Room.SpecialRoomType.Boss)
+            if (mapGrid[x, row] == null || mapGrid[x, row].specialRoomType == SpecialRoomType.Boss)
                 return false;
         return true;
     }
@@ -479,7 +502,6 @@ public class MapManager : MonoBehaviour {
             MoveTetriminoMapCoord(te, new Vector3(0, -1, 0));
         }
         MoveTetriminoMapCoord(te, new Vector3(0, 1, 0));
-        isTetriminoFalling = true;
         initialFallTime = Time.time;
         StartCoroutine(TetriminoDown(te));
         //EndTetrimino(currentTetrimino);
@@ -496,8 +518,8 @@ public class MapManager : MonoBehaviour {
         CreateRoom(te);
         DeleteFullRows();
         Destroy(currentGhost.gameObject);
-        tetriminoSpawner.MakeTetrimino();
-        isTetriminoFalling = false;
+        StartCoroutine(MakeNextTetrimino());
+        //tetriminoSpawner.MakeTetrimino();
     }
     /// <summary>
     /// Get tetrimino's position down.
@@ -513,7 +535,7 @@ public class MapManager : MonoBehaviour {
             te.transform.position += new Vector3(0, -fallSpeed, 0);
         }
         GameObject camera = GameObject.Find("Tetris Camera");
-        StartCoroutine(Shake(10, camera.transform.position, camera));
+        StartCoroutine(CameraShake(20, camera.transform.position, camera));
         EndTetrimino(currentTetrimino);
     }
     /// <summary>
@@ -594,7 +616,7 @@ public class MapManager : MonoBehaviour {
             UpdateMap(currentTetrimino);
             te.rooms[i].transform.parent = grid;
             te.rooms[i].transform.position += new Vector3(0, 0, -2);
-            if (te.rooms[i].specialRoomType != Room.SpecialRoomType.Normal)
+            if (te.rooms[i].specialRoomType != SpecialRoomType.Normal)
             {
                 Instantiate(specialRoomList[(int)te.rooms[i].specialRoomType], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
             }
@@ -605,10 +627,54 @@ public class MapManager : MonoBehaviour {
         }
         Destroy(te.gameObject);
     }
-    /*public void UpgradeRoom(Tetrimino te, Room.SpecialRoomType)
+    /// <summary>
+    /// Upgrade rooms.
+    /// </summary>
+    /// <param name="roomType">Rooms you want to upgrade.</param>
+    public void UpgradeRoom(SpecialRoomType roomType)
     {
-
-    }*/
+        if (!isTetriminoFalling)
+        {
+            if (roomType != SpecialRoomType.Item && currentTetrimino.notNormalRoomCount < 4)
+            {
+                int randomRoom = Random.Range(0, currentTetrimino.rooms.Length);
+                if (currentTetrimino.rooms[randomRoom].specialRoomType == SpecialRoomType.Normal)
+                {
+                    currentTetrimino.notNormalRoomCount++;
+                    currentTetrimino.rooms[randomRoom].specialRoomType = roomType;
+                    return;
+                }
+                else
+                {
+                    UpgradeRoom(roomType);
+                    return;
+                }
+            }
+            else if (roomType == SpecialRoomType.Item)
+            {
+                if(currentTetrimino.itemRoomIndex != -1)
+                {
+                    currentTetrimino.rooms[currentTetrimino.itemRoomIndex].itemRoomType++;
+                    return;
+                }
+                else
+                {
+                    int randomRoom = Random.Range(0, currentTetrimino.rooms.Length);
+                    currentTetrimino.notNormalRoomCount++;
+                    currentTetrimino.itemRoomIndex = randomRoom;
+                    currentTetrimino.rooms[randomRoom].specialRoomType = roomType;
+                    currentTetrimino.rooms[randomRoom].itemRoomType++;
+                    return;
+                }
+            }
+        }
+        roomsWaiting.Enqueue(roomType);
+    }
+    public IEnumerator MakeNextTetrimino()
+    {
+        yield return new WaitForSeconds(1f);
+        tetriminoSpawner.MakeTetrimino();
+    }
     /// <summary>
     /// Shake the camera when tetrimino has fallen.
     /// </summary>
@@ -616,18 +682,16 @@ public class MapManager : MonoBehaviour {
     /// <param name="originPos">Original position of the camera.</param>
     /// <param name="camera">Camera you want to shake.</param>
     /// <returns></returns>
-    public IEnumerator Shake(float _amount, Vector3 originPos, GameObject camera)
+    public IEnumerator CameraShake(float _amount, Vector3 originPos, GameObject camera)
     {
         float amount = _amount;
         while (amount > 0)
         {
             //transform.localPosition = (Vector3)Random.insideUnitCircle * amount + originPos;
-
             camera.transform.localPosition = new Vector3(0.2f * Random.insideUnitCircle.x * amount + originPos.x, Random.insideUnitCircle.y * amount + originPos.y, originPos.z);
-
             //transform.localPosition = new Vector3(Random.insideUnitCircle.x * amount + originPos.x, originPos.y, originPos.z);
             //transform.localPosition = new Vector3(originPos.x, Random.insideUnitCircle.y * amount + originPos.y, originPos.z);
-            amount -= _amount / 25;
+            amount -= _amount / 40;
             //Debug.Log(amount);
             yield return null;
         }

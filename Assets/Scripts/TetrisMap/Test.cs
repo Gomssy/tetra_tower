@@ -20,6 +20,22 @@ public class Test : MonoBehaviour {
     {
         MM.spawnBossTetrimino = true;
     }
+    public void Gold()
+    {
+        MM.UpgradeRoom(MapManager.SpecialRoomType.Gold);
+    }
+    public void Amethyst()
+    {
+        MM.UpgradeRoom(MapManager.SpecialRoomType.Amethyst);
+    }
+    public void BothSide()
+    {
+        MM.UpgradeRoom(MapManager.SpecialRoomType.BothSide);
+    }
+    public void Boss()
+    {
+        SpawnBossTetrimino();
+    }
 
     private void Awake()
     {

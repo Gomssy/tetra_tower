@@ -34,13 +34,9 @@ public class Room : MonoBehaviour
     /// </summary>
     public int itemRoomType;
     /// <summary>
-    /// Enum for special room types.
-    /// </summary>
-    public enum SpecialRoomType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal };
-    /// <summary>
     /// Special room types.
     /// </summary>
-    public SpecialRoomType specialRoomType;
+    public MapManager.SpecialRoomType specialRoomType;
 
     /// <summary>
     /// Select which doors would be opened.
