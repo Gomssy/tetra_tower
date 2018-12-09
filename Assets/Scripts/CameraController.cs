@@ -47,7 +47,7 @@ public class CameraController : MonoBehaviour {
             SetDestination();
         }*/
         ChangeState();
-        //GotoDestination();
+        GotoDestination();
     }
 
 
@@ -70,8 +70,9 @@ public class CameraController : MonoBehaviour {
         pos.z = -1;
         transform.position = pos;*/
 
-
-        float posx = player.transform.position.x;
+        if (GameManager.gameState == GameManager.GameState.Ingame)
+        {
+            float posx = player.transform.position.x;
         float posy = player.transform.position.y;
         if (RoomCol(1) != -1)
         {
@@ -106,10 +107,9 @@ public class CameraController : MonoBehaviour {
             }
             //방의 중심과 비교하여 어느게 더 가까운가
         }
-        if (Camera.main != null)
-        {
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(posx, posy, 0), 2f * Time.deltaTime);
-            Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, -1); //카메라를 원래 z축으로 이동
+        
+            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, new Vector3(posx, posy, 0), 2f * Time.deltaTime);
+            mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y, -1); //카메라를 원래 z축으로 이동
         }
         //  Camera.main.transform.position = new Vector3(posx, posy, -10);
 
@@ -174,7 +174,7 @@ public class CameraController : MonoBehaviour {
             GameManager.gameState = GameManager.GameState.Ingame;
             tetrisCamera.GetComponent<Camera>().enabled = false;
             mainCamera.GetComponent<Camera>().enabled = true;
-            GotoDestination();
+            //GotoDestination();
         }
     }
 }

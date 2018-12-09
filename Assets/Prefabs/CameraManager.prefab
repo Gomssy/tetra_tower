@@ -209,7 +209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   player: {fileID: 0}
   mainCamera: {fileID: 1871463257821580}
   tetrisCamera: {fileID: 1706552505352352}
