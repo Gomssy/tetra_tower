@@ -1,46 +1,51 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Test : MonoBehaviour {
 
-    MapManager MM;
-    TetriminoSpawner TS;
-    public static Vector3 tetrisCameraCoord = new Vector3(180, 
-        0, -1);
+    MapManager mapManager;
+    TetriminoSpawner tetriminoSpawner;
+    public static Vector3 tetrisCameraCoord = new Vector3(180, 0, -1);
     public static float tetrisMapSize = 300;
+    public Text timer;
 
     public void ChangeTetrimino()
     {
-        Destroy(MM.currentTetrimino.gameObject);
-        Destroy(MM.currentGhost.gameObject);
-        TS.MakeTetrimino();
+        Destroy(mapManager.currentTetrimino.gameObject);
+        Destroy(mapManager.currentGhost.gameObject);
+        tetriminoSpawner.MakeTetrimino();
     }
     public void SpawnBossTetrimino()
     {
-        MM.spawnBossTetrimino = true;
+        mapManager.spawnBossTetrimino = true;
     }
     public void Gold()
     {
-        MM.UpgradeRoom(MapManager.SpecialRoomType.Gold);
+        mapManager.UpgradeRoom(MapManager.SpecialRoomType.Gold);
     }
     public void Amethyst()
     {
-        MM.UpgradeRoom(MapManager.SpecialRoomType.Amethyst);
+        mapManager.UpgradeRoom(MapManager.SpecialRoomType.Amethyst);
     }
     public void BothSide()
     {
-        MM.UpgradeRoom(MapManager.SpecialRoomType.BothSide);
+        mapManager.UpgradeRoom(MapManager.SpecialRoomType.BothSide);
     }
     public void Boss()
     {
         SpawnBossTetrimino();
     }
+    public void Timer()
+    {
+        timer.text = (mapManager.timeToFallTetrimino - mapManager.tetriminoWaitedTime).ToString();
+    }
 
     private void Awake()
     {
-        MM = GameObject.Find("MapManager").GetComponent<MapManager>();
-        TS = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
+        mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
+        tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
     }
     // Use this for initialization
     void Start () {
@@ -53,6 +58,8 @@ public class Test : MonoBehaviour {
             ChangeTetrimino();
         if (Input.GetKeyDown(KeyCode.Alpha2))
             SpawnBossTetrimino();
+        if(!mapManager.isTetriminoFalling)
+            Timer();
         /*if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState != GameManager.GameState.Tetris)
         {
             GameManager.gameState = GameManager.GameState.Tetris;

@@ -33,6 +33,15 @@ public class MapManager : MonoBehaviour {
     /// Tetrimino falling gravity.
     /// </summary>
     public float gravity = 0.98f;
+    public float timeToFallTetrimino = 100.0f;
+    /// <summary>
+    /// Time tetris waits to fall.
+    /// </summary>
+    public float tetriminoWaitedTime;
+    /// <summary>
+    /// Time tetris has created.
+    /// </summary>
+    public float tetriminoCreatedTime;
     /// <summary>
     /// Time Tetrimino has fallen.
     /// </summary>
@@ -391,9 +400,13 @@ public class MapManager : MonoBehaviour {
     /// Display how much time is it remain to fall current tetrimino.
     /// </summary>
     /// <returns></returns>
-    public IEnumerator DisplayTime()
+    public IEnumerator CountTetriminoWaitingTime()
     {
-        yield return null;
+        while (!isTetriminoFalling)
+        {
+            yield return new WaitForSeconds(0.1f);
+            tetriminoWaitedTime = Time.time - tetriminoCreatedTime;
+        }
     }
     /// <summary>
     /// Move tetrimino horizontally.
@@ -514,6 +527,7 @@ public class MapManager : MonoBehaviour {
     {
         te.transform.position = new Vector3(te.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)te.mapCoord.y], te.mapCoord.z * tetrisMapSize);
         fallSpeed = initialFallSpeed;
+        tetriminoWaitedTime = 0;
         UpdateMap(te);
         CreateRoom(te);
         DeleteFullRows();
@@ -565,7 +579,7 @@ public class MapManager : MonoBehaviour {
     /// <param name="te">Tetrimino you want to move.</param>
     public void TetriminoControl(Tetrimino te)
     {
-        if(Input.GetKeyDown(KeyCode.Space) && GameManager.gameState == GameManager.GameState.Tetris)
+        if((Input.GetKeyDown(KeyCode.Space) && GameManager.gameState == GameManager.GameState.Tetris) || tetriminoWaitedTime > timeToFallTetrimino)
         {
             isTetriminoFalling = true;
             TetriminoMapCoordDown(currentTetrimino);
