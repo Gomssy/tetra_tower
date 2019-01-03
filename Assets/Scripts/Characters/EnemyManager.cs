@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System.Text;
+using System;
 
 public class EnemyManager : Singleton<EnemyManager> {
     public enum State {
@@ -29,14 +32,19 @@ public class EnemyManager : Singleton<EnemyManager> {
         string tableLine = null; //파일 한 행
         strReader.ReadLine(); //첫 줄 스킵
 
-        while (tableLine = strReader.ReadLine() != null) 
+        while ((tableLine = strReader.ReadLine()) != null) 
         {
             if (string.IsNullOrEmpty(tableLine)) return; //행이 비었는지 체크
 
             cellValue = tableLine.Split(',');
-            int monsterID = cellValue[0]; //monster가 가진 ID
-            int itemID = cellValue[2]; //드랍하는 item의 ID
-            int dropWeight = cellValue[3]; //드랍할 확률
+
+            uint monsterID = 0;
+            int itemID = 0, dropWeight = 0;
+
+            uint.TryParse(cellValue[0], out monsterID);
+            int.TryParse(cellValue[2], out itemID);
+            int.TryParse(cellValue[3], out dropWeight);
+
             int[] itemDrop = new int[] { itemID, dropWeight };
             dropTableByID.Add(monsterID, itemDrop);
         }
