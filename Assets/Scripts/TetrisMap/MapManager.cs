@@ -109,10 +109,6 @@ public class MapManager : MonoBehaviour {
     /// List for the normal Room candidates.
     /// </summary>
     public RoomInGame[] normalRoomList;
-    /*/// <summary>
-    /// List for the item Room candidates.
-    /// </summary>
-    public RoomInGame[] itemRoomList;*/
     /// <summary>
     /// Array for the special Room candidates.
     /// </summary>
@@ -638,6 +634,7 @@ public class MapManager : MonoBehaviour {
             {
                 Instantiate(normalRoomList[Random.Range(0, normalRoomList.Length)], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
             }
+            te.rooms[i].SetDoors();
         }
         Destroy(te.gameObject);
     }
@@ -706,7 +703,6 @@ public class MapManager : MonoBehaviour {
             //transform.localPosition = new Vector3(Random.insideUnitCircle.x * amount + originPos.x, originPos.y, originPos.z);
             //transform.localPosition = new Vector3(originPos.x, Random.insideUnitCircle.y * amount + originPos.y, originPos.z);
             amount -= _amount / 40;
-            //Debug.Log(amount);
             yield return null;
         }
         camera.transform.localPosition = originPos;
@@ -752,7 +748,6 @@ public class MapManager : MonoBehaviour {
                    currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z * tetrisMapSize);
                 }
             }
-            //currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
         }
 
     }
