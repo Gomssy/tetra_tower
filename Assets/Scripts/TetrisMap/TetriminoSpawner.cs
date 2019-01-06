@@ -116,7 +116,9 @@ public class TetriminoSpawner : MonoBehaviour {
             if(randomizer <= 0)
             {
                 for (int i = 0; i < randomTetrimino.Length; i++)
+                {
                     randomTetrimino[i]++;
+                }
                 randomTetrimino[count] = 0;
                 return count;
             }

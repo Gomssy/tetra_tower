@@ -715,7 +715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorInfo: 0
+  sideDoorInfo: 0000000000000000
 --- !u!114 &114582147988528222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -727,7 +727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorInfo: 0
+  sideDoorInfo: 6f0000006f000000
 --- !u!19719996 &2113883504975472056
 TilemapCollider2D:
   m_ObjectHideFlags: 1

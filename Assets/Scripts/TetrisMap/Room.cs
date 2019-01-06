@@ -2,20 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-class Door
-{
-    /// <summary>
-    /// Door info of left door.
-    /// 0 for lowest door, 1 for middle door, 2 for highest door.
-    /// </summary>
-    public int left;
-    /// <summary>
-    /// Door info of right door.
-    /// 0 for lowest door, 1 for middle door, 2 for highest door.
-    /// </summary>
-    public int right;
-}
-
 /// <summary>
 /// Room class
 /// </summary>
@@ -26,14 +12,6 @@ public class Room : MonoBehaviour
     /// Not related to real location.
     /// </summary>
     public Vector3 mapCoord;
-    /// <summary>
-    /// Door info per rooms.
-    /// 0 for up, 1 for down.
-    /// doorInfo[0] for left door, doorInfo[1] for right door.
-    /// </summary>
-    //public int[] doorInfo;
-
-    Door doorInfo = new Door();
     /// <summary>
     /// Stage per rooms.
     /// </summary>
@@ -52,31 +30,28 @@ public class Room : MonoBehaviour
     /// Special room types.
     /// </summary>
     public MapManager.SpecialRoomType specialRoomType;
-
-    public int testLeft;
-    public int testRight;
+    public int leftDoorLocation;
+    public int rightDoorLocation;
     /// <summary>
     /// Select which doors would be opened.
     /// </summary>
     public void SetDoors()
     {
         if (mapCoord.x < MapManager.width - 1 && MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y] != null)
-        {
-            doorInfo.right = MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].doorInfo.left;
-        }
+            rightDoorLocation = MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].leftDoorLocation;
         else
-        {
-            doorInfo.right = Random.Range(0, 3);
-        }
+            rightDoorLocation = Random.Range(0, 3);
         if (mapCoord.x > 0 && MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y] != null)
-        {
-            doorInfo.left = MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].doorInfo.right;
-        }
+            leftDoorLocation = MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].rightDoorLocation;
         else
-        {
-            doorInfo.left = Random.Range(0, 3);
-        }
-        testLeft = doorInfo.left;
-        testRight = doorInfo.right;
+            leftDoorLocation = Random.Range(0, 3);
+    }
+    /// <summary>
+    /// Create doors.
+    /// </summary>
+    public void CreateDoors(GameObject leftDoor, GameObject rightDoor)
+    {
+        Instantiate(leftDoor, transform.position + new Vector3(leftDoorLocation * 8 + 1, 0, 0), Quaternion.identity, transform);
+        Instantiate(rightDoor, transform.position + new Vector3(rightDoorLocation * 8 + 1, 0, 0), Quaternion.identity, transform);
     }
 }
