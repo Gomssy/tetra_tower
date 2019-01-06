@@ -51,7 +51,7 @@ public class Room : MonoBehaviour
     /// </summary>
     public void CreateDoors(GameObject leftDoor, GameObject rightDoor)
     {
-        Instantiate(leftDoor, transform.position + new Vector3(leftDoorLocation * 8 + 1, 0, 0), Quaternion.identity, transform);
-        Instantiate(rightDoor, transform.position + new Vector3(rightDoorLocation * 8 + 1, 0, 0), Quaternion.identity, transform);
+        Instantiate(leftDoor, transform.position + new Vector3(1, leftDoorLocation * 8 + 1, 0), Quaternion.identity, transform);
+        Instantiate(rightDoor, transform.position + new Vector3(23, rightDoorLocation * 8 + 1, 0), Quaternion.identity, transform);
     }
 }

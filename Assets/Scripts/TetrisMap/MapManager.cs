@@ -632,11 +632,12 @@ public class MapManager : MonoBehaviour {
             }
             else
             {
-                Instantiate(normalRoomsDistributed[te.rooms[i].leftDoorLocation, te.rooms[i].rightDoorLocation][Random.Range(0, normalRoomsDistributed[te.rooms[i].leftDoorLocation, te.rooms[i].rightDoorLocation].Count)],
-                    te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
-                te.rooms[i].CreateDoors(leftDoor, rightDoor);
+                int left = te.rooms[i].leftDoorLocation;
+                int right = te.rooms[i].rightDoorLocation;
+                Instantiate(normalRoomsDistributed[left, right][Random.Range(0, normalRoomsDistributed[left, right].Count)], te.rooms[i].transform.position + new Vector3(0, 0, 2),
+                    Quaternion.identity, te.rooms[i].transform);
             }
-
+            te.rooms[i].CreateDoors(leftDoor, rightDoor);
         }
         Destroy(te.gameObject);
     }
@@ -712,7 +713,6 @@ public class MapManager : MonoBehaviour {
             yield return null;
         }
         camera.transform.localPosition = originPos;
-        Debug.Log("sd");
     }
 
     void Awake()
@@ -726,13 +726,9 @@ public class MapManager : MonoBehaviour {
         Tetrimino.rotationInformation[6].horizontalLength = new int[4] { 3, 2, 3, 2 };  //Z
         Tetrimino.rotationInformation[7].horizontalLength = new int[4] { 1, 1, 1, 1 };  //Boss
         for (int i = 0; i < tetrisYCoord.Length; i++)
-        {
             tetrisYCoord[i] = i * tetrisMapSize;
-        }
         for (int i = 0; i < isRowDeleting.Length; i++)
-        {
             isRowDeleting[i] = false;
-        }
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
                 normalRoomsDistributed[i, j] = new List<RoomInGame>();
@@ -747,12 +743,7 @@ public class MapManager : MonoBehaviour {
                 for (int right = rightDoor; right != 0; right /= 10)
                 {
                     if(left % 10 == 1 && right % 10 == 1)
-                    {
-                        Debug.Log(i + " : left " + leftCount + " right " + rightCount);
                         normalRoomsDistributed[leftCount, rightCount].Add(normalRoomList[i]);
-
-                        //normalRoomsDistributed[leftCount, rightCount] = normalRoomList[i];
-                    }
                     rightCount++;
                 }
                 rightCount = 0;
@@ -760,7 +751,6 @@ public class MapManager : MonoBehaviour {
             }
             
         }
-
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
     }
     // Use this for initialization

@@ -163,17 +163,20 @@ public class CameraController : MonoBehaviour {
     }
     public void ChangeState()
     {
+        GameObject grid = GameObject.Find("Grid");
         if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Ingame)
         {
             GameManager.gameState = GameManager.GameState.Tetris;
             tetrisCamera.GetComponent<Camera>().enabled = true;
             mainCamera.GetComponent<Camera>().enabled = false;
+            grid.transform.position = new Vector3(0, 0, 2);
         }
         else if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Tetris)
         {
             GameManager.gameState = GameManager.GameState.Ingame;
             tetrisCamera.GetComponent<Camera>().enabled = false;
             mainCamera.GetComponent<Camera>().enabled = true;
+            grid.transform.position = new Vector3(0, 0, 0);
             GotoDestination();
         }
     }
