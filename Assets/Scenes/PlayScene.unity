@@ -393,10 +393,15 @@ MonoBehaviour:
   speed: 600
   speedAir: 5
   jumpSpeed: 400
+  ropeSpeed: 200
   doubleJumpSpeed: 400
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
+  ropeLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  ropeDistance: 0.3
   rayDistance: 1
 --- !u!212 &489222436
 SpriteRenderer:
