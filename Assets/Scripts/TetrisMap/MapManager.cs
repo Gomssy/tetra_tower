@@ -33,6 +33,15 @@ public class MapManager : MonoBehaviour {
     /// Tetrimino falling gravity.
     /// </summary>
     public float gravity = 0.98f;
+    public float timeToFallTetrimino = 100.0f;
+    /// <summary>
+    /// Time tetris waits to fall.
+    /// </summary>
+    public float tetriminoWaitedTime;
+    /// <summary>
+    /// Time tetris has created.
+    /// </summary>
+    public float tetriminoCreatedTime;
     /// <summary>
     /// Time Tetrimino has fallen.
     /// </summary>
@@ -45,9 +54,7 @@ public class MapManager : MonoBehaviour {
     /// The time taken for a press to be collapsed.
     /// </summary>
     public float collapseTime;
-
     public const int height = 24, width = 10, realHeight = 19;
-
     /// <summary>
     /// Absolute coordinates on tetris map.
     /// </summary>
@@ -71,19 +78,23 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Array that saves presses.
     /// </summary>
-    public Press[] presses = new Press[realHeight];
+    private Press[] presses = new Press[realHeight];
     /// <summary>
     /// Choose to make a boss tetrimino or not.
     /// </summary>
     public bool spawnBossTetrimino = false;
     /// <summary>
-    /// Tetris map.
-    /// </summary>
-    public GameObject tetrisMap;
-    /// <summary>
-    /// Presses one row.
+    /// Press.
     /// </summary>
     public Press press;
+    /// <summary>
+    /// Left door.
+    /// </summary>
+    public GameObject leftDoor;
+    /// <summary>
+    /// Right door.
+    /// </summary>
+    public GameObject rightDoor;
     /// <summary>
     /// Current tetrimino waiting for falling.
     /// </summary>
@@ -97,17 +108,20 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public enum SpecialRoomType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal };
     /// <summary>
-    /// List for the normal Room candidates.
+    /// Array for the normal Room candidates.
     /// </summary>
     public RoomInGame[] normalRoomList;
-    /*/// <summary>
-    /// List for the item Room candidates.
-    /// </summary>
-    public RoomInGame[] itemRoomList;*/
     /// <summary>
     /// Array for the special Room candidates.
     /// </summary>
     public RoomInGame[] specialRoomList;
+    /// <summary>
+    /// Array sorted normal rooms by location of side doors.
+    /// </summary>
+    List<RoomInGame>[,] normalRoomsDistributed = new List<RoomInGame>[3, 3];
+    /// <summary>
+    /// First room player exists.
+    /// </summary>
     public Room startRoom;
     /// <summary>
     /// Queue that saves rooms waiting for upgrade tetrimino.
@@ -391,9 +405,13 @@ public class MapManager : MonoBehaviour {
     /// Display how much time is it remain to fall current tetrimino.
     /// </summary>
     /// <returns></returns>
-    public IEnumerator DisplayTime()
+    public IEnumerator CountTetriminoWaitingTime()
     {
-        yield return null;
+        while (!isTetriminoFalling)
+        {
+            yield return new WaitForSeconds(0.1f);
+            tetriminoWaitedTime = Time.time - tetriminoCreatedTime;
+        }
     }
     /// <summary>
     /// Move tetrimino horizontally.
@@ -467,15 +485,6 @@ public class MapManager : MonoBehaviour {
             te.rooms[i].mapCoord += new Vector3(-(minX - te.mapCoord.x), -(minY - te.mapCoord.y), 0);
             te.rooms[i].transform.position = (te.rooms[i].mapCoord - te.mapCoord) * tetrisMapSize + te.transform.position;
         }
-        /*for(int i = 0; i < te.rooms.Length; i++)
-        {
-            if(te.rooms[i].mapCoord.x > 9)
-            {
-                for (int j = 0; j < te.rooms.Length; j++)
-                    te.rooms[i].mapCoord += new Vector3(0, -1, 0);
-                i = 0;
-            }
-        }*/
     }
     /// <summary>
     /// Move tetrimino as the amount of coord.
@@ -514,12 +523,12 @@ public class MapManager : MonoBehaviour {
     {
         te.transform.position = new Vector3(te.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)te.mapCoord.y], te.mapCoord.z * tetrisMapSize);
         fallSpeed = initialFallSpeed;
+        tetriminoWaitedTime = 0;
         UpdateMap(te);
         CreateRoom(te);
         DeleteFullRows();
         Destroy(currentGhost.gameObject);
         StartCoroutine(MakeNextTetrimino());
-        //tetriminoSpawner.MakeTetrimino();
     }
     /// <summary>
     /// Get tetrimino's position down.
@@ -565,7 +574,7 @@ public class MapManager : MonoBehaviour {
     /// <param name="te">Tetrimino you want to move.</param>
     public void TetriminoControl(Tetrimino te)
     {
-        if(Input.GetKeyDown(KeyCode.Space) && GameManager.gameState == GameManager.GameState.Tetris)
+        if((Input.GetKeyDown(KeyCode.Space) && GameManager.gameState == GameManager.GameState.Tetris) || tetriminoWaitedTime > timeToFallTetrimino)
         {
             isTetriminoFalling = true;
             TetriminoMapCoordDown(currentTetrimino);
@@ -613,17 +622,22 @@ public class MapManager : MonoBehaviour {
     {
         for (int i = 0; i < te.rooms.Length; i++)
         {
-            UpdateMap(currentTetrimino);
             te.rooms[i].transform.parent = grid;
             te.rooms[i].transform.position += new Vector3(0, 0, -2);
+            te.rooms[i].SetDoors();
+
             if (te.rooms[i].specialRoomType != SpecialRoomType.Normal)
             {
                 Instantiate(specialRoomList[(int)te.rooms[i].specialRoomType], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
             }
             else
             {
-                Instantiate(normalRoomList[Random.Range(0, normalRoomList.Length)], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
+                int left = te.rooms[i].leftDoorLocation;
+                int right = te.rooms[i].rightDoorLocation;
+                Instantiate(normalRoomsDistributed[left, right][Random.Range(0, normalRoomsDistributed[left, right].Count)], te.rooms[i].transform.position + new Vector3(0, 0, 2),
+                    Quaternion.identity, te.rooms[i].transform);
             }
+            te.rooms[i].CreateDoors(leftDoor, rightDoor);
         }
         Destroy(te.gameObject);
     }
@@ -670,6 +684,10 @@ public class MapManager : MonoBehaviour {
         }
         roomsWaiting.Enqueue(roomType);
     }
+    /// <summary>
+    /// Wait for one second and make a new tetrimino.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator MakeNextTetrimino()
     {
         yield return new WaitForSeconds(1f);
@@ -692,13 +710,12 @@ public class MapManager : MonoBehaviour {
             //transform.localPosition = new Vector3(Random.insideUnitCircle.x * amount + originPos.x, originPos.y, originPos.z);
             //transform.localPosition = new Vector3(originPos.x, Random.insideUnitCircle.y * amount + originPos.y, originPos.z);
             amount -= _amount / 40;
-            //Debug.Log(amount);
             yield return null;
         }
         camera.transform.localPosition = originPos;
     }
 
-    void Awake ()
+    void Awake()
     {
         Tetrimino.rotationInformation[0].horizontalLength = new int[4] { 1, 4, 1, 4 };  //I
         Tetrimino.rotationInformation[1].horizontalLength = new int[4] { 2, 2, 2, 2 };  //O
@@ -709,12 +726,30 @@ public class MapManager : MonoBehaviour {
         Tetrimino.rotationInformation[6].horizontalLength = new int[4] { 3, 2, 3, 2 };  //Z
         Tetrimino.rotationInformation[7].horizontalLength = new int[4] { 1, 1, 1, 1 };  //Boss
         for (int i = 0; i < tetrisYCoord.Length; i++)
-        {
             tetrisYCoord[i] = i * tetrisMapSize;
-        }
         for (int i = 0; i < isRowDeleting.Length; i++)
-        {
             isRowDeleting[i] = false;
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                normalRoomsDistributed[i, j] = new List<RoomInGame>();
+        for(int i = 0; i < normalRoomList.Length; i++)
+        {
+            int leftDoor = normalRoomList[i].sideDoorInfo[0];
+            int rightDoor = normalRoomList[i].sideDoorInfo[1];
+            int leftCount = 0;
+            int rightCount = 0;
+            for(int left = leftDoor; left != 0; left /= 10)
+            {
+                for (int right = rightDoor; right != 0; right /= 10)
+                {
+                    if(left % 10 == 1 && right % 10 == 1)
+                        normalRoomsDistributed[leftCount, rightCount].Add(normalRoomList[i]);
+                    rightCount++;
+                }
+                rightCount = 0;
+                leftCount++;
+            }
+            
         }
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
     }
@@ -738,7 +773,6 @@ public class MapManager : MonoBehaviour {
                    currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z * tetrisMapSize);
                 }
             }
-            //currentTetrimino.transform.position = currentTetrimino.mapCoord * tetrisMapSize + tetrisMapCoord;
         }
 
     }

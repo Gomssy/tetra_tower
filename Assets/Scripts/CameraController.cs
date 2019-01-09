@@ -13,8 +13,8 @@ public class CameraController : MonoBehaviour {
      * */
     readonly float camX = 9.5f;
     readonly float camY = 4f;
-    private Vector3 cameraTetrisCoord = new Vector3(108, 240, -1);
-    private float cameraTetrisSize = 300f;
+    private Vector3 tetrisCameraCoord = new Vector3(108, 240, -1);
+    private float tetrisCameraSize = 300f;
 
 
     GameManager.GameState lastGameState;
@@ -29,8 +29,8 @@ public class CameraController : MonoBehaviour {
         destination = transform.position;
         /*mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         tetrisCamera = GameObject.Find("Tetris Camera").GetComponent<Camera>();*/
-        tetrisCamera.transform.position = cameraTetrisCoord;
-        tetrisCamera.transform.localScale = new Vector3(cameraTetrisSize, cameraTetrisSize, 1);
+        tetrisCamera.transform.position = tetrisCameraCoord;
+        tetrisCamera.GetComponent<Camera>().orthographicSize = tetrisCameraSize;
         tetrisCamera.GetComponent<Camera>().enabled = false;
     }
 
@@ -163,18 +163,21 @@ public class CameraController : MonoBehaviour {
     }
     public void ChangeState()
     {
+        GameObject grid = GameObject.Find("Grid");
         if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Ingame)
         {
             GameManager.gameState = GameManager.GameState.Tetris;
             tetrisCamera.GetComponent<Camera>().enabled = true;
             mainCamera.GetComponent<Camera>().enabled = false;
+            grid.transform.position = new Vector3(0, 0, 2);
         }
         else if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Tetris)
         {
             GameManager.gameState = GameManager.GameState.Ingame;
             tetrisCamera.GetComponent<Camera>().enabled = false;
             mainCamera.GetComponent<Camera>().enabled = true;
-            //GotoDestination();
+            grid.transform.position = new Vector3(0, 0, 0);
+            GotoDestination();
         }
     }
 }

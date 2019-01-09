@@ -54,11 +54,12 @@ public class TetriminoSpawner : MonoBehaviour {
             }
             MakeGhost(mapManager.currentTetrimino, randomTetrimino);
             mapManager.isTetriminoFalling = false;
-            Debug.Log(mapManager.roomsWaiting.Count);
             while (mapManager.roomsWaiting.Count != 0 && mapManager.currentTetrimino.notNormalRoomCount < 4)
             {
                 mapManager.UpgradeRoom(mapManager.roomsWaiting.Dequeue());
             }
+            mapManager.tetriminoCreatedTime = Time.time;
+            StartCoroutine(mapManager.CountTetriminoWaitingTime());
         }
     }
     /// <summary>
@@ -115,7 +116,9 @@ public class TetriminoSpawner : MonoBehaviour {
             if(randomizer <= 0)
             {
                 for (int i = 0; i < randomTetrimino.Length; i++)
+                {
                     randomTetrimino[i]++;
+                }
                 randomTetrimino[count] = 0;
                 return count;
             }

@@ -13,14 +13,7 @@ public class Room : MonoBehaviour
     /// </summary>
     public Vector3 mapCoord;
     /// <summary>
-    /// Door info per rooms.
-    /// 0 for up, 1 for down.
-    /// doorInfo[0] for left door, doorInfo[1] for right door.
-    /// </summary>
-    public int[] doorInfo;
-    /// <summary>
     /// Stage per rooms.
-    /// Range from 0 to 4.
     /// </summary>
     public int stage;
     /// <summary>
@@ -37,12 +30,28 @@ public class Room : MonoBehaviour
     /// Special room types.
     /// </summary>
     public MapManager.SpecialRoomType specialRoomType;
-
+    public int leftDoorLocation;
+    public int rightDoorLocation;
     /// <summary>
     /// Select which doors would be opened.
     /// </summary>
     public void SetDoors()
     {
-
+        if (mapCoord.x < MapManager.width - 1 && MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y] != null)
+            rightDoorLocation = MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].leftDoorLocation;
+        else
+            rightDoorLocation = Random.Range(0, 3);
+        if (mapCoord.x > 0 && MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y] != null)
+            leftDoorLocation = MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].rightDoorLocation;
+        else
+            leftDoorLocation = Random.Range(0, 3);
+    }
+    /// <summary>
+    /// Create doors.
+    /// </summary>
+    public void CreateDoors(GameObject leftDoor, GameObject rightDoor)
+    {
+        Instantiate(leftDoor, transform.position + new Vector3(1, leftDoorLocation * 8 + 1, 0), Quaternion.identity, transform);
+        Instantiate(rightDoor, transform.position + new Vector3(23, rightDoorLocation * 8 + 1, 0), Quaternion.identity, transform);
     }
 }
