@@ -14,4 +14,9 @@ public class RoomInGame : MonoBehaviour {
     /// The enum for door information.
     /// </summary>
     public enum DoorInfo { Up, Down, Left, Right };
+
+    /// <summary>
+    /// Check if room is clear and escapable.
+    /// </summary>
+    public bool isRoomClear;
 }

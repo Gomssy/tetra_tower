@@ -5,8 +5,6 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
     public LayerMask roomLayer;
     public GameObject player;
-    public GameObject mainCamera;
-    public GameObject tetrisCamera;
     /*
      * If camera is in Tetris view, ideal position is (108, 240, -1)
      * size 300
@@ -15,6 +13,7 @@ public class CameraController : MonoBehaviour {
     readonly float camY = 4f;
     private Vector3 tetrisCameraCoord = new Vector3(108, 240, -1);
     private float tetrisCameraSize = 300f;
+    private float inGameCameraSize = 4.5f;
 
 
     GameManager.GameState lastGameState;
@@ -27,11 +26,6 @@ public class CameraController : MonoBehaviour {
     {
         lastGameState = GameManager.GameState.Ingame;
         destination = transform.position;
-        /*mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        tetrisCamera = GameObject.Find("Tetris Camera").GetComponent<Camera>();*/
-        tetrisCamera.transform.position = tetrisCameraCoord;
-        tetrisCamera.GetComponent<Camera>().orthographicSize = tetrisCameraSize;
-        tetrisCamera.GetComponent<Camera>().enabled = false;
     }
 
     // Update is called once per frame
@@ -108,8 +102,8 @@ public class CameraController : MonoBehaviour {
             //방의 중심과 비교하여 어느게 더 가까운가
         }
         
-            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, new Vector3(posx, posy, 0), 2f * Time.deltaTime);
-            mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y, -1); //카메라를 원래 z축으로 이동
+            transform.position = Vector3.Lerp(transform.position, new Vector3(posx, posy, 0), 2f * Time.deltaTime);
+            transform.position = new Vector3(transform.position.x, transform.position.y, -1); //카메라를 원래 z축으로 이동
         }
         //  Camera.main.transform.position = new Vector3(posx, posy, -10);
 
@@ -167,16 +161,15 @@ public class CameraController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Ingame)
         {
             GameManager.gameState = GameManager.GameState.Tetris;
-            tetrisCamera.GetComponent<Camera>().enabled = true;
-            mainCamera.GetComponent<Camera>().enabled = false;
-            grid.transform.position = new Vector3(0, 0, 2);
+            transform.position = tetrisCameraCoord;
+            GetComponent<Camera>().orthographicSize = tetrisCameraSize;
+            //grid.transform.position = new Vector3(0, 0, 2);
         }
         else if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Tetris)
         {
             GameManager.gameState = GameManager.GameState.Ingame;
-            tetrisCamera.GetComponent<Camera>().enabled = false;
-            mainCamera.GetComponent<Camera>().enabled = true;
-            grid.transform.position = new Vector3(0, 0, 0);
+            GetComponent<Camera>().orthographicSize = inGameCameraSize;
+            //grid.transform.position = new Vector3(0, 0, 0);
             GotoDestination();
         }
     }

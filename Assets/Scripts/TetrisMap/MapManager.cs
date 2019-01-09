@@ -543,9 +543,9 @@ public class MapManager : MonoBehaviour {
             fallSpeed += gravity * fallTime * fallTime;
             te.transform.position += new Vector3(0, -fallSpeed, 0);
         }
-        GameObject camera = GameObject.Find("Tetris Camera");
+        GameObject camera = GameObject.Find("Main Camera");
         StartCoroutine(CameraShake(20, camera.transform.position, camera));
-        EndTetrimino(currentTetrimino);
+        EndTetrimino(te);
     }
     /// <summary>
     /// Get ghost's position down.
@@ -622,10 +622,8 @@ public class MapManager : MonoBehaviour {
     {
         for (int i = 0; i < te.rooms.Length; i++)
         {
-            te.rooms[i].transform.parent = grid;
             te.rooms[i].transform.position += new Vector3(0, 0, -2);
             te.rooms[i].SetDoors();
-
             if (te.rooms[i].specialRoomType != SpecialRoomType.Normal)
             {
                 Instantiate(specialRoomList[(int)te.rooms[i].specialRoomType], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
@@ -638,6 +636,7 @@ public class MapManager : MonoBehaviour {
                     Quaternion.identity, te.rooms[i].transform);
             }
             te.rooms[i].CreateDoors(leftDoor, rightDoor);
+            te.rooms[i].transform.parent = grid;
         }
         Destroy(te.gameObject);
     }
@@ -766,11 +765,11 @@ public class MapManager : MonoBehaviour {
             {
                 TetriminoControl(currentTetrimino);
                 if(!isTetriminoFalling)
-                    currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z * tetrisMapSize);
+                    currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z);
                 if(currentGhost != null)
                 {
                    GhostControl(currentGhost, currentTetrimino);
-                   currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z * tetrisMapSize);
+                   currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z);
                 }
             }
         }

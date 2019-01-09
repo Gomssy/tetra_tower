@@ -1192,7 +1192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorInfo: 0
+  sideDoorInfo: 0b0000000b000000
 --- !u!251 &251003671039617910
 PlatformEffector2D:
   m_ObjectHideFlags: 1
