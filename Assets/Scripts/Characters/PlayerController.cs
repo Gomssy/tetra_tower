@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,27 +20,43 @@ public class PlayerController : MonoBehaviour
     private float ropeSpeed;
     [SerializeField]
     private float doubleJumpSpeed;
-
+    [SerializeField]
+    private float dashSpeed;
+    [SerializeField]
+    private float dashDelay;
+    [SerializeField]
+    private bool isDashing = false;
+    public TilemapCollider2D[] platformArray;
     // Bool values for jump & doublejump
     private bool isGrounded = true;
     private bool isJumpable = true;     // Can player jump or doublejump?
     private bool isInRope = false;
+    private bool isDownPlatform = false;
+    private bool ropeEnabled = true;
     // Inputs
+    [SerializeField]
     private float horizontal = 0;
+    [SerializeField]
     private float horizontalRaw = 0;
     private float verticalRaw = 0;
     private bool jump = false;
-
+    [SerializeField]
+    private int dashStart = 0;
     // Variables for IsGrounded()
     [SerializeField]
     private LayerMask groundLayer;
     [SerializeField]
     private LayerMask ropeLayer;
     [SerializeField]
+    private LayerMask platformLayer;
+    [SerializeField]
+    private LayerMask outerwallLayer;
+    [SerializeField]
     private float ropeDistance = 0.3f;
     [SerializeField]
     private float rayDistance;
-
+    [SerializeField]
+    private float ropeUp, ropeDown;
     // Use this for initialization
     void Start()
     {
@@ -52,6 +69,7 @@ public class PlayerController : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         horizontalRaw = Input.GetAxisRaw("Horizontal");
         verticalRaw = Input.GetAxisRaw("Vertical");
+        
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;
@@ -63,6 +81,13 @@ public class PlayerController : MonoBehaviour
         isGrounded = IsGrounded();
         if (isGrounded)
             isJumpable = true;
+        if(isGrounded)
+        {
+            if (horizontalRaw == 1f) transform.localScale = new Vector3(1f, transform.localScale.y, transform.localScale.z);
+            else if (horizontalRaw == -1f) transform.localScale = new Vector3(-1f, transform.localScale.y, transform.localScale.z);
+        }
+       
+
 
         if (IsInRope())
         {
@@ -72,11 +97,13 @@ public class PlayerController : MonoBehaviour
                 {
                     isInRope = false;
                     rb.gravityScale = 2f;
-                }
+                    StartCoroutine(RopeDelay());
+                    
+}
                 rb.velocity = new Vector2(0f, verticalRaw * Time.smoothDeltaTime * ropeSpeed);
 
             }
-            else if (jump)
+            else if (verticalRaw != 0 && ropeEnabled)
             {
                 isInRope = true;
                 rb.gravityScale = 0f;
@@ -104,10 +131,51 @@ public class PlayerController : MonoBehaviour
                     isJumpable = false;
                 }
             }
+            if(verticalRaw == -1 && !isDownPlatform)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, platformLayer);
+                if (hit.collider != null && rb.velocity.y == 0)
+                {
+                    Room curRoom = MapManager.mapGrid[Player.tx, Player.ty];
+                    platformArray = curRoom.GetComponentsInChildren<TilemapCollider2D>();
+                    isDownPlatform = true;
+                    StartCoroutine(DownPlatform());
+                }
+            }
 
             //rb.velocity = new Vector2(horizontal * speed *  Time.smoothDeltaTime, vertical);
             // rb.velocity = new Vector2(rb.velocity.x, vertical);
+
+            if(horizontalRaw != 0)
+            {
+                if(horizontal != 1 && horizontal != -1 && dashStart == 0)
+                {
+                    //짧게 눌렀을 때
+                    dashStart = 1;
+                }
+            }
+            if(horizontalRaw == 0 && horizontal != 0 && dashStart == 1)
+            {
+                //방금 뗐을때
+                dashStart = 2;
+                //이제 빠르게 켜면 됨
+            }
+            if(dashStart == 2 && horizontalRaw != 0)
+            {
+                isDashing = true;
+            }
+            if(horizontalRaw == 0 && horizontal == 0)
+            {
+                dashStart = 0;
+                isDashing = false;
+            }
+            
+           
+            if(isDashing)
+                rb.AddForce(horizontalRaw * dashSpeed * Time.smoothDeltaTime * Vector2.right);
+            else
             rb.AddForce(horizontalRaw * speed * Time.smoothDeltaTime * Vector2.right);
+
             if (((horizontalRaw == 0) || (rb.velocity.x > 0 && horizontalRaw < 0)
                 || (rb.velocity.x < 0 && horizontalRaw > 0)) && (isGrounded))
             {
@@ -115,22 +183,43 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(rb.velocity.x * (-10f) * Vector2.right);
             }
 
-            rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed * Time.smoothDeltaTime, maxSpeed * Time.smoothDeltaTime), vertical);
+            rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed* (isDashing?1.5f:1f) * Time.smoothDeltaTime, maxSpeed*(isDashing ? 1.5f : 1f) * Time.smoothDeltaTime), vertical);
         }
         jump = false;
     }
     bool IsGrounded()   // Is player grounded?
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, groundLayer);
+        RaycastHit2D hit1 = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, groundLayer);
+        RaycastHit2D hit2 = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, platformLayer);
+        RaycastHit2D hit3 = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, outerwallLayer);
         Debug.DrawRay(transform.position, rayDistance * Vector2.down, Color.white);
-        return hit.collider != null;
+        return (hit1.collider != null || hit2.collider != null || hit3.collider != null) && rb.velocity.y == 0 ;//플랫폼 점프 버그 방지
     }
     bool IsInRope()   // Is player in rope?
     {
-        RaycastHit2D hit1 = Physics2D.Raycast(transform.position, Vector2.right, ropeDistance, ropeLayer);
-        RaycastHit2D hit2 = Physics2D.Raycast(transform.position, Vector2.left, ropeDistance, ropeLayer);
-        Debug.DrawRay(transform.position, ropeDistance * Vector2.right, Color.red);
-        Debug.DrawRay(transform.position, ropeDistance * Vector2.left, Color.red);
-        return hit1.collider != null || hit2.collider != null;
+        RaycastHit2D hit1 = Physics2D.Raycast(transform.position + ropeUp*Vector3.up, Vector2.right, ropeDistance, ropeLayer);
+        RaycastHit2D hit2 = Physics2D.Raycast(transform.position + ropeUp*Vector3.up, Vector2.left, ropeDistance, ropeLayer);
+        RaycastHit2D hit3 = Physics2D.Raycast(transform.position - ropeDown * Vector3.up, Vector2.right, ropeDistance, ropeLayer);
+        RaycastHit2D hit4 = Physics2D.Raycast(transform.position - ropeDown * Vector3.up, Vector2.left, ropeDistance, ropeLayer);
+        Debug.DrawRay(transform.position + ropeUp * Vector3.up, ropeDistance * Vector2.right, Color.red);
+        Debug.DrawRay(transform.position + ropeUp * Vector3.up, ropeDistance * Vector2.left, Color.red);
+        Debug.DrawRay(transform.position - ropeDown * Vector3.up, ropeDistance * Vector2.right, Color.red);
+        Debug.DrawRay(transform.position - ropeDown * Vector3.up, ropeDistance * Vector2.left, Color.red);
+        return hit1.collider != null || hit2.collider != null || hit3.collider != null || hit4.collider != null;
     }
+    public IEnumerator DownPlatform()
+    {
+        platformArray[2].enabled = false;
+            yield return new WaitForSeconds(0.3f);
+        platformArray[2].enabled = true;
+        isDownPlatform = false;
+    }
+    public IEnumerator RopeDelay()
+    {
+        ropeEnabled = false;
+        isJumpable = true;
+        yield return new WaitForSeconds(0.5f);
+        ropeEnabled = true;
+    }
+    
 }

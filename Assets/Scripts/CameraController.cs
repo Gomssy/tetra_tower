@@ -68,42 +68,52 @@ public class CameraController : MonoBehaviour {
         {
             float posx = player.transform.position.x;
         float posy = player.transform.position.y;
-        if (RoomCol(1) != -1)
-        {
-            posy = RoomCol(1) - camY;
-        }
-        if (RoomCol(2) != -1)
-        {
-            posy = RoomCol(2) + camY;
-        }
-        if (RoomCol(3) != -1)
-        {
-            posx = RoomCol(3) + camX;
-        }
-        if (RoomCol(4) != -1)
-        {
-            posx = RoomCol(4) - camX;
-        }
-        if (RoomCol(3) != -1 && RoomCol(4) != -1)
-        {
-            float middle = Player.tx * 24f + 12f;
-            if (middle - RoomCol(3) > 20f)
+
+            Room curRoom = MapManager.mapGrid[Player.tx, Player.ty];
+            if (!curRoom.GetComponentInChildren<RoomInGame>().isRoomClear)
             {
-                posx = RoomCol(3) + camX;
+
+                if (RoomCol(1) != -1)
+                {
+                    posy = RoomCol(1) - camY;
+                }
+                if (RoomCol(2) != -1)
+                {
+                    posy = RoomCol(2) + camY;
+                }
+                if (RoomCol(3) != -1)
+                {
+                    posx = RoomCol(3) + camX;
+                }
+                if (RoomCol(4) != -1)
+                {
+                    posx = RoomCol(4) - camX;
+                }
+
+                if (RoomCol(3) != -1 && RoomCol(4) != -1)
+                {
+                    float middle = Player.tx * 24f + 12f;
+                    if (middle - RoomCol(3) > 20f)
+                    {
+                        posx = RoomCol(3) + camX;
+                    }
+                    else if (RoomCol(4) - middle > 20f)
+                    {
+                        posx = RoomCol(4) - camX;
+                    }
+                    else
+                    {
+                        posx = player.transform.position.x;
+                    }
+
+                    //방의 중심과 비교하여 어느게 더 가까운가
+                }
             }
-            else if (RoomCol(4) - middle > 20f)
-            {
-                posx = RoomCol(4) - camX;
-            }
-            else
-            {
-                posx = player.transform.position.x;
-            }
-            //방의 중심과 비교하여 어느게 더 가까운가
-        }
-        
-            transform.position = Vector3.Lerp(transform.position, new Vector3(posx, posy, 0), 2f * Time.deltaTime);
-            transform.position = new Vector3(transform.position.x, transform.position.y, -1); //카메라를 원래 z축으로 이동
+            
+
+                transform.position = Vector3.Lerp(transform.position, new Vector3(posx, posy, 0), 2f * Time.deltaTime);
+                transform.position = new Vector3(transform.position.x, transform.position.y, -1); //카메라를 원래 z축으로 이동
+            
         }
         //  Camera.main.transform.position = new Vector3(posx, posy, -10);
 

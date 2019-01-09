@@ -253,20 +253,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f289cad4933d4bf42ae5c82c57bd88e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 400
+  maxSpeed: 300
   speed: 600
   speedAir: 5
   jumpSpeed: 400
   ropeSpeed: 200
   doubleJumpSpeed: 400
+  dashSpeed: 1000
+  dashDelay: 0
+  isDashing: 0
+  platformArray: []
+  horizontal: 0
+  horizontalRaw: 0
+  dashStart: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
   ropeLayer:
     serializedVersion: 2
     m_Bits: 512
+  platformLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  outerwallLayer:
+    serializedVersion: 2
+    m_Bits: 4096
   ropeDistance: 0.3
   rayDistance: 1
+  ropeUp: 0.5
+  ropeDown: 0.5
 --- !u!212 &489222436
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -364,6 +379,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LCUI: {fileID: 0}
   ttx: 0
+  tty: 0
 --- !u!1001 &695959412
 Prefab:
   m_ObjectHideFlags: 0
