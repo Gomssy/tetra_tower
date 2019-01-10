@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-    public LifeCrystalUI LCUI;
+    public LifeStoneManager LCUI;
     public static int tx, ty;
     public int ttx;
 

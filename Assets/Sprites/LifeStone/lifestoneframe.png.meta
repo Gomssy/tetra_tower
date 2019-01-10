@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 0c2144d8f09991444a79e6880da13b8f
+guid: eff441d843b9c664e97a81fcb39d8410
 TextureImporter:
   fileIDToRecycleName:
-    21300000: LifeCrystal Mold_0
-    21300002: LifeCrystal Mold_1
-    21300004: LifeCrystal Mold_2
-    21300006: LC Mold_0
-    21300008: LC Mold_1
-    21300010: LC Mold_2
+    21300000: lifestoneframe_top
+    21300002: lifestoneframe_row
+    21300004: lifestoneframe_bottom
   externalObjects: {}
   serializedVersion: 6
   mipmaps:
@@ -69,7 +66,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -80,7 +77,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -91,7 +88,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -101,13 +98,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LC Mold_0
+      name: lifestoneframe_top
       rect:
         serializedVersion: 2
         x: 0
         y: 24
-        width: 32
-        height: 12
+        width: 68
+        height: 4
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,19 +112,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 128ab26cacbd51b4db5c1070a5caf159
+      spriteID: cfc8c98264a9eea4fb3c899de66f26cf
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LC Mold_1
+      name: lifestoneframe_row
       rect:
         serializedVersion: 2
         x: 0
-        y: 12
-        width: 32
-        height: 12
+        y: 4
+        width: 68
+        height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,19 +132,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2d5922a3fd758df4d9cb9e3571d9fb15
+      spriteID: a9fd97cc2ec11ba4aab76c8a520f4495
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LC Mold_2
+      name: lifestoneframe_bottom
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 12
+        width: 68
+        height: 4
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -155,7 +152,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e8f18c3e6da7ce64cb99cd17b5d9be3b
+      spriteID: b45259dd2b68ef541b644001de849e0b
       vertices: []
       indices: 
       edges: []
@@ -163,7 +160,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 8d50ca77c4c7b6c488d6a0a75cc0fe69
+    spriteID: 31e4d26878a81c549a591e3d79d2616d
     vertices: []
     indices: 
     edges: []
