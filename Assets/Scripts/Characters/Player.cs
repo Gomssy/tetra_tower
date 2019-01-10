@@ -6,6 +6,7 @@ public class Player : MonoBehaviour {
     public LifeCrystalUI LCUI;
     public static int tx, ty;
     public int ttx;
+    public int tty;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +16,8 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         tx = (int)(transform.position.x / 24f);
+        ty = (int)(transform.position.y / 24f);
         ttx = tx;
+        tty = ty;
 	}
 }
