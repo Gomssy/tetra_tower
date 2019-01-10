@@ -1,56 +1,80 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System;
 
-public class EnemyManager : Singleton<EnemyManager> {
-    public enum State {
+
+public class EnemyManager : Singleton<EnemyManager>
+{
+// static variable
+    // about action
+    public enum State
+    {
         Idle,
         Track,
         Attack
     } // 상속을 통해 수정할 가능성 높음. 염두만 해 두자.
 
-    public delegate void Action<T>();
+    public delegate void Action();
+    // about drop item
+    public struct DropItemInfo
+    {
+        public readonly int id;
+        public readonly float prob;
 
-    private Dictionary<uint, int[]> dropTableByID;
-    private Dictionary<uint, List<int[]>> actionDictByID;
+        public DropItemInfo(int inputID, float inputProb)
+        {
+            id = inputID;
+            prob = inputProb;
+        }
+    }
 
-    protected EnemyManager() {
+
+// data
+    // dictionary
+    public readonly Dictionary<int, DropItemInfo> dropTableByID;
+    public readonly Dictionary<int, Dictionary<State, Action>> actionDictByID;
+
+    
+// method
+    // constructor
+    protected EnemyManager()
+    {
         string dropTableDataPath = null;
         string actionTableDataPath = null;
 
         LoadDropTable(dropTableDataPath);
         LoadActionTable(actionTableDataPath);
     }
-   
+
+    // Load Dictionary
     private void LoadDropTable(string dataPath)
     {
         StreamReader strReader = new StreamReader(dataPath, Encoding.UTF8);
-        string[] cellValue = null; //csv파일 한 행에 포함되는 칸들의 값 넣을 배열
-        string tableLine = null; //파일 한 행
-        strReader.ReadLine(); //첫 줄 스킵
+        string[] cellValue = null;
+        string tableLine = null;
+        strReader.ReadLine();
 
-        while ((tableLine = strReader.ReadLine()) != null) 
+        while ((tableLine = strReader.ReadLine()) != null)
         {
-            if (string.IsNullOrEmpty(tableLine)) return; //행이 비었는지 체크
+            if (string.IsNullOrEmpty(tableLine)) return;
 
             cellValue = tableLine.Split(',');
 
-            uint monsterID = 0;
-            int itemID = 0, dropWeight = 0;
+            int monsterID = -1;
+            int itemID = -1;
+            float prob = -1.0f;
 
-            uint.TryParse(cellValue[0], out monsterID);
+            int.TryParse(cellValue[0], out monsterID);
             int.TryParse(cellValue[2], out itemID);
-            int.TryParse(cellValue[3], out dropWeight);
+            float.TryParse(cellValue[3], out prob);
 
-            int[] itemDrop = new int[] { itemID, dropWeight };
-            dropTableByID.Add(monsterID, itemDrop);
+            DropItemInfo dropItemInfo = new DropItemInfo(itemID, prob);
+            dropTableByID.Add(monsterID, dropItemInfo);
         }
     }
 
-    private void LoadActionTable(string dataPath) {
+    private void LoadActionTable(string dataPath)
+    {
 
     }
 }
