@@ -3,23 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
+    public MapManager mapManager;
     public LayerMask roomLayer;
     public GameObject player;
+    /// <summary>
+    /// Coroutine controls scene changing.
+    /// </summary>
+    public Coroutine sceneChanger;
     /*
      * If camera is in Tetris view, ideal position is (108, 240, -1)
      * size 300
      * */
     readonly float camX = 9.5f;
     readonly float camY = 4f;
-    private Vector3 tetrisCameraCoord = new Vector3(108, 240, -1);
-    private float tetrisCameraSize = 300f;
-    private float inGameCameraSize = 4.5f;
+    public Vector3 tetrisCameraCoord = new Vector3(108, 240, -1);
+    public const float tetrisCameraSize = 300f;
+    public const float inGameCameraSize = 4.5f;
 
 
     GameManager.GameState lastGameState;
 
     Vector3 destination;
 
+    private void Awake()
+    {
+        mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
+    }
 
     // Use this for initialization
     void Start()
@@ -45,12 +54,34 @@ public class CameraController : MonoBehaviour {
     }
 
 
-    IEnumerator ChangeScene()
+    IEnumerator ChangeScene(Vector3 cameraDestination, float cameraSize, GameManager.GameState _gameState)
     {
-
-
-        yield return null;
-
+        GameObject grid = GameObject.Find("Grid");
+        float alpha = 1;
+        if(GameManager.gameState == GameManager.GameState.Ingame)
+        {
+            mapManager.currentRoom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+            grid.transform.position = new Vector3(0, 0, 0);
+        }
+        else if(GameManager.gameState == GameManager.GameState.Tetris)
+        {
+            grid.transform.position = new Vector3(0, 0, 2);
+        }
+        while((_gameState == GameManager.GameState.Tetris && GetComponent<Camera>().orthographicSize < cameraSize - 1) || (_gameState == GameManager.GameState.Ingame && GetComponent<Camera>().orthographicSize > cameraSize + 0.1))
+        {
+            yield return new WaitForSeconds(0.01f);
+            Vector2 coord = Vector2.Lerp(transform.position, cameraDestination, Mathf.Sqrt(Time.deltaTime));
+            transform.position = new Vector3(coord.x, coord.y, -1);
+            GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, cameraSize, Mathf.Sqrt(Time.deltaTime));
+            if (_gameState == GameManager.GameState.Ingame)
+                alpha = Mathf.Lerp(alpha, 0, Mathf.Sqrt(Time.deltaTime));
+            else if (_gameState == GameManager.GameState.Tetris)
+                alpha = 1;
+            mapManager.currentRoom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
+        }
+        transform.position = cameraDestination;
+        GetComponent<Camera>().orthographicSize = cameraSize;
+        MapManager.originPos = transform.position;
     }
     void SetDestination()
     {
@@ -155,22 +186,42 @@ public class CameraController : MonoBehaviour {
 
         return -1;
     }
+
     public void ChangeState()
     {
         GameObject grid = GameObject.Find("Grid");
         if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Ingame)
         {
             GameManager.gameState = GameManager.GameState.Tetris;
-            transform.position = tetrisCameraCoord;
+
+            if(sceneChanger != null)
+                StopCoroutine(sceneChanger);
+            sceneChanger = StartCoroutine(ChangeScene(tetrisCameraCoord, tetrisCameraSize, GameManager.gameState));
+
+
+
+            /*transform.position = tetrisCameraCoord;
             GetComponent<Camera>().orthographicSize = tetrisCameraSize;
-            //grid.transform.position = new Vector3(0, 0, 2);
+            grid.transform.position = new Vector3(0, 0, 2);
+            MapManager.originPos = transform.position;*/
         }
         else if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Tetris)
         {
             GameManager.gameState = GameManager.GameState.Ingame;
-            GetComponent<Camera>().orthographicSize = inGameCameraSize;
-            //grid.transform.position = new Vector3(0, 0, 0);
+
+            if (sceneChanger != null)
+                StopCoroutine(sceneChanger);
+            sceneChanger = StartCoroutine(ChangeScene(player.transform.position, inGameCameraSize, GameManager.gameState));
+
+
+
+            /*GetComponent<Camera>().orthographicSize = inGameCameraSize;
+            grid.transform.position = new Vector3(0, 0, 0);
+            transform.position = player.transform.position;
+
+
             GotoDestination();
+            MapManager.originPos = transform.position;*/
         }
     }
 }

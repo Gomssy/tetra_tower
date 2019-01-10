@@ -64,10 +64,11 @@ MonoBehaviour:
   isTetriminoFalling: 0
   spawnBossTetrimino: 0
   press: {fileID: 114990664041074520, guid: 8e750fd197a05d84c9fb8557eb95c666, type: 2}
-  leftDoor: {fileID: 1309596820948456, guid: 80ed5bfe62ba3034592296b6e27526bc, type: 2}
-  rightDoor: {fileID: 1614071394812404, guid: ac9e1e28c8413e54f939bc255268fabd, type: 2}
   currentTetrimino: {fileID: 0}
   currentGhost: {fileID: 0}
+  fog: {fileID: 1556853421042486, guid: b1b68160603303d46a05ec4fa754584c, type: 2}
+  leftDoor: {fileID: 1309596820948456, guid: 80ed5bfe62ba3034592296b6e27526bc, type: 2}
+  rightDoor: {fileID: 1614071394812404, guid: ac9e1e28c8413e54f939bc255268fabd, type: 2}
   normalRoomList:
   - {fileID: 114452746530220676, guid: 3c35322ac2c308d49aadf20738b69c8b, type: 2}
   - {fileID: 114071400998216906, guid: 7fd2833846bb116479bd74d2a5b75487, type: 2}

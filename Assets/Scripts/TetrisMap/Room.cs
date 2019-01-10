@@ -32,6 +32,8 @@ public class Room : MonoBehaviour
     public MapManager.SpecialRoomType specialRoomType;
     public int leftDoorLocation;
     public int rightDoorLocation;
+    public GameObject fog;
+    public RoomInGame roomInGame;
     /// <summary>
     /// Select which doors would be opened.
     /// </summary>

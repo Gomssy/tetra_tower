@@ -88,14 +88,6 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public Press press;
     /// <summary>
-    /// Left door.
-    /// </summary>
-    public GameObject leftDoor;
-    /// <summary>
-    /// Right door.
-    /// </summary>
-    public GameObject rightDoor;
-    /// <summary>
     /// Current tetrimino waiting for falling.
     /// </summary>
     public Tetrimino currentTetrimino;
@@ -107,6 +99,18 @@ public class MapManager : MonoBehaviour {
     /// Enum for special room types.
     /// </summary>
     public enum SpecialRoomType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal };
+    /// <summary>
+    /// Fog of rooms.
+    /// </summary>
+    public GameObject fog;
+    /// <summary>
+    /// Left door.
+    /// </summary>
+    public GameObject leftDoor;
+    /// <summary>
+    /// Right door.
+    /// </summary>
+    public GameObject rightDoor;
     /// <summary>
     /// Array for the normal Room candidates.
     /// </summary>
@@ -120,9 +124,9 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     List<RoomInGame>[,] normalRoomsDistributed = new List<RoomInGame>[3, 3];
     /// <summary>
-    /// First room player exists.
+    /// Room player exists.
     /// </summary>
-    public Room startRoom;
+    public Room currentRoom;
     /// <summary>
     /// Queue that saves rooms waiting for upgrade tetrimino.
     /// </summary>
@@ -350,8 +354,8 @@ public class MapManager : MonoBehaviour {
         }
         if (shakeCamera)
         {
-            GameObject camera = GameObject.Find("Tetris Camera");
-            StartCoroutine(CameraShake(5 * (top - bottom + 1), camera.transform.position, camera));
+            Camera camera = FindObjectOfType<Camera>();
+            StartCoroutine(CameraShake(5 * (top - bottom + 1) / CameraController.tetrisCameraSize, camera.transform.position, camera));
         }
         for (int i = 0; i < height; i++)
         {
@@ -543,8 +547,8 @@ public class MapManager : MonoBehaviour {
             fallSpeed += gravity * fallTime * fallTime;
             te.transform.position += new Vector3(0, -fallSpeed, 0);
         }
-        GameObject camera = GameObject.Find("Main Camera");
-        StartCoroutine(CameraShake(20, camera.transform.position, camera));
+        Camera camera = FindObjectOfType<Camera>();
+        StartCoroutine(CameraShake(20 / CameraController.tetrisCameraSize, camera.transform.position, camera));
         EndTetrimino(te);
     }
     /// <summary>
@@ -622,21 +626,23 @@ public class MapManager : MonoBehaviour {
     {
         for (int i = 0; i < te.rooms.Length; i++)
         {
-            te.rooms[i].transform.position += new Vector3(0, 0, -2);
+            te.rooms[i].transform.parent = grid;
+            if(GameManager.gameState == GameManager.GameState.Ingame)
+                te.rooms[i].transform.localPosition += new Vector3(0, 0, -2);
             te.rooms[i].SetDoors();
             if (te.rooms[i].specialRoomType != SpecialRoomType.Normal)
             {
-                Instantiate(specialRoomList[(int)te.rooms[i].specialRoomType], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
+                te.rooms[i].roomInGame = Instantiate(specialRoomList[(int)te.rooms[i].specialRoomType], te.rooms[i].transform.position + new Vector3(0, 0, 2), Quaternion.identity, te.rooms[i].transform);
             }
             else
             {
                 int left = te.rooms[i].leftDoorLocation;
                 int right = te.rooms[i].rightDoorLocation;
-                Instantiate(normalRoomsDistributed[left, right][Random.Range(0, normalRoomsDistributed[left, right].Count)], te.rooms[i].transform.position + new Vector3(0, 0, 2),
+                te.rooms[i].roomInGame = Instantiate(normalRoomsDistributed[left, right][Random.Range(0, normalRoomsDistributed[left, right].Count)], te.rooms[i].transform.position + new Vector3(0, 0, 2),
                     Quaternion.identity, te.rooms[i].transform);
             }
             te.rooms[i].CreateDoors(leftDoor, rightDoor);
-            te.rooms[i].transform.parent = grid;
+            te.rooms[i].fog = Instantiate(fog, te.rooms[i].transform.position + new Vector3(12, 12, 2), Quaternion.identity, te.rooms[i].transform);
         }
         Destroy(te.gameObject);
     }
@@ -692,6 +698,8 @@ public class MapManager : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         tetriminoSpawner.MakeTetrimino();
     }
+
+    public static Vector3 originPos;
     /// <summary>
     /// Shake the camera when tetrimino has fallen.
     /// </summary>
@@ -699,15 +707,15 @@ public class MapManager : MonoBehaviour {
     /// <param name="originPos">Original position of the camera.</param>
     /// <param name="camera">Camera you want to shake.</param>
     /// <returns></returns>
-    public IEnumerator CameraShake(float _amount, Vector3 originPos, GameObject camera)
+    public IEnumerator CameraShake(float _amount, Vector3 _originPos, Camera camera)
     {
         float amount = _amount;
+        Vector3 cameraPos = _originPos;
+        originPos = _originPos;
         while (amount > 0)
         {
-            //transform.localPosition = (Vector3)Random.insideUnitCircle * amount + originPos;
-            camera.transform.localPosition = new Vector3(0.2f * Random.insideUnitCircle.x * amount + originPos.x, Random.insideUnitCircle.y * amount + originPos.y, originPos.z);
-            //transform.localPosition = new Vector3(Random.insideUnitCircle.x * amount + originPos.x, originPos.y, originPos.z);
-            //transform.localPosition = new Vector3(originPos.x, Random.insideUnitCircle.y * amount + originPos.y, originPos.z);
+            cameraPos = new Vector3(0.2f * Random.insideUnitCircle.x * amount * camera.orthographicSize + originPos.x, Random.insideUnitCircle.y * amount * camera.orthographicSize + originPos.y, originPos.z);
+            camera.transform.position = cameraPos;
             amount -= _amount / 40;
             yield return null;
         }
@@ -748,7 +756,6 @@ public class MapManager : MonoBehaviour {
                 rightCount = 0;
                 leftCount++;
             }
-            
         }
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
     }
