@@ -39,8 +39,8 @@ public class EnemyManager : Singleton<EnemyManager>
     // constructor
     protected EnemyManager()
     {
-        string dropTableDataPath = null;
-        string actionTableDataPath = null;
+        string dropTableDataPath = "";
+        string actionTableDataPath = "";
 
         LoadDropTable(dropTableDataPath);
         LoadActionTable(actionTableDataPath);
