@@ -253,14 +253,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f289cad4933d4bf42ae5c82c57bd88e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 300
-  speed: 600
-  speedAir: 5
-  jumpSpeed: 400
-  ropeSpeed: 200
-  doubleJumpSpeed: 400
-  dashSpeed: 1000
-  dashDelay: 0
+  maxSpeed: 5
+  maxDashSpeed: 10
+  accerlation: 600
+  jumpSpeed: 10
+  ropeSpeed: 3
+  doubleJumpSpeed: 10
+  dashAccerlation: 1000
   isDashing: 0
   platformArray: []
   horizontal: 0
@@ -280,8 +279,8 @@ MonoBehaviour:
     m_Bits: 4096
   ropeDistance: 0.3
   rayDistance: 1
-  ropeUp: 0.5
-  ropeDown: 0.5
+  ropeUp: 0.6
+  ropeDown: 0.7
 --- !u!212 &489222436
 SpriteRenderer:
   m_ObjectHideFlags: 0

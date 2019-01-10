@@ -11,9 +11,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float maxSpeed;
     [SerializeField]
-    private float speed;
+    private float maxDashSpeed;
     [SerializeField]
-    private float speedAir;
+    private float accerlation;
     [SerializeField]
     private float jumpSpeed;
     [SerializeField]
@@ -21,9 +21,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float doubleJumpSpeed;
     [SerializeField]
-    private float dashSpeed;
-    [SerializeField]
-    private float dashDelay;
+    private float dashAccerlation;
     [SerializeField]
     private bool isDashing = false;
     public TilemapCollider2D[] platformArray;
@@ -100,10 +98,10 @@ public class PlayerController : MonoBehaviour
                     StartCoroutine(RopeDelay());
                     
 }
-                rb.velocity = new Vector2(0f, verticalRaw * Time.smoothDeltaTime * ropeSpeed);
+                rb.velocity = new Vector2(0f, verticalRaw *  ropeSpeed);
 
             }
-            else if (verticalRaw != 0 && ropeEnabled)
+            else if (verticalRaw != 0 && ropeEnabled && horizontalRaw == 0)
             {
                 isInRope = true;
                 rb.gravityScale = 0f;
@@ -123,11 +121,11 @@ public class PlayerController : MonoBehaviour
             {
                 if (isGrounded)
                 {
-                    vertical = jumpSpeed *  Time.smoothDeltaTime;
+                    vertical = jumpSpeed;
                 }
                 else if (isJumpable)
                 {
-                    vertical = doubleJumpSpeed *  Time.smoothDeltaTime;
+                    vertical = doubleJumpSpeed;
                     isJumpable = false;
                 }
             }
@@ -172,18 +170,18 @@ public class PlayerController : MonoBehaviour
             
            
             if(isDashing)
-                rb.AddForce(horizontalRaw * dashSpeed * Time.smoothDeltaTime * Vector2.right);
+                rb.AddForce(horizontalRaw * dashAccerlation * Time.smoothDeltaTime * Vector2.right);
             else
-            rb.AddForce(horizontalRaw * speed * Time.smoothDeltaTime * Vector2.right);
+            rb.AddForce(horizontalRaw * accerlation * Time.smoothDeltaTime * Vector2.right);
 
             if (((horizontalRaw == 0) || (rb.velocity.x > 0 && horizontalRaw < 0)
                 || (rb.velocity.x < 0 && horizontalRaw > 0)) && (isGrounded))
             {
-
-                rb.AddForce(rb.velocity.x * (-10f) * Vector2.right);
+                rb.AddForce(rb.velocity.x * (-10f) * Vector2.right * Time.smoothDeltaTime);
             }
-
-            rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed* (isDashing?1.5f:1f) * Time.smoothDeltaTime, maxSpeed*(isDashing ? 1.5f : 1f) * Time.smoothDeltaTime), vertical);
+            if(isDashing) rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxDashSpeed, maxDashSpeed), vertical);
+            else
+            rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed , maxSpeed ), vertical);
         }
         jump = false;
     }
@@ -209,10 +207,16 @@ public class PlayerController : MonoBehaviour
     }
     public IEnumerator DownPlatform()
     {
-        platformArray[2].enabled = false;
-            yield return new WaitForSeconds(0.3f);
-        platformArray[2].enabled = true;
-        isDownPlatform = false;
+        foreach (TilemapCollider2D element in platformArray)
+        {
+            if (element.name == "platform")
+            {
+                element.enabled = false;
+                yield return new WaitForSeconds(0.3f);
+                element.enabled = true;
+                isDownPlatform = false;
+            }
+        }
     }
     public IEnumerator RopeDelay()
     {
