@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour {
         var TS = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
         gameState = GameState.Ingame;
         TS.MakeInitialTetrimino();
-        Vector2 coord = GameObject.Find("MapManager").GetComponent<MapManager>().currentRoom.transform.position;
+        Vector2 coord = MapManager.currentRoom.transform.position;
 
         GameObject.Find("Player").transform.position = new Vector2(coord.x, coord.y) + new Vector2(3, 3);
 

@@ -52,8 +52,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 0}
-  tetrisMapSize: 24
-  tetrisMapCoord: {x: 0, y: 0, z: 0}
   initialFallSpeed: -0.1
   gravity: 0.98
   timeToFallTetrimino: 100
@@ -66,9 +64,17 @@ MonoBehaviour:
   press: {fileID: 114990664041074520, guid: 8e750fd197a05d84c9fb8557eb95c666, type: 2}
   currentTetrimino: {fileID: 0}
   currentGhost: {fileID: 0}
-  fog: {fileID: 1556853421042486, guid: b1b68160603303d46a05ec4fa754584c, type: 2}
+  fog: {fileID: 1100171732424598, guid: b8ab69a93ba618c47b27cc04eb431b3f, type: 2}
   leftDoor: {fileID: 1309596820948456, guid: 80ed5bfe62ba3034592296b6e27526bc, type: 2}
   rightDoor: {fileID: 1614071394812404, guid: ac9e1e28c8413e54f939bc255268fabd, type: 2}
+  inGameDoorUp: {fileID: 1390552800332292, guid: a4b66f2ca843159489a98c82bcfca85a,
+    type: 2}
+  inGameDoorDown: {fileID: 1065314290117232, guid: 66c1939853547324782fc3cd699433f0,
+    type: 2}
+  inGameDoorLeft: {fileID: 1219203643804288, guid: 317e92149cc8b26459748888a6dd121a,
+    type: 2}
+  inGameDoorRight: {fileID: 1561964545190330, guid: 2dc82009f5315a440b94abfb6b359926,
+    type: 2}
   normalRoomList:
   - {fileID: 114452746530220676, guid: 3c35322ac2c308d49aadf20738b69c8b, type: 2}
   - {fileID: 114071400998216906, guid: 7fd2833846bb116479bd74d2a5b75487, type: 2}
@@ -98,4 +104,3 @@ MonoBehaviour:
   - {fileID: 114834209009617488, guid: f6834170b7152ee4db0dc7e165dcca70, type: 2}
   - {fileID: 114261393134231884, guid: 7da800d1a4355fd4aa02e3518cd9e1fb, type: 2}
   - {fileID: 114631435503427844, guid: 2514de8c1d17b734592b5fe2cdc74560, type: 2}
-  startRoom: {fileID: 0}

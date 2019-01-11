@@ -41,6 +41,11 @@ public class Test : MonoBehaviour {
     {
         timer.text = (mapManager.timeToFallTetrimino - mapManager.tetriminoWaitedTime).ToString();
     }
+    public void ClearRoom()
+    {
+        MapManager.currentRoom.ClearRoom();
+    }
+
 
     private void Awake()
     {
@@ -58,7 +63,7 @@ public class Test : MonoBehaviour {
             ChangeTetrimino();
         if (Input.GetKeyDown(KeyCode.Alpha2))
             SpawnBossTetrimino();
-        if(!mapManager.isTetriminoFalling)
+        if(!MapManager.isTetriminoFalling)
             Timer();
         /*if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState != GameManager.GameState.Tetris)
         {
