@@ -24,7 +24,7 @@ public class LifeStoneInfo : MonoBehaviour {
     /// </summary>
     string fill;
 	
-	LifeStoneInfo(Vector2Int size, string fill)
+	public LifeStoneInfo(Vector2Int size, string fill)
     {
         this.size = size;
         this.fill = fill;
@@ -33,6 +33,13 @@ public class LifeStoneInfo : MonoBehaviour {
     {
         return size;
     }
+	public int getAmount()
+	{
+		int count = 0;
+		for (int i = 0; i < fill.Length; i++)
+			if (fill[i] != ' ') count++;
+		return count;
+	}
     public string getFill()
     {
         return fill;
