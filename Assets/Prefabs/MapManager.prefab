@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 0}
+  player: {fileID: 0}
   initialFallSpeed: -0.1
   gravity: 0.98
   timeToFallTetrimino: 100
@@ -59,7 +60,6 @@ MonoBehaviour:
   tetriminoCreatedTime: 0
   collapseTime: 10
   gameOver: 0
-  isTetriminoFalling: 0
   spawnBossTetrimino: 0
   press: {fileID: 114990664041074520, guid: 8e750fd197a05d84c9fb8557eb95c666, type: 2}
   currentTetrimino: {fileID: 0}

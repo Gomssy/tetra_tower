@@ -27,8 +27,8 @@ public class Player : MonoBehaviour {
                 StopCoroutine(roomEnterFadeIn);
             if (roomExitFadeOut != null)
                 StopCoroutine(roomExitFadeOut);
-            roomEnterFadeIn = StartCoroutine(MapManager.RoomFadeIn(MapManager.currentRoom));
-            roomExitFadeOut = StartCoroutine(MapManager.RoomFadeOut(MapManager.mapGrid[ttx, tty]));
+            roomEnterFadeIn = StartCoroutine(GameObject.Find("MapManager").GetComponent<MapManager>().RoomFadeIn(MapManager.currentRoom));
+            roomExitFadeOut = StartCoroutine(GameObject.Find("MapManager").GetComponent<MapManager>().RoomFadeOut(MapManager.mapGrid[ttx, tty]));
         }
         ttx = tx;
         tty = ty;

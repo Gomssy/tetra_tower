@@ -255,14 +255,23 @@ public class MapManager : MonoBehaviour {
     /// <returns></returns>
     public IEnumerator TetrisPress(float initialCollapseTime, Press leftPress, Press rightPress)
     {
+        int doorCounter = 0;
+        int row = leftPress.row;
         while (Time.time - initialCollapseTime < collapseTime)
         {
             yield return new WaitForSeconds(0.01f);
             float collapseRate = (Time.time - initialCollapseTime) / collapseTime;
             leftPress.transform.localScale = new Vector3(collapseRate * 20, 1, 1);
             rightPress.transform.localScale = new Vector3(-collapseRate * 20, 1, 1);
+            if(collapseRate - doorCounter * 0.2f > (float)1 / 12)
+            {
+                StartCoroutine(mapGrid[doorCounter, row].CloseDoor("Up"));
+                StartCoroutine(mapGrid[doorCounter, row].CloseDoor("Down"));
+                StartCoroutine(mapGrid[width - doorCounter - 1, row].CloseDoor("Up"));
+                StartCoroutine(mapGrid[width - doorCounter - 1, row].CloseDoor("Down"));
+                doorCounter++;
+            }
         }
-        int row = leftPress.row;
         for(int i = row + 1; i < realHeight; i++)
         {
             if(isRowDeleting[i])
@@ -273,14 +282,9 @@ public class MapManager : MonoBehaviour {
         }
         for (int x = 0; x < width; x++)
         {
-            if (row > 0 && isRowDeleting[row - 1] != true && mapGrid[x, row - 1] != null && mapGrid[x, row - 1].isUpDoorOpened == true)
-                StartCoroutine(mapGrid[x, row - 1].CloseDoor("Up"));
-            if (row < realHeight && isRowDeleting[row + 1] != true && mapGrid[x, row + 1] != null && mapGrid[x, row + 1].isDownDoorOpened == true)
-                StartCoroutine(mapGrid[x, row + 1].CloseDoor("Down"));
             Destroy(mapGrid[x, row].gameObject);
             mapGrid[x, row] = null;
         }
-        yield return new WaitForSeconds(1f);
         while (leftPress.transform.localScale.x > 1)
         {
             yield return new WaitForSeconds(0.01f);
@@ -362,7 +366,6 @@ public class MapManager : MonoBehaviour {
         }
         isRoomFalling = true;
         Vector3 previousPlayerRelativePosition = player.transform.position - currentRoom.transform.position;
-        player.transform.position += new Vector3(0, 0.2f, 0);
         while (tetrisYCoord[top + 1] > bottom * tetrisMapSize)
         {
             yield return new WaitForSeconds(0.01f);
@@ -379,7 +382,8 @@ public class MapManager : MonoBehaviour {
                     tetrisYCoord[i] -= yFallSpeed;
             }
             SetRoomsYCoord();
-            player.transform.position += new Vector3(0, - yFallSpeed, 0);
+            if(currentRoom.mapCoord.y >= bottom)
+                player.transform.position += new Vector3(0, - yFallSpeed, 0);
         }
         if (shakeCamera)
         {
@@ -770,9 +774,16 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     /// <param name="room">Room you want to fade in.</param>
     /// <returns></returns>
-    public static IEnumerator RoomFadeIn(Room room)
+    public IEnumerator RoomFadeIn(Room room)
     {
         float alpha = 1;
+        if(room.isRoomCleared != true)
+        {
+            StartCoroutine(room.CloseDoor("Up"));
+            StartCoroutine(room.CloseDoor("Down"));
+            StartCoroutine(room.CloseDoor("Left"));
+            StartCoroutine(room.CloseDoor("Right"));
+        }
         while(alpha > 0.0001)
         {
             alpha = Mathf.Lerp(alpha, 0, Mathf.Sqrt(Time.deltaTime));
@@ -792,7 +803,7 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     /// <param name="room">Room you want to fade out.</param>
     /// <returns></returns>
-    public static IEnumerator RoomFadeOut(Room room)
+    public IEnumerator RoomFadeOut(Room room)
     {
         float alpha = 0;
         while (alpha < 0.99909)

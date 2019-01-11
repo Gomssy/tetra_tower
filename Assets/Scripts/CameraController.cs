@@ -61,12 +61,12 @@ public class CameraController : MonoBehaviour {
             StopCoroutine(fadeOut);
         if(GameManager.gameState == GameManager.GameState.Ingame)
         {
-            fadeIn = StartCoroutine(MapManager.RoomFadeIn(MapManager.currentRoom));
+            fadeIn = StartCoroutine(mapManager.RoomFadeIn(MapManager.currentRoom));
             grid.transform.position = new Vector3(0, 0, 0);
         }
         else if(GameManager.gameState == GameManager.GameState.Tetris)
         {
-            fadeOut = StartCoroutine(MapManager.RoomFadeOut(MapManager.currentRoom));
+            fadeOut = StartCoroutine(mapManager.RoomFadeOut(MapManager.currentRoom));
             grid.transform.position = new Vector3(0, 0, 2);
         }
         while((_gameState == GameManager.GameState.Tetris && GetComponent<Camera>().orthographicSize < sizeDestination - 1) || (_gameState == GameManager.GameState.Ingame && GetComponent<Camera>().orthographicSize > sizeDestination + 0.0001))
@@ -138,10 +138,10 @@ public class CameraController : MonoBehaviour {
                 transform.position = Vector3.Lerp(transform.position, new Vector3(posx, posy, -1), 2f * Time.deltaTime);
                 transform.position = new Vector3(transform.position.x, transform.position.y, -1); //카메라를 원래 z축으로 이동
             }
-            else if(MapManager.isRoomFalling == true)
+            /*else if(MapManager.isRoomFalling == true)
             {
                 transform.position = player.transform.position + new Vector3(0, 0.2f, -1);
-            }
+            }*/
         }
         //  Camera.main.transform.position = new Vector3(posx, posy, -10);
     }
