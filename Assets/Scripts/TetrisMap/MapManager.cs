@@ -801,7 +801,7 @@ public class MapManager : MonoBehaviour {
             room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
-            if(room.isRoomCleared == false && alpha < clearedFogAlpha)
+            if(!(room.isRoomCleared == true && alpha >= clearedFogAlpha))
                 room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             yield return null;
         }

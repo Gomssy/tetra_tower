@@ -89,7 +89,7 @@ public class CameraController : MonoBehaviour {
         pos.z = -1;
         transform.position = pos;*/
 
-        if (GameManager.gameState == GameManager.GameState.Ingame && sceneChanger != null)
+        if (GameManager.gameState == GameManager.GameState.Ingame && isSceneChanging != true)
         {
             if(MapManager.isRoomFalling != true)
             {
