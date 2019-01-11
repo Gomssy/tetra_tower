@@ -71,16 +71,21 @@ MonoBehaviour:
   lifeStoneLocation: {x: 7, y: 7}
   standardImage: {fileID: 1001509239983906, guid: a48de94a6ab80f746aec69a02812f1e3,
     type: 2}
-  lifeStoneRow: 8
-  lifeStoneSize: 12
+  lifeStoneRowNum: 8
+  lifeStoneSize: 20
   sprites:
   - {fileID: 21300004, guid: eff441d843b9c664e97a81fcb39d8410, type: 3}
   - {fileID: 21300002, guid: eff441d843b9c664e97a81fcb39d8410, type: 3}
   - {fileID: 21300000, guid: eff441d843b9c664e97a81fcb39d8410, type: 3}
-  - {fileID: 21300000, guid: c8304f5a15856324fa6a4c5ae11bd279, type: 3}
+  - {fileID: 0}
   frameSuper: {fileID: 1820862295034228}
   stoneSuper: {fileID: 1874721051176178}
+  lifeUnitPrefab: {fileID: 1274079429510600, guid: c1fa87a24452e5745859b739e4a5254b,
+    type: 2}
+  vibrationVariable: 0.08
   lifeStoneFrame: {fileID: 0}
+  droppedLifeStonePrefab: {fileID: 1149595688849768, guid: 8255a117a93935941b32b4aed9b299a0,
+    type: 2}
 --- !u!224 &224255635903845628
 RectTransform:
   m_ObjectHideFlags: 1

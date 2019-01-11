@@ -54,7 +54,8 @@ public class LifeStoneManager : MonoBehaviour {
 	[HideInInspector]public GameObject[,] lifeStoneUnit;
     [HideInInspector]public LifeStoneFrame lifeStoneFrame;
 
-	
+	public GameObject droppedLifeStonePrefab;
+
 	void Start () {
         transform.position = new Vector3(lifeStoneLocation.x, lifeStoneLocation.y, 0);
         lifeStoneFrame = new LifeStoneFrame(frameSuper.transform, standardImage, lifeStoneRowNum, lifeStoneSize, sprites);
@@ -65,7 +66,15 @@ public class LifeStoneManager : MonoBehaviour {
 	}
 	IEnumerator TestEnumerator()
 	{
-		//PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 8), "AAAAAAAAAAAAAAAAAAAAAAAA"));
+
+        PushLifeStone(CreateLifeStoneInfo(5, 0.2f, 3));
+        yield return new WaitForSeconds(2);
+        PushLifeStone(CreateLifeStoneInfo(3, 0.2f, 0));
+        yield return new WaitForSeconds(2);
+        PushLifeStone(CreateLifeStoneInfo(4, 0.2f, 0));
+        yield return new WaitForSeconds(2);
+        InstantiateDroppedLifeStone(CreateLifeStoneInfo(4, 0.1f, 0), GameObject.Find("Player").transform.position + new Vector3(2,2,0));
+        /*PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 8), "AAAAAAAAAAAAAAAAAAAAAAAA"));
 		PushLifeStone(new LifeStoneInfo(new Vector2Int(2, 5), " AAAABA A "));
 		yield return new WaitForSeconds(2);
 		PushLifeStone(new LifeStoneInfo(new Vector2Int(2, 3), " AAA A"));
@@ -74,8 +83,99 @@ public class LifeStoneManager : MonoBehaviour {
 		yield return new WaitForSeconds(2);
 		ChangeToNormal(2, 3);
 		yield return new WaitForSeconds(2);
-		DestroyStone(3);
-	}
+		DestroyStone(3);*/
+    }
+    public void InstantiateDroppedLifeStone(LifeStoneInfo info, Vector3 pos)
+    {
+        GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
+        tmpObj.GetComponent<DroppedLifeStone>().Init(info, pos);
+    }
+    public LifeStoneInfo CreateLifeStoneInfo(Vector2Int size, int num, float goldPer, int ameNum)
+    {
+        System.Random rnd = new System.Random();
+        num = Mathf.Max(1, num);
+        size.y = Mathf.Min(3, size.y);
+        if (num >= size.x * size.y)
+            return CreateLifeStoneInfo(size, goldPer, ameNum);
+
+        int[,] tmpArray = new int[size.y, size.x] ;
+        for (int j = 0; j < size.y; j++)
+            for (int i = 0; i < size.x; i++)
+                tmpArray[j, i] = 0;
+
+        tmpArray[rnd.Next(size.y), rnd.Next(size.x)] = 1;
+
+        //making shape of lifestone
+        for(int n = 1; n < num; n++)
+        {
+            ArrayList candArray = new ArrayList();
+            for (int j = 0; j < size.y; j++)
+                for (int i = 0; i < size.x; i++)
+                    //check if adjacent cell is lifestone
+                    if(tmpArray[j,i] == 0 &&
+                        (j - 1 >= 0 && tmpArray[j - 1, i] == 1 ||
+                        j + 1 < size.y && tmpArray[j + 1, i] == 1 ||
+                        i - 1 >= 0 && tmpArray[j, i - 1] == 1 ||
+                        i + 1 < size.x && tmpArray[j, i + 1] == 1))
+                        candArray.Add(new Vector2Int(i, j));
+            if (candArray.Count == 0) break;
+            Vector2Int vtmp = (Vector2Int)candArray[rnd.Next(candArray.Count)];
+            tmpArray[vtmp.y, vtmp.x] = 1;
+        }
+
+        //recalibrate the size
+        Vector2Int maxPoint = new Vector2Int(-1, -1);
+        Vector2Int minPoint = new Vector2Int(size.x + 1, size.y + 1);
+        for (int j = 0; j < size.y; j++)
+            for (int i = 0; i < size.x; i++)
+                if(tmpArray[j,i] == 1)
+                {
+                    maxPoint.x = Mathf.Max(i, maxPoint.x);
+                    maxPoint.y = Mathf.Max(j, maxPoint.y);
+                    minPoint.x = Mathf.Min(i, minPoint.x);
+                    minPoint.y = Mathf.Min(j, minPoint.y);
+                }
+        size = maxPoint - minPoint + Vector2Int.one;
+
+        //making fill string
+        string fill = "";
+        for (int j = minPoint.y; j <= maxPoint.y; j++)
+            for (int i = minPoint.x; i <= maxPoint.x; i++)
+                if (tmpArray[j, i] == 1) fill += 'A';
+                else fill += ' ';
+
+        //change to amethyst
+        ArrayList sCandArray = new ArrayList();
+        for (int i = 0; i < fill.Length; i++)
+            if (fill[i] == 'A')
+                sCandArray.Add(i);
+        char[] repChar = fill.ToCharArray();
+        for(int i = 0; i < ameNum && sCandArray.Count > 0; i++)
+        {
+            int tmp = rnd.Next(sCandArray.Count);
+            repChar[(int)sCandArray[tmp]] = 'C';
+            sCandArray.RemoveAt(tmp);
+        }
+        for (int i = 0; i < fill.Length; i++)
+            if (repChar[i] == 'A' && Random.Range(0f, 1f) < goldPer)
+                repChar[i] = 'B';
+        fill = new string(repChar);
+        
+        return new LifeStoneInfo(size, fill);
+
+    }
+    public LifeStoneInfo CreateLifeStoneInfo(Vector2Int size, float goldPer, int ameNum)
+    {
+        return CreateLifeStoneInfo(size, size.x * size.y, goldPer, ameNum);
+    }
+    public LifeStoneInfo CreateLifeStoneInfo(int num, float goldPer, int ameNum)
+    {
+        return CreateLifeStoneInfo(new Vector2Int(3, 20), num, goldPer, ameNum);
+    }
+    public LifeStoneInfo CreateLifeStoneInfo(LifeStoneInfo lifeStoneInfo)
+    {
+        return lifeStoneInfo;
+    }
 
 	/// <summary>
 	/// push LifeStone in LifeStoneFrame
