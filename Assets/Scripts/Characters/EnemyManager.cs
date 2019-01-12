@@ -27,6 +27,7 @@ public class EnemyManager : Singleton<EnemyManager>
     // dictionary
     public readonly Dictionary<int, Dictionary<ItemType, int>> dropTableByID;
     public readonly Dictionary<int, Dictionary<State, Action>> actionDictByID;
+    public readonly Dictionary<int, float[]> enemyDataByID;
 
 
     // method
