@@ -255,11 +255,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 5
   maxDashSpeed: 10
-  accerlation: 600
+  accerlation: 1200
   jumpSpeed: 10
   ropeSpeed: 3
   doubleJumpSpeed: 10
-  dashAccerlation: 1000
+  dashAccerlation: 2000
   isDashing: 0
   platformArray: []
   horizontal: 0
@@ -348,7 +348,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 489222433}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 90e689a435f304c469db49daef28ed89, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
