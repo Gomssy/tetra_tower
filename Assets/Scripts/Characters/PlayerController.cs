@@ -77,59 +77,20 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         isGrounded = IsGrounded();
-        if (isGrounded)
-            isJumpable = true;
-        if(isGrounded)
+
+        if (GameManager.gameState == GameManager.GameState.Ingame)
         {
-            if (horizontalRaw == 1f) transform.localScale = new Vector3(1f, transform.localScale.y, transform.localScale.z);
-            else if (horizontalRaw == -1f) transform.localScale = new Vector3(-1f, transform.localScale.y, transform.localScale.z);
-        }
-       
+
+            if (isGrounded)
+                isJumpable = true;
+            if (isGrounded)
+            {
+                if (horizontalRaw == 1f) transform.localScale = new Vector3(1f, transform.localScale.y, transform.localScale.z);
+                else if (horizontalRaw == -1f) transform.localScale = new Vector3(-1f, transform.localScale.y, transform.localScale.z);
+            }
 
 
-        if (IsInRope())
-        {
-            if (isInRope)
-            {
-                if (horizontalRaw != 0f && verticalRaw == 0f)
-                {
-                    isInRope = false;
-                    rb.gravityScale = 2f;
-                    StartCoroutine(RopeDelay());
-                    
-}
-                rb.velocity = new Vector2(0f, verticalRaw *  ropeSpeed);
-
-            }
-            else if (verticalRaw != 0 && ropeEnabled && horizontalRaw == 0)
-            {
-                isInRope = true;
-                rb.gravityScale = 0f;
-                transform.position = new Vector2(Mathf.Round(transform.position.x - 0.5f) + 0.5f, transform.position.y);
-                rb.velocity = new Vector2(0f, 0f);
-            }
-        }
-        else
-        {
-            isInRope = false;
-            rb.gravityScale = 2f;
-        }
-        if (!isInRope)
-        {
-            float vertical = rb.velocity.y;
-            if (jump)
-            {
-                if (isGrounded)
-                {
-                    vertical = jumpSpeed;
-                }
-                else if (isJumpable)
-                {
-                    vertical = doubleJumpSpeed;
-                    isJumpable = false;
-                }
-            }
-            if(verticalRaw == -1 && !isDownPlatform)
+            if (verticalRaw == -1 && !isDownPlatform)
             {
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, platformLayer);
                 if (hit.collider != null && rb.velocity.y == 0)
@@ -140,48 +101,95 @@ public class PlayerController : MonoBehaviour
                     StartCoroutine(DownPlatform());
                 }
             }
-
-            //rb.velocity = new Vector2(horizontal * speed *  Time.smoothDeltaTime, vertical);
-            // rb.velocity = new Vector2(rb.velocity.x, vertical);
-
-            if(horizontalRaw != 0)
+            if (IsInRope())
             {
-                if(horizontal != 1 && horizontal != -1 && dashStart == 0)
+                if (isInRope)
                 {
-                    //짧게 눌렀을 때
-                    dashStart = 1;
-                }
-            }
-            if(horizontalRaw == 0 && horizontal != 0 && dashStart == 1)
-            {
-                //방금 뗐을때
-                dashStart = 2;
-                //이제 빠르게 켜면 됨
-            }
-            if(dashStart == 2 && horizontalRaw != 0)
-            {
-                isDashing = true;
-            }
-            if(horizontalRaw == 0 && horizontal == 0)
-            {
-                dashStart = 0;
-                isDashing = false;
-            }
-            
-           
-            if(isDashing)
-                rb.AddForce(horizontalRaw * dashAccerlation * Time.smoothDeltaTime * Vector2.right);
-            else
-            rb.AddForce(horizontalRaw * accerlation * Time.smoothDeltaTime * Vector2.right);
+                    if (horizontalRaw != 0f && verticalRaw == 0f)
+                    {
+                        isInRope = false;
+                        rb.gravityScale = 2f;
+                        StartCoroutine(RopeDelay());
 
-            if (((horizontalRaw == 0) || (rb.velocity.x > 0 && horizontalRaw < 0)
-                || (rb.velocity.x < 0 && horizontalRaw > 0)) && (isGrounded))
-            {
-                rb.AddForce(rb.velocity.x * (-10f) * Vector2.right * Time.smoothDeltaTime);
+                    }
+                    rb.velocity = new Vector2(0f, verticalRaw * ropeSpeed);
+
+                }
+                else if (verticalRaw != 0 && ropeEnabled && horizontalRaw == 0)
+                {
+                    isInRope = true;
+                    rb.gravityScale = 0f;
+                    transform.position = new Vector2(Mathf.Round(transform.position.x - 0.5f) + 0.5f, transform.position.y);
+                    rb.velocity = new Vector2(0f, 0f);
+                }
+
             }
-            if(isDashing) rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxDashSpeed, maxDashSpeed), vertical);
             else
-            rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed , maxSpeed ), vertical);
+            {
+                isInRope = false;
+                rb.gravityScale = 2f;
+            }
+            if (!isInRope)
+            {
+                float vertical = rb.velocity.y;
+                if (jump)
+                {
+                    if (isGrounded)
+                    {
+                        vertical = jumpSpeed;
+                    }
+                    else if (isJumpable)
+                    {
+                        vertical = doubleJumpSpeed;
+                        isJumpable = false;
+                    }
+                }
+
+
+                //rb.velocity = new Vector2(horizontal * speed *  Time.smoothDeltaTime, vertical);
+                // rb.velocity = new Vector2(rb.velocity.x, vertical);
+
+                if (horizontalRaw != 0)
+                {
+                    if (horizontal != 1 && horizontal != -1 && dashStart == 0)
+                    {
+                        //짧게 눌렀을 때
+                        dashStart = 1;
+                    }
+                }
+                if (horizontalRaw == 0 && horizontal != 0 && dashStart == 1)
+                {
+                    //방금 뗐을때
+                    dashStart = 2;
+                    //이제 빠르게 켜면 됨
+                }
+                if (dashStart == 2 && horizontalRaw != 0)
+                {
+                    isDashing = true;
+                }
+                if (horizontalRaw == 0 && horizontal == 0)
+                {
+                    dashStart = 0;
+                    isDashing = false;
+                }
+
+
+                if (isDashing)
+                    rb.AddForce(horizontalRaw * dashAccerlation * Time.smoothDeltaTime * Vector2.right);
+                else
+                    rb.AddForce(horizontalRaw * accerlation * Time.smoothDeltaTime * Vector2.right);
+
+                if (((horizontalRaw == 0) || (rb.velocity.x > 0 && horizontalRaw < 0)
+                    || (rb.velocity.x < 0 && horizontalRaw > 0)) && (isGrounded))
+                {
+                   // rb.AddForce(rb.velocity.x * (-100f) * Vector2.right * Time.smoothDeltaTime);
+                    rb.velocity = new Vector2(rb.velocity.x / (1.5f), rb.velocity.y);
+                }
+                if (isDashing) rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxDashSpeed, maxDashSpeed), vertical);
+                else
+                    rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), vertical);
+            }
+
         }
         jump = false;
     }
@@ -213,6 +221,7 @@ public class PlayerController : MonoBehaviour
             {
                 element.enabled = false;
                 yield return new WaitForSeconds(0.3f);
+                while(isInRope) yield return new WaitForSeconds(0.1f);
                 element.enabled = true;
                 isDownPlatform = false;
             }
@@ -224,6 +233,7 @@ public class PlayerController : MonoBehaviour
         isJumpable = true;
         yield return new WaitForSeconds(0.5f);
         ropeEnabled = true;
+
     }
     
 }
