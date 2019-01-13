@@ -83,11 +83,6 @@ public class Room : MonoBehaviour
     /// Check if room is clear and escapable.
     /// </summary>
     public bool isRoomCleared;
-    public bool isUpDoorOpened;
-    public bool isDownDoorOpened;
-    public bool isLeftDoorOpened;
-    public bool isRightDoorOpened;
-
 
     /*
      *  functions
@@ -138,162 +133,104 @@ public class Room : MonoBehaviour
             }
         }
     }
-
-
-    public void OpenDoorTest(GameObject door)
-    {
-        Animator animator;
-        animator = door.GetComponent<Animator>();
-        animator.SetBool("doorOpen", true);
-        animator.SetBool("doorClose", false);
-    }
-    public void CloseDoorTest(GameObject door)
-    {
-        Animator animator;
-        animator = door.GetComponent<Animator>();
-        animator.SetBool("doorOpen", false);
-        animator.SetBool("doorClose", true);
-    }
-
-
-
     /// <summary>
     /// Open selected door of this room.
     /// </summary>
-    /// <param name="direction">Direction of the door.</param>
-    /// <returns></returns>
-    public IEnumerator OpenDoor(string direction)
+    /// <param name="direction">Direction of door to open.</param>
+    public void OpenDoor(string direction)
     {
-        float standardSize = MapManager.tetrisMapSize / 24;
-        for(int i = 0; i < 25; i++)
+        Animator animatorThisRoom = null;
+        Animator animatorNextRoom = null;
+        switch (direction)
         {
-            switch (direction)
-            {
-                case "Up":
-                    inGameDoorUp.transform.GetChild(0).transform.position += new Vector3(standardSize / 20, 0, 0);
-                    inGameDoorUp.transform.GetChild(1).transform.position += new Vector3(-standardSize / 25, 0, 0);
-                    MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].inGameDoorDown.transform.GetChild(0).transform.position += new Vector3(-standardSize / 20, 0, 0);
-                    MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].inGameDoorDown.transform.GetChild(1).transform.position += new Vector3(standardSize / 25, 0, 0);
-                    isUpDoorOpened = true;
-                    MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].isDownDoorOpened = true;
-                    break;
-                case "Down":
-                    inGameDoorDown.transform.GetChild(0).transform.position += new Vector3(-standardSize / 20, 0, 0);
-                    inGameDoorDown.transform.GetChild(1).transform.position += new Vector3(standardSize / 25, 0, 0);
-                    MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].inGameDoorUp.transform.GetChild(0).transform.position += new Vector3(standardSize / 20, 0, 0);
-                    MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].inGameDoorUp.transform.GetChild(1).transform.position += new Vector3(-standardSize / 25, 0, 0);
-                    isDownDoorOpened = true;
-                    MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].isUpDoorOpened = true;
-                   break;
-                case "Left":
-                    inGameDoorLeft.transform.GetChild(0).transform.position += new Vector3(0, standardSize / 20, 0);
-                    inGameDoorLeft.transform.GetChild(1).transform.position += new Vector3(0, -standardSize / 25, 0);
-                    MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].inGameDoorRight.transform.GetChild(0).transform.position += new Vector3(0, -standardSize / 20, 0);
-                    MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].inGameDoorRight.transform.GetChild(1).transform.position += new Vector3(0, standardSize / 25, 0);
-                    isLeftDoorOpened = true;
-                    MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].isRightDoorOpened = true;
-                   break;
-                case "Right":
-                     inGameDoorRight.transform.GetChild(0).transform.position += new Vector3(0, -standardSize / 20, 0);
-                     inGameDoorRight.transform.GetChild(1).transform.position += new Vector3(0, standardSize / 25, 0);
-                     MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].inGameDoorLeft.transform.GetChild(0).transform.position += new Vector3(0, standardSize / 20, 0);
-                     MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].inGameDoorLeft.transform.GetChild(1).transform.position += new Vector3(0, -standardSize / 25, 0);
-                     isRightDoorOpened = true;
-                     MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].isLeftDoorOpened = true;
-                    break;
-            }
-            yield return new WaitForSeconds(0.04f);
+            case "Up":
+                if (mapCoord.y < MapManager.realHeight && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1] != null)
+                {
+                    animatorThisRoom = inGameDoorUp.GetComponent<Animator>();
+                    animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].inGameDoorDown.GetComponent<Animator>();
+                }
+                break;
+            case "Down":
+                if (mapCoord.y > 0 && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1] != null)
+                {
+                    animatorThisRoom = inGameDoorDown.GetComponent<Animator>();
+                    animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].inGameDoorUp.GetComponent<Animator>();
+                }
+                break;
+            case "Left":
+                if (mapCoord.x > 0 && MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y] != null)
+                {
+                    animatorThisRoom = inGameDoorLeft.GetComponent<Animator>();
+                    animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].inGameDoorRight.GetComponent<Animator>();
+                }
+                break;
+            case "Right":
+                if (mapCoord.x < MapManager.width - 1 && MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y] != null)
+                {
+                    animatorThisRoom = inGameDoorRight.GetComponent<Animator>();
+                    animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].inGameDoorLeft.GetComponent<Animator>();
+                }
+                break;
+        }
+        if(animatorThisRoom != null)
+        {
+            animatorThisRoom.SetBool("doorOpen", true);
+            animatorThisRoom.SetBool("doorClose", false);
+        }
+        if(animatorNextRoom != null)
+        {
+            animatorNextRoom.SetBool("doorOpen", true);
+            animatorNextRoom.SetBool("doorClose", false);
         }
     }
     /// <summary>
     /// Close selected door of this room.
     /// </summary>
-    /// <param name="direction">Direction of the door.</param>
-    /// <returns></returns>
-    public IEnumerator CloseDoor(string direction)
+    /// <param name="direction">Direction of door to open.</param>
+    public void CloseDoor(string direction)
     {
-        float standardSize = MapManager.tetrisMapSize / 24;
-        for (int i = 0; i < 25; i++)
-        {
-            switch (direction)
-            {
-                case "Up":
-                    if(isUpDoorOpened == true)
-                    {
-                        inGameDoorUp.transform.GetChild(0).transform.position += new Vector3(-standardSize / 20, 0, 0);
-                        inGameDoorUp.transform.GetChild(1).transform.position += new Vector3(standardSize / 25, 0, 0);
-                        if (mapCoord.y < MapManager.realHeight && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1] != null && isUpDoorOpened == true)
-                        {
-                            MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].inGameDoorDown.transform.GetChild(0).transform.position += new Vector3(standardSize / 20, 0, 0);
-                            MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].inGameDoorDown.transform.GetChild(1).transform.position += new Vector3(-standardSize / 25, 0, 0);
-                        }
-                    }
-                    break;
-                case "Down":
-                    if(isDownDoorOpened == true)
-                    {
-                        inGameDoorDown.transform.GetChild(0).transform.position += new Vector3(standardSize / 20, 0, 0);
-                        inGameDoorDown.transform.GetChild(1).transform.position += new Vector3(-standardSize / 25, 0, 0);
-                        if (mapCoord.y > 0 && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1] != null && isDownDoorOpened == true)
-                        {
-                            MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].inGameDoorUp.transform.GetChild(0).transform.position += new Vector3(-standardSize / 20, 0, 0);
-                            MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].inGameDoorUp.transform.GetChild(1).transform.position += new Vector3(standardSize / 25, 0, 0);
-                        }
-                    }
-                    break;
-                case "Left":
-                    if(isLeftDoorOpened == true)
-                    {
-                        inGameDoorLeft.transform.GetChild(0).transform.position += new Vector3(0, -standardSize / 20, 0);
-                        inGameDoorLeft.transform.GetChild(1).transform.position += new Vector3(0, standardSize / 25, 0);
-                        if (mapCoord.x > 0 && MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y] != null && isLeftDoorOpened == true)
-                        {
-                            MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].inGameDoorRight.transform.GetChild(0).transform.position += new Vector3(0, standardSize / 20, 0);
-                            MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].inGameDoorRight.transform.GetChild(1).transform.position += new Vector3(0, -standardSize / 25, 0);
-                        }
-                    }
-                    break;
-                case "Right":
-                    if(isRightDoorOpened == true)
-                    {
-                        inGameDoorRight.transform.GetChild(0).transform.position += new Vector3(0, standardSize / 20, 0);
-                        inGameDoorRight.transform.GetChild(1).transform.position += new Vector3(0, -standardSize / 25, 0);
-                        if (mapCoord.x < MapManager.width - 1 && MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y] != null && isRightDoorOpened == true)
-                        {
-                            MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].inGameDoorLeft.transform.GetChild(0).transform.position += new Vector3(0, -standardSize / 20, 0);
-                            MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].inGameDoorLeft.transform.GetChild(1).transform.position += new Vector3(0, standardSize / 25, 0);
-                        }
-                    }
-                    break;
-            }
-            yield return new WaitForSeconds(0.04f);
-        }
+        Animator animatorThisRoom = null;
+        Animator animatorNextRoom = null;
         switch (direction)
         {
             case "Up":
-                if (isUpDoorOpened == true)
-                    isUpDoorOpened = false;
-                if (mapCoord.y < MapManager.realHeight && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1] != null && isUpDoorOpened == true)
-                    MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].isDownDoorOpened = false;
+                if (mapCoord.y < MapManager.realHeight && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1] != null)
+                {
+                    animatorThisRoom = inGameDoorUp.GetComponent<Animator>();
+                    animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].inGameDoorDown.GetComponent<Animator>();
+                }
                 break;
             case "Down":
-                if (isDownDoorOpened == true)
-                    isDownDoorOpened = false;
-                if (mapCoord.y > 0 && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1] != null && isDownDoorOpened == true)
-                    MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].isUpDoorOpened = false;
+                if (mapCoord.y > 0 && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1] != null)
+                {
+                    animatorThisRoom = inGameDoorDown.GetComponent<Animator>();
+                    animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].inGameDoorUp.GetComponent<Animator>();
+                }
                 break;
             case "Left":
-                if (isLeftDoorOpened == true)
-                    isLeftDoorOpened = false;
-                if (mapCoord.x > 0 && MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y] != null && isLeftDoorOpened == true)
-                    MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].isRightDoorOpened = false;
+                if (mapCoord.x > 0 && MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y] != null)
+                {
+                    animatorThisRoom = inGameDoorLeft.GetComponent<Animator>();
+                    animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].inGameDoorRight.GetComponent<Animator>();
+                }
                 break;
             case "Right":
-                if (isRightDoorOpened == true)
-                    isRightDoorOpened = false;
-                if (mapCoord.x < MapManager.width - 1 && MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y] != null && isRightDoorOpened == true)
-                    MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].isLeftDoorOpened = false;
+                if (mapCoord.x < MapManager.width - 1 && MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y] != null)
+                {
+                    animatorThisRoom = inGameDoorRight.GetComponent<Animator>();
+                    animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].inGameDoorLeft.GetComponent<Animator>();
+                }
                 break;
+        }
+        if (animatorThisRoom != null)
+        {
+            animatorThisRoom.SetBool("doorOpen", false);
+            animatorThisRoom.SetBool("doorClose", true);
+        }
+        if (animatorNextRoom != null)
+        {
+            animatorNextRoom.SetBool("doorOpen", false);
+            animatorNextRoom.SetBool("doorClose", true);
         }
     }
     
@@ -304,32 +241,12 @@ public class Room : MonoBehaviour
     {
         if(isRoomCleared != true)
         {
-            if (mapCoord.y < MapManager.realHeight && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1] != null && isUpDoorOpened != true)
-            {
-                OpenDoorTest(inGameDoorUp);
-                MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].OpenDoorTest(MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].inGameDoorDown);
-            }
-                //StartCoroutine(OpenDoor("Up"));
-            if (mapCoord.y > 0 && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1] != null && isDownDoorOpened != true)
-            {
-                OpenDoorTest(inGameDoorDown);
-                MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].OpenDoorTest(MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].inGameDoorUp);
-            }
-                //StartCoroutine(OpenDoor("Down"));
-            if (mapCoord.x > 0 && MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y] != null && isLeftDoorOpened != true)
-            {
-                OpenDoorTest(inGameDoorLeft);
-                MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].OpenDoorTest(MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].inGameDoorRight);
-            }
-                //StartCoroutine(OpenDoor("Left"));
-            if (mapCoord.x < MapManager.width - 1 && MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y] != null && isRightDoorOpened != true)
-            {
-                OpenDoorTest(inGameDoorRight);
-                MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].OpenDoorTest(MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].inGameDoorLeft);
-            }
-                //StartCoroutine(OpenDoor("Right"));
+            OpenDoor("Up");
+            OpenDoor("Down");
+            OpenDoor("Left");
+            OpenDoor("Right");
+            isRoomCleared = true;
         }
-        isRoomCleared = true;
 
         //Need to make extra works.
     }

@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4726613234881410}
   - component: {fileID: 212016597369960122}
-  - component: {fileID: 60158907655368212}
   - component: {fileID: 95627112181051082}
+  - component: {fileID: 60158907655368212}
   m_Layer: 8
   m_Name: DoorInGameRight
   m_TagString: Untagged

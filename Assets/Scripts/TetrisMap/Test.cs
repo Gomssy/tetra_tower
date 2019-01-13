@@ -46,7 +46,7 @@ public class Test : MonoBehaviour {
         MapManager.currentRoom.ClearRoom();
     }
 
-    /*public GameObject upDoor;
+    public GameObject upDoor;
     public GameObject downDoor;
     public GameObject leftDoor;
     public GameObject rightDoor;
@@ -100,11 +100,12 @@ public class Test : MonoBehaviour {
         Animator animator = rightDoor.GetComponent<Animator>();
         animator.SetBool("doorOpen", false);
         animator.SetBool("doorClose", true);
-    }*/
+    }
 
 
     private void Awake()
     {
+        //leftDoor.GetComponent<Animator>().SetInteger("doorPosition", 3);
 
         mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
