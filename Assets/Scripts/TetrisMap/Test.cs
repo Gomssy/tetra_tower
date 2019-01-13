@@ -46,9 +46,66 @@ public class Test : MonoBehaviour {
         MapManager.currentRoom.ClearRoom();
     }
 
+    /*public GameObject upDoor;
+    public GameObject downDoor;
+    public GameObject leftDoor;
+    public GameObject rightDoor;
+    public void UpOpenTest()
+    {
+        Animator animator = upDoor.GetComponent<Animator>();
+        animator.SetBool("doorOpen", true);
+        animator.SetBool("doorClose", false);
+    }
+    public void UpCloseTest()
+    {
+        Animator animator = upDoor.GetComponent<Animator>();
+        animator.SetBool("doorOpen", false);
+        animator.SetBool("doorClose", true);
+    }
+
+    public void DownOpenTest()
+    {
+        Animator animator = downDoor.GetComponent<Animator>();
+        animator.SetBool("doorOpen", true);
+        animator.SetBool("doorClose", false);
+    }
+    public void DownCloseTest()
+    {
+        Animator animator = downDoor.GetComponent<Animator>();
+        animator.SetBool("doorOpen", false);
+        animator.SetBool("doorClose", true);
+    }
+
+    public void LeftOpenTest()
+    {
+        Animator animator = leftDoor.GetComponent<Animator>();
+        animator.SetBool("doorOpen", true);
+        animator.SetBool("doorClose", false);
+    }
+    public void LeftCloseTest()
+    {
+        Animator animator = leftDoor.GetComponent<Animator>();
+        animator.SetBool("doorOpen", false);
+        animator.SetBool("doorClose", true);
+    }
+
+    public void RightOpenTest()
+    {
+        Animator animator = rightDoor.GetComponent<Animator>();
+        animator.SetBool("doorOpen", true);
+        animator.SetBool("doorClose", false);
+    }
+    public void RightCloseTest()
+    {
+        Animator animator = rightDoor.GetComponent<Animator>();
+        animator.SetBool("doorOpen", false);
+        animator.SetBool("doorClose", true);
+    }*/
+
 
     private void Awake()
     {
+
         mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
     }
