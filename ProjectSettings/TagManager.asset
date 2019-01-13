@@ -21,7 +21,7 @@ TagManager:
   - Spike
   - Platform
   - OuterWall
-  - 
+  - Item
   - 
   - 
   - 
@@ -46,4 +46,10 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 4254909397
+    locked: 0
+  - name: ItemHighlight
+    uniqueID: 996861525
+    locked: 0
+  - name: Item
+    uniqueID: 2145601713
     locked: 0
