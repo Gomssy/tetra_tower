@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 
 public class Enemy : MonoBehaviour {
+    /*
 // data
     // health
     private readonly float maxHealth;
@@ -139,6 +140,7 @@ public class Enemy : MonoBehaviour {
         immunity[(int)sCase.Case] = false;
     }
 
+    */
 }
 
 //얼음일때 깨어나기

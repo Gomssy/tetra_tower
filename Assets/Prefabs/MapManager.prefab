@@ -96,7 +96,6 @@ MonoBehaviour:
   - {fileID: 114154673741132036, guid: 478354a3449548a44ba40d516d1cc3cd, type: 2}
   - {fileID: 114354969614802418, guid: 5d9d617a37ddce4448c92cca0946ab18, type: 2}
   - {fileID: 114950439855047056, guid: bfa57985877d23b46929238f077b40df, type: 2}
-  - {fileID: 114533787747630882, guid: 3c9743d258814274b97fab0e7c18a787, type: 2}
   specialRoomList:
   - {fileID: 114006867546177498, guid: 8fddb267ac5bdf84b9def0dab7ff2071, type: 2}
   - {fileID: 114206258087780418, guid: 00a3cc75c0f86a5429975c059b71c269, type: 2}

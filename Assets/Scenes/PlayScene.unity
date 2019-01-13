@@ -465,6 +465,11 @@ Prefab:
       propertyPath: grid
       value: 
       objectReference: {fileID: 1244139631}
+    - target: {fileID: 114144154128578016, guid: afe4a2cb44239b649a3ffa70af5c2d84,
+        type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 489222433}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afe4a2cb44239b649a3ffa70af5c2d84, type: 2}
   m_IsPrefabAsset: 0
@@ -986,27 +991,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114920782405449110, guid: c179f0931cfabec428a868a6edc543b0,
-        type: 2}
-      propertyPath: lifeStoneSize
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 114920782405449110, guid: c179f0931cfabec428a868a6edc543b0,
-        type: 2}
-      propertyPath: lifeUnitPrefab
-      value: 
-      objectReference: {fileID: 1274079429510600, guid: c1fa87a24452e5745859b739e4a5254b,
-        type: 2}
-    - target: {fileID: 114920782405449110, guid: c179f0931cfabec428a868a6edc543b0,
-        type: 2}
-      propertyPath: vibrationVariable
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114920782405449110, guid: c179f0931cfabec428a868a6edc543b0,
-        type: 2}
-      propertyPath: lifeStoneRowNum
-      value: 8
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c179f0931cfabec428a868a6edc543b0, type: 2}
   m_IsPrefabAsset: 0
@@ -1155,10 +1139,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ef4279cf32e10f4dbc71e2206514212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapManager: {fileID: 0}
   roomLayer:
     serializedVersion: 2
     m_Bits: 0
   player: {fileID: 489222433}
+  tetrisCameraCoord: {x: 108, y: 240, z: -1}
 --- !u!1001 &2042136941
 Prefab:
   m_ObjectHideFlags: 0

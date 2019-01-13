@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224255635903845628}
+  - component: {fileID: 114033875034530082}
   m_Layer: 5
   m_Name: LifeStoneFrame
   m_TagString: Untagged
@@ -57,6 +58,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114033875034530082
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1820862295034228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2674542376dfab04bad27caaa3ffe6a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114920782405449110
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -72,7 +84,7 @@ MonoBehaviour:
   standardImage: {fileID: 1001509239983906, guid: a48de94a6ab80f746aec69a02812f1e3,
     type: 2}
   lifeStoneRowNum: 8
-  lifeStoneSize: 20
+  lifeStoneSize: 40
   sprites:
   - {fileID: 21300004, guid: eff441d843b9c664e97a81fcb39d8410, type: 3}
   - {fileID: 21300002, guid: eff441d843b9c664e97a81fcb39d8410, type: 3}
@@ -82,10 +94,10 @@ MonoBehaviour:
   stoneSuper: {fileID: 1874721051176178}
   lifeUnitPrefab: {fileID: 1274079429510600, guid: c1fa87a24452e5745859b739e4a5254b,
     type: 2}
-  vibrationVariable: 0.08
-  lifeStoneFrame: {fileID: 0}
+  vibrationVariable: 0.1
   droppedLifeStonePrefab: {fileID: 1149595688849768, guid: 8255a117a93935941b32b4aed9b299a0,
     type: 2}
+  frameBorder: 0
 --- !u!224 &224255635903845628
 RectTransform:
   m_ObjectHideFlags: 1

@@ -887,6 +887,7 @@ public class MapManager : MonoBehaviour {
                 normalRoomsDistributed[i, j] = new List<RoomInGame>();
         for(int i = 0; i < normalRoomList.Length; i++)
         {
+            Debug.Log(i);
             int leftDoor = normalRoomList[i].sideDoorInfo[0];
             int rightDoor = normalRoomList[i].sideDoorInfo[1];
             int leftCount = 0;
