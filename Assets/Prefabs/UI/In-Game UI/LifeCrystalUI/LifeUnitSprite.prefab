@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4153958457646730}
   - component: {fileID: 212455254602000724}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: LifeUnitSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

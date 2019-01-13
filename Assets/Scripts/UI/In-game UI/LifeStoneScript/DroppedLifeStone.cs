@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DroppedLifeStone : MonoBehaviour {
+public class DroppedLifeStone : MonoBehaviour
+{
     LifeStoneInfo info;
     public Sprite[] sprites;
     public GameObject unitSprite, highlightSprite;
+    public LayerMask playerLayer;
     float unitSize;
     Rigidbody2D rb2D;
     BoxCollider2D bc2D;
@@ -32,9 +34,10 @@ public class DroppedLifeStone : MonoBehaviour {
 
         transform.position = pos - new Vector3(inSize.x * unitSize, 0, 0);
 
-        for(int i=0; i<inSize.x * inSize.y; i++)
+        for (int i = 0; i < inSize.x * inSize.y; i++)
         {
-            if (inFill[i] != ' ') {
+            if (inFill[i] != ' ')
+            {
                 unitObj[i] = Instantiate(unitSprite, transform);
                 unitObj[i].transform.localPosition = new Vector3((i % inSize.x) * unitSize, ((int)(i / inSize.x)) * unitSize, 0);
                 unitObj[i].GetComponent<SpriteRenderer>().sprite = sprites[inFill[i] - 'A'];
@@ -47,5 +50,19 @@ public class DroppedLifeStone : MonoBehaviour {
         bc2D.offset = new Vector2(unitSize * inSize.x / 2f, unitSize * inSize.y / 2f);
         bc2D.size = new Vector2(unitSize * inSize.x, unitSize * inSize.y);
     }
-    
+    public void ApplyLifeStone()
+    {
+        GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>().PushLifeStone(info);
+        Destroy(gameObject);
+    }
+    public void HighlightSwitch(bool enabled)
+    {
+        Vector2Int inSize = info.getSize();
+        string inFill = info.getFill();
+        for (int i = 0; i < inSize.x * inSize.y; i++)
+        {
+            if (inFill[i] != ' ')
+                highObj[i].GetComponent<SpriteRenderer>().enabled = enabled;
+        }
+    }
 }

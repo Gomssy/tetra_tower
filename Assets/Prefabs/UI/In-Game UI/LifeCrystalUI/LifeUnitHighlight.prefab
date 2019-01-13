@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4652270508485928}
   - component: {fileID: 212024161364399972}
-  m_Layer: 14
+  m_Layer: 0
   m_Name: LifeUnitHighlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -58,7 +58,7 @@ public class LifeUnitInFrame : MonoBehaviour {
 	}
 	IEnumerator FadeInEnumerator()
 	{
-		
+		StartCoroutine("FallEnumerator");
 		float alpha = 0;
 		float fadeTime = 0.3f;
 		while (alpha <= 1f)
@@ -68,7 +68,7 @@ public class LifeUnitInFrame : MonoBehaviour {
 			yield return null;
 		}
 		GetComponent<Image>().color = new Color(255, 255, 255, 1f);
-		StartCoroutine("FallEnumerator");
+		
 	}
 	IEnumerator FallEnumerator()
 	{
@@ -85,7 +85,7 @@ public class LifeUnitInFrame : MonoBehaviour {
 			yield return null;
 		}
 		if (vibration != 0)
-			StartCoroutine(GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>().vibrateEnumerator(vibration));
+			StartCoroutine(GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>().VibrateEnumerator(vibration));
 	}
 	
 }

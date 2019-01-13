@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LifeStoneInfo : MonoBehaviour {
+public class LifeStoneInfo {
     /// <summary>
     /// width, height of LifeStone
     /// ex)  □

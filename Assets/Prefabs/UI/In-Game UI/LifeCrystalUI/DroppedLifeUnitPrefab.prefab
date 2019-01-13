@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 50720349360822072}
   - component: {fileID: 61973677923814376}
   - component: {fileID: 114071444104977984}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: DroppedLifeUnitPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,3 +105,6 @@ MonoBehaviour:
   unitSprite: {fileID: 1440159976580912, guid: 672b38cc92ccf35439b6137b951daf15, type: 2}
   highlightSprite: {fileID: 1638220072418960, guid: e279edc92751d234782d0cc881edfe87,
     type: 2}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
