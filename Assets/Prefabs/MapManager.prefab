@@ -67,13 +67,13 @@ MonoBehaviour:
   fog: {fileID: 1100171732424598, guid: b8ab69a93ba618c47b27cc04eb431b3f, type: 2}
   leftDoor: {fileID: 1309596820948456, guid: 80ed5bfe62ba3034592296b6e27526bc, type: 2}
   rightDoor: {fileID: 1614071394812404, guid: ac9e1e28c8413e54f939bc255268fabd, type: 2}
-  inGameDoorUp: {fileID: 1390552800332292, guid: a4b66f2ca843159489a98c82bcfca85a,
+  inGameDoorUp: {fileID: 1011110161276626, guid: 30d1850ce96755d4ea7675c706899cfb,
     type: 2}
-  inGameDoorDown: {fileID: 1065314290117232, guid: 66c1939853547324782fc3cd699433f0,
+  inGameDoorDown: {fileID: 1488439045129830, guid: 98de1e842c22aa048bde2ae464f9c601,
     type: 2}
-  inGameDoorLeft: {fileID: 1219203643804288, guid: 317e92149cc8b26459748888a6dd121a,
+  inGameDoorLeft: {fileID: 1237283271006564, guid: 091b263092c16a34fba0a103b6543c65,
     type: 2}
-  inGameDoorRight: {fileID: 1561964545190330, guid: 2dc82009f5315a440b94abfb6b359926,
+  inGameDoorRight: {fileID: 1668375270989012, guid: fa868e0924825b54896b61a69e93391f,
     type: 2}
   normalRoomList:
   - {fileID: 114452746530220676, guid: 3c35322ac2c308d49aadf20738b69c8b, type: 2}

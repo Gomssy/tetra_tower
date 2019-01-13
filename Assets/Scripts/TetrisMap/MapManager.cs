@@ -400,9 +400,11 @@ public class MapManager : MonoBehaviour {
         for (int i = 0; i < width; i++)
         {
             if (bottom > 0 && mapGrid[i, bottom] != null && mapGrid[i, bottom].isRoomCleared == true && mapGrid[i, bottom].isDownDoorOpened != true)
-                StartCoroutine(mapGrid[i, bottom].OpenDoor("Down"));
-            else if(bottom > 0 && mapGrid[i, bottom - 1] != null && mapGrid[i, bottom - 1].isRoomCleared == true && mapGrid[i, bottom - 1].isUpDoorOpened != true)
-                StartCoroutine(mapGrid[i, bottom - 1].OpenDoor("Up"));
+                mapGrid[i, bottom].OpenDoorTest(mapGrid[i, bottom].inGameDoorDown);
+                //StartCoroutine(mapGrid[i, bottom].OpenDoor("Down"));
+            else if (bottom > 0 && mapGrid[i, bottom - 1] != null && mapGrid[i, bottom - 1].isRoomCleared == true && mapGrid[i, bottom - 1].isUpDoorOpened != true)
+                mapGrid[i, bottom - 1].OpenDoorTest(mapGrid[i, bottom - 1].inGameDoorUp);
+                //StartCoroutine(mapGrid[i, bottom - 1].OpenDoor("Up"));
         }
     }
     /// <summary>
@@ -688,11 +690,26 @@ public class MapManager : MonoBehaviour {
             room.CreateDoors(leftDoor, rightDoor, inGameDoorUp, inGameDoorDown, inGameDoorLeft, inGameDoorRight);
             room.fog = Instantiate(fog, room.transform.position + new Vector3(12, 12, 2), Quaternion.identity, room.transform);
             if (room.mapCoord.y > 0 && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1] != null && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].isRoomCleared == true)
-                StartCoroutine(mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].OpenDoor("Up"));
+            {
+                room.OpenDoorTest(room.inGameDoorDown);
+                mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].OpenDoorTest(mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].inGameDoorUp);
+                //StartCoroutine(mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].OpenDoor("Up"));
+
+            }
             if (room.mapCoord.x > 0 && mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y] != null && mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].isRoomCleared == true)
-                StartCoroutine(mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].OpenDoor("Right"));
+            {
+                room.OpenDoorTest(room.inGameDoorLeft);
+                mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].OpenDoorTest(mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].inGameDoorRight);
+                //StartCoroutine(mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].OpenDoor("Right"));
+
+            }
             if (room.mapCoord.x < width - 1 && mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y] != null && mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].isRoomCleared == true)
-                StartCoroutine(mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].OpenDoor("Left"));
+            {
+                room.OpenDoorTest(room.inGameDoorRight);
+                mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].OpenDoorTest(mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].inGameDoorLeft);
+                //StartCoroutine(mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].OpenDoor("Left"));
+
+            }
         }
         Destroy(te.gameObject);
     }
@@ -777,12 +794,38 @@ public class MapManager : MonoBehaviour {
     public IEnumerator RoomFadeIn(Room room)
     {
         float alpha = 1;
-        if(room.isRoomCleared != true)
+        yield return new WaitForSeconds(0.1f);
+        if (room.isRoomCleared != true)
         {
-            StartCoroutine(room.CloseDoor("Up"));
+            room.CloseDoorTest(room.inGameDoorUp);
+            if (room.mapCoord.y < realHeight && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y + 1] != null)
+            {
+                mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y + 1].CloseDoorTest(mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y + 1].inGameDoorDown);
+            }
+            room.CloseDoorTest(room.inGameDoorDown);
+            if (room.mapCoord.y > 0 && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1] != null)
+            {
+                mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].CloseDoorTest(mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].inGameDoorUp);
+            }
+            room.CloseDoorTest(room.inGameDoorLeft);
+            if (room.mapCoord.x > 0 && mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y] != null)
+            {
+                mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].CloseDoorTest(mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].inGameDoorRight);
+            }
+            room.CloseDoorTest(room.inGameDoorRight);
+            if (room.mapCoord.x < width - 1 && mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y] != null)
+            {
+                mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].CloseDoorTest(mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].inGameDoorLeft);
+            }
+
+
+
+
+
+            /*StartCoroutine(room.CloseDoor("Up"));
             StartCoroutine(room.CloseDoor("Down"));
             StartCoroutine(room.CloseDoor("Left"));
-            StartCoroutine(room.CloseDoor("Right"));
+            StartCoroutine(room.CloseDoor("Right"));*/
         }
         while(alpha > 0.0001)
         {
