@@ -23,14 +23,14 @@ public class LifeStoneTest : MonoBehaviour {
     public void gold()
     {
         int tmp = Convert.ToInt32(goldText.GetComponent<InputField>().text);
-        if (tmp > 0) uii.ChangeFromNormal(2, tmp);
-        else if (tmp < 0) uii.ChangeToNormal(2, -tmp);
+        if (tmp > 0) uii.ChangeFromNormal(LifeStoneType.Gold, tmp);
+        else if (tmp < 0) uii.ChangeToNormal(LifeStoneType.Gold, -tmp);
     }
     public void amethyst()
     {
         int tmp = Convert.ToInt32(amethystText.GetComponent<InputField>().text);
-        if (tmp > 0) uii.ChangeFromNormal(3, tmp);
-        else if (tmp < 0) uii.ChangeToNormal(3, -tmp);
+        if (tmp > 0) uii.ChangeFromNormal(LifeStoneType.Amethyst, tmp);
+        else if (tmp < 0) uii.ChangeToNormal(LifeStoneType.Amethyst, -tmp);
     }
     public void dest()
     {
