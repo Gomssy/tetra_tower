@@ -95,6 +95,19 @@ public class EnemyManager : Singleton<EnemyManager>
         while ((tableLine = strReader.ReadLine()) != null)
         {
             cellValue = tableLine.Split(',');
+
+            int enemyID = -1;
+            float[] enemyData = { 0.0f };
+            //enemyData 배열에 있는 값 순서대로 에너미의 health, weight, height, width, detectRange, atkRange, atkDistance, atkDelay, pjtSpeed, moveSpeed, damage
+            //atk = attack, pjt = projectile(투사체)
+
+            int.TryParse(cellValue[0], out enemyID);
+            for(int i=0;i<11;i++)
+            {
+                float.TryParse(cellValue[i + 1], out enemyData[i]);
+            }
+
+            enemyDataByID.Add(enemyID, enemyData);
         }
     }
 }
