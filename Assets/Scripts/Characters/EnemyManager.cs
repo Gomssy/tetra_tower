@@ -20,6 +20,9 @@ public class EnemyManager : Singleton<EnemyManager>
         EpicItem, LegendaryItem, CommonAdd, RareAdd, EpicAdd,
         LegendaryAdd }
 
+    public enum EnemyData { Health, Weight, Height, Width, DetectRange,
+        AtkRange, AtkDistance, AtkDelay, PjtSpeed, MoveSpeed,
+        Damage } //Atk = Attack, Pjt = Projectile(투사체)
     public delegate void Action();
 
 
@@ -27,7 +30,7 @@ public class EnemyManager : Singleton<EnemyManager>
     // dictionary
     public readonly Dictionary<int, Dictionary<ItemType, int>> dropTableByID;
     public readonly Dictionary<int, Dictionary<State, Action>> actionDictByID;
-    public readonly Dictionary<int, float[]> enemyDataByID;
+    public readonly Dictionary<int, Dictionary<EnemyData, float>> enemyDataByID;
 
 
     // method
@@ -91,23 +94,26 @@ public class EnemyManager : Singleton<EnemyManager>
         string[] cellValue = null;
         string tableLine = null;
         strReader.ReadLine();
-
+        Dictionary<EnemyData, float> EnemyInfo = new Dictionary<EnemyData, float>();
         while ((tableLine = strReader.ReadLine()) != null)
         {
             cellValue = tableLine.Split(',');
 
             int enemyID = -1;
             float[] enemyData = { 0.0f };
-            //enemyData 배열에 있는 값 순서대로 에너미의 health, weight, height, width, detectRange, atkRange, atkDistance, atkDelay, pjtSpeed, moveSpeed, damage
-            //atk = attack, pjt = projectile(투사체)
-
+           
             int.TryParse(cellValue[0], out enemyID);
             for(int i=0;i<11;i++)
             {
                 float.TryParse(cellValue[i + 1], out enemyData[i]);
             }
 
-            enemyDataByID.Add(enemyID, enemyData);
+            for(int i=0;i<12;i++)
+            {
+                EnemyInfo.Add((EnemyData)i, enemyData[i]);
+            }
+
+            enemyDataByID.Add(enemyID, EnemyInfo);
         }
     }
 }
