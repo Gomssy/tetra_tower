@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;     // RigidBody2D of this game object
-
+    private Animator anim;
     // Speeds of player
     [SerializeField]
     private float maxSpeed;
@@ -59,6 +59,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -80,6 +81,16 @@ public class PlayerController : MonoBehaviour
 
         if (GameManager.gameState == GameManager.GameState.Ingame)
         {
+            anim.SetBool("rope",isInRope);
+            anim.SetBool("run", isDashing);
+            anim.SetBool("ground", isGrounded);
+            anim.SetFloat("vspeed", rb.velocity.y);
+            anim.SetFloat("speed", Mathf.Abs(rb.velocity.x));
+            if(isGrounded || isInRope)
+            {
+                anim.SetBool("jump", false);
+            }
+            
 
             if (isGrounded)
                 isJumpable = true;
@@ -137,10 +148,12 @@ public class PlayerController : MonoBehaviour
                     if (isGrounded)
                     {
                         vertical = jumpSpeed;
+                        anim.SetBool("jump", true);
                     }
                     else if (isJumpable)
                     {
                         vertical = doubleJumpSpeed;
+                        anim.SetBool("jump", true);
                         isJumpable = false;
                     }
                 }
