@@ -26,22 +26,18 @@ public class Player : MonoBehaviour {
             if (tx < ttx)
             {
                 MapManager.currentRoom.CloseDoor("Left", true);
-                MapManager.currentRoom.inGameDoorLeft.GetComponent<Door>().close = true;
             }
             else if (tx > ttx)
             {
                 MapManager.currentRoom.CloseDoor("Right", true);
-                MapManager.currentRoom.inGameDoorRight.GetComponent<Door>().close = true;
             }
             else if (ty < tty)
             {
                 MapManager.currentRoom.CloseDoor("Down", true);
-                MapManager.currentRoom.inGameDoorDown.GetComponent<Door>().close = true;
             }
             else if (ty > tty)
             {
                 MapManager.currentRoom.CloseDoor("Up", true);
-                MapManager.currentRoom.inGameDoorUp.GetComponent<Door>().close = true;
             }
         }
         ttx = tx;

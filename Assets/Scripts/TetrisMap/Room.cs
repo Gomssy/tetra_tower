@@ -249,7 +249,6 @@ public class Room : MonoBehaviour
                 }
                 door.GetComponent<Door>().animatorThisRoom = animatorThisRoom;
                 door.GetComponent<Door>().animatorNextRoom = animatorNextRoom;
-                door.GetComponent<Door>().close = true;
             }
         }
         else

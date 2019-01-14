@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Door : MonoBehaviour {
 
-    public bool close = false;
     public int position;
     public int enteredPosition;
     public Animator animatorThisRoom;
@@ -12,7 +11,7 @@ public class Door : MonoBehaviour {
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (enteredPosition == position && collision.tag.Equals("Player") && close == true)
+        if (enteredPosition == position && collision.tag.Equals("Player"))
         {
             switch (position)
             {
@@ -45,7 +44,7 @@ public class Door : MonoBehaviour {
                 animatorThisRoom.SetBool("doorClose", true);
                 animatorNextRoom.SetBool("doorClose", true);
             }
-            close = false;
+
         }
     }
 }

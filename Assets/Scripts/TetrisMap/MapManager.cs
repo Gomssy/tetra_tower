@@ -136,11 +136,6 @@ public class MapManager : MonoBehaviour {
     /// Right door in ingame.
     /// </summary>
     public GameObject inGameDoorRight;
-
-
-
-
-
     /// <summary>
     /// Array for the normal Room candidates.
     /// </summary>
@@ -155,19 +150,13 @@ public class MapManager : MonoBehaviour {
     List<RoomInGame>[,] normalRoomsDistributed = new List<RoomInGame>[3, 3];
     /// <summary>
     /// Room player exists.
+    /// Not related to player's real position, it also consider if player enter the room ordinarily.
     /// </summary>
     public static Room currentRoom;
-
-
-
-
-
+    /// <summary>
+    /// Temporary room player exists according to only position.
+    /// </summary>
     public static Room tempRoom;
-
-
-
-
-
     /// <summary>
     /// Queue that saves rooms waiting for upgrade tetrimino.
     /// </summary>
@@ -405,7 +394,7 @@ public class MapManager : MonoBehaviour {
         if (shakeCamera)
         {
             Camera camera = FindObjectOfType<Camera>();
-            StartCoroutine(CameraShake(5 * (top - bottom + 1) / CameraController.tetrisCameraSize, camera.transform.position, camera));
+            StartCoroutine(camera.GetComponent<CameraController>().CameraShake(5 * (top - bottom + 1) / CameraController.tetrisCameraSize));
         }
         for (int i = 0; i < height; i++)
         {
@@ -600,7 +589,7 @@ public class MapManager : MonoBehaviour {
             te.transform.position += new Vector3(0, -fallSpeed, 0);
         }
         Camera camera = FindObjectOfType<Camera>();
-        StartCoroutine(CameraShake(20 / CameraController.tetrisCameraSize, camera.transform.position, camera));
+        StartCoroutine(camera.GetComponent<CameraController>().CameraShake(20 / CameraController.tetrisCameraSize));
         EndTetrimino(te);
     }
     /// <summary>
@@ -739,7 +728,7 @@ public class MapManager : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         tetriminoSpawner.MakeTetrimino();
     }
-    /// <summary>
+    /*/// <summary>
     /// Shake the camera when tetrimino has fallen.
     /// </summary>
     /// <param name="_amount">Amount you want to shake the camera.</param>
@@ -759,7 +748,7 @@ public class MapManager : MonoBehaviour {
             yield return null;
         }
         camera.transform.localPosition = originPos;
-    }
+    }*/
     /// <summary>
     /// Make room fade in.
     /// </summary>
@@ -768,15 +757,14 @@ public class MapManager : MonoBehaviour {
     public IEnumerator RoomFadeIn(Room room)
     {
         float alpha = 1;
-        yield return new WaitForSeconds(0.1f);
-        while(alpha > 0.0001)
+        for (int i = 0; i < 20; i++)
         {
-            alpha = Mathf.Lerp(alpha, 0, Mathf.Sqrt(Time.deltaTime));
+            yield return new WaitForSeconds(0.01f);
             room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
-            yield return null;
+            alpha -= 0.05f;
         }
         room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
@@ -791,14 +779,14 @@ public class MapManager : MonoBehaviour {
     public IEnumerator RoomFadeOut(Room room)
     {
         float alpha = 0;
-        while (alpha < 0.99909)
+        for(int i = 0; i < 20; i++)
         {
-            alpha = Mathf.Lerp(alpha, 1, Mathf.Sqrt(Time.deltaTime));
+            yield return new WaitForSeconds(0.01f);
             room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
-            yield return null;
+            alpha += 0.05f;
         }
         room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
