@@ -22,13 +22,27 @@ public class Player : MonoBehaviour {
         ty = (int)((transform.position.y-0.9f) / 24f);
         if ((ttx != tx || tty != ty) && MapManager.isRoomFalling != true)
         {
-            MapManager.currentRoom = MapManager.mapGrid[tx, ty];
-            if (roomEnterFadeIn != null)
-                StopCoroutine(roomEnterFadeIn);
-            if (roomExitFadeOut != null)
-                StopCoroutine(roomExitFadeOut);
-            roomEnterFadeIn = StartCoroutine(GameObject.Find("MapManager").GetComponent<MapManager>().RoomFadeIn(MapManager.currentRoom));
-            roomExitFadeOut = StartCoroutine(GameObject.Find("MapManager").GetComponent<MapManager>().RoomFadeOut(MapManager.mapGrid[ttx, tty]));
+            MapManager.tempRoom = MapManager.mapGrid[tx, ty];
+            if (tx < ttx)
+            {
+                MapManager.currentRoom.CloseDoor("Left", true);
+                MapManager.currentRoom.inGameDoorLeft.GetComponent<Door>().close = true;
+            }
+            else if (tx > ttx)
+            {
+                MapManager.currentRoom.CloseDoor("Right", true);
+                MapManager.currentRoom.inGameDoorRight.GetComponent<Door>().close = true;
+            }
+            else if (ty < tty)
+            {
+                MapManager.currentRoom.CloseDoor("Down", true);
+                MapManager.currentRoom.inGameDoorDown.GetComponent<Door>().close = true;
+            }
+            else if (ty > tty)
+            {
+                MapManager.currentRoom.CloseDoor("Up", true);
+                MapManager.currentRoom.inGameDoorUp.GetComponent<Door>().close = true;
+            }
         }
         ttx = tx;
         tty = ty;

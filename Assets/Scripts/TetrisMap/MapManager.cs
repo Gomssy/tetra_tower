@@ -157,6 +157,17 @@ public class MapManager : MonoBehaviour {
     /// Room player exists.
     /// </summary>
     public static Room currentRoom;
+
+
+
+
+
+    public static Room tempRoom;
+
+
+
+
+
     /// <summary>
     /// Queue that saves rooms waiting for upgrade tetrimino.
     /// </summary>
@@ -273,10 +284,10 @@ public class MapManager : MonoBehaviour {
             rightPress.transform.localScale = new Vector3(-collapseRate * 20, 1, 1);
             if(collapseRate - doorCounter * 0.2f > (float)1 / 12)
             {
-                mapGrid[doorCounter, row].CloseDoor("Up");
-                mapGrid[doorCounter, row].CloseDoor("Down");
-                mapGrid[width - doorCounter - 1, row].CloseDoor("Up");
-                mapGrid[width - doorCounter - 1, row].CloseDoor("Down");
+                mapGrid[doorCounter, row].CloseDoor("Up", false);
+                mapGrid[doorCounter, row].CloseDoor("Down", false);
+                mapGrid[width - doorCounter - 1, row].CloseDoor("Up", false);
+                mapGrid[width - doorCounter - 1, row].CloseDoor("Down", false);
                 doorCounter++;
             }
         }
@@ -758,13 +769,6 @@ public class MapManager : MonoBehaviour {
     {
         float alpha = 1;
         yield return new WaitForSeconds(0.1f);
-        if (room.isRoomCleared != true)
-        {
-            room.CloseDoor("Up");
-            room.CloseDoor("Down");
-            room.CloseDoor("Left");
-            room.CloseDoor("Right");
-        }
         while(alpha > 0.0001)
         {
             alpha = Mathf.Lerp(alpha, 0, Mathf.Sqrt(Time.deltaTime));

@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212908652645628620}
   - component: {fileID: 95049867913064836}
   - component: {fileID: 60595704614928888}
+  - component: {fileID: 114295912794569440}
   m_Layer: 8
   m_Name: DoorInGameDown
   m_TagString: Untagged
@@ -92,6 +93,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114295912794569440
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1488439045129830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70108dd0bfd72e847b1580dbd0869ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 2
+  enteredPosition: 0
+  animatorThisRoom: {fileID: 0}
+  animatorNextRoom: {fileID: 0}
 --- !u!212 &212908652645628620
 SpriteRenderer:
   m_ObjectHideFlags: 1

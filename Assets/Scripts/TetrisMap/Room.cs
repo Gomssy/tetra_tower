@@ -137,43 +137,48 @@ public class Room : MonoBehaviour
     {
         Animator animatorThisRoom = null;
         Animator animatorNextRoom = null;
+        GameObject door = null;
         switch (direction)
         {
             case "Up":
                 if (mapCoord.y < MapManager.realHeight && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1] != null)
                 {
-                    animatorThisRoom = inGameDoorUp.GetComponent<Animator>();
+                    door = inGameDoorUp;
+                    animatorThisRoom = door.GetComponent<Animator>();
                     animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].inGameDoorDown.GetComponent<Animator>();
                 }
                 break;
             case "Down":
                 if (mapCoord.y > 0 && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1] != null)
                 {
-                    animatorThisRoom = inGameDoorDown.GetComponent<Animator>();
+                    door = inGameDoorDown;
+                    animatorThisRoom = door.GetComponent<Animator>();
                     animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].inGameDoorUp.GetComponent<Animator>();
                 }
                 break;
             case "Left":
                 if (mapCoord.x > 0 && MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y] != null)
                 {
-                    animatorThisRoom = inGameDoorLeft.GetComponent<Animator>();
+                    door = inGameDoorLeft;
+                    animatorThisRoom = door.GetComponent<Animator>();
                     animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].inGameDoorRight.GetComponent<Animator>();
                 }
                 break;
             case "Right":
                 if (mapCoord.x < MapManager.width - 1 && MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y] != null)
                 {
-                    animatorThisRoom = inGameDoorRight.GetComponent<Animator>();
+                    door = inGameDoorRight;
+                    animatorThisRoom = door.GetComponent<Animator>();
                     animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].inGameDoorLeft.GetComponent<Animator>();
                 }
                 break;
         }
-        if(animatorThisRoom != null)
+        if (animatorThisRoom != null)
         {
             animatorThisRoom.SetBool("doorOpen", true);
             animatorThisRoom.SetBool("doorClose", false);
         }
-        if(animatorNextRoom != null)
+        if (animatorNextRoom != null)
         {
             animatorNextRoom.SetBool("doorOpen", true);
             animatorNextRoom.SetBool("doorClose", false);
@@ -183,50 +188,84 @@ public class Room : MonoBehaviour
     /// Close selected door of this room.
     /// </summary>
     /// <param name="direction">Direction of door to open.</param>
-    public void CloseDoor(string direction)
+    public void CloseDoor(string direction, bool isPlayerPass)
     {
         Animator animatorThisRoom = null;
         Animator animatorNextRoom = null;
+        GameObject door = null;
         switch (direction)
         {
             case "Up":
                 if (mapCoord.y < MapManager.realHeight && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1] != null)
                 {
-                    animatorThisRoom = inGameDoorUp.GetComponent<Animator>();
+                    door = inGameDoorUp;
+                    animatorThisRoom = door.GetComponent<Animator>();
                     animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].inGameDoorDown.GetComponent<Animator>();
                 }
                 break;
             case "Down":
                 if (mapCoord.y > 0 && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1] != null)
                 {
-                    animatorThisRoom = inGameDoorDown.GetComponent<Animator>();
+                    door = inGameDoorDown;
+                    animatorThisRoom = door.GetComponent<Animator>();
                     animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].inGameDoorUp.GetComponent<Animator>();
                 }
                 break;
             case "Left":
                 if (mapCoord.x > 0 && MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y] != null)
                 {
-                    animatorThisRoom = inGameDoorLeft.GetComponent<Animator>();
+                    door = inGameDoorLeft;
+                    animatorThisRoom = door.GetComponent<Animator>();
                     animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].inGameDoorRight.GetComponent<Animator>();
                 }
                 break;
             case "Right":
                 if (mapCoord.x < MapManager.width - 1 && MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y] != null)
                 {
-                    animatorThisRoom = inGameDoorRight.GetComponent<Animator>();
+                    door = inGameDoorRight;
+                    animatorThisRoom = door.GetComponent<Animator>();
                     animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].inGameDoorLeft.GetComponent<Animator>();
                 }
                 break;
         }
-        if (animatorThisRoom != null)
+        if(isPlayerPass == true)
         {
-            animatorThisRoom.SetBool("doorOpen", false);
-            animatorThisRoom.SetBool("doorClose", true);
+            if(door != null)
+            {
+                switch (direction)
+                {
+                    case "Up":
+                        door.GetComponent<Door>().enteredPosition = 0;
+                        break;
+                    case "Down":
+                        door.GetComponent<Door>().enteredPosition = 2;
+                        break;
+                    case "Left":
+                        door.GetComponent<Door>().enteredPosition = 3;
+                        break;
+                    case "Right":
+                        door.GetComponent<Door>().enteredPosition = 1;
+                        break;
+                }
+                door.GetComponent<Door>().animatorThisRoom = animatorThisRoom;
+                door.GetComponent<Door>().animatorNextRoom = animatorNextRoom;
+                door.GetComponent<Door>().close = true;
+            }
         }
-        if (animatorNextRoom != null)
+        else
         {
-            animatorNextRoom.SetBool("doorOpen", false);
-            animatorNextRoom.SetBool("doorClose", true);
+            if (animatorThisRoom != null)
+            {
+                animatorThisRoom.SetBool("isPlayerTouchEnded", true);
+                animatorThisRoom.SetBool("doorOpen", false);
+                animatorThisRoom.SetBool("doorClose", true);
+            }
+            if (animatorNextRoom != null)
+            {
+                animatorNextRoom.SetBool("isPlayerTouchEnded", true);
+                animatorNextRoom.SetBool("doorOpen", false);
+                animatorNextRoom.SetBool("doorClose", true);
+            }
         }
     }
     
