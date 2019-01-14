@@ -219,10 +219,10 @@ public class PlayerController : MonoBehaviour
         {
             if (element.name == "platform")
             {
-                element.enabled = false;
+                Physics2D.IgnoreCollision(element, transform.GetComponent<Collider2D>(),true);
                 yield return new WaitForSeconds(0.3f);
                 while(isInRope) yield return new WaitForSeconds(0.1f);
-                element.enabled = true;
+                Physics2D.IgnoreCollision(element, transform.GetComponent<Collider2D>(), false);
                 isDownPlatform = false;
             }
         }
