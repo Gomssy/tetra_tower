@@ -112,13 +112,9 @@ public class Room : MonoBehaviour
         rightTetrisDoor = Instantiate(_rightTetrisDoor, transform.position + new Vector3(standardSize * 23, doorLocations[rightDoorLocation], 0), Quaternion.identity, transform);
 
         inGameDoorUp = Instantiate(_inGameDoorUp, transform.position + new Vector3(standardSize * 11, standardSize * 23, 2), Quaternion.identity, transform);
-        inGameDoorUp.GetComponent<Animator>().SetInteger("doorPosition", 0);
         inGameDoorDown = Instantiate(_inGameDoorDown, transform.position + new Vector3(standardSize * 11, 0, 2), Quaternion.identity, transform);
-        inGameDoorDown.GetComponent<Animator>().SetInteger("doorPosition", 2);
         inGameDoorLeft = Instantiate(_inGameDoorLeft, transform.position + new Vector3(0, doorLocations[leftDoorLocation], 2), Quaternion.identity, transform);
-        inGameDoorLeft.GetComponent<Animator>().SetInteger("doorPosition", 3);
         inGameDoorRight = Instantiate(_inGameDoorRight, transform.position + new Vector3(standardSize * 23f, doorLocations[rightDoorLocation], 2), Quaternion.identity, transform);
-        inGameDoorRight.GetComponent<Animator>().SetInteger("doorPosition", 1);
         for (int i = 0; i < 3; i++)
         {
             if (i != leftDoorLocation)
@@ -168,7 +164,7 @@ public class Room : MonoBehaviour
                 if (mapCoord.x < MapManager.width - 1 && MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y] != null)
                 {
                     animatorThisRoom = inGameDoorRight.GetComponent<Animator>();
-                    animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x - 1, (int)mapCoord.y].inGameDoorLeft.GetComponent<Animator>();
+                    animatorNextRoom = MapManager.mapGrid[(int)mapCoord.x + 1, (int)mapCoord.y].inGameDoorLeft.GetComponent<Animator>();
                 }
                 break;
         }
@@ -236,6 +232,7 @@ public class Room : MonoBehaviour
     
     /// <summary>
     /// Clear the cleared room.
+    /// Open all the doors and change fog to cleared fog.
     /// </summary>
     public void ClearRoom()
     {
@@ -245,6 +242,10 @@ public class Room : MonoBehaviour
             OpenDoor("Down");
             OpenDoor("Left");
             OpenDoor("Right");
+            Vector3 fogPosition = fog.transform.position;
+            Destroy(fog);
+            fog = Instantiate(GameObject.Find("MapManager").GetComponent<MapManager>().clearedFog, fogPosition, Quaternion.identity, transform);
+            fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
             isRoomCleared = true;
         }
 

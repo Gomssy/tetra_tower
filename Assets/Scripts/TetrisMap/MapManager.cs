@@ -109,9 +109,9 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public GameObject fog;
     /// <summary>
-    /// Fog alpha value of cleared room.
+    /// Fog of the cleared rooms.
     /// </summary>
-    public static float clearedFogAlpha = 0.75f;
+    public GameObject clearedFog;
     /// <summary>
     /// Left door in tetris.
     /// </summary>
@@ -793,17 +793,13 @@ public class MapManager : MonoBehaviour {
             room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
-            if(!(room.isRoomCleared == true && alpha >= clearedFogAlpha))
-                room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
+            room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             yield return null;
         }
         room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-        if(room.isRoomCleared == true)
-            room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, clearedFogAlpha);
-        else
-            room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
     }
 
     void Awake()
@@ -825,7 +821,6 @@ public class MapManager : MonoBehaviour {
                 normalRoomsDistributed[i, j] = new List<RoomInGame>();
         for(int i = 0; i < normalRoomList.Length; i++)
         {
-            Debug.Log(i);
             int leftDoor = normalRoomList[i].sideDoorInfo[0];
             int rightDoor = normalRoomList[i].sideDoorInfo[1];
             int leftCount = 0;

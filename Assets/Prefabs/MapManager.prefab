@@ -51,8 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9719103beb138e041b0a7ec9e24aefb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 0}
   player: {fileID: 0}
+  grid: {fileID: 0}
   initialFallSpeed: -0.1
   gravity: 0.98
   timeToFallTetrimino: 100
@@ -65,6 +65,7 @@ MonoBehaviour:
   currentTetrimino: {fileID: 0}
   currentGhost: {fileID: 0}
   fog: {fileID: 1100171732424598, guid: b8ab69a93ba618c47b27cc04eb431b3f, type: 2}
+  clearedFog: {fileID: 1767033925555920, guid: df8687fe46befb34eaf9d4d63938d946, type: 2}
   leftDoor: {fileID: 1309596820948456, guid: 80ed5bfe62ba3034592296b6e27526bc, type: 2}
   rightDoor: {fileID: 1614071394812404, guid: ac9e1e28c8413e54f939bc255268fabd, type: 2}
   inGameDoorUp: {fileID: 1011110161276626, guid: 30d1850ce96755d4ea7675c706899cfb,

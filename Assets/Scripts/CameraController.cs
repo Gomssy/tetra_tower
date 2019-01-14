@@ -69,6 +69,9 @@ public class CameraController : MonoBehaviour {
             fadeOut = StartCoroutine(mapManager.RoomFadeOut(MapManager.currentRoom));
             grid.transform.position = new Vector3(0, 0, 2);
         }
+
+
+        
         while((_gameState == GameManager.GameState.Tetris && GetComponent<Camera>().orthographicSize < sizeDestination - 1) || (_gameState == GameManager.GameState.Ingame && GetComponent<Camera>().orthographicSize > sizeDestination + 0.0001))
         {
             yield return new WaitForSeconds(0.01f);
