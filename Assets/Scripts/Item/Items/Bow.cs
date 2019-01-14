@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoolUI : MonoBehaviour {
+public class Bow : Item {
 
 	// Use this for initialization
 	void Start () {
