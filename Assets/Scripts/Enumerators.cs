@@ -20,3 +20,11 @@ public enum LifeStoneType
     Gold=2,
     Amethyst=3
 }
+
+public enum ItemType
+{
+    None, OneStone, TwoStone, ThreeStone, FourStone,
+    FiveStone, GoldPotion, AmethystPotion, StudyItem, OrdinaryItem,
+    SuperiorItem, MasterPieceItem, StudyAdd, OrdinaryAdd, SuperiorAdd,
+    MasterpieceAdd
+}

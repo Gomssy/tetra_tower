@@ -15,11 +15,6 @@ public class EnemyManager : Singleton<EnemyManager>
         Attack
     } // 상속을 통해 수정할 가능성 높음. 염두만 해 두자.
 
-    public enum ItemType { None, OneStone, TwoStone, ThreeStone, FourStone,
-        FiveStone, GoldPotion, AmethystPotion, CommonItem, RareItem,
-        EpicItem, LegendaryItem, CommonAdd, RareAdd, EpicAdd,
-        LegendaryAdd }
-
     public enum EnemyData { Health, Weight, Height, Width, DetectRange,
         AtkRange, AtkDistance, AtkDelay, PjtSpeed, MoveSpeed,
         Damage } //Atk = Attack, Pjt = Projectile(투사체)
