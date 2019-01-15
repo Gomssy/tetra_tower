@@ -20,8 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4076796618514002}
   - component: {fileID: 212681542233478548}
-  - component: {fileID: 60354718583369946}
   - component: {fileID: 95785122911416600}
+  - component: {fileID: 60354718583369946}
+  - component: {fileID: 114142621642518908}
   m_Layer: 8
   m_Name: DoorInGameUp
   m_TagString: Untagged
@@ -67,8 +68,8 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0, y: 0.5}
-      - {x: 0, y: 1}
-      - {x: 2, y: 1}
+      - {x: 0, y: 1.2}
+      - {x: 2, y: 1.2}
       - {x: 2, y: 0.5}
       - {x: 1.5, y: 0.5}
       - {x: 1.5, y: 0.75}
@@ -83,7 +84,7 @@ Animator:
   m_GameObject: {fileID: 1011110161276626}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7f670d008fc00b74cbd0798fdbb84f4d, type: 2}
+  m_Controller: {fileID: 9100000, guid: f675417992022a747bdbe43adc3bf74a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -92,6 +93,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114142621642518908
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1011110161276626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70108dd0bfd72e847b1580dbd0869ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  close: 0
+  position: 0
+  enteredPosition: 0
+  animatorThisRoom: {fileID: 0}
+  animatorNextRoom: {fileID: 0}
 --- !u!212 &212681542233478548
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -128,7 +145,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: eca9119d0e46882478b747fbbd6cb5ba, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

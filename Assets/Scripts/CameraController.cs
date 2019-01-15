@@ -10,23 +10,26 @@ public class CameraController : MonoBehaviour {
     /// Coroutine controls scene changing.
     /// </summary>
     public static Coroutine sceneChanger;
+    /// <summary>
+    /// Check if scene is changing now.
+    /// </summary>
     public static bool isSceneChanging = false;
+    /// <summary>
+    /// Coroutine controls room fade in when camera zoom in.
+    /// </summary>
     Coroutine fadeIn;
+    /// <summary>
+    /// Coroutine controls room fade out when camera zoom out.
+    /// </summary>
     Coroutine fadeOut;
-    /*
-     * If camera is in Tetris view, ideal position is (108, 240, -1)
-     * size 300
-     * */
     readonly float camX = 9.5f;
     readonly float camY = 4f;
     public Vector3 tetrisCameraCoord = new Vector3(108, 240, -1);
+
+    public Vector3 originPos;
     public const float tetrisCameraSize = 300f;
     public const float inGameCameraSize = 4.5f;
-
-
-    GameManager.GameState lastGameState;
-
-    Vector3 destination;
+    
 
     private void Awake()
     {
@@ -36,48 +39,56 @@ public class CameraController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        lastGameState = GameManager.GameState.Ingame;
-        destination = transform.position;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        ChangeState();
         GotoDestination();
-        if(GameManager.gameState == GameManager.GameState.Ingame)
-        {
-            MapManager.originPos = transform.position;
-        }
+        if (GameManager.gameState == GameManager.GameState.Ingame)
+            originPos = player.transform.position + new Vector3(0, 0, -1);
+        else if (GameManager.gameState == GameManager.GameState.Tetris)
+            originPos = tetrisCameraCoord;
     }
-    
-    IEnumerator ChangeScene(Vector3 cameraDestination, float sizeDestination, GameManager.GameState _gameState)
+    public IEnumerator CameraShake(float _amount)
+    {
+        float amount = _amount;
+        while (amount > 0)
+        {
+            transform.position = new Vector3(0.2f * Random.insideUnitCircle.x * amount * GetComponent<Camera>().orthographicSize + originPos.x, 
+                Random.insideUnitCircle.y * amount * GetComponent<Camera>().orthographicSize + originPos.y, originPos.z);
+            amount -= _amount / 40;
+            yield return null;
+        }
+        transform.localPosition = originPos;
+    }
+
+    public IEnumerator ChangeScene(GameManager.GameState _gameState)
     {
         GameObject grid = GameObject.Find("Grid");
+        float sizeDestination = 0;
         isSceneChanging = true;
-        if (fadeIn != null)
-            StopCoroutine(fadeIn);
-        if (fadeOut != null)
-            StopCoroutine(fadeOut);
-        if(GameManager.gameState == GameManager.GameState.Ingame)
+        if (_gameState == GameManager.GameState.Ingame)
         {
-            fadeIn = StartCoroutine(mapManager.RoomFadeIn(MapManager.currentRoom));
+            StartCoroutine(mapManager.RoomFadeIn(MapManager.currentRoom));
             grid.transform.position = new Vector3(0, 0, 0);
+            sizeDestination = inGameCameraSize;
         }
-        else if(GameManager.gameState == GameManager.GameState.Tetris)
+        else if (_gameState == GameManager.GameState.Tetris)
         {
-            fadeOut = StartCoroutine(mapManager.RoomFadeOut(MapManager.currentRoom));
+            StartCoroutine(mapManager.RoomFadeOut(MapManager.currentRoom));
             grid.transform.position = new Vector3(0, 0, 2);
+            sizeDestination = tetrisCameraSize;
         }
-        while((_gameState == GameManager.GameState.Tetris && GetComponent<Camera>().orthographicSize < sizeDestination - 1) || (_gameState == GameManager.GameState.Ingame && GetComponent<Camera>().orthographicSize > sizeDestination + 0.0001))
+        while ((_gameState == GameManager.GameState.Tetris && GetComponent<Camera>().orthographicSize < sizeDestination - 5) || (_gameState == GameManager.GameState.Ingame && GetComponent<Camera>().orthographicSize > sizeDestination + 0.05))
         {
-            yield return new WaitForSeconds(0.01f);
-            Vector2 coord = Vector2.Lerp(transform.position, cameraDestination, Mathf.Sqrt(Time.deltaTime));
+            yield return null;
+            Vector2 coord = Vector2.Lerp(transform.position, originPos, Mathf.Sqrt(Time.deltaTime));
             transform.position = new Vector3(coord.x, coord.y, -1);
             GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, sizeDestination, Mathf.Sqrt(Time.deltaTime));
-            MapManager.originPos = transform.position;
         }
-        transform.position = cameraDestination;
+        transform.position = originPos;
         GetComponent<Camera>().orthographicSize = sizeDestination;
         isSceneChanging = false;
     }
@@ -138,10 +149,10 @@ public class CameraController : MonoBehaviour {
                 transform.position = Vector3.Lerp(transform.position, new Vector3(posx, posy, -1), 2f * Time.deltaTime);
                 transform.position = new Vector3(transform.position.x, transform.position.y, -1); //카메라를 원래 z축으로 이동
             }
-            /*else if(MapManager.isRoomFalling == true)
+            else if(MapManager.isRoomFalling == true)
             {
                 transform.position = player.transform.position + new Vector3(0, 0.2f, -1);
-            }*/
+            }
         }
         //  Camera.main.transform.position = new Vector3(posx, posy, -10);
     }
@@ -188,29 +199,5 @@ public class CameraController : MonoBehaviour {
         }
 
         return -1;
-    }
-
-    public void ChangeState()
-    {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            Vector3 cameraDestination = new Vector3(0, 0, 0);
-            float sizeDestination = 0f;
-            if (GameManager.gameState == GameManager.GameState.Ingame)
-            {
-                cameraDestination = tetrisCameraCoord;
-                sizeDestination = tetrisCameraSize;
-                GameManager.gameState = GameManager.GameState.Tetris;
-            }
-            else if (GameManager.gameState == GameManager.GameState.Tetris)
-            {
-                cameraDestination = player.transform.position;
-                sizeDestination = inGameCameraSize;
-                GameManager.gameState = GameManager.GameState.Ingame;
-            }
-            if (sceneChanger != null)
-                StopCoroutine(sceneChanger);
-            sceneChanger = StartCoroutine(ChangeScene(cameraDestination, sizeDestination, GameManager.gameState));
-        }
     }
 }

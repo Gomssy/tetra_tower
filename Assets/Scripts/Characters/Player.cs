@@ -19,16 +19,26 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         tx = (int)(transform.position.x / 24f);
-        ty = (int)(transform.position.y / 24f);
+        ty = (int)((transform.position.y-0.9f) / 24f);
         if ((ttx != tx || tty != ty) && MapManager.isRoomFalling != true)
         {
-            MapManager.currentRoom = MapManager.mapGrid[tx, ty];
-            if (roomEnterFadeIn != null)
-                StopCoroutine(roomEnterFadeIn);
-            if (roomExitFadeOut != null)
-                StopCoroutine(roomExitFadeOut);
-            roomEnterFadeIn = StartCoroutine(GameObject.Find("MapManager").GetComponent<MapManager>().RoomFadeIn(MapManager.currentRoom));
-            roomExitFadeOut = StartCoroutine(GameObject.Find("MapManager").GetComponent<MapManager>().RoomFadeOut(MapManager.mapGrid[ttx, tty]));
+            MapManager.tempRoom = MapManager.mapGrid[tx, ty];
+            if (tx < ttx)
+            {
+                MapManager.currentRoom.CloseDoor("Left", true);
+            }
+            else if (tx > ttx)
+            {
+                MapManager.currentRoom.CloseDoor("Right", true);
+            }
+            else if (ty < tty)
+            {
+                MapManager.currentRoom.CloseDoor("Down", true);
+            }
+            else if (ty > tty)
+            {
+                MapManager.currentRoom.CloseDoor("Up", true);
+            }
         }
         ttx = tx;
         tty = ty;

@@ -24,7 +24,15 @@ public class GameManager : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-		
-	}
+	void Update ()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab) && CameraController.isSceneChanging != true)
+        {
+            if (gameState == GameState.Ingame)
+                gameState = GameState.Tetris;
+            else if (gameState == GameState.Tetris)
+                gameState = GameState.Ingame;
+            StartCoroutine(FindObjectOfType<Camera>().GetComponent<CameraController>().ChangeScene(gameState));
+        }
+    }
 }

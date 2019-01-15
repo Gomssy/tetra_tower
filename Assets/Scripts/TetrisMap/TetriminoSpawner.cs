@@ -84,6 +84,7 @@ public class TetriminoSpawner : MonoBehaviour {
             mapManager.UpdateMap(mapManager.currentTetrimino);
             mapManager.CreateRoom(mapManager.currentTetrimino);
             MapManager.currentRoom.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+            MapManager.tempRoom = MapManager.currentRoom;
             MakeTetrimino();
         }
     }
