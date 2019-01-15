@@ -158,6 +158,10 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public Queue<SpecialRoomType> roomsWaiting = new Queue<SpecialRoomType>();
 
+    public Sprite normalRoomSprite;
+    public Sprite currentRoomSprite;
+    public Sprite[] roomTypeSprite = new Sprite[6];
+
     /*
      * functions
      * */
@@ -396,7 +400,7 @@ public class MapManager : MonoBehaviour {
         }
         if (shakeCamera)
         {
-            Camera camera = FindObjectOfType<Camera>();
+            Camera camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
             StartCoroutine(camera.GetComponent<CameraController>().CameraShake(5 * (top - bottom + 1) / CameraController.tetrisCameraSize));
         }
         for (int i = 0; i < height; i++)
@@ -591,7 +595,7 @@ public class MapManager : MonoBehaviour {
             te.transform.position += new Vector3(0, -fallSpeed, 0);
         }
         Camera camera = FindObjectOfType<Camera>();
-        StartCoroutine(camera.GetComponent<CameraController>().CameraShake(20 / CameraController.tetrisCameraSize));
+        StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().CameraShake(20 / CameraController.tetrisCameraSize));
         EndTetrimino(te);
     }
     /// <summary>
@@ -659,7 +663,10 @@ public class MapManager : MonoBehaviour {
                 room.transform.localPosition += new Vector3(0, 0, -2);
             room.SetDoors();
             if (room.specialRoomType != SpecialRoomType.Normal)
+            {
+                room.GetComponent<SpriteRenderer>().sprite = roomTypeSprite[(int)room.specialRoomType];
                 room.roomInGame = Instantiate(specialRoomList[(int)room.specialRoomType], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
+            }
             else
             {
                 int left = room.leftDoorLocation;
@@ -741,13 +748,11 @@ public class MapManager : MonoBehaviour {
         for (int i = 0; i < 20; i++)
         {
             yield return new WaitForSeconds(0.01f);
-            room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             alpha -= 0.05f;
         }
-        room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
@@ -763,13 +768,11 @@ public class MapManager : MonoBehaviour {
         for(int i = 0; i < 20; i++)
         {
             yield return new WaitForSeconds(0.01f);
-            room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             alpha += 0.05f;
         }
-        room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);

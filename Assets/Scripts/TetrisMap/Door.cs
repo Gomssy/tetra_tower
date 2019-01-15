@@ -58,8 +58,10 @@ public class Door : MonoBehaviour {
                     break;
             }
             StartCoroutine(GameObject.Find("MapManager").GetComponent<MapManager>().RoomFadeOut(MapManager.currentRoom));
+            MapManager.currentRoom.GetComponent<SpriteRenderer>().sprite = GameObject.Find("MapManager").GetComponent<MapManager>().normalRoomSprite;
             MapManager.currentRoom = MapManager.tempRoom;
             StartCoroutine(GameObject.Find("MapManager").GetComponent<MapManager>().RoomFadeIn(MapManager.currentRoom));
+            MapManager.currentRoom.GetComponent<SpriteRenderer>().sprite = GameObject.Find("MapManager").GetComponent<MapManager>().currentRoomSprite;
 
             if (MapManager.currentRoom.isRoomCleared != true)
             {

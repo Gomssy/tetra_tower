@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour {
                 gameState = GameState.Tetris;
             else if (gameState == GameState.Tetris)
                 gameState = GameState.Ingame;
-            StartCoroutine(FindObjectOfType<Camera>().GetComponent<CameraController>().ChangeScene());
+            StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene());
         }
     }
 }
