@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    public enum GameState { MainMenu, Ingame, Tetris, Pause, Inventory }
+    public enum GameState { MainMenu, Ingame, Tetris, Pause, Inventory, GameOver }
 
     /// <summary>
     /// Which state this game is.
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour {
                 gameState = GameState.Tetris;
             else if (gameState == GameState.Tetris)
                 gameState = GameState.Ingame;
-            StartCoroutine(FindObjectOfType<Camera>().GetComponent<CameraController>().ChangeScene(gameState));
+            StartCoroutine(FindObjectOfType<Camera>().GetComponent<CameraController>().ChangeScene());
         }
     }
 }

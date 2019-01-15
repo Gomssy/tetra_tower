@@ -51,6 +51,12 @@ public class CameraController : MonoBehaviour {
         else if (GameManager.gameState == GameManager.GameState.Tetris)
             originPos = tetrisCameraCoord;
     }
+
+    /// <summary>
+    /// Shake camera.
+    /// </summary>
+    /// <param name="_amount">Amount of shaking camera.</param>
+    /// <returns></returns>
     public IEnumerator CameraShake(float _amount)
     {
         float amount = _amount;
@@ -64,24 +70,29 @@ public class CameraController : MonoBehaviour {
         transform.localPosition = originPos;
     }
 
-    public IEnumerator ChangeScene(GameManager.GameState _gameState)
+    /// <summary>
+    /// Change scene between tetris and ingame.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator ChangeScene()
     {
         GameObject grid = GameObject.Find("Grid");
         float sizeDestination = 0;
         isSceneChanging = true;
-        if (_gameState == GameManager.GameState.Ingame)
+        if (GameManager.gameState == GameManager.GameState.Ingame)
         {
             StartCoroutine(mapManager.RoomFadeIn(MapManager.currentRoom));
             grid.transform.position = new Vector3(0, 0, 0);
             sizeDestination = inGameCameraSize;
         }
-        else if (_gameState == GameManager.GameState.Tetris)
+        else if (GameManager.gameState == GameManager.GameState.Tetris)
         {
             StartCoroutine(mapManager.RoomFadeOut(MapManager.currentRoom));
             grid.transform.position = new Vector3(0, 0, 2);
             sizeDestination = tetrisCameraSize;
         }
-        while ((_gameState == GameManager.GameState.Tetris && GetComponent<Camera>().orthographicSize < sizeDestination - 5) || (_gameState == GameManager.GameState.Ingame && GetComponent<Camera>().orthographicSize > sizeDestination + 0.05))
+        while ((GameManager.gameState == GameManager.GameState.Tetris && GetComponent<Camera>().orthographicSize < sizeDestination - 5) ||
+            (GameManager.gameState == GameManager.GameState.Ingame && GetComponent<Camera>().orthographicSize > sizeDestination + 0.05))
         {
             yield return null;
             Vector2 coord = Vector2.Lerp(transform.position, originPos, Mathf.Sqrt(Time.deltaTime));

@@ -29,7 +29,7 @@ public class TetriminoSpawner : MonoBehaviour {
     /// </summary>
     public void MakeTetrimino()
     {
-        if (!mapManager.gameOver)
+        if (GameManager.gameState != GameManager.GameState.GameOver)
         {
             int randomPosition = Random.Range(0, MapManager.width);
             int randomTetrimino;
@@ -67,7 +67,7 @@ public class TetriminoSpawner : MonoBehaviour {
     /// </summary>
     public void MakeInitialTetrimino()
     {
-        if (!mapManager.gameOver)
+        if (GameManager.gameState != GameManager.GameState.GameOver)
         {
             int randomPosition = Random.Range(0, MapManager.width);
             int randomTetrimino = TetriminoRandomizer();

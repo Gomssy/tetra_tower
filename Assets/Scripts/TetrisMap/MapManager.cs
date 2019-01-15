@@ -61,10 +61,6 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public static Room[,] mapGrid = new Room[width, height];
     /// <summary>
-    /// Current state of game.
-    /// </summary>
-    public bool gameOver;
-    /// <summary>
     /// Check if tetrimino is falling.
     /// </summary>
     public static bool isTetriminoFalling = false;
@@ -161,10 +157,6 @@ public class MapManager : MonoBehaviour {
     /// Queue that saves rooms waiting for upgrade tetrimino.
     /// </summary>
     public Queue<SpecialRoomType> roomsWaiting = new Queue<SpecialRoomType>();
-    /// <summary>
-    /// Original position of the camera when shaken.
-    /// </summary>
-    public static Vector3 originPos;
 
     /*
      * functions
@@ -263,7 +255,8 @@ public class MapManager : MonoBehaviour {
     /// <returns></returns>
     public IEnumerator TetrisPress(float initialCollapseTime, Press leftPress, Press rightPress)
     {
-        int doorCounter = 0;
+        int doorCloseCounter = 0;
+        int roomDestroyCounter = 0;
         int row = leftPress.row;
         while (Time.time - initialCollapseTime < collapseTime)
         {
@@ -271,13 +264,23 @@ public class MapManager : MonoBehaviour {
             float collapseRate = (Time.time - initialCollapseTime) / collapseTime;
             leftPress.transform.localScale = new Vector3(collapseRate * 20, 1, 1);
             rightPress.transform.localScale = new Vector3(-collapseRate * 20, 1, 1);
-            if(collapseRate - doorCounter * 0.2f > (float)1 / 12)
+            if(collapseRate - doorCloseCounter * 0.2f > (float)1 / 12)
             {
-                mapGrid[doorCounter, row].CloseDoor("Up", false);
-                mapGrid[doorCounter, row].CloseDoor("Down", false);
-                mapGrid[width - doorCounter - 1, row].CloseDoor("Up", false);
-                mapGrid[width - doorCounter - 1, row].CloseDoor("Down", false);
-                doorCounter++;
+                mapGrid[doorCloseCounter, row].CloseDoor("Up", false);
+                mapGrid[doorCloseCounter, row].CloseDoor("Down", false);
+                mapGrid[width - doorCloseCounter - 1, row].CloseDoor("Up", false);
+                mapGrid[width - doorCloseCounter - 1, row].CloseDoor("Down", false);
+                doorCloseCounter++;
+            }
+            if(collapseRate - roomDestroyCounter * 0.2f > 0.2f)
+            {
+                if(mapGrid[roomDestroyCounter, row] == currentRoom || mapGrid[width - roomDestroyCounter - 1, row] == currentRoom)
+                {
+                    GameManager.gameState = GameManager.GameState.GameOver;
+                }
+                //Destroy(mapGrid[roomDestroyCounter, row].gameObject);
+                //Destroy(mapGrid[width - roomDestroyCounter - 1, row].gameObject);
+                roomDestroyCounter++;
             }
         }
         for(int i = row + 1; i < realHeight; i++)
@@ -288,7 +291,7 @@ public class MapManager : MonoBehaviour {
                 break;
             }
         }
-        for (int x = 0; x < width; x++)
+        for(int x = 0; x < width; x++)
         {
             Destroy(mapGrid[x, row].gameObject);
             mapGrid[x, row] = null;
@@ -445,8 +448,7 @@ public class MapManager : MonoBehaviour {
         {
             if ((int)te.rooms[i].mapCoord.y > 19)
             {
-                gameOver = true;
-                Debug.Log("Game Over");
+                GameManager.gameState = GameManager.GameState.GameOver;
                 return;
             }
             mapGrid[(int)te.rooms[i].mapCoord.x, (int)te.rooms[i].mapCoord.y] = te.rooms[i];
@@ -728,27 +730,6 @@ public class MapManager : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         tetriminoSpawner.MakeTetrimino();
     }
-    /*/// <summary>
-    /// Shake the camera when tetrimino has fallen.
-    /// </summary>
-    /// <param name="_amount">Amount you want to shake the camera.</param>
-    /// <param name="originPos">Original position of the camera.</param>
-    /// <param name="camera">Camera you want to shake.</param>
-    /// <returns></returns>
-    public IEnumerator CameraShake(float _amount, Vector3 _originPos, Camera camera)
-    {
-        float amount = _amount;
-        Vector3 cameraPos = _originPos;
-        originPos = _originPos;
-        while (amount > 0)
-        {
-            cameraPos = new Vector3(0.2f * Random.insideUnitCircle.x * amount * camera.orthographicSize + originPos.x, Random.insideUnitCircle.y * amount * camera.orthographicSize + originPos.y, originPos.z);
-            camera.transform.position = cameraPos;
-            amount -= _amount / 40;
-            yield return null;
-        }
-        camera.transform.localPosition = originPos;
-    }*/
     /// <summary>
     /// Make room fade in.
     /// </summary>
@@ -831,6 +812,7 @@ public class MapManager : MonoBehaviour {
         }
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
     }
+
     // Use this for initialization
     void Start () {
         
@@ -838,20 +820,22 @@ public class MapManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (!gameOver)
+        if (GameManager.gameState != GameManager.GameState.GameOver)
         {
-            if(!isTetriminoFalling)
+            if (!isTetriminoFalling)
             {
                 TetriminoControl(currentTetrimino);
-                if(!isTetriminoFalling)
+                if (!isTetriminoFalling)
                     currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z);
-                if(currentGhost != null)
+                if (currentGhost != null)
                 {
-                   GhostControl(currentGhost, currentTetrimino);
-                   currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z);
+                    GhostControl(currentGhost, currentTetrimino);
+                    currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z);
                 }
             }
         }
+        else
+            Debug.Log("Game Over");
 
     }
 }

@@ -104,7 +104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70108dd0bfd72e847b1580dbd0869ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  close: 0
   position: 0
   enteredPosition: 0
   animatorThisRoom: {fileID: 0}
