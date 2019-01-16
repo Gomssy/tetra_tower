@@ -18,6 +18,13 @@ public class EnemyManager : Singleton<EnemyManager>
     public enum EnemyData { Health, Weight, Height, Width, DetectRange,
         AtkRange, AtkDistance, AtkDelay, PjtSpeed, MoveSpeed,
         Damage } //Atk = Attack, Pjt = Projectile(투사체)
+    /* 기본적으로 각 경우에 대해 가지는 값은 양수일 것
+     * 하지만 특별한 경우가 있음
+     * 1. DetectRange(감지 범위) : DetectRange가 -1이면 방 전체를 감지한다는 뜻. -2이면 현재 에너미가 있는 플랫폼 전체, -3이면 플랫폼 전방만 감지를 뜻 함.
+     * 2. AtkRange(공격 범위) : -1이면 현재 위치한 플랫폼 전체를 의미, -2이면 플랫폼 전방만 의미.
+     * 3. AtkDistance(공격 사거리) : -1이면 현재 위치한 플랫폼 끝까지 의미.
+     * 4. AtkDelay(공격 딜레이) : -1이면 무한 즉, 단 1회 공격함.
+     */
     public delegate void Action();
 
 
