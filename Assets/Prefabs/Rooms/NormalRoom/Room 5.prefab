@@ -569,7 +569,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sideDoorInfo: 0000000000000000
+  leftDoorInfo: 010001
+  rightDoorInfo: 000101
+  concept: 00000101
 --- !u!19719996 &2113883504680999356
 TilemapCollider2D:
   m_ObjectHideFlags: 1

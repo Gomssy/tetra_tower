@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour {
-    
+
     /*
      * variables
      * */
-
     TetriminoSpawner tetriminoSpawner;
     public GameObject player;
     /// <summary>
@@ -34,6 +33,9 @@ public class MapManager : MonoBehaviour {
     /// Tetrimino falling gravity.
     /// </summary>
     public float gravity = 0.98f;
+    /// <summary>
+    /// Time tetrimino would wait until it falls.
+    /// </summary>
     public float timeToFallTetrimino = 100.0f;
     /// <summary>
     /// Time tetris waits to fall.
@@ -55,6 +57,9 @@ public class MapManager : MonoBehaviour {
     /// The time taken for a press to be collapsed.
     /// </summary>
     public float collapseTime;
+    /// <summary>
+    /// Sizes of tetris map.
+    /// </summary>
     public const int height = 24, width = 10, realHeight = 19;
     /// <summary>
     /// Absolute coordinates on tetris map.
@@ -85,9 +90,9 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public bool spawnBossTetrimino = false;
     /// <summary>
-    /// Press.
+    /// Queue that saves rooms waiting for upgrade tetrimino.
     /// </summary>
-    public Press press;
+    public Queue<RoomType> roomsWaiting = new Queue<RoomType>();
     /// <summary>
     /// Current tetrimino waiting for falling.
     /// </summary>
@@ -97,9 +102,23 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public Tetrimino currentGhost;
     /// <summary>
-    /// Enum for special room types.
+    /// Room player exists.
+    /// Not related to player's real position, it also consider if player enter the room ordinarily.
     /// </summary>
-    public enum SpecialRoomType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal };
+    public static Room currentRoom;
+    /// <summary>
+    /// Temporary room player exists according to only position.
+    /// </summary>
+    public static Room tempRoom;
+    /// <summary>
+    /// Current stage of game.
+    /// </summary>
+    public static int currentStage;
+    /// <summary>
+    /// Enum for room types.
+    /// </summary>
+    public enum RoomType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal };
+    public enum RoomSpriteType { Item, BothSide, Gold, Amethyst, Boss, Normal1, Normal2, Nomal3, Normal4, Current };
     /// <summary>
     /// Fog of the rooms.
     /// </summary>
@@ -108,6 +127,10 @@ public class MapManager : MonoBehaviour {
     /// Fog of the cleared rooms.
     /// </summary>
     public GameObject clearedFog;
+    /// <summary>
+    /// Press.
+    /// </summary>
+    public Press press;
     /// <summary>
     /// Left door in tetris.
     /// </summary>
@@ -132,35 +155,35 @@ public class MapManager : MonoBehaviour {
     /// Right door in ingame.
     /// </summary>
     public GameObject inGameDoorRight;
-    /// <summary>
-    /// Array for the normal Room candidates.
-    /// </summary>
-    public RoomInGame[] normalRoomList;
-    /// <summary>
-    /// Array for the special Room candidates.
-    /// </summary>
-    public RoomInGame[] specialRoomList;
+
+    public RoomInGame[] normalRoomList1;
+    public RoomInGame[] normalRoomList2;
+    /*public RoomInGame[] normalRoomList3;
+    public RoomInGame[] normalRoomList4;
+    public RoomInGame[] normalRoomList5;*/
+    public RoomInGame[] specialRoomList1;
+    public RoomInGame[] specialRoomList2;
+    /*public RoomInGame[] specialRoomList3;
+    public RoomInGame[] specialRoomList4;
+    public RoomInGame[] specialRoomList5;*/
     /// <summary>
     /// Array sorted normal rooms by location of side doors.
+    /// Each dimension for stage, concept, left door, right door.
     /// </summary>
-    List<RoomInGame>[,] normalRoomsDistributed = new List<RoomInGame>[3, 3];
+    public List<RoomInGame>[,,,] normalRoomsDistributed = new List<RoomInGame>[5, 4, 3, 3];
     /// <summary>
-    /// Room player exists.
-    /// Not related to player's real position, it also consider if player enter the room ordinarily.
+    /// Array sorted normal rooms by location of side doors.
+    /// Each dimension for stage, concept, left door, right door.
     /// </summary>
-    public static Room currentRoom;
-    /// <summary>
-    /// Temporary room player exists according to only position.
-    /// </summary>
-    public static Room tempRoom;
-    /// <summary>
-    /// Queue that saves rooms waiting for upgrade tetrimino.
-    /// </summary>
-    public Queue<SpecialRoomType> roomsWaiting = new Queue<SpecialRoomType>();
+    public List<RoomInGame>[,,,] specialRoomsDistributed = new List<RoomInGame>[5, 4, 3, 3];
 
-    public Sprite normalRoomSprite;
-    public Sprite currentRoomSprite;
-    public Sprite[] roomTypeSprite = new Sprite[6];
+    public List<Sprite>[] roomsSpritesDistributed = new List<Sprite>[5];
+
+    public Sprite[] roomsSprite1;
+    public Sprite[] roomsSprite2;
+    /*public Sprite[] roomsSprite3;
+    public Sprite[] roomsSprite4;
+    public Sprite[] roomsSprite5;*/
 
     /*
      * functions
@@ -310,7 +333,7 @@ public class MapManager : MonoBehaviour {
         if (leftPress.createdOrder == leftPress.simultaneouslyCreatedPressNumber)
             StartCoroutine(DecreaseYCoord(row, leftPress.bottomRow));
         presses[row] = null;
-        UpgradeRoom(SpecialRoomType.Item);
+        UpgradeRoom(RoomType.Item);
         Destroy(leftPress.gameObject);
         Destroy(rightPress.gameObject);
     }
@@ -426,7 +449,7 @@ public class MapManager : MonoBehaviour {
     public static bool IsRowFull(int row)
     {
         for (int x = 0; x < width; x++)
-            if (mapGrid[x, row] == null || mapGrid[x, row].specialRoomType == SpecialRoomType.Boss)
+            if (mapGrid[x, row] == null || mapGrid[x, row].specialRoomType == RoomType.Boss)
                 return false;
         return true;
     }
@@ -649,6 +672,24 @@ public class MapManager : MonoBehaviour {
         }
     }
     /// <summary>
+    /// Set rooms' sprite.
+    /// </summary>
+    /// <param name="room">Room to set sprite.</param>
+    /// <param name="i">Index of the room in tetrimino. Use this to set ghost room's sprite.</param>
+    public void SetRoomSprite(Room room, int i)
+    {
+        int left = room.leftDoorLocation;
+        int right = room.rightDoorLocation;
+        if (room.specialRoomType == RoomType.Normal)
+            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
+        else if (room.specialRoomType == RoomType.Start)
+            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
+        else
+            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
+        if (currentGhost != null)
+            currentGhost.rooms[i].GetComponent<SpriteRenderer>().sprite = room.GetComponent<SpriteRenderer>().sprite;
+    }
+    /// <summary>
     /// Create rooms player will move.
     /// </summary>
     /// <param name="te">Tetrimino you want to create rooms.</param>
@@ -662,18 +703,17 @@ public class MapManager : MonoBehaviour {
             if(GameManager.gameState == GameManager.GameState.Ingame)
                 room.transform.localPosition += new Vector3(0, 0, -2);
             room.SetDoors();
-            if (room.specialRoomType != SpecialRoomType.Normal)
-            {
-                room.GetComponent<SpriteRenderer>().sprite = roomTypeSprite[(int)room.specialRoomType];
-                room.roomInGame = Instantiate(specialRoomList[(int)room.specialRoomType], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
-            }
+            int left = room.leftDoorLocation;
+            int right = room.rightDoorLocation;
+            if (room.specialRoomType == RoomType.Normal)
+                room.roomInGame = Instantiate(normalRoomsDistributed[room.stage, room.roomConcept, left, right]
+                    [Random.Range(0, normalRoomsDistributed[room.stage, room.roomConcept, left, right].Count)], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
+            else if (room.specialRoomType == RoomType.Start)
+                room.roomInGame = Instantiate(specialRoomsDistributed[room.stage, room.roomConcept, left, right]
+                    [(int)room.specialRoomType], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
             else
-            {
-                int left = room.leftDoorLocation;
-                int right = room.rightDoorLocation;
-                room.roomInGame = Instantiate(normalRoomsDistributed[left, right][Random.Range(0, normalRoomsDistributed[left, right].Count)], room.transform.position + new Vector3(0, 0, 2),
-                    Quaternion.identity, room.transform);
-            }
+                room.roomInGame = Instantiate(specialRoomsDistributed[room.stage, room.roomConcept, left, right]
+                    [(int)room.specialRoomType], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
             room.CreateDoors(leftDoor, rightDoor, inGameDoorUp, inGameDoorDown, inGameDoorLeft, inGameDoorRight);
             room.fog = Instantiate(fog, room.transform.position + new Vector3(12, 12, 2), Quaternion.identity, room.transform);
             if (room.mapCoord.y > 0 && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1] != null && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].isRoomCleared == true)
@@ -689,17 +729,18 @@ public class MapManager : MonoBehaviour {
     /// Upgrade rooms.
     /// </summary>
     /// <param name="roomType">Rooms you want to upgrade.</param>
-    public void UpgradeRoom(SpecialRoomType roomType)
+    public void UpgradeRoom(RoomType roomType)
     {
         if (!isTetriminoFalling)
         {
-            if (roomType != SpecialRoomType.Item && currentTetrimino.notNormalRoomCount < 4)
+            if (roomType != RoomType.Item && currentTetrimino.notNormalRoomCount < 4)
             {
                 int randomRoom = Random.Range(0, currentTetrimino.rooms.Length);
-                if (currentTetrimino.rooms[randomRoom].specialRoomType == SpecialRoomType.Normal)
+                if (currentTetrimino.rooms[randomRoom].specialRoomType == RoomType.Normal)
                 {
                     currentTetrimino.notNormalRoomCount++;
                     currentTetrimino.rooms[randomRoom].specialRoomType = roomType;
+                    SetRoomSprite(currentTetrimino.rooms[randomRoom], randomRoom);
                     return;
                 }
                 else
@@ -708,11 +749,12 @@ public class MapManager : MonoBehaviour {
                     return;
                 }
             }
-            else if (roomType == SpecialRoomType.Item)
+            else if (roomType == RoomType.Item)
             {
                 if(currentTetrimino.itemRoomIndex != -1)
                 {
                     currentTetrimino.rooms[currentTetrimino.itemRoomIndex].itemRoomType++;
+                    SetRoomSprite(currentTetrimino.rooms[currentTetrimino.itemRoomIndex], currentTetrimino.itemRoomIndex);
                     return;
                 }
                 else
@@ -722,6 +764,7 @@ public class MapManager : MonoBehaviour {
                     currentTetrimino.itemRoomIndex = randomRoom;
                     currentTetrimino.rooms[randomRoom].specialRoomType = roomType;
                     currentTetrimino.rooms[randomRoom].itemRoomType++;
+                    SetRoomSprite(currentTetrimino.rooms[randomRoom], randomRoom);
                     return;
                 }
             }
@@ -792,33 +835,67 @@ public class MapManager : MonoBehaviour {
             tetrisYCoord[i] = i * tetrisMapSize;
         for (int i = 0; i < isRowDeleting.Length; i++)
             isRowDeleting[i] = false;
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                normalRoomsDistributed[i, j] = new List<RoomInGame>();
-        for(int i = 0; i < normalRoomList.Length; i++)
+        for (int stage = 0; stage < 5; stage++)
         {
-            int leftDoor = normalRoomList[i].sideDoorInfo[0];
-            int rightDoor = normalRoomList[i].sideDoorInfo[1];
-            int leftCount = 0;
-            int rightCount = 0;
-            for(int left = leftDoor; left != 0; left /= 10)
-            {
-                for (int right = rightDoor; right != 0; right /= 10)
+            roomsSpritesDistributed[stage] = new List<Sprite>();
+            for (int concept = 0; concept < 4; concept++)
+                for (int leftDoor = 0; leftDoor < 3; leftDoor++)
+                    for (int rightDoor = 0; rightDoor < 3; rightDoor++)
+                    {
+                        normalRoomsDistributed[stage, concept, leftDoor, rightDoor] = new List<RoomInGame>();
+                        specialRoomsDistributed[stage, concept, leftDoor, rightDoor] = new List<RoomInGame>();
+                    }
+        }
+        for (int concept = 0; concept < 4; concept++)
+            for (int leftDoor = 0; leftDoor < 3; leftDoor++)
+                for (int rightDoor = 0; rightDoor < 3; rightDoor++)
                 {
-                    if(left % 10 == 1 && right % 10 == 1)
-                        normalRoomsDistributed[leftCount, rightCount].Add(normalRoomList[i]);
-                    rightCount++;
+                    for (int i = 0; i < normalRoomList1.Length; i++)
+                        if (normalRoomList1[i].leftDoorInfo[leftDoor] == true && normalRoomList1[i].rightDoorInfo[rightDoor] == true && normalRoomList1[i].concept[concept] == true)
+                            normalRoomsDistributed[0, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList1[i]);
+                    for (int i = 0; i < normalRoomList2.Length; i++)
+                        if (normalRoomList2[i].leftDoorInfo[leftDoor] == true && normalRoomList2[i].rightDoorInfo[rightDoor] == true && normalRoomList2[i].concept[concept] == true)
+                            normalRoomsDistributed[1, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList2[i]);
+                    /*for (int i = 0; i < normalRoomList3.Length; i++)
+                        if (normalRoomList3[i].leftDoorInfo[leftDoor] == true && normalRoomList3[i].rightDoorInfo[rightDoor] == true && normalRoomList3[i].concept[concept] == true)
+                            normalRoomsDistributed[2, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList1[i]);
+                    for (int i = 0; i < normalRoomList4.Length; i++)
+                        if (normalRoomList4[i].leftDoorInfo[leftDoor] == true && normalRoomList4[i].rightDoorInfo[rightDoor] == true && normalRoomList4[i].concept[concept] == true)
+                            normalRoomsDistributed[3, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList1[i]);
+                    for (int i = 0; i < normalRoomList5.Length; i++)
+                        if (normalRoomList5[i].leftDoorInfo[leftDoor] == true && normalRoomList5[i].rightDoorInfo[rightDoor] == true && normalRoomList5[i].concept[concept] == true)
+                            normalRoomsDistributed[4, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList1[i]);*/
+                    for (int i = 0; i < specialRoomList1.Length; i++)
+                        if (specialRoomList1[i].leftDoorInfo[leftDoor] == true && specialRoomList1[i].rightDoorInfo[rightDoor] == true && specialRoomList1[i].concept[concept] == true)
+                            specialRoomsDistributed[0, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList1[i]);
+                    for (int i = 0; i < specialRoomList2.Length; i++)
+                        if (specialRoomList2[i].leftDoorInfo[leftDoor] == true && specialRoomList2[i].rightDoorInfo[rightDoor] == true && specialRoomList2[i].concept[concept] == true)
+                            specialRoomsDistributed[1, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList2[i]);
+                    /*for (int i = 0; i < specialRoomList3.Length; i++)
+                        if (specialRoomList3[i].leftDoorInfo[leftDoor] == true && specialRoomList3[i].rightDoorInfo[rightDoor] == true && specialRoomList3[i].concept[concept] == true)
+                            specialRoomsDistributed[2, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList3[i]);
+                    for (int i = 0; i < specialRoomList4.Length; i++)
+                        if (specialRoomList4[i].leftDoorInfo[leftDoor] == true && specialRoomList4[i].rightDoorInfo[rightDoor] == true && specialRoomList4[i].concept[concept] == true)
+                            specialRoomsDistributed[3, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList4[i]);
+                    for (int i = 0; i < specialRoomList5.Length; i++)
+                        if (specialRoomList5[i].leftDoorInfo[leftDoor] == true && specialRoomList5[i].rightDoorInfo[rightDoor] == true && specialRoomList5[i].concept[concept] == true)
+                            specialRoomsDistributed[4, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList5[i]);*/
                 }
-                rightCount = 0;
-                leftCount++;
-            }
+        for (RoomSpriteType spriteType = 0; (int)spriteType < 10; spriteType++)
+        {
+            roomsSpritesDistributed[0].Add(roomsSprite1[(int)spriteType]);
+            roomsSpritesDistributed[1].Add(roomsSprite2[(int)spriteType]);
+            /*roomsSpritesDistributed[2].Add(roomsSprite3[(int)spriteType]);
+            roomsSpritesDistributed[3].Add(roomsSprite4[(int)spriteType]);
+            roomsSpritesDistributed[4].Add(roomsSprite5[(int)spriteType]);*/
         }
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
+        currentStage = 0;
     }
 
     // Use this for initialization
     void Start () {
-        
+
     }
 
     // Update is called once per frame

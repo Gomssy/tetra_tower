@@ -892,7 +892,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sideDoorInfo: 6f0000006f000000
+  leftDoorInfo: 010101
+  rightDoorInfo: 010101
+  concept: 01010101
 --- !u!251 &251787293196198618
 PlatformEffector2D:
   m_ObjectHideFlags: 1

@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-/// <summary>
-/// Room class
-/// </summary>
 public class Room : MonoBehaviour
 {
 
@@ -34,7 +31,7 @@ public class Room : MonoBehaviour
     /// <summary>
     /// Special room types.
     /// </summary>
-    public MapManager.SpecialRoomType specialRoomType;
+    public MapManager.RoomType specialRoomType;
     /// <summary>
     /// Location of the left door.
     /// </summary>
