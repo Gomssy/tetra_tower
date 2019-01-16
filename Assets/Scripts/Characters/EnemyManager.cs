@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using UnityEngine;
 
 
 public class EnemyManager : Singleton<EnemyManager>
@@ -34,7 +35,7 @@ public class EnemyManager : Singleton<EnemyManager>
     public readonly Dictionary<int, Dictionary<State, Action>> actionDictByID;
     public readonly Dictionary<int, Dictionary<EnemyData, float>> enemyDataByID;
 
-
+    public GameObject enemyPrefab;
     // method
     // constructor
     protected EnemyManager()
@@ -117,5 +118,12 @@ public class EnemyManager : Singleton<EnemyManager>
 
             enemyDataByID.Add(enemyID, EnemyInfo);
         }
+    }
+    // called by gameManager to Spawn enemy
+    // little temporary. Many change will be exist.
+    public void SpawnEnemy()
+    {
+        Vector2 playerPosition = GameObject.Find("Player").transform.position;
+        Instantiate(enemyPrefab, playerPosition + new Vector2(7, 0), Quaternion.identity);
     }
 }
