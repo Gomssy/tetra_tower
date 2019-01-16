@@ -6,6 +6,16 @@ public class InventoryManager : MonoBehaviour {
 
     List<Item> itemList = new List<Item>();
     List<Addon> addonList = new List<Addon>();
+    InventoryUI ui;
+    public List<string> itemPool = new List<string>();
+    public List<string> addonPool = new List<string>();
+
+    private void Start()
+    {
+        //ui = GameObject.Find("")
+        itemPool.Add("Bow");
+    }
+
 
     public void PushItem(Item item)
     {
