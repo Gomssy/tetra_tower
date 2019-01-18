@@ -44,30 +44,30 @@ public class TetriminoSpawner : MonoBehaviour {
             }
             else
                 randomTetrimino = TetriminoRandomizer();
-            mapManager.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], 
+            MapManager.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], 
                 MapManager.tetrisMapCoord + MapManager.tetrisMapSize * new Vector3(randomPosition, MapManager.realHeight + 1, MapManager.tetrisMapCoord.z), Quaternion.identity);
-            mapManager.currentTetrimino.mapCoord = (mapManager.currentTetrimino.transform.position - MapManager.tetrisMapCoord) / MapManager.tetrisMapSize;
-            mapManager.SetRoomMapCoord(mapManager.currentTetrimino);
-            mapManager.MakeTetriminoRightPlace(mapManager.currentTetrimino);
+            MapManager.currentTetrimino.mapCoord = (MapManager.currentTetrimino.transform.position - MapManager.tetrisMapCoord) / MapManager.tetrisMapSize;
+            mapManager.SetRoomMapCoord(MapManager.currentTetrimino);
+            mapManager.MakeTetriminoRightPlace(MapManager.currentTetrimino);
             int tetriminoConcept = ConceptRandomizer();
-            for (int i = 0; i < mapManager.currentTetrimino.rotatedPosition.Length; i++)
+            for (int i = 0; i < MapManager.currentTetrimino.rotatedPosition.Length; i++)
             {
-                if (Tetrimino.rotationInformation[(int)mapManager.currentTetrimino.tetriminoType].horizontalLength[i] + mapManager.currentTetrimino.mapCoord.x > MapManager.width)
-                    mapManager.currentTetrimino.rotatedPosition[i] = MapManager.width - Tetrimino.rotationInformation[(int)mapManager.currentTetrimino.tetriminoType].horizontalLength[i];
+                if (Tetrimino.rotationInformation[(int)MapManager.currentTetrimino.tetriminoType].horizontalLength[i] + MapManager.currentTetrimino.mapCoord.x > MapManager.width)
+                    MapManager.currentTetrimino.rotatedPosition[i] = MapManager.width - Tetrimino.rotationInformation[(int)MapManager.currentTetrimino.tetriminoType].horizontalLength[i];
                 else
-                    mapManager.currentTetrimino.rotatedPosition[i] = (int)mapManager.currentTetrimino.mapCoord.x;
+                    MapManager.currentTetrimino.rotatedPosition[i] = (int)MapManager.currentTetrimino.mapCoord.x;
             }
-            for (int i = 0; i < mapManager.currentTetrimino.rooms.Length; i++)
+            for (int i = 0; i < MapManager.currentTetrimino.rooms.Length; i++)
             {
-                Room room = mapManager.currentTetrimino.rooms[i];
-                mapManager.currentTetrimino.transform.position = mapManager.currentTetrimino.mapCoord * MapManager.tetrisMapSize + MapManager.tetrisMapCoord;
+                Room room = MapManager.currentTetrimino.rooms[i];
+                MapManager.currentTetrimino.transform.position = MapManager.currentTetrimino.mapCoord * MapManager.tetrisMapSize + MapManager.tetrisMapCoord;
                 room.stage = MapManager.currentStage;
                 room.roomConcept = tetriminoConcept;
                 mapManager.SetRoomSprite(room, i);
             }
-            MakeGhost(mapManager.currentTetrimino, randomTetrimino);
+            MakeGhost(MapManager.currentTetrimino, randomTetrimino);
             MapManager.isTetriminoFalling = false;
-            while (mapManager.roomsWaiting.Count != 0 && mapManager.currentTetrimino.notNormalRoomCount < 4)
+            while (mapManager.roomsWaiting.Count != 0 && MapManager.currentTetrimino.notNormalRoomCount < 4)
             {
                 mapManager.UpgradeRoom(mapManager.roomsWaiting.Dequeue());
             }
@@ -84,23 +84,23 @@ public class TetriminoSpawner : MonoBehaviour {
         {
             int randomPosition = Random.Range(0, MapManager.width);
             int randomTetrimino = TetriminoRandomizer();
-            mapManager.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MapManager.tetrisMapCoord + MapManager.tetrisMapSize * new Vector3(randomPosition, 0, MapManager.tetrisMapCoord.z), Quaternion.identity);
-            MapManager.currentRoom = mapManager.currentTetrimino.rooms[Random.Range(0, mapManager.currentTetrimino.rooms.Length)];
+            MapManager.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MapManager.tetrisMapCoord + MapManager.tetrisMapSize * new Vector3(randomPosition, 0, MapManager.tetrisMapCoord.z), Quaternion.identity);
+            MapManager.currentRoom = MapManager.currentTetrimino.rooms[Random.Range(0, MapManager.currentTetrimino.rooms.Length)];
             MapManager.currentRoom.specialRoomType = MapManager.RoomType.Start;
-            mapManager.currentTetrimino.mapCoord = (mapManager.currentTetrimino.transform.position - MapManager.tetrisMapCoord) / MapManager.tetrisMapSize;
-            mapManager.SetRoomMapCoord(mapManager.currentTetrimino);
-            mapManager.MakeTetriminoRightPlace(mapManager.currentTetrimino);
+            MapManager.currentTetrimino.mapCoord = (MapManager.currentTetrimino.transform.position - MapManager.tetrisMapCoord) / MapManager.tetrisMapSize;
+            mapManager.SetRoomMapCoord(MapManager.currentTetrimino);
+            mapManager.MakeTetriminoRightPlace(MapManager.currentTetrimino);
             int tetriminoConcept = ConceptRandomizer();
-            for (int i = 0; i < mapManager.currentTetrimino.rooms.Length; i++)
+            for (int i = 0; i < MapManager.currentTetrimino.rooms.Length; i++)
             {
-                Room room = mapManager.currentTetrimino.rooms[i];
-                mapManager.currentTetrimino.transform.position = mapManager.currentTetrimino.mapCoord * MapManager.tetrisMapSize + MapManager.tetrisMapCoord;
+                Room room = MapManager.currentTetrimino.rooms[i];
+                MapManager.currentTetrimino.transform.position = MapManager.currentTetrimino.mapCoord * MapManager.tetrisMapSize + MapManager.tetrisMapCoord;
                 room.stage = MapManager.currentStage;
                 room.roomConcept = tetriminoConcept;
                 mapManager.SetRoomSprite(room, i);
             }
-            mapManager.UpdateMap(mapManager.currentTetrimino);
-            mapManager.CreateRoom(mapManager.currentTetrimino);
+            mapManager.UpdateMap(MapManager.currentTetrimino);
+            mapManager.CreateRoom(MapManager.currentTetrimino);
             MapManager.currentRoom.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
             MapManager.currentRoom.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[MapManager.currentStage][(int)MapManager.RoomSpriteType.Current];
             MapManager.tempRoom = MapManager.currentRoom;
@@ -113,13 +113,13 @@ public class TetriminoSpawner : MonoBehaviour {
     /// <param name="te">Which tetrimino to make ghost</param>
     public void MakeGhost(Tetrimino te, int ghostType)
     {
-        mapManager.currentGhost = Instantiate(ghosts[ghostType], te.transform.position, Quaternion.identity);
-        mapManager.currentGhost.mapCoord = te.mapCoord;
+        MapManager.currentGhost = Instantiate(ghosts[ghostType], te.transform.position, Quaternion.identity);
+        MapManager.currentGhost.mapCoord = te.mapCoord;
         for(int i = 0; i < te.rooms.Length; i++)
         {
-            mapManager.currentGhost.rooms[i].mapCoord = te.rooms[i].mapCoord;
-            mapManager.currentGhost.rooms[i].GetComponent<SpriteRenderer>().sprite = mapManager.currentTetrimino.rooms[i].GetComponent<SpriteRenderer>().sprite;
-            mapManager.currentGhost.rooms[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
+            MapManager.currentGhost.rooms[i].mapCoord = te.rooms[i].mapCoord;
+            MapManager.currentGhost.rooms[i].GetComponent<SpriteRenderer>().sprite = MapManager.currentTetrimino.rooms[i].GetComponent<SpriteRenderer>().sprite;
+            MapManager.currentGhost.rooms[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
         }
     }
     /// <summary>

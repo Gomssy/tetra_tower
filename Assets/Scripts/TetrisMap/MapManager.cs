@@ -96,11 +96,11 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Current tetrimino waiting for falling.
     /// </summary>
-    public Tetrimino currentTetrimino;
+    public static Tetrimino currentTetrimino;
     /// <summary>
     /// Current ghost following currentTetrimino.
     /// </summary>
-    public Tetrimino currentGhost;
+    public static Tetrimino currentGhost;
     /// <summary>
     /// Room player exists.
     /// Not related to player's real position, it also consider if player enter the room ordinarily.
@@ -617,7 +617,6 @@ public class MapManager : MonoBehaviour {
             fallSpeed += gravity * fallTime * fallTime;
             te.transform.position += new Vector3(0, -fallSpeed, 0);
         }
-        Camera camera = FindObjectOfType<Camera>();
         StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().CameraShake(20 / CameraController.tetrisCameraSize));
         EndTetrimino(te);
     }
@@ -678,14 +677,16 @@ public class MapManager : MonoBehaviour {
     /// <param name="i">Index of the room in tetrimino. Use this to set ghost room's sprite.</param>
     public void SetRoomSprite(Room room, int i)
     {
-        int left = room.leftDoorLocation;
-        int right = room.rightDoorLocation;
+        //When start and special rooms' sprites added, modify this.
         if (room.specialRoomType == RoomType.Normal)
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
         else if (room.specialRoomType == RoomType.Start)
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
         else
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
+
+
+
         if (currentGhost != null)
             currentGhost.rooms[i].GetComponent<SpriteRenderer>().sprite = room.GetComponent<SpriteRenderer>().sprite;
     }
@@ -708,9 +709,6 @@ public class MapManager : MonoBehaviour {
             if (room.specialRoomType == RoomType.Normal)
                 room.roomInGame = Instantiate(normalRoomsDistributed[room.stage, room.roomConcept, left, right]
                     [Random.Range(0, normalRoomsDistributed[room.stage, room.roomConcept, left, right].Count)], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
-            else if (room.specialRoomType == RoomType.Start)
-                room.roomInGame = Instantiate(specialRoomsDistributed[room.stage, room.roomConcept, left, right]
-                    [(int)room.specialRoomType], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
             else
                 room.roomInGame = Instantiate(specialRoomsDistributed[room.stage, room.roomConcept, left, right]
                     [(int)room.specialRoomType], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);

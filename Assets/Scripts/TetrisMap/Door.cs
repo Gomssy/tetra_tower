@@ -27,7 +27,6 @@ public class Door : MonoBehaviour {
     {
         if (enteredPosition == position && collision.tag.Equals("Player"))
         {
-            bool a = false;
             switch (position)
             {
                 case 0:

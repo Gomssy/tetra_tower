@@ -13,8 +13,8 @@ public class Test : MonoBehaviour {
 
     public void ChangeTetrimino()
     {
-        Destroy(mapManager.currentTetrimino.gameObject);
-        Destroy(mapManager.currentGhost.gameObject);
+        Destroy(MapManager.currentTetrimino.gameObject);
+        Destroy(MapManager.currentGhost.gameObject);
         tetriminoSpawner.MakeTetrimino();
     }
     public void SpawnBossTetrimino()
