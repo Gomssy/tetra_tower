@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour {
-    
+
     /*
      * variables
      * */
-
     TetriminoSpawner tetriminoSpawner;
+    public GameObject player;
     /// <summary>
     /// Grid showing tiles.
     /// </summary>
     public Transform grid;
-    public GameObject player;
     /// <summary>
     /// Tetris map's size.
     /// </summary>
@@ -34,6 +33,9 @@ public class MapManager : MonoBehaviour {
     /// Tetrimino falling gravity.
     /// </summary>
     public float gravity = 0.98f;
+    /// <summary>
+    /// Time tetrimino would wait until it falls.
+    /// </summary>
     public float timeToFallTetrimino = 100.0f;
     /// <summary>
     /// Time tetris waits to fall.
@@ -55,15 +57,14 @@ public class MapManager : MonoBehaviour {
     /// The time taken for a press to be collapsed.
     /// </summary>
     public float collapseTime;
+    /// <summary>
+    /// Sizes of tetris map.
+    /// </summary>
     public const int height = 24, width = 10, realHeight = 19;
     /// <summary>
     /// Absolute coordinates on tetris map.
     /// </summary>
     public static Room[,] mapGrid = new Room[width, height];
-    /// <summary>
-    /// Current state of game.
-    /// </summary>
-    public bool gameOver;
     /// <summary>
     /// Check if tetrimino is falling.
     /// </summary>
@@ -89,70 +90,100 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public bool spawnBossTetrimino = false;
     /// <summary>
-    /// Press.
+    /// Queue that saves rooms waiting for upgrade tetrimino.
     /// </summary>
-    public Press press;
+    public Queue<RoomType> roomsWaiting = new Queue<RoomType>();
     /// <summary>
     /// Current tetrimino waiting for falling.
     /// </summary>
-    public Tetrimino currentTetrimino;
+    public static Tetrimino currentTetrimino;
     /// <summary>
     /// Current ghost following currentTetrimino.
     /// </summary>
-    public Tetrimino currentGhost;
+    public static Tetrimino currentGhost;
     /// <summary>
-    /// Enum for special room types.
+    /// Room player exists.
+    /// Not related to player's real position, it also consider if player enter the room ordinarily.
     /// </summary>
-    public enum SpecialRoomType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal };
+    public static Room currentRoom;
+    /// <summary>
+    /// Temporary room player exists according to only position.
+    /// </summary>
+    public static Room tempRoom;
+    /// <summary>
+    /// Current stage of game.
+    /// </summary>
+    public static int currentStage;
+    /// <summary>
+    /// Enum for room types.
+    /// </summary>
+    public enum RoomType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal };
+    public enum RoomSpriteType { Item, BothSide, Gold, Amethyst, Boss, Normal1, Normal2, Nomal3, Normal4, Current };
     /// <summary>
     /// Fog of the rooms.
     /// </summary>
     public GameObject fog;
     /// <summary>
-    /// Fog alpha value of cleared room.
+    /// Fog of the cleared rooms.
     /// </summary>
-    public static float clearedFogAlpha = 0.75f;
+    public GameObject clearedFog;
     /// <summary>
-    /// Left door.
+    /// Press.
+    /// </summary>
+    public Press press;
+    /// <summary>
+    /// Left door in tetris.
     /// </summary>
     public GameObject leftDoor;
     /// <summary>
-    /// Right door.
+    /// Right door in tetris.
     /// </summary>
     public GameObject rightDoor;
+    /// <summary>
+    /// Up door in ingame.
+    /// </summary>
     public GameObject inGameDoorUp;
+    /// <summary>
+    /// Down door in ingame.
+    /// </summary>
     public GameObject inGameDoorDown;
+    /// <summary>
+    /// Left door in ingame.
+    /// </summary>
     public GameObject inGameDoorLeft;
+    /// <summary>
+    /// Right door in ingame.
+    /// </summary>
     public GameObject inGameDoorRight;
 
-
-
-
-
-    /// <summary>
-    /// Array for the normal Room candidates.
-    /// </summary>
-    public RoomInGame[] normalRoomList;
-    /// <summary>
-    /// Array for the special Room candidates.
-    /// </summary>
-    public RoomInGame[] specialRoomList;
+    public RoomInGame[] normalRoomList1;
+    public RoomInGame[] normalRoomList2;
+    /*public RoomInGame[] normalRoomList3;
+    public RoomInGame[] normalRoomList4;
+    public RoomInGame[] normalRoomList5;*/
+    public RoomInGame[] specialRoomList1;
+    public RoomInGame[] specialRoomList2;
+    /*public RoomInGame[] specialRoomList3;
+    public RoomInGame[] specialRoomList4;
+    public RoomInGame[] specialRoomList5;*/
     /// <summary>
     /// Array sorted normal rooms by location of side doors.
+    /// Each dimension for stage, concept, left door, right door.
     /// </summary>
-    List<RoomInGame>[,] normalRoomsDistributed = new List<RoomInGame>[3, 3];
+    public List<RoomInGame>[,,,] normalRoomsDistributed = new List<RoomInGame>[5, 4, 3, 3];
     /// <summary>
-    /// Room player exists.
+    /// Array sorted normal rooms by location of side doors.
+    /// Each dimension for stage, concept, left door, right door.
     /// </summary>
-    public static Room currentRoom;
-    /// <summary>
-    /// Queue that saves rooms waiting for upgrade tetrimino.
-    /// </summary>
-    public Queue<SpecialRoomType> roomsWaiting = new Queue<SpecialRoomType>();
-    /// <summary>
-    /// Original position of the camera when shaken.
-    /// </summary>
-    public static Vector3 originPos;
+    public List<RoomInGame>[,,,] specialRoomsDistributed = new List<RoomInGame>[5, 4, 3, 3];
+
+    public List<Sprite>[] roomsSpritesDistributed = new List<Sprite>[5];
+
+    public Sprite[] roomsSprite1;
+    public Sprite[] roomsSprite2;
+    /*public Sprite[] roomsSprite3;
+    public Sprite[] roomsSprite4;
+    public Sprite[] roomsSprite5;*/
 
     /*
      * functions
@@ -202,13 +233,9 @@ public class MapManager : MonoBehaviour {
         while (true)
         {
             if (IsRightTetrimino(te) == 1)
-            {
                 MoveTetriminoMapCoord(te, new Vector3(-1, 0, 0));
-            }
             else if (IsRightTetrimino(te) == -1)
-            {
                 MoveTetriminoMapCoord(te, new Vector3(1, 0, 0));
-            }
             else
                 return;
         }
@@ -255,7 +282,8 @@ public class MapManager : MonoBehaviour {
     /// <returns></returns>
     public IEnumerator TetrisPress(float initialCollapseTime, Press leftPress, Press rightPress)
     {
-        int doorCounter = 0;
+        int doorCloseCounter = 0;
+        int roomDestroyCounter = 0;
         int row = leftPress.row;
         while (Time.time - initialCollapseTime < collapseTime)
         {
@@ -263,13 +291,23 @@ public class MapManager : MonoBehaviour {
             float collapseRate = (Time.time - initialCollapseTime) / collapseTime;
             leftPress.transform.localScale = new Vector3(collapseRate * 20, 1, 1);
             rightPress.transform.localScale = new Vector3(-collapseRate * 20, 1, 1);
-            if(collapseRate - doorCounter * 0.2f > (float)1 / 12)
+            if(collapseRate - doorCloseCounter * 0.2f > (float)1 / 12)
             {
-                StartCoroutine(mapGrid[doorCounter, row].CloseDoor("Up"));
-                StartCoroutine(mapGrid[doorCounter, row].CloseDoor("Down"));
-                StartCoroutine(mapGrid[width - doorCounter - 1, row].CloseDoor("Up"));
-                StartCoroutine(mapGrid[width - doorCounter - 1, row].CloseDoor("Down"));
-                doorCounter++;
+                mapGrid[doorCloseCounter, row].CloseDoor("Up", false);
+                mapGrid[doorCloseCounter, row].CloseDoor("Down", false);
+                mapGrid[width - doorCloseCounter - 1, row].CloseDoor("Up", false);
+                mapGrid[width - doorCloseCounter - 1, row].CloseDoor("Down", false);
+                doorCloseCounter++;
+            }
+            if(collapseRate - roomDestroyCounter * 0.2f > 0.2f)
+            {
+                if(mapGrid[roomDestroyCounter, row] == currentRoom || mapGrid[width - roomDestroyCounter - 1, row] == currentRoom)
+                {
+                    GameManager.gameState = GameManager.GameState.GameOver;
+                }
+                //Destroy(mapGrid[roomDestroyCounter, row].gameObject);
+                //Destroy(mapGrid[width - roomDestroyCounter - 1, row].gameObject);
+                roomDestroyCounter++;
             }
         }
         for(int i = row + 1; i < realHeight; i++)
@@ -280,7 +318,7 @@ public class MapManager : MonoBehaviour {
                 break;
             }
         }
-        for (int x = 0; x < width; x++)
+        for(int x = 0; x < width; x++)
         {
             Destroy(mapGrid[x, row].gameObject);
             mapGrid[x, row] = null;
@@ -293,11 +331,9 @@ public class MapManager : MonoBehaviour {
         }
         isRowDeleting[row] = false;
         if (leftPress.createdOrder == leftPress.simultaneouslyCreatedPressNumber)
-        {
             StartCoroutine(DecreaseYCoord(row, leftPress.bottomRow));
-        }
         presses[row] = null;
-        UpgradeRoom(SpecialRoomType.Item);
+        UpgradeRoom(RoomType.Item);
         Destroy(leftPress.gameObject);
         Destroy(rightPress.gameObject);
     }
@@ -387,8 +423,8 @@ public class MapManager : MonoBehaviour {
         }
         if (shakeCamera)
         {
-            Camera camera = FindObjectOfType<Camera>();
-            StartCoroutine(CameraShake(5 * (top - bottom + 1) / CameraController.tetrisCameraSize, camera.transform.position, camera));
+            Camera camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+            StartCoroutine(camera.GetComponent<CameraController>().CameraShake(5 * (top - bottom + 1) / CameraController.tetrisCameraSize));
         }
         for (int i = 0; i < height; i++)
         {
@@ -399,12 +435,10 @@ public class MapManager : MonoBehaviour {
         isRoomFalling = false;
         for (int i = 0; i < width; i++)
         {
-            if (bottom > 0 && mapGrid[i, bottom] != null && mapGrid[i, bottom].isRoomCleared == true && mapGrid[i, bottom].isDownDoorOpened != true)
-                mapGrid[i, bottom].OpenDoorTest(mapGrid[i, bottom].inGameDoorDown);
-                //StartCoroutine(mapGrid[i, bottom].OpenDoor("Down"));
-            else if (bottom > 0 && mapGrid[i, bottom - 1] != null && mapGrid[i, bottom - 1].isRoomCleared == true && mapGrid[i, bottom - 1].isUpDoorOpened != true)
-                mapGrid[i, bottom - 1].OpenDoorTest(mapGrid[i, bottom - 1].inGameDoorUp);
-                //StartCoroutine(mapGrid[i, bottom - 1].OpenDoor("Up"));
+            if (bottom > 0 && mapGrid[i, bottom] != null && mapGrid[i, bottom].isRoomCleared == true)
+                mapGrid[i, bottom].OpenDoor("Down");
+            else if (bottom > 0 && mapGrid[i, bottom - 1] != null && mapGrid[i, bottom - 1].isRoomCleared == true)
+                mapGrid[i, bottom - 1].OpenDoor("Up");
         }
     }
     /// <summary>
@@ -415,7 +449,7 @@ public class MapManager : MonoBehaviour {
     public static bool IsRowFull(int row)
     {
         for (int x = 0; x < width; x++)
-            if (mapGrid[x, row] == null || mapGrid[x, row].specialRoomType == SpecialRoomType.Boss)
+            if (mapGrid[x, row] == null || mapGrid[x, row].specialRoomType == RoomType.Boss)
                 return false;
         return true;
     }
@@ -441,12 +475,10 @@ public class MapManager : MonoBehaviour {
         {
             if ((int)te.rooms[i].mapCoord.y > 19)
             {
-                gameOver = true;
-                Debug.Log("Game Over");
+                GameManager.gameState = GameManager.GameState.GameOver;
                 return;
             }
             mapGrid[(int)te.rooms[i].mapCoord.x, (int)te.rooms[i].mapCoord.y] = te.rooms[i];
-
         }
     }
     /// <summary>
@@ -469,21 +501,17 @@ public class MapManager : MonoBehaviour {
     public void MoveTetriminoHorizontal(Tetrimino te, Vector3 coord)
     {
         if (te.rotatedPosition[te.rotatedAngle] > 0 && coord.x < 0)
-        {
             for (int i = 0; i < te.rotatedPosition.Length; i++)
             {
                 if (te.rotatedPosition[i] > 0)
                     te.rotatedPosition[i] += (int)coord.x;
             }
-        }
         else if (te.rotatedPosition[te.rotatedAngle] + Tetrimino.rotationInformation[(int)te.tetriminoType].horizontalLength[te.rotatedAngle] < width && coord.x > 0)
-        {
             for (int i = 0; i < te.rotatedPosition.Length; i++)
             {
                 if (te.rotatedPosition[i] + Tetrimino.rotationInformation[(int)te.tetriminoType].horizontalLength[i] < width)
                     te.rotatedPosition[i] += (int)coord.x;
             }
-        }
         te.mapCoord = new Vector3(te.rotatedPosition[te.rotatedAngle], te.mapCoord.y, te.mapCoord.z);
         SetRoomMapCoord(te);
     }
@@ -553,7 +581,6 @@ public class MapManager : MonoBehaviour {
     /// <param name="te">Which tetrimino to move.</param>
     public void TetriminoMapCoordDown(Tetrimino te)
     {
-        //controlCurrentTetrimino = false;
         while (IsRightTetrimino(te) == 0)
         {
             MoveTetriminoMapCoord(te, new Vector3(0, -1, 0));
@@ -561,7 +588,6 @@ public class MapManager : MonoBehaviour {
         MoveTetriminoMapCoord(te, new Vector3(0, 1, 0));
         initialFallTime = Time.time;
         StartCoroutine(TetriminoDown(te));
-        //EndTetrimino(currentTetrimino);
     }
     /// <summary>
     /// End tetrimino's falling and make rooms and new tetrimino.
@@ -591,8 +617,7 @@ public class MapManager : MonoBehaviour {
             fallSpeed += gravity * fallTime * fallTime;
             te.transform.position += new Vector3(0, -fallSpeed, 0);
         }
-        Camera camera = FindObjectOfType<Camera>();
-        StartCoroutine(CameraShake(20 / CameraController.tetrisCameraSize, camera.transform.position, camera));
+        StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().CameraShake(20 / CameraController.tetrisCameraSize));
         EndTetrimino(te);
     }
     /// <summary>
@@ -602,8 +627,6 @@ public class MapManager : MonoBehaviour {
     /// <param name="te">Which tetrimino you'd like to sink with ghost.</param>
     public void GhostControl(Tetrimino ghost, Tetrimino te)
     {
-        /*if(ghost.rotatedAngle != te.rotatedAngle)
-            TetriminoRotate(ghost, te.rotatedAngle - ghost.rotatedAngle);*/
         currentGhost.mapCoord = currentTetrimino.mapCoord;
         for (int i = 0; i < currentGhost.rooms.Length; i++)
         {
@@ -626,30 +649,15 @@ public class MapManager : MonoBehaviour {
         {
             isTetriminoFalling = true;
             TetriminoMapCoordDown(currentTetrimino);
-            //StartCoroutine(TetriminoDown(currentTetrimino));
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow) && GameManager.gameState == GameManager.GameState.Tetris)
-        {
             MoveTetriminoHorizontal(currentTetrimino, new Vector3(-1, 0, 0));
-            /*MoveTetriminoMapCoord(te, new Vector3(-1, 0, 0));
-            if (IsRightTetrimino(te) != 0)
-                MoveTetriminoMapCoord(te, new Vector3(1, 0, 0));*/
-        }
         else if (Input.GetKeyDown(KeyCode.RightArrow) && GameManager.gameState == GameManager.GameState.Tetris)
-        {
             MoveTetriminoHorizontal(currentTetrimino, new Vector3(1, 0, 0));
-            /*MoveTetriminoMapCoord(te, new Vector3(1, 0, 0));
-            if (IsRightTetrimino(te) != 0)
-                MoveTetriminoMapCoord(te, new Vector3(-1, 0, 0));*/
-        }
         else if (Input.GetKeyDown(KeyCode.UpArrow) && GameManager.gameState == GameManager.GameState.Tetris)
-        {
             TetriminoRotate(currentTetrimino, 1);
-        }
         else if (Input.GetKeyDown(KeyCode.DownArrow) && GameManager.gameState == GameManager.GameState.Tetris)
-        {
             TetriminoRotate(currentTetrimino, -1);
-        }
     }
     /// <summary>
     /// Set rooms' mapCoord on this tetrimino.
@@ -661,6 +669,26 @@ public class MapManager : MonoBehaviour {
         {
             te.rooms[i].mapCoord = te.mapCoord + (te.rooms[i].transform.localPosition / tetrisMapSize);
         }
+    }
+    /// <summary>
+    /// Set rooms' sprite.
+    /// </summary>
+    /// <param name="room">Room to set sprite.</param>
+    /// <param name="i">Index of the room in tetrimino. Use this to set ghost room's sprite.</param>
+    public void SetRoomSprite(Room room, int i)
+    {
+        //When start and special rooms' sprites added, modify this.
+        if (room.specialRoomType == RoomType.Normal)
+            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
+        else if (room.specialRoomType == RoomType.Start)
+            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
+        else
+            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
+
+
+
+        if (currentGhost != null)
+            currentGhost.rooms[i].GetComponent<SpriteRenderer>().sprite = room.GetComponent<SpriteRenderer>().sprite;
     }
     /// <summary>
     /// Create rooms player will move.
@@ -676,40 +704,22 @@ public class MapManager : MonoBehaviour {
             if(GameManager.gameState == GameManager.GameState.Ingame)
                 room.transform.localPosition += new Vector3(0, 0, -2);
             room.SetDoors();
-            if (room.specialRoomType != SpecialRoomType.Normal)
-            {
-                room.roomInGame = Instantiate(specialRoomList[(int)room.specialRoomType], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
-            }
+            int left = room.leftDoorLocation;
+            int right = room.rightDoorLocation;
+            if (room.specialRoomType == RoomType.Normal)
+                room.roomInGame = Instantiate(normalRoomsDistributed[room.stage, room.roomConcept, left, right]
+                    [Random.Range(0, normalRoomsDistributed[room.stage, room.roomConcept, left, right].Count)], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
             else
-            {
-                int left = room.leftDoorLocation;
-                int right = room.rightDoorLocation;
-                room.roomInGame = Instantiate(normalRoomsDistributed[left, right][Random.Range(0, normalRoomsDistributed[left, right].Count)], room.transform.position + new Vector3(0, 0, 2),
-                    Quaternion.identity, room.transform);
-            }
+                room.roomInGame = Instantiate(specialRoomsDistributed[room.stage, room.roomConcept, left, right]
+                    [(int)room.specialRoomType], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
             room.CreateDoors(leftDoor, rightDoor, inGameDoorUp, inGameDoorDown, inGameDoorLeft, inGameDoorRight);
             room.fog = Instantiate(fog, room.transform.position + new Vector3(12, 12, 2), Quaternion.identity, room.transform);
             if (room.mapCoord.y > 0 && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1] != null && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].isRoomCleared == true)
-            {
-                room.OpenDoorTest(room.inGameDoorDown);
-                mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].OpenDoorTest(mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].inGameDoorUp);
-                //StartCoroutine(mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].OpenDoor("Up"));
-
-            }
+                room.OpenDoor("Down");
             if (room.mapCoord.x > 0 && mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y] != null && mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].isRoomCleared == true)
-            {
-                room.OpenDoorTest(room.inGameDoorLeft);
-                mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].OpenDoorTest(mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].inGameDoorRight);
-                //StartCoroutine(mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].OpenDoor("Right"));
-
-            }
+                room.OpenDoor("Left");
             if (room.mapCoord.x < width - 1 && mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y] != null && mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].isRoomCleared == true)
-            {
-                room.OpenDoorTest(room.inGameDoorRight);
-                mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].OpenDoorTest(mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].inGameDoorLeft);
-                //StartCoroutine(mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].OpenDoor("Left"));
-
-            }
+                room.OpenDoor("Right");
         }
         Destroy(te.gameObject);
     }
@@ -717,17 +727,18 @@ public class MapManager : MonoBehaviour {
     /// Upgrade rooms.
     /// </summary>
     /// <param name="roomType">Rooms you want to upgrade.</param>
-    public void UpgradeRoom(SpecialRoomType roomType)
+    public void UpgradeRoom(RoomType roomType)
     {
         if (!isTetriminoFalling)
         {
-            if (roomType != SpecialRoomType.Item && currentTetrimino.notNormalRoomCount < 4)
+            if (roomType != RoomType.Item && currentTetrimino.notNormalRoomCount < 4)
             {
                 int randomRoom = Random.Range(0, currentTetrimino.rooms.Length);
-                if (currentTetrimino.rooms[randomRoom].specialRoomType == SpecialRoomType.Normal)
+                if (currentTetrimino.rooms[randomRoom].specialRoomType == RoomType.Normal)
                 {
                     currentTetrimino.notNormalRoomCount++;
                     currentTetrimino.rooms[randomRoom].specialRoomType = roomType;
+                    SetRoomSprite(currentTetrimino.rooms[randomRoom], randomRoom);
                     return;
                 }
                 else
@@ -736,11 +747,12 @@ public class MapManager : MonoBehaviour {
                     return;
                 }
             }
-            else if (roomType == SpecialRoomType.Item)
+            else if (roomType == RoomType.Item)
             {
                 if(currentTetrimino.itemRoomIndex != -1)
                 {
                     currentTetrimino.rooms[currentTetrimino.itemRoomIndex].itemRoomType++;
+                    SetRoomSprite(currentTetrimino.rooms[currentTetrimino.itemRoomIndex], currentTetrimino.itemRoomIndex);
                     return;
                 }
                 else
@@ -750,6 +762,7 @@ public class MapManager : MonoBehaviour {
                     currentTetrimino.itemRoomIndex = randomRoom;
                     currentTetrimino.rooms[randomRoom].specialRoomType = roomType;
                     currentTetrimino.rooms[randomRoom].itemRoomType++;
+                    SetRoomSprite(currentTetrimino.rooms[randomRoom], randomRoom);
                     return;
                 }
             }
@@ -766,27 +779,6 @@ public class MapManager : MonoBehaviour {
         tetriminoSpawner.MakeTetrimino();
     }
     /// <summary>
-    /// Shake the camera when tetrimino has fallen.
-    /// </summary>
-    /// <param name="_amount">Amount you want to shake the camera.</param>
-    /// <param name="originPos">Original position of the camera.</param>
-    /// <param name="camera">Camera you want to shake.</param>
-    /// <returns></returns>
-    public IEnumerator CameraShake(float _amount, Vector3 _originPos, Camera camera)
-    {
-        float amount = _amount;
-        Vector3 cameraPos = _originPos;
-        originPos = _originPos;
-        while (amount > 0)
-        {
-            cameraPos = new Vector3(0.2f * Random.insideUnitCircle.x * amount * camera.orthographicSize + originPos.x, Random.insideUnitCircle.y * amount * camera.orthographicSize + originPos.y, originPos.z);
-            camera.transform.position = cameraPos;
-            amount -= _amount / 40;
-            yield return null;
-        }
-        camera.transform.localPosition = originPos;
-    }
-    /// <summary>
     /// Make room fade in.
     /// </summary>
     /// <param name="room">Room you want to fade in.</param>
@@ -794,49 +786,14 @@ public class MapManager : MonoBehaviour {
     public IEnumerator RoomFadeIn(Room room)
     {
         float alpha = 1;
-        yield return new WaitForSeconds(0.1f);
-        if (room.isRoomCleared != true)
+        for (int i = 0; i < 20; i++)
         {
-            room.CloseDoorTest(room.inGameDoorUp);
-            if (room.mapCoord.y < realHeight && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y + 1] != null)
-            {
-                mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y + 1].CloseDoorTest(mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y + 1].inGameDoorDown);
-            }
-            room.CloseDoorTest(room.inGameDoorDown);
-            if (room.mapCoord.y > 0 && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1] != null)
-            {
-                mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].CloseDoorTest(mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].inGameDoorUp);
-            }
-            room.CloseDoorTest(room.inGameDoorLeft);
-            if (room.mapCoord.x > 0 && mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y] != null)
-            {
-                mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].CloseDoorTest(mapGrid[(int)room.mapCoord.x - 1, (int)room.mapCoord.y].inGameDoorRight);
-            }
-            room.CloseDoorTest(room.inGameDoorRight);
-            if (room.mapCoord.x < width - 1 && mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y] != null)
-            {
-                mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].CloseDoorTest(mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].inGameDoorLeft);
-            }
-
-
-
-
-
-            /*StartCoroutine(room.CloseDoor("Up"));
-            StartCoroutine(room.CloseDoor("Down"));
-            StartCoroutine(room.CloseDoor("Left"));
-            StartCoroutine(room.CloseDoor("Right"));*/
-        }
-        while(alpha > 0.0001)
-        {
-            alpha = Mathf.Lerp(alpha, 0, Mathf.Sqrt(Time.deltaTime));
-            room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
+            yield return new WaitForSeconds(0.01f);
             room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
-            yield return null;
+            alpha -= 0.05f;
         }
-        room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
@@ -849,23 +806,17 @@ public class MapManager : MonoBehaviour {
     public IEnumerator RoomFadeOut(Room room)
     {
         float alpha = 0;
-        while (alpha < 0.99909)
+        for(int i = 0; i < 20; i++)
         {
-            alpha = Mathf.Lerp(alpha, 1, Mathf.Sqrt(Time.deltaTime));
-            room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
+            yield return new WaitForSeconds(0.01f);
             room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
-            if(!(room.isRoomCleared == true && alpha >= clearedFogAlpha))
-                room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
-            yield return null;
+            room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
+            alpha += 0.05f;
         }
-        room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-        if(room.isRoomCleared == true)
-            room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, clearedFogAlpha);
-        else
-            room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
     }
 
     void Awake()
@@ -882,51 +833,87 @@ public class MapManager : MonoBehaviour {
             tetrisYCoord[i] = i * tetrisMapSize;
         for (int i = 0; i < isRowDeleting.Length; i++)
             isRowDeleting[i] = false;
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                normalRoomsDistributed[i, j] = new List<RoomInGame>();
-        for(int i = 0; i < normalRoomList.Length; i++)
+        for (int stage = 0; stage < 5; stage++)
         {
-            Debug.Log(i);
-            int leftDoor = normalRoomList[i].sideDoorInfo[0];
-            int rightDoor = normalRoomList[i].sideDoorInfo[1];
-            int leftCount = 0;
-            int rightCount = 0;
-            for(int left = leftDoor; left != 0; left /= 10)
-            {
-                for (int right = rightDoor; right != 0; right /= 10)
+            roomsSpritesDistributed[stage] = new List<Sprite>();
+            for (int concept = 0; concept < 4; concept++)
+                for (int leftDoor = 0; leftDoor < 3; leftDoor++)
+                    for (int rightDoor = 0; rightDoor < 3; rightDoor++)
+                    {
+                        normalRoomsDistributed[stage, concept, leftDoor, rightDoor] = new List<RoomInGame>();
+                        specialRoomsDistributed[stage, concept, leftDoor, rightDoor] = new List<RoomInGame>();
+                    }
+        }
+        for (int concept = 0; concept < 4; concept++)
+            for (int leftDoor = 0; leftDoor < 3; leftDoor++)
+                for (int rightDoor = 0; rightDoor < 3; rightDoor++)
                 {
-                    if(left % 10 == 1 && right % 10 == 1)
-                        normalRoomsDistributed[leftCount, rightCount].Add(normalRoomList[i]);
-                    rightCount++;
+                    for (int i = 0; i < normalRoomList1.Length; i++)
+                        if (normalRoomList1[i].leftDoorInfo[leftDoor] == true && normalRoomList1[i].rightDoorInfo[rightDoor] == true && normalRoomList1[i].concept[concept] == true)
+                            normalRoomsDistributed[0, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList1[i]);
+                    for (int i = 0; i < normalRoomList2.Length; i++)
+                        if (normalRoomList2[i].leftDoorInfo[leftDoor] == true && normalRoomList2[i].rightDoorInfo[rightDoor] == true && normalRoomList2[i].concept[concept] == true)
+                            normalRoomsDistributed[1, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList2[i]);
+                    /*for (int i = 0; i < normalRoomList3.Length; i++)
+                        if (normalRoomList3[i].leftDoorInfo[leftDoor] == true && normalRoomList3[i].rightDoorInfo[rightDoor] == true && normalRoomList3[i].concept[concept] == true)
+                            normalRoomsDistributed[2, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList1[i]);
+                    for (int i = 0; i < normalRoomList4.Length; i++)
+                        if (normalRoomList4[i].leftDoorInfo[leftDoor] == true && normalRoomList4[i].rightDoorInfo[rightDoor] == true && normalRoomList4[i].concept[concept] == true)
+                            normalRoomsDistributed[3, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList1[i]);
+                    for (int i = 0; i < normalRoomList5.Length; i++)
+                        if (normalRoomList5[i].leftDoorInfo[leftDoor] == true && normalRoomList5[i].rightDoorInfo[rightDoor] == true && normalRoomList5[i].concept[concept] == true)
+                            normalRoomsDistributed[4, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList1[i]);*/
+                    for (int i = 0; i < specialRoomList1.Length; i++)
+                        if (specialRoomList1[i].leftDoorInfo[leftDoor] == true && specialRoomList1[i].rightDoorInfo[rightDoor] == true && specialRoomList1[i].concept[concept] == true)
+                            specialRoomsDistributed[0, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList1[i]);
+                    for (int i = 0; i < specialRoomList2.Length; i++)
+                        if (specialRoomList2[i].leftDoorInfo[leftDoor] == true && specialRoomList2[i].rightDoorInfo[rightDoor] == true && specialRoomList2[i].concept[concept] == true)
+                            specialRoomsDistributed[1, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList2[i]);
+                    /*for (int i = 0; i < specialRoomList3.Length; i++)
+                        if (specialRoomList3[i].leftDoorInfo[leftDoor] == true && specialRoomList3[i].rightDoorInfo[rightDoor] == true && specialRoomList3[i].concept[concept] == true)
+                            specialRoomsDistributed[2, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList3[i]);
+                    for (int i = 0; i < specialRoomList4.Length; i++)
+                        if (specialRoomList4[i].leftDoorInfo[leftDoor] == true && specialRoomList4[i].rightDoorInfo[rightDoor] == true && specialRoomList4[i].concept[concept] == true)
+                            specialRoomsDistributed[3, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList4[i]);
+                    for (int i = 0; i < specialRoomList5.Length; i++)
+                        if (specialRoomList5[i].leftDoorInfo[leftDoor] == true && specialRoomList5[i].rightDoorInfo[rightDoor] == true && specialRoomList5[i].concept[concept] == true)
+                            specialRoomsDistributed[4, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList5[i]);*/
                 }
-                rightCount = 0;
-                leftCount++;
-            }
+        for (RoomSpriteType spriteType = 0; (int)spriteType < 10; spriteType++)
+        {
+            roomsSpritesDistributed[0].Add(roomsSprite1[(int)spriteType]);
+            roomsSpritesDistributed[1].Add(roomsSprite2[(int)spriteType]);
+            /*roomsSpritesDistributed[2].Add(roomsSprite3[(int)spriteType]);
+            roomsSpritesDistributed[3].Add(roomsSprite4[(int)spriteType]);
+            roomsSpritesDistributed[4].Add(roomsSprite5[(int)spriteType]);*/
         }
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
+        currentStage = 0;
     }
+
     // Use this for initialization
     void Start () {
-        
+
     }
 
     // Update is called once per frame
     void Update() {
-        if (!gameOver)
+        if (GameManager.gameState != GameManager.GameState.GameOver)
         {
-            if(!isTetriminoFalling)
+            if (!isTetriminoFalling)
             {
                 TetriminoControl(currentTetrimino);
-                if(!isTetriminoFalling)
+                if (!isTetriminoFalling)
                     currentTetrimino.transform.position = new Vector3(currentTetrimino.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentTetrimino.mapCoord.y], currentTetrimino.mapCoord.z);
-                if(currentGhost != null)
+                if (currentGhost != null)
                 {
-                   GhostControl(currentGhost, currentTetrimino);
-                   currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z);
+                    GhostControl(currentGhost, currentTetrimino);
+                    currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z);
                 }
             }
         }
+        else
+            Debug.Log("Game Over");
 
     }
 }

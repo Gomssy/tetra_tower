@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212237086283342986}
   - component: {fileID: 95177593216515702}
   - component: {fileID: 60996771576975244}
+  - component: {fileID: 114082229687600582}
   m_Layer: 8
   m_Name: DoorInGameLeft
   m_TagString: Untagged
@@ -83,7 +84,7 @@ Animator:
   m_GameObject: {fileID: 1237283271006564}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7f670d008fc00b74cbd0798fdbb84f4d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2336130267e9d484b913c6be80247d78, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -92,6 +93,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114082229687600582
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1237283271006564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70108dd0bfd72e847b1580dbd0869ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 3
+  enteredPosition: 0
+  animatorThisRoom: {fileID: 0}
+  animatorNextRoom: {fileID: 0}
 --- !u!212 &212237086283342986
 SpriteRenderer:
   m_ObjectHideFlags: 1

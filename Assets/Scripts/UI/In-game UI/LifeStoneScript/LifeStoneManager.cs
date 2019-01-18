@@ -68,6 +68,8 @@ public class LifeStoneManager : MonoBehaviour {
 	IEnumerator TestEnumerator()
 	{
         yield return null;
+        PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 8), "AAAAAAAAAAAAAAAAAAAAAAAA"));
+        /*
         PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 1), "AAA"));
         yield return new WaitForSeconds(2);
         PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 2), "AAAA A"));
@@ -320,12 +322,12 @@ public class LifeStoneManager : MonoBehaviour {
     
 
 
-	public int CountType(int type)
+	public int CountType(LifeStoneType type)
 	{
 		int count = 0;
 		for (int j = 0; j < 3; j++)
 			for (int i = 0; i < lifeStoneRowNum; i++)
-				if (lifeStoneArray[j, i] == type)
+				if (lifeStoneArray[j, i] == (int)type)
 					count++;
 		return count;
 	}
@@ -369,7 +371,7 @@ public class LifeStoneManager : MonoBehaviour {
 		}
 	}
 
-	public void ChangeFromNormal(int type, int num)
+	public void ChangeFromNormal(LifeStoneType type, int num)
 	{
 		System.Random rnd = new System.Random();
 		ArrayList candArray = new ArrayList();
@@ -382,18 +384,18 @@ public class LifeStoneManager : MonoBehaviour {
 		for(int i=0; i<candArray.Count; i++)
 		{
 			Vector2Int vtmp = (Vector2Int)candArray[i];
-			lifeStoneArray[vtmp.y, vtmp.x] = type;
+			lifeStoneArray[vtmp.y, vtmp.x] = (int)type;
 		}
-		StartCoroutine(ChangeInPhase(candArray,type));
+		StartCoroutine(ChangeInPhase(candArray,(int)type));
 	}
 
-	public void ChangeToNormal(int type, int num)
+	public void ChangeToNormal(LifeStoneType type, int num)
 	{
 		System.Random rnd = new System.Random();
 		ArrayList candArray = new ArrayList();
 		for (int j = 0; j < lifeStoneRowNum; j++)
 			for (int i = 0; i < 3; i++)
-				if (lifeStoneArray[j, i] == type)
+				if (lifeStoneArray[j, i] == (int)type)
 					candArray.Add(new Vector2Int(i, j));
 		while (candArray.Count > num)
 			candArray.RemoveAt(rnd.Next(candArray.Count));

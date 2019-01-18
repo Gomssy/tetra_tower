@@ -185,6 +185,8 @@ MonoBehaviour:
   - {fileID: 114592148813439672}
   - {fileID: 114880629913510282}
   - {fileID: 114773214858996824}
+  notNormalRoomCount: 0
+  itemRoomIndex: -1
   rotatedAngle: 0
   rotatedPosition: 00000000000000000000000000000000
 --- !u!114 &114592148813439672
@@ -199,11 +201,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapCoord: {x: 0, y: 0, z: 0}
-  doorInfo: 
   stage: 0
   roomConcept: 0
   itemRoomType: 0
   specialRoomType: 5
+  leftDoorLocation: 0
+  rightDoorLocation: 0
+  doorLocations: 010000000900000011000000
+  fog: {fileID: 0}
+  leftTetrisDoor: {fileID: 0}
+  rightTetrisDoor: {fileID: 0}
+  inGameDoorUp: {fileID: 0}
+  inGameDoorDown: {fileID: 0}
+  inGameDoorLeft: {fileID: 0}
+  inGameDoorRight: {fileID: 0}
+  roomInGame: {fileID: 0}
+  isRoomCleared: 0
 --- !u!114 &114773214858996824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -216,11 +229,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapCoord: {x: 0, y: 0, z: 0}
-  doorInfo: 
   stage: 0
   roomConcept: 0
   itemRoomType: 0
   specialRoomType: 5
+  leftDoorLocation: 0
+  rightDoorLocation: 0
+  doorLocations: 010000000900000011000000
+  fog: {fileID: 0}
+  leftTetrisDoor: {fileID: 0}
+  rightTetrisDoor: {fileID: 0}
+  inGameDoorUp: {fileID: 0}
+  inGameDoorDown: {fileID: 0}
+  inGameDoorLeft: {fileID: 0}
+  inGameDoorRight: {fileID: 0}
+  roomInGame: {fileID: 0}
+  isRoomCleared: 0
 --- !u!114 &114826727960618170
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -233,11 +257,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapCoord: {x: 0, y: 0, z: 0}
-  doorInfo: 
   stage: 0
   roomConcept: 0
   itemRoomType: 0
   specialRoomType: 5
+  leftDoorLocation: 0
+  rightDoorLocation: 0
+  doorLocations: 010000000900000011000000
+  fog: {fileID: 0}
+  leftTetrisDoor: {fileID: 0}
+  rightTetrisDoor: {fileID: 0}
+  inGameDoorUp: {fileID: 0}
+  inGameDoorDown: {fileID: 0}
+  inGameDoorLeft: {fileID: 0}
+  inGameDoorRight: {fileID: 0}
+  roomInGame: {fileID: 0}
+  isRoomCleared: 0
 --- !u!114 &114880629913510282
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -250,11 +285,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapCoord: {x: 0, y: 0, z: 0}
-  doorInfo: 
   stage: 0
   roomConcept: 0
   itemRoomType: 0
   specialRoomType: 5
+  leftDoorLocation: 0
+  rightDoorLocation: 0
+  doorLocations: 010000000900000011000000
+  fog: {fileID: 0}
+  leftTetrisDoor: {fileID: 0}
+  rightTetrisDoor: {fileID: 0}
+  inGameDoorUp: {fileID: 0}
+  inGameDoorDown: {fileID: 0}
+  inGameDoorLeft: {fileID: 0}
+  inGameDoorRight: {fileID: 0}
+  roomInGame: {fileID: 0}
+  isRoomCleared: 0
 --- !u!212 &212081282563163156
 SpriteRenderer:
   m_ObjectHideFlags: 1

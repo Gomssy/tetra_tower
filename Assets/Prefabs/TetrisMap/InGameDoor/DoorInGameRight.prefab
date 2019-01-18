@@ -20,8 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4726613234881410}
   - component: {fileID: 212016597369960122}
-  - component: {fileID: 60158907655368212}
   - component: {fileID: 95627112181051082}
+  - component: {fileID: 60158907655368212}
+  - component: {fileID: 114434671980411926}
   m_Layer: 8
   m_Name: DoorInGameRight
   m_TagString: Untagged
@@ -83,7 +84,7 @@ Animator:
   m_GameObject: {fileID: 1668375270989012}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7f670d008fc00b74cbd0798fdbb84f4d, type: 2}
+  m_Controller: {fileID: 9100000, guid: c6454fe1c617b3045ab180e0be7e8950, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -92,6 +93,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114434671980411926
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1668375270989012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70108dd0bfd72e847b1580dbd0869ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 1
+  enteredPosition: 0
+  animatorThisRoom: {fileID: 0}
+  animatorNextRoom: {fileID: 0}
 --- !u!212 &212016597369960122
 SpriteRenderer:
   m_ObjectHideFlags: 1

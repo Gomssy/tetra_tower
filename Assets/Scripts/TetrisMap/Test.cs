@@ -13,25 +13,30 @@ public class Test : MonoBehaviour {
 
     public void ChangeTetrimino()
     {
-        Destroy(mapManager.currentTetrimino.gameObject);
-        Destroy(mapManager.currentGhost.gameObject);
+        Destroy(MapManager.currentTetrimino.gameObject);
+        Destroy(MapManager.currentGhost.gameObject);
         tetriminoSpawner.MakeTetrimino();
     }
     public void SpawnBossTetrimino()
     {
         mapManager.spawnBossTetrimino = true;
     }
+    public void UpgradeStage()
+    {
+        if(MapManager.currentStage < 5)
+            MapManager.currentStage += 1;
+    }
     public void Gold()
     {
-        mapManager.UpgradeRoom(MapManager.SpecialRoomType.Gold);
+        mapManager.UpgradeRoom(MapManager.RoomType.Gold);
     }
     public void Amethyst()
     {
-        mapManager.UpgradeRoom(MapManager.SpecialRoomType.Amethyst);
+        mapManager.UpgradeRoom(MapManager.RoomType.Amethyst);
     }
     public void BothSide()
     {
-        mapManager.UpgradeRoom(MapManager.SpecialRoomType.BothSide);
+        mapManager.UpgradeRoom(MapManager.RoomType.BothSide);
     }
     public void Boss()
     {
@@ -46,7 +51,7 @@ public class Test : MonoBehaviour {
         MapManager.currentRoom.ClearRoom();
     }
 
-    /*public GameObject upDoor;
+    public GameObject upDoor;
     public GameObject downDoor;
     public GameObject leftDoor;
     public GameObject rightDoor;
@@ -62,7 +67,6 @@ public class Test : MonoBehaviour {
         animator.SetBool("doorOpen", false);
         animator.SetBool("doorClose", true);
     }
-
     public void DownOpenTest()
     {
         Animator animator = downDoor.GetComponent<Animator>();
@@ -75,7 +79,6 @@ public class Test : MonoBehaviour {
         animator.SetBool("doorOpen", false);
         animator.SetBool("doorClose", true);
     }
-
     public void LeftOpenTest()
     {
         Animator animator = leftDoor.GetComponent<Animator>();
@@ -88,7 +91,6 @@ public class Test : MonoBehaviour {
         animator.SetBool("doorOpen", false);
         animator.SetBool("doorClose", true);
     }
-
     public void RightOpenTest()
     {
         Animator animator = rightDoor.GetComponent<Animator>();
@@ -100,11 +102,12 @@ public class Test : MonoBehaviour {
         Animator animator = rightDoor.GetComponent<Animator>();
         animator.SetBool("doorOpen", false);
         animator.SetBool("doorClose", true);
-    }*/
+    }
 
 
     private void Awake()
     {
+        //leftDoor.GetComponent<Animator>().SetInteger("doorPosition", 3);
 
         mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();

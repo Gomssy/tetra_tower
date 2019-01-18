@@ -32,6 +32,11 @@ public class Press : MonoBehaviour
     /// </summary>
     public bool isLeft;
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.transform.tag.Equals("Player"))
+            GameManager.gameState = GameManager.GameState.GameOver;
+    }
 
     // Use this for initialization
     void Start () {
