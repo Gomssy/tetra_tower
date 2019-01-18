@@ -28,15 +28,15 @@ public class Test : MonoBehaviour {
     }
     public void Gold()
     {
-        mapManager.UpgradeRoom(MapManager.RoomType.Gold);
+        mapManager.UpgradeRoom(RoomType.Gold);
     }
     public void Amethyst()
     {
-        mapManager.UpgradeRoom(MapManager.RoomType.Amethyst);
+        mapManager.UpgradeRoom(RoomType.Amethyst);
     }
     public void BothSide()
     {
-        mapManager.UpgradeRoom(MapManager.RoomType.BothSide);
+        mapManager.UpgradeRoom(RoomType.BothSide);
     }
     public void Boss()
     {

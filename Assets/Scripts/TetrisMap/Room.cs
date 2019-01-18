@@ -31,7 +31,7 @@ public class Room : MonoBehaviour
     /// <summary>
     /// Special room types.
     /// </summary>
-    public MapManager.RoomType specialRoomType;
+    public RoomType specialRoomType;
     /// <summary>
     /// Location of the left door.
     /// </summary>

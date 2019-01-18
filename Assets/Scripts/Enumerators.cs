@@ -28,3 +28,16 @@ public enum ItemType
     SuperiorItem, MasterPieceItem, StudyAdd, OrdinaryAdd, SuperiorAdd,
     MasterpieceAdd
 }
+
+/// <summary>
+/// Enum for game's state.
+/// </summary>
+public enum GameState { MainMenu, Ingame, Tetris, Pause, Inventory, GameOver }
+/// <summary>
+/// Enum for room types.
+/// </summary>
+public enum RoomType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal }
+/// <summary>
+/// Enum for room's sprite types.
+/// </summary>
+public enum RoomSpriteType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal1, Normal2, Nomal3, Normal4, Current }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    public enum GameState { MainMenu, Ingame, Tetris, Pause, Inventory, GameOver }
     /// <summary>
     /// Which state this game is.
     /// change later

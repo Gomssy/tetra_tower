@@ -35,7 +35,7 @@ public class Press : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.transform.tag.Equals("Player"))
-            GameManager.gameState = GameManager.GameState.GameOver;
+            GameManager.gameState = GameState.GameOver;
     }
 
     // Use this for initialization

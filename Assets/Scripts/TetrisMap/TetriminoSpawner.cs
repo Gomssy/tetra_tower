@@ -33,7 +33,7 @@ public class TetriminoSpawner : MonoBehaviour {
     /// </summary>
     public void MakeTetrimino()
     {
-        if (GameManager.gameState != GameManager.GameState.GameOver)
+        if (GameManager.gameState != GameState.GameOver)
         {
             int randomPosition = Random.Range(0, MapManager.width);
             int randomTetrimino;
@@ -80,13 +80,13 @@ public class TetriminoSpawner : MonoBehaviour {
     /// </summary>
     public void MakeInitialTetrimino()
     {
-        if (GameManager.gameState != GameManager.GameState.GameOver)
+        if (GameManager.gameState != GameState.GameOver)
         {
             int randomPosition = Random.Range(0, MapManager.width);
             int randomTetrimino = TetriminoRandomizer();
             MapManager.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MapManager.tetrisMapCoord + MapManager.tetrisMapSize * new Vector3(randomPosition, 0, MapManager.tetrisMapCoord.z), Quaternion.identity);
             MapManager.currentRoom = MapManager.currentTetrimino.rooms[Random.Range(0, MapManager.currentTetrimino.rooms.Length)];
-            MapManager.currentRoom.specialRoomType = MapManager.RoomType.Start;
+            MapManager.currentRoom.specialRoomType = RoomType.Start;
             MapManager.currentTetrimino.mapCoord = (MapManager.currentTetrimino.transform.position - MapManager.tetrisMapCoord) / MapManager.tetrisMapSize;
             mapManager.SetRoomMapCoord(MapManager.currentTetrimino);
             mapManager.MakeTetriminoRightPlace(MapManager.currentTetrimino);
@@ -102,7 +102,7 @@ public class TetriminoSpawner : MonoBehaviour {
             mapManager.UpdateMap(MapManager.currentTetrimino);
             mapManager.CreateRoom(MapManager.currentTetrimino);
             MapManager.currentRoom.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-            MapManager.currentRoom.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[MapManager.currentStage][(int)MapManager.RoomSpriteType.Current];
+            MapManager.currentRoom.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[MapManager.currentStage][(int)RoomSpriteType.Current];
             MapManager.tempRoom = MapManager.currentRoom;
             MakeTetrimino();
         }

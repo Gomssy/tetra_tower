@@ -53,16 +53,14 @@ public class Door : MonoBehaviour {
             MapManager mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
             Room room = MapManager.currentRoom;
             StartCoroutine(mapManager.GetComponent<MapManager>().RoomFadeOut(room));
-            if(room.specialRoomType == MapManager.RoomType.Normal)
-                room.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[room.stage][(int)MapManager.RoomSpriteType.Normal1 + room.roomConcept];
-            else if(room.specialRoomType == MapManager.RoomType.Start)
-                room.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[room.stage][(int)MapManager.RoomSpriteType.Normal1 + room.roomConcept];
+            if(room.specialRoomType == RoomType.Normal)
+                room.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
             else
-                room.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
+                room.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[room.stage][(int)room.specialRoomType];
             MapManager.currentRoom = MapManager.tempRoom;
             room = MapManager.currentRoom;
             StartCoroutine(mapManager.RoomFadeIn(room));
-            room.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[room.stage][(int)MapManager.RoomSpriteType.Current];
+            room.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Current];
             if (MapManager.currentRoom.isRoomCleared != true)
             {
                 animatorThisRoom.SetBool("isPlayerTouchEnded", true);

@@ -46,9 +46,9 @@ public class CameraController : MonoBehaviour {
     void Update()
     {
         GotoDestination();
-        if (GameManager.gameState == GameManager.GameState.Ingame)
+        if (GameManager.gameState == GameState.Ingame)
             originPos = player.transform.position + new Vector3(0, 0, -1);
-        else if (GameManager.gameState == GameManager.GameState.Tetris)
+        else if (GameManager.gameState == GameState.Tetris)
             originPos = tetrisCameraCoord;
     }
 
@@ -79,20 +79,20 @@ public class CameraController : MonoBehaviour {
         GameObject grid = GameObject.Find("Grid");
         float sizeDestination = 0;
         isSceneChanging = true;
-        if (GameManager.gameState == GameManager.GameState.Ingame)
+        if (GameManager.gameState == GameState.Ingame)
         {
             StartCoroutine(mapManager.RoomFadeIn(MapManager.currentRoom));
             grid.transform.position = new Vector3(0, 0, 0);
             sizeDestination = inGameCameraSize;
         }
-        else if (GameManager.gameState == GameManager.GameState.Tetris)
+        else if (GameManager.gameState == GameState.Tetris)
         {
             StartCoroutine(mapManager.RoomFadeOut(MapManager.currentRoom));
             grid.transform.position = new Vector3(0, 0, 2);
             sizeDestination = tetrisCameraSize;
         }
-        while ((GameManager.gameState == GameManager.GameState.Tetris && GetComponent<Camera>().orthographicSize < sizeDestination - 5) ||
-            (GameManager.gameState == GameManager.GameState.Ingame && GetComponent<Camera>().orthographicSize > sizeDestination + 0.05))
+        while ((GameManager.gameState == GameState.Tetris && GetComponent<Camera>().orthographicSize < sizeDestination - 5) ||
+            (GameManager.gameState == GameState.Ingame && GetComponent<Camera>().orthographicSize > sizeDestination + 0.05))
         {
             yield return null;
             Vector2 coord = Vector2.Lerp(transform.position, originPos, Mathf.Sqrt(Time.deltaTime));
@@ -112,7 +112,7 @@ public class CameraController : MonoBehaviour {
         transform.position = pos;*/
 
 
-        if (GameManager.gameState == GameManager.GameState.Ingame && isSceneChanging != true)
+        if (GameManager.gameState == GameState.Ingame && isSceneChanging != true)
         {
             if(MapManager.isRoomFalling != true)
             {
