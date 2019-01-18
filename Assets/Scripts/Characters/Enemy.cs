@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 
 public class Enemy : MonoBehaviour {
-    /*
+    
 // data
     // health
     private readonly float maxHealth;
@@ -20,37 +20,61 @@ public class Enemy : MonoBehaviour {
     float[] immunity_time = new float[5] { 0.0f, 3.0f, 6.0f, 6.0f, 6.0f };//면역 시간
     bool[] immunity = new bool[] { false, }; //현재 에너미가 디버프 상태에 대해서 면역인지를 체크하는 변수
     enum debuffCase { fire, ice, stun, blind, charm };
+    struct EnemyDebuffed
+    {
+        public debuffCase Case;
+        public float debuffTime;
+    }
 
     // enemy manager
     private readonly EnemyManager enemyManager = EnemyManager.Instance;
 
-    // action
-    private EnemyManager.State currState;
-    private Dictionary<EnemyManager.State, EnemyManager.Action> actionByState;
+	// drop item
+	// private readonly EnemyManager.DropItemInfo dropItem; // [item ID, probability]
 
-    // drop item
-    private readonly EnemyManager.DropItemInfo dropItem; // [item ID, probability]
+	// data for ignoring collision
+	Vector2 lastPosition;
+	Vector2 lastVelocity;
+	float lastAngularVelocity;
 
 
 // method
-    // constructor
-    public Enemy(int id, float maxHealth, float weight) {
+// constructor
+	public Enemy(int id, float maxHealth, float weight) {
         this.maxHealth = maxHealth;
         this.weight = weight;
         this.currHealth = maxHealth;
 
-        EnemyManager.DropItemInfo dropItem_temp;
-        this.dropItem = (enemyManager.dropTableByID.TryGetValue(id, out dropItem_temp)) ? 
-                                   dropItem_temp : new EnemyManager.DropItemInfo(-1, -1);
-
-        this.actionByState = enemyManager.actionDictByID[id];
-        this.currState = EnemyManager.State.Idle;
+        // EnemyManager.DropItemInfo dropItem_temp;
+        // this.dropItem = (enemyManager.dropTableByID.TryGetValue(id, out dropItem_temp)) ? 
+        //                           dropItem_temp : new EnemyManager.DropItemInfo(-1, -1);
     }
 
-    // hit by player or debuff
-    public void GetDamaged(float damage) { 
+	// ignore collision with player
+	void FixedUpdate()
+	{
+		lastPosition = transform.position;
+		lastVelocity = GetComponent<Rigidbody2D>().velocity;
+		lastAngularVelocity = GetComponent<Rigidbody2D>().angularVelocity;
+	}
+
+	void OnCollisionEnter2D(Collision2D col)
+	{
+		if (col.gameObject.tag == "Player")
+		{
+			transform.position = lastPosition;
+			GetComponent<Rigidbody2D>().velocity = lastVelocity;
+			GetComponent<Rigidbody2D>().angularVelocity = lastAngularVelocity;
+			Physics2D.IgnoreCollision(col.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+		}
+	}
+
+	// hit by player or debuff
+	public void GetDamaged(float damage) { 
         currHealth -= damage;
         if(currHealth <= 0) {
+
+			/*
             if (dropItem.id != -1)
             {
                 float dropProb = Random.Range(0.0f, 1.0f);
@@ -59,19 +83,16 @@ public class Enemy : MonoBehaviour {
                     // spawn a item that has ID
                 }
             }
+			*/
             Destroy(gameObject);
             return;
         }
         float knockback_dist = damage * unitDist / weight;
-        // do something - knockback animation
+        // gameObject.GetComponent<Animator>().SetTrigger("DamagedTrigger");
     }
     
 
-    struct EnemyDebuffed
-    {
-        public debuffCase Case;
-        public float debuffTime;
-    }
+    
     IEnumerator DebuffCase(EnemyDebuffed sCase)
     {
 
@@ -134,13 +155,11 @@ public class Enemy : MonoBehaviour {
         yield return StartCoroutine(ImmunityTimer(sCase));
     }
 
-    IEnumerator ImmunityTimer(EnemyDebuffed sCase)
-    {
-        yield return new WaitForSeconds(immunity_time[(int)sCase.Case]);
-        immunity[(int)sCase.Case] = false;
-    }
-
-    */
+	IEnumerator ImmunityTimer(EnemyDebuffed sCase)
+	{
+		yield return new WaitForSeconds(immunity_time[(int)sCase.Case]);
+		immunity[(int)sCase.Case] = false;
+	}
 }
 
 //얼음일때 깨어나기

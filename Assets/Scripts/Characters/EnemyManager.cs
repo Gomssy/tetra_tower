@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
+using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
@@ -20,6 +20,9 @@ public class EnemyManager : Singleton<EnemyManager>
         EpicItem, LegendaryItem, CommonAdd, RareAdd, EpicAdd,
         LegendaryAdd }
 
+    public enum EnemyData { Health, Weight, Height, Width, DetectRange,
+        AtkRange, AtkDistance, AtkDelay, PjtSpeed, MoveSpeed,
+        Damage } //Atk = Attack, Pjt = Projectile(투사체)
     public delegate void Action();
 
 
@@ -27,12 +30,14 @@ public class EnemyManager : Singleton<EnemyManager>
     // dictionary
     public readonly Dictionary<int, Dictionary<ItemType, int>> dropTableByID;
     public readonly Dictionary<int, Dictionary<State, Action>> actionDictByID;
-    public readonly Dictionary<int, float[]> enemyDataByID;
+    public readonly Dictionary<int, Dictionary<EnemyData, float>> enemyDataByID;
 
+	// standard enemy prefab
+	public GameObject enemyPrefab;
 
-    // method
-    // constructor
-    protected EnemyManager()
+	// method
+	// constructor
+	protected EnemyManager()
     {
         string dropTableDataPath = "";
         string actionTableDataPath = "";
@@ -91,10 +96,34 @@ public class EnemyManager : Singleton<EnemyManager>
         string[] cellValue = null;
         string tableLine = null;
         strReader.ReadLine();
-
+        Dictionary<EnemyData, float> EnemyInfo = new Dictionary<EnemyData, float>();
         while ((tableLine = strReader.ReadLine()) != null)
         {
             cellValue = tableLine.Split(',');
+
+            int enemyID = -1;
+            float[] enemyData = { 0.0f };
+           
+            int.TryParse(cellValue[0], out enemyID);
+            for(int i=0;i<11;i++)
+            {
+                float.TryParse(cellValue[i + 1], out enemyData[i]);
+            }
+
+            for(int i=0;i<12;i++)
+            {
+                EnemyInfo.Add((EnemyData)i, enemyData[i]);
+            }
+
+            enemyDataByID.Add(enemyID, EnemyInfo);
         }
     }
+
+	// called by gameManager to Spawn enemy
+	// little temporary. Many change will be exist.
+	public void SpawnEnemy()
+	{
+		Vector2 playerPosition = GameObject.Find("Player").transform.position;
+		Instantiate(enemyPrefab, playerPosition + new Vector2(7, 0), Quaternion.identity);
+	}
 }
