@@ -85,8 +85,8 @@ public class PlayerController : MonoBehaviour
                 isJumpable = true;
             if (isGrounded)
             {
-                if (horizontalRaw == 1f) transform.localScale = new Vector3(1f, transform.localScale.y, transform.localScale.z);
-                else if (horizontalRaw == -1f) transform.localScale = new Vector3(-1f, transform.localScale.y, transform.localScale.z);
+                if (horizontalRaw == 1f) transform.localScale = new Vector3(-1f, transform.localScale.y, transform.localScale.z);
+                else if (horizontalRaw == -1f) transform.localScale = new Vector3(1f, transform.localScale.y, transform.localScale.z);
             }
 
 
