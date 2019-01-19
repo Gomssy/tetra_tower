@@ -67,7 +67,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -78,7 +78,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -92,7 +92,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 4
+        y: 0
         width: 20
         height: 20
       alignment: 6
@@ -102,7 +102,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fbe607b9b2046bd44a0016d4a39070be
+      spriteID: 36efa5415210b5d4fae334cc53053368
       vertices: []
       indices: 
       edges: []
@@ -112,7 +112,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 20
-        y: 4
+        y: 0
         width: 20
         height: 20
       alignment: 6
@@ -122,7 +122,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b09caa56b3578474a9faf9b09c8bf1d6
+      spriteID: 3a513a673f160b24ca93a116f332ca06
       vertices: []
       indices: 
       edges: []
@@ -132,7 +132,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 40
-        y: 4
+        y: 0
         width: 20
         height: 20
       alignment: 6
@@ -142,27 +142,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b9bcc22852c1ed74b8ec2b07eb705257
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: droppedlifestone_3
-      rect:
-        serializedVersion: 2
-        x: 60
-        y: 0
-        width: 24
-        height: 24
-      alignment: 9
-      pivot: {x: 0.083333336, y: 0.083333336}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 18cb4633a5e8fd94dbdfbc2d0e9f3a07
+      spriteID: bea29332cf2c8eb4eb23dd14d64f380d
       vertices: []
       indices: 
       edges: []

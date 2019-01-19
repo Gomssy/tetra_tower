@@ -1,35 +1,11 @@
 fileFormatVersion: 2
-guid: c8304f5a15856324fa6a4c5ae11bd279
+guid: 2098b6231bfd3804392af0a3b505a2bd
 TextureImporter:
   fileIDToRecycleName:
-    21300000: lifestone_normal
-    21300002: lifestone_gold
-    21300004: ls_normal
-    21300006: ls_gold
-    21300008: ls_togold1
-    21300010: ls_togold2
-    21300012: ls_togold3
-    21300014: ls_togold4
-    21300016: ls_amethyst
-    21300018: ls_toame1
-    21300020: ls_toame2
-    21300022: ls_toame3
-    21300024: ls_toame4
-    21300026: ls_norX1
-    21300028: ls_norX2
-    21300030: ls_norX3
-    21300032: ls_norX4
-    21300034: ls_golX1
-    21300036: ls_golX2
-    21300038: ls_golX3
-    21300040: ls_golX4
-    21300042: ls_ameX1
-    21300044: ls_ameX2
-    21300046: ls_ameX3
-    21300048: ls_ameX4
-    21300050: lifestone_0
-    21300052: lifestone_1
-    21300054: lifestone_2
+    21300000: normalgold_0
+    21300002: normalgold_1
+    21300004: normalgold_2
+    21300006: normalgold_3
   externalObjects: {}
   serializedVersion: 6
   mipmaps:
@@ -108,22 +84,11 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: lifestone_0
+      name: normalgold_0
       rect:
         serializedVersion: 2
         x: 0
@@ -137,13 +102,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fc64dc88d10cb114096cd52005f33997
+      spriteID: 39e52a06ce6821245bd30ebf6b55d32f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: lifestone_1
+      name: normalgold_1
       rect:
         serializedVersion: 2
         x: 20
@@ -157,13 +122,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6cbce80e62cd04a4198e20497b783bb7
+      spriteID: e3df1eaf90f65df42b3d8a0b0714d77d
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: lifestone_2
+      name: normalgold_2
       rect:
         serializedVersion: 2
         x: 40
@@ -177,7 +142,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 17917dcf9eb7c514ba43a25109102ab2
+      spriteID: 8eb8b0776191d8e43bb995b8512bff50
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: normalgold_3
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8bb4b26943169bf418d44984e8699ece
       vertices: []
       indices: 
       edges: []
@@ -185,7 +170,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: eaa16ca24f230d643b2c9d0ed47c9e5e
+    spriteID: b5c6500f0f21877418a2d68d4934852d
     vertices: []
     indices: 
     edges: []

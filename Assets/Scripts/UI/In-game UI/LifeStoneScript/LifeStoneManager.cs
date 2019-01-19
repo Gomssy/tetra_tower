@@ -416,7 +416,7 @@ public class LifeStoneManager : MonoBehaviour {
 			Vector2Int vtmp = (Vector2Int)candArray[tmp];
 			lifeStoneUnit[vtmp.y, vtmp.x].GetComponent<LifeUnitInFrame>().ChangeType(type);
 			candArray.RemoveAt(tmp);
-			yield return new WaitForSeconds(0.1f);
+			yield return new WaitForSeconds(0.02f);
 		}
 	}
 
