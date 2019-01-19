@@ -1522,7 +1522,7 @@ MonoBehaviour:
   amethystText: {fileID: 1131904414142090}
   destroyText: {fileID: 1544257982062636}
   rowText: {fileID: 1493485493152988}
-  ui: {fileID: 0}
+  ui: {fileID: 1939101680453256, guid: c179f0931cfabec428a868a6edc543b0, type: 2}
 --- !u!114 &114653312054727740
 MonoBehaviour:
   m_ObjectHideFlags: 1
