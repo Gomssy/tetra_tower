@@ -56,14 +56,17 @@ public class PlayerController : MonoBehaviour
     private float rayDistance;
     [SerializeField]
     private float ropeUp, ropeDown;
-    // Use this for initialization
+    enum PlayerState { Idle, Walk, Run, GoingUp, GoingDown, Rope}
+    PlayerState playerState,previousState;   
+
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        playerState = PlayerState.Idle;
+        previousState = PlayerState.Idle;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         horizontal = Input.GetAxis("Horizontal");
@@ -75,22 +78,13 @@ public class PlayerController : MonoBehaviour
             jump = true;
         }
     }
-
+    
     private void FixedUpdate()
     {
         isGrounded = IsGrounded();
 
         if (GameManager.gameState == GameState.Ingame)
         {
-            anim.SetBool("rope", isInRope);
-            anim.SetBool("run", isDashing);
-            anim.SetBool("ground", isGrounded);
-            anim.SetFloat("vspeed", rb.velocity.y);
-            anim.SetFloat("speed", Mathf.Abs(rb.velocity.x));
-            if (isGrounded || isInRope)
-            {
-                anim.SetBool("jump", false);
-            }
 
             if (isGrounded)
                 isJumpable = true;
@@ -114,11 +108,11 @@ public class PlayerController : MonoBehaviour
             }
             if (IsInRope())
             {
-                if (isInRope)
+                if (playerState == PlayerState.Rope)
                 {
                     if (horizontalRaw != 0f && verticalRaw == 0f)
                     {
-                        isInRope = false;
+                        playerState = PlayerState.Idle;
                         rb.gravityScale = 2f;
                         StartCoroutine(RopeDelay());
 
@@ -128,19 +122,20 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (verticalRaw != 0 && ropeEnabled && horizontalRaw == 0)
                 {
-                    isInRope = true;
+                    playerState = PlayerState.Rope;
                     rb.gravityScale = 0f;
                     transform.position = new Vector2(Mathf.Round(transform.position.x - 0.5f) + 0.5f, transform.position.y);
                     rb.velocity = new Vector2(0f, 0f);
+                    
                 }
-
+                anim.SetFloat("ropeUpDown", verticalRaw);
             }
             else
             {
-                isInRope = false;
+                playerState = PlayerState.Idle;
                 rb.gravityScale = 2f;
             }
-            if (!isInRope)
+            if (playerState != PlayerState.Rope)
             {
                 float vertical = rb.velocity.y;
                 if (jump)
@@ -148,19 +143,19 @@ public class PlayerController : MonoBehaviour
                     if (isGrounded)
                     {
                         vertical = jumpSpeed;
-                        anim.SetBool("jump", true);
                     }
                     else if (isJumpable)
                     {
                         vertical = doubleJumpSpeed;
-                        anim.SetBool("jump", true);
                         isJumpable = false;
                     }
                 }
-
-
-                //rb.velocity = new Vector2(horizontal * speed *  Time.smoothDeltaTime, vertical);
-                // rb.velocity = new Vector2(rb.velocity.x, vertical);
+                if (!isGrounded)
+                {
+                    if (vertical > 0) playerState = PlayerState.GoingUp;
+                    else playerState = PlayerState.GoingDown;
+                }
+                
 
                 if (horizontalRaw != 0)
                 {
@@ -192,6 +187,15 @@ public class PlayerController : MonoBehaviour
                 else
                     rb.AddForce(horizontalRaw * accerlation * Time.smoothDeltaTime * Vector2.right);
 
+                if (isGrounded)
+                {
+                    if (horizontalRaw == 0) playerState = PlayerState.Idle;
+                    else
+                    {
+                        if (isDashing) playerState = PlayerState.Run;
+                        else playerState = PlayerState.Walk;
+                    }
+                }
                 if (((horizontalRaw == 0) || (rb.velocity.x > 0 && horizontalRaw < 0)
                     || (rb.velocity.x < 0 && horizontalRaw > 0)) && (isGrounded))
                 {
@@ -202,7 +206,17 @@ public class PlayerController : MonoBehaviour
                 else
                     rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), vertical);
             }
-
+            if(previousState != playerState)
+                switch (playerState)
+                {
+                    case PlayerState.Idle: anim.SetTrigger("idle"); break;
+                    case PlayerState.Walk: anim.SetTrigger("walk"); break;
+                    case PlayerState.Run: anim.SetTrigger("run"); break;
+                    case PlayerState.GoingUp: anim.SetTrigger("upTrigger"); break;
+                    case PlayerState.GoingDown: anim.SetTrigger("downTrigger"); break;
+                    case PlayerState.Rope: anim.SetTrigger("rope"); break;
+                }
+            previousState = playerState;
         }
         jump = false;
     }
