@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;     // RigidBody2D of this game object
     private Animator anim;
 
+    [SerializeField]
+    private float rbGravityScale;
     // Speeds of player
     [SerializeField]
     private float maxSpeed;
@@ -29,7 +31,6 @@ public class PlayerController : MonoBehaviour
     // Bool values for jump & doublejump
     private bool isGrounded = true;
     private bool isJumpable = true;     // Can player jump or doublejump?
-    private bool isInRope = false;
     private bool isDownPlatform = false;
     private bool ropeEnabled = true;
     // Inputs
@@ -113,7 +114,7 @@ public class PlayerController : MonoBehaviour
                     if (horizontalRaw != 0f && verticalRaw == 0f)
                     {
                         playerState = PlayerState.Idle;
-                        rb.gravityScale = 2f;
+                        rb.gravityScale = rbGravityScale;
                         StartCoroutine(RopeDelay());
 
                     }
@@ -133,7 +134,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 playerState = PlayerState.Idle;
-                rb.gravityScale = 2f;
+                rb.gravityScale = rbGravityScale;
             }
             if (playerState != PlayerState.Rope)
             {
@@ -248,7 +249,7 @@ public class PlayerController : MonoBehaviour
             {
                 element.enabled = false;
                 yield return new WaitForSeconds(0.3f);
-                while(isInRope) yield return new WaitForSeconds(0.1f);
+                while(playerState == PlayerState.Rope) yield return new WaitForSeconds(0.1f);
                 element.enabled = true;
                 isDownPlatform = false;
             }

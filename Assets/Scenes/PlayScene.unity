@@ -677,26 +677,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 114294925164316638, guid: 3d077a5f727dd1e4780e9265ed26e036,
-        type: 2}
-      propertyPath: maxSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114294925164316638, guid: 3d077a5f727dd1e4780e9265ed26e036,
-        type: 2}
-      propertyPath: maxDashSpeed
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 61019994424895448, guid: 3d077a5f727dd1e4780e9265ed26e036,
-        type: 2}
-      propertyPath: m_Size.y
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 61019994424895448, guid: 3d077a5f727dd1e4780e9265ed26e036,
-        type: 2}
-      propertyPath: m_Offset.y
-      value: -0.09
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d077a5f727dd1e4780e9265ed26e036, type: 2}
   m_IsPrefabAsset: 0
