@@ -85,7 +85,7 @@ public class TetriminoSpawner : MonoBehaviour {
             int randomPosition = Random.Range(0, MapManager.width);
             int randomTetrimino = TetriminoRandomizer();
             MapManager.currentTetrimino = Instantiate(tetriminoes[randomTetrimino], MapManager.tetrisMapCoord + MapManager.tetrisMapSize * new Vector3(randomPosition, 0, MapManager.tetrisMapCoord.z), Quaternion.identity);
-            MapManager.currentRoom = MapManager.currentTetrimino.rooms[Random.Range(0, MapManager.currentTetrimino.rooms.Length)];
+            MapManager.currentRoom = MapManager.currentTetrimino.rooms[0];
             MapManager.currentRoom.specialRoomType = RoomType.Start;
             MapManager.currentTetrimino.mapCoord = (MapManager.currentTetrimino.transform.position - MapManager.tetrisMapCoord) / MapManager.tetrisMapSize;
             mapManager.SetRoomMapCoord(MapManager.currentTetrimino);
@@ -103,6 +103,7 @@ public class TetriminoSpawner : MonoBehaviour {
             mapManager.CreateRoom(MapManager.currentTetrimino);
             MapManager.currentRoom.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
             MapManager.currentRoom.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[MapManager.currentStage][(int)RoomSpriteType.Current];
+            MapManager.currentRoom.ClearRoom();
             MapManager.tempRoom = MapManager.currentRoom;
             MakeTetrimino();
         }

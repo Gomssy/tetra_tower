@@ -76,11 +76,11 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Check if this row is being deleted.
     /// </summary>
-    private static bool[] isRowDeleting = new bool[20];
+    public static bool[] isRowDeleting = new bool[20];
     /// <summary>
     /// Tetris Y axis coordinates on Unity.
     /// </summary>
-    private static float[] tetrisYCoord = new float[height];
+    public static float[] tetrisYCoord = new float[height];
     /// <summary>
     /// Array that saves presses.
     /// </summary>
@@ -292,6 +292,8 @@ public class MapManager : MonoBehaviour {
                 mapGrid[doorCloseCounter, row].CloseDoor("Down", false);
                 mapGrid[width - doorCloseCounter - 1, row].CloseDoor("Up", false);
                 mapGrid[width - doorCloseCounter - 1, row].CloseDoor("Down", false);
+                mapGrid[doorCloseCounter, row].isRoomDestroyed = true;
+                mapGrid[width - doorCloseCounter - 1, row].isRoomDestroyed = true;
                 doorCloseCounter++;
             }
             if(collapseRate - roomDestroyCounter * 0.2f > 0.2f)
@@ -415,6 +417,7 @@ public class MapManager : MonoBehaviour {
             SetRoomsYCoord();
             if(currentRoom.mapCoord.y >= bottom)
                 player.transform.position += new Vector3(0, - yFallSpeed, 0);
+            previousPlayerRelativePosition = player.transform.position - currentRoom.transform.position;
         }
         if (shakeCamera)
         {
@@ -908,6 +911,5 @@ public class MapManager : MonoBehaviour {
         }
         else
             Debug.Log("Game Over");
-
     }
 }

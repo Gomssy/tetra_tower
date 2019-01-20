@@ -80,6 +80,10 @@ public class Room : MonoBehaviour
     /// Check if room is clear and escapable.
     /// </summary>
     public bool isRoomCleared;
+    /// <summary>
+    /// Check if room is destroyed.
+    /// </summary>
+    public bool isRoomDestroyed = false;
 
     /*
      *  functions
@@ -138,7 +142,7 @@ public class Room : MonoBehaviour
         switch (direction)
         {
             case "Up":
-                if (mapCoord.y < MapManager.realHeight && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1] != null)
+                if (mapCoord.y < MapManager.realHeight && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1] != null && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y + 1].isRoomDestroyed != true)
                 {
                     door = inGameDoorUp;
                     animatorThisRoom = door.GetComponent<Animator>();
@@ -146,7 +150,7 @@ public class Room : MonoBehaviour
                 }
                 break;
             case "Down":
-                if (mapCoord.y > 0 && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1] != null)
+                if (mapCoord.y > 0 && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1] != null && MapManager.mapGrid[(int)mapCoord.x, (int)mapCoord.y - 1].isRoomDestroyed != true)
                 {
                     door = inGameDoorDown;
                     animatorThisRoom = door.GetComponent<Animator>();
