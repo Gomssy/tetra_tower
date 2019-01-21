@@ -285,8 +285,9 @@ public class Room : MonoBehaviour
             fog = Instantiate(GameObject.Find("MapManager").GetComponent<MapManager>().clearedFog, fogPosition, Quaternion.identity, transform);
             fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
             isRoomCleared = true;
+            if (specialRoomType == RoomType.Boss)
+                MapManager.currentStage += 1;
         }
-
         //Need to make extra works.
     }
 }

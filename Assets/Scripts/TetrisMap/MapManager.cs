@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour {
 
+
+    public static bool isDoorClosing = false;
     /*
      * variables
      * */
@@ -280,13 +282,14 @@ public class MapManager : MonoBehaviour {
         int doorCloseCounter = 0;
         int roomDestroyCounter = 0;
         int row = leftPress.row;
+        float collapseRate = 0;
         while (Time.time - initialCollapseTime < collapseTime)
         {
             yield return new WaitForSeconds(0.01f);
-            float collapseRate = (Time.time - initialCollapseTime) / collapseTime;
+            collapseRate = (Time.time - initialCollapseTime) / collapseTime;
             leftPress.transform.localScale = new Vector3(collapseRate * 20, 1, 1);
             rightPress.transform.localScale = new Vector3(-collapseRate * 20, 1, 1);
-            if(collapseRate - doorCloseCounter * 0.2f > (float)1 / 12)
+            if (collapseRate - doorCloseCounter * 0.2f > (float)1 / 12)
             {
                 mapGrid[doorCloseCounter, row].CloseDoor("Up", false);
                 mapGrid[doorCloseCounter, row].CloseDoor("Down", false);
@@ -793,6 +796,7 @@ public class MapManager : MonoBehaviour {
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+        isDoorClosing = false;
     }
     /// <summary>
     /// Make room fade out.

@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = IsGrounded();
 
-        if (GameManager.gameState == GameState.Ingame)
+        if (GameManager.gameState == GameState.Ingame && MapManager.isDoorClosing != true)
         {
             anim.SetBool("rope", isInRope);
             anim.SetBool("run", isDashing);

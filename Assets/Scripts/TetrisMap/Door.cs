@@ -35,7 +35,7 @@ public class Door : MonoBehaviour {
                     enteredPosition = 2;
                     break;
                 case 1:
-                    if (collision.transform.position.x < GetComponent<PolygonCollider2D>().transform.position.x)
+                    if (collision.transform.position.x < GetComponent<PolygonCollider2D>().transform.position.x  + 0.6f)
                         return;
                     enteredPosition = 3;
                     break;
@@ -50,9 +50,10 @@ public class Door : MonoBehaviour {
                     enteredPosition = 1;
                     break;
             }
+            MapManager.isDoorClosing = true;
             MapManager mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
             Room room = MapManager.currentRoom;
-            StartCoroutine(mapManager.GetComponent<MapManager>().RoomFadeOut(room));
+            StartCoroutine(mapManager.RoomFadeOut(room));
             if(room.specialRoomType == RoomType.Normal)
                 room.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
             else
