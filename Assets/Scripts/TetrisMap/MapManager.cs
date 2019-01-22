@@ -253,8 +253,6 @@ public class MapManager : MonoBehaviour {
                 Press rightPress = Instantiate(press, new Vector3(10 * tetrisMapSize, y * tetrisMapSize, 2), Quaternion.identity);
                 leftPress.initialCollapseTime = Time.time;
                 rightPress.initialCollapseTime = Time.time;
-                leftPress.isLeft = true;
-                rightPress.isLeft = false;
                 leftPress.row = y;
                 leftPress.bottomRow = y;
                 leftPress.createdOrder = order;
@@ -282,8 +280,41 @@ public class MapManager : MonoBehaviour {
         int doorCloseCounter = 0;
         int roomDestroyCounter = 0;
         int row = leftPress.row;
-        float collapseRate = 0;
-        while (Time.time - initialCollapseTime < collapseTime)
+        float collapseSpeed = 0;
+        collapseSpeed = (float)1 / collapseTime;
+        leftPress.transform.localScale = new Vector3(0, 1, 1);
+        rightPress.transform.localScale = new Vector3(0, 1, 1);
+        while (leftPress.transform.localScale.x < 20)
+        {
+            yield return new WaitForSeconds(0.05f);
+            if (currentRoom.mapCoord.y == row)
+                collapseSpeed = (float)1 / (10 * collapseTime);
+            else
+                collapseSpeed = (float)1 / collapseTime;
+            leftPress.transform.localScale += new Vector3(collapseSpeed, 0, 0);
+            rightPress.transform.localScale += new Vector3(-collapseSpeed, 0, 0);
+            if (collapseSpeed - doorCloseCounter * 0.2f > (float)1 / 12)
+            {
+                mapGrid[doorCloseCounter, row].CloseDoor("Up", false);
+                mapGrid[doorCloseCounter, row].CloseDoor("Down", false);
+                mapGrid[width - doorCloseCounter - 1, row].CloseDoor("Up", false);
+                mapGrid[width - doorCloseCounter - 1, row].CloseDoor("Down", false);
+                mapGrid[doorCloseCounter, row].isRoomDestroyed = true;
+                mapGrid[width - doorCloseCounter - 1, row].isRoomDestroyed = true;
+                doorCloseCounter++;
+            }
+            if (collapseSpeed - roomDestroyCounter * 0.2f > 0.2f)
+            {
+                if (mapGrid[roomDestroyCounter, row] == currentRoom || mapGrid[width - roomDestroyCounter - 1, row] == currentRoom)
+                {
+                    GameManager.gameState = GameState.GameOver;
+                }
+                //Destroy(mapGrid[roomDestroyCounter, row].gameObject);
+                //Destroy(mapGrid[width - roomDestroyCounter - 1, row].gameObject);
+                roomDestroyCounter++;
+            }
+        }
+        /*while (Time.time - initialCollapseTime < collapseTime)
         {
             yield return new WaitForSeconds(0.01f);
             collapseRate = (Time.time - initialCollapseTime) / collapseTime;
@@ -299,9 +330,9 @@ public class MapManager : MonoBehaviour {
                 mapGrid[width - doorCloseCounter - 1, row].isRoomDestroyed = true;
                 doorCloseCounter++;
             }
-            if(collapseRate - roomDestroyCounter * 0.2f > 0.2f)
+            if (collapseRate - roomDestroyCounter * 0.2f > 0.2f)
             {
-                if(mapGrid[roomDestroyCounter, row] == currentRoom || mapGrid[width - roomDestroyCounter - 1, row] == currentRoom)
+                if (mapGrid[roomDestroyCounter, row] == currentRoom || mapGrid[width - roomDestroyCounter - 1, row] == currentRoom)
                 {
                     GameManager.gameState = GameState.GameOver;
                 }
@@ -309,8 +340,8 @@ public class MapManager : MonoBehaviour {
                 //Destroy(mapGrid[width - roomDestroyCounter - 1, row].gameObject);
                 roomDestroyCounter++;
             }
-        }
-        for(int i = row + 1; i < realHeight; i++)
+        }*/
+        for (int i = row + 1; i < realHeight; i++)
         {
             if(isRowDeleting[i])
             {

@@ -27,10 +27,7 @@ public class Press : MonoBehaviour
     /// Number of presses created simultaneously with this press.
     /// </summary>
     public int simultaneouslyCreatedPressNumber;
-    /// <summary>
-    /// Check if this press is on left side or not.
-    /// </summary>
-    public bool isLeft;
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

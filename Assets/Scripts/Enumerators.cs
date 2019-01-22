@@ -29,6 +29,9 @@ public enum ItemType
     MasterpieceAdd
 }
 
+public enum PlayerState { Idle, Walk, Run, GoingUp, GoingDown, Rope }
+
+
 /// <summary>
 /// Enum for game's state.
 /// </summary>

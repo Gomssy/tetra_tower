@@ -30,5 +30,9 @@ public class GameManager : MonoBehaviour {
                 gameState = GameState.Ingame;
             StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene());
         }
+        if(gameState == GameState.GameOver)
+        {
+            Time.timeScale = 0;
+        }
     }
 }
