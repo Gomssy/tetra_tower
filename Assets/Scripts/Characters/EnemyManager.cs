@@ -105,7 +105,7 @@ public class EnemyManager : Singleton<EnemyManager>
             float[] enemyData = { 0.0f };
            
             int.TryParse(cellValue[0], out enemyID);
-            for(int i=0;i<11;i++)
+            for(int i = 0;i<11;i++)
             {
                 float.TryParse(cellValue[i + 2], out enemyData[i]);
             }
