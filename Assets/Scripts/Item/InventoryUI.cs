@@ -10,7 +10,6 @@ public class InventoryUI : MonoBehaviour {
     public GameObject[] infoAddonSpace;
     public GameObject itemPrefab;
     public GameObject addonPrefab;
-    public GameObject infoAddonPrefab;
     /// <summary>
     /// index: addonType * 2 + a
     /// a{
@@ -25,28 +24,37 @@ public class InventoryUI : MonoBehaviour {
     public Sprite[] addonFrameQuality = new Sprite[16];
     public Sprite[] itemFrameQuality = new Sprite[4];
     public Sprite[] infoFrameQuality = new Sprite[4];
+    public Sprite[] infoAddonType = new Sprite[4];
     GameObject[] items;
     GameObject[] addons;
+    public GameObject[] infoAddonsFrame;
     GameObject[] infoAddons;
-    int selectedItem = -1;
+    public int selectedItem = -1;
 
 	void Start () {
         items = new GameObject[9];
+        addons = new GameObject[9];
+        infoAddons = new GameObject[4];
         for (int i = 0; i < 9; i++)
         {
             items[i] = Instantiate(itemPrefab, itemCell[i].transform.position, itemCell[i].transform.rotation, transform);
             items[i].SetActive(false);
+            items[i].GetComponent<ItemDrag>().num = i;
             addons[i] = Instantiate(addonPrefab, addonCell[i].transform.position, addonCell[i].transform.rotation, transform);
             addons[i].SetActive(false);
+            addons[i].GetComponent<AddonDrag>().num = i;
         }
         for (int i = 0; i < 4; i++)
         {
-            infoAddons[i] = Instantiate(infoAddonPrefab, infoAddonSpace[i].transform.position, infoAddonSpace[i].transform.rotation, transform);
+            infoAddonsFrame[i].GetComponent<Image>().sprite = infoAddonType[i];
+            infoAddonsFrame[i].SetActive(false);
+            infoAddons[i] = Instantiate(addonPrefab, infoAddonsFrame[i].transform.Find("AddonCell").position, Quaternion.identity, transform);
+            infoAddons[i].GetComponent<AddonDrag>().num = 9 + i;
             infoAddons[i].SetActive(false);
+            
         }
         infoSpace.transform.Find("Frame").gameObject.SetActive(false);
     }
-	
     public void SetOnPosition(List<Item> itemList, List<Addon> addonList)
     {
         for(int i=0; i<itemList.Count; i++)
@@ -54,6 +62,7 @@ public class InventoryUI : MonoBehaviour {
             items[i].transform.position = itemCell[i].transform.position;
             items[i].GetComponent<Image>().sprite = itemFrameQuality[(int)itemList[i].quality];
             items[i].transform.Find("Sprite").gameObject.GetComponent<Image>().sprite = itemList[i].sprite;
+            items[i].transform.Find("Sprite").gameObject.GetComponent<RectTransform>().sizeDelta = itemList[i].sizeInventory;
             items[i].SetActive(true);
         }
         for(int i=itemList.Count; i<9; i++)
@@ -63,31 +72,46 @@ public class InventoryUI : MonoBehaviour {
             addons[i].transform.position = addonCell[i].transform.position;
             addons[i].GetComponent<Image>().sprite = addonFrameQuality[(int)addonList[i].type * 4 + (int)addonList[i].quality];
             addons[i].transform.Find("Sprite").gameObject.GetComponent<Image>().sprite = addonList[i].sprite;
+            addons[i].transform.Find("Sprite").gameObject.GetComponent<RectTransform>().sizeDelta = addonList[i].sizeInventory;
             addons[i].SetActive(true);
         }
-        for (int i = itemList.Count; i < 9; i++)
+        for (int i = addonList.Count; i < 9; i++)
             addons[i].SetActive(false);
-        
+
+        GameObject frameObj = infoSpace.transform.Find("Frame").gameObject;
         if(selectedItem >= 0)
         {
-            GameObject frameObj = infoSpace.transform.Find("Frame").gameObject;
+            frameObj.SetActive(true);
             frameObj.GetComponent<Image>().sprite = infoFrameQuality[(int)itemList[selectedItem].quality];
             frameObj.transform.Find("ItemSprite").gameObject.GetComponent<Image>().sprite = itemFrameQuality[(int)itemList[selectedItem].quality];
             frameObj.transform.Find("ItemSprite").Find("Sprite").gameObject.GetComponent<Image>().sprite = itemList[selectedItem].sprite;
+            frameObj.transform.Find("ItemSprite").Find("Sprite").gameObject.GetComponent<RectTransform>().sizeDelta = itemList[selectedItem].sizeInventory;
             for (int i=0; i<4; i++)
             {
+                
                 infoAddonSpace[i].GetComponent<Image>().sprite = addonLockSprite[i * 2 + (itemList[selectedItem].attachable[i] ? 1 : 0)];
                 if(itemList[selectedItem].addons[i] != null)
                 {
+                    infoAddonsFrame[i].transform.position = infoAddonSpace[i].transform.position;
+                    infoAddonsFrame[i].SetActive(true);
+                    infoAddons[i].transform.position = infoAddonsFrame[i].transform.Find("AddonCell").position;
                     infoAddons[i].GetComponent<Image>().sprite = addonFrameQuality[(int)itemList[selectedItem].addons[i].type * 4 + (int)itemList[selectedItem].addons[i].quality];
-                    infoAddons[i].transform.Find("AddonSprite").gameObject.GetComponent<Image>().sprite = itemList[selectedItem].addons[i].sprite;
-                    infoAddons[i].transform.Find("AddonSprite").Find("Sprite").gameObject.GetComponent<Image>().sprite = itemList[selectedItem].addons[i].sprite;
+                    infoAddons[i].transform.Find("Sprite").gameObject.GetComponent<Image>().sprite = itemList[selectedItem].addons[i].sprite;
+                    infoAddons[i].transform.Find("Sprite").gameObject.GetComponent<RectTransform>().sizeDelta = itemList[selectedItem].addons[i].sizeInventory;
                     infoAddons[i].SetActive(true);
                 }
                 else
+                {
                     infoAddons[i].SetActive(false);
+                    infoAddonsFrame[i].SetActive(false);
+                }
+                    
                 
             }
+        }
+        else
+        {
+            frameObj.SetActive(false);
         }
     }
 }

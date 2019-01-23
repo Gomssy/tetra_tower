@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 224433717884737446}
   - component: {fileID: 222821308241851390}
   - component: {fileID: 114154159159638754}
+  - component: {fileID: 114318527970448576}
   m_Layer: 5
   m_Name: ItemPrefab
   m_TagString: Untagged
@@ -72,6 +73,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114318527970448576
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1092255009510926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 869a9dcc81d16d247adf8fc5d51f0a4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  num: 0
 --- !u!114 &114389172124673674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -127,9 +140,9 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -246.02, y: 456.2}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 673.98, y: 148.20001}
   m_SizeDelta: {x: 175, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224463086970414044

@@ -29,10 +29,14 @@ public enum ItemType
     MasterpieceAdd
 }
 
+public enum PlayerState { Idle, Walk, Run, GoingUp, GoingDown, Rope }
+public enum ComboState {Idle, Combo, Attack}
+
 /// <summary>
 /// Enum for game's state.
 /// </summary>
 public enum GameState { MainMenu, Ingame, Tetris, Pause, Inventory, GameOver }
+
 /// <summary>
 /// Enum for room types.
 /// </summary>

@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
         GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>().MakeInitialTetrimino();
         Vector2 coord = MapManager.currentRoom.transform.position;
         GameObject.Find("Player").transform.position = new Vector2(coord.x, coord.y) + new Vector2(3, 3);
+        GameObject.Find("Main Camera").transform.position = GameObject.Find("Player").transform.position;
     }
 	
 	// Update is called once per frame
@@ -28,6 +29,11 @@ public class GameManager : MonoBehaviour {
             else if (gameState == GameState.Tetris)
                 gameState = GameState.Ingame;
             StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene());
+        }
+        if(gameState == GameState.GameOver)
+        {
+            Debug.Log("Game Over");
+            Time.timeScale = 0;
         }
     }
 }
