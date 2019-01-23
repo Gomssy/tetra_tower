@@ -1,20 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class PlayerAttack : MonoBehaviour {
     public ComboState state;
     public float attackA,attackB,attackC;
     public float cancel;
-    public string comboArray;
-    public float StartTime;
+    public Text time, combo;
+    public static string comboArray;
+    public static float StartTime;
     public bool keyCoolDown=true;
-    public AttackCombo[] AttackArr= { new AttackCombo("화염발사", "ABC", 1.5f),
-    new AttackCombo("공격A", "A", 0.5f),
-    new AttackCombo("공격B", "B", 0.5f),
-    new AttackCombo("공격C", "C", 0.5f),
-    new AttackCombo("콩", "AC", 1f),
-    new AttackCombo("콩콩콩", "ACB", 2f),
+    public Animator anim;
+    public AttackCombo[] AttackArr= { new AttackCombo("화염발사", "ABC", 1.5f,"PlayerRunAnim"),
+    new AttackCombo("공격A", "A", 0.5f,"PlayerGoingDownAnim"),
+    new AttackCombo("공격B", "B", 0.5f,"PlayerWalkAnim"),
+    new AttackCombo("공격C", "C", 0.5f,"PlayerGoingUpAnim"),
+    new AttackCombo("콩", "AC", 1f,"PlayerIdleAnim"),
+    new AttackCombo("콩콩콩", "ACB", 2f,"PlayerIdleAnim"),
 };
     public Queue comboQueue = new Queue();
 
@@ -22,6 +24,7 @@ public class PlayerAttack : MonoBehaviour {
     void Start () {
         StartTime = Time.time;
         state = ComboState.Idle;
+        anim = GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
@@ -33,6 +36,16 @@ public class PlayerAttack : MonoBehaviour {
         attackB = Input.GetAxisRaw("Fire2");
         attackC = Input.GetAxisRaw("Fire3");
         cancel = Input.GetAxisRaw("stop");
+        combo.text = comboArray;
+        float tempTime = Mathf.Clamp(StartTime - Time.time+1f , 0f, 9999f) ;
+        foreach (AttackCombo c in comboQueue)
+        {
+            tempTime += c.getTime();
+        }
+        
+        time.text=Mathf.Round(tempTime*10f)/10f+"";
+           
+
         if (attackA + attackB + attackC == 0)
         {
             keyCoolDown = true;
@@ -73,6 +86,8 @@ public class PlayerAttack : MonoBehaviour {
 
                 AttackCombo cur = (AttackCombo)comboQueue.Dequeue();
                 print(cur);
+                anim.Play(cur.getComboAnim());
+                //실제로는 애니메이션 가져옴
                 state = ComboState.Attack;
                 StartTime = Time.time + cur.getTime();
             }

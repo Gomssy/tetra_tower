@@ -6,12 +6,14 @@ public class AttackCombo
     string name;
     //화염발사!
     string combo;
+    string comboAnim;
     //"ABCACBAC"
-    public AttackCombo(string name, string combo, float time)
+    public AttackCombo(string name, string combo, float time , string comboAnim)
     {
         this.time = time;
         this.name = name;
         this.combo = combo;
+        this.comboAnim = comboAnim;
     }
     public override string ToString()
     {
@@ -28,5 +30,9 @@ public class AttackCombo
     public float getTime()
     {
         return time;
+    }
+    public string getComboAnim()
+    {
+        return comboAnim;
     }
 }
