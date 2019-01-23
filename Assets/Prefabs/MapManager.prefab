@@ -142,6 +142,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2569afcbbcfb5c14f90525054a6707c3, type: 3}
   - {fileID: 21300000, guid: 5d862de53793b134ba9ac6e49dc42a5c, type: 3}
   roomsSprite2:
+  - {fileID: 21300000, guid: 6ec5fd6f82959204b8518829c7c9e2cc, type: 3}
   - {fileID: 21300000, guid: 990a04fc86d19064abd85a9264ea1784, type: 3}
   - {fileID: 21300000, guid: c7a48bb0766c8ee49b3bfb18aa2d66df, type: 3}
   - {fileID: 21300000, guid: a72bd325e8d5ca24b8106b397c9f1573, type: 3}

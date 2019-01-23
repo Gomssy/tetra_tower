@@ -280,20 +280,21 @@ public class MapManager : MonoBehaviour {
         int doorCloseCounter = 0;
         int roomDestroyCounter = 0;
         int row = leftPress.row;
-        float collapseSpeed = 0;
-        collapseSpeed = (float)1 / collapseTime;
+        float collapseSpeed = (float)20 / collapseTime * Time.deltaTime;
         leftPress.transform.localScale = new Vector3(0, 1, 1);
         rightPress.transform.localScale = new Vector3(0, 1, 1);
-        while (leftPress.transform.localScale.x < 20)
+        float collapseRate = leftPress.transform.localScale.x;
+        while (collapseRate < 20)
         {
-            yield return new WaitForSeconds(0.05f);
+            yield return null;
             if (currentRoom.mapCoord.y == row)
-                collapseSpeed = (float)1 / (10 * collapseTime);
+                collapseSpeed = (float)2 / collapseTime * Time.deltaTime;
             else
-                collapseSpeed = (float)1 / collapseTime;
+                collapseSpeed = (float)20 / collapseTime * Time.deltaTime;
             leftPress.transform.localScale += new Vector3(collapseSpeed, 0, 0);
             rightPress.transform.localScale += new Vector3(-collapseSpeed, 0, 0);
-            if (collapseSpeed - doorCloseCounter * 0.2f > (float)1 / 12)
+            collapseRate = leftPress.transform.localScale.x;
+            if (collapseRate - doorCloseCounter * 4 >= (float)4 / 3)
             {
                 mapGrid[doorCloseCounter, row].CloseDoor("Up", false);
                 mapGrid[doorCloseCounter, row].CloseDoor("Down", false);
@@ -303,44 +304,13 @@ public class MapManager : MonoBehaviour {
                 mapGrid[width - doorCloseCounter - 1, row].isRoomDestroyed = true;
                 doorCloseCounter++;
             }
-            if (collapseSpeed - roomDestroyCounter * 0.2f > 0.2f)
+            if (collapseRate - (roomDestroyCounter + 1) * 4 >= 0)
             {
                 if (mapGrid[roomDestroyCounter, row] == currentRoom || mapGrid[width - roomDestroyCounter - 1, row] == currentRoom)
-                {
                     GameManager.gameState = GameState.GameOver;
-                }
-                //Destroy(mapGrid[roomDestroyCounter, row].gameObject);
-                //Destroy(mapGrid[width - roomDestroyCounter - 1, row].gameObject);
                 roomDestroyCounter++;
             }
         }
-        /*while (Time.time - initialCollapseTime < collapseTime)
-        {
-            yield return new WaitForSeconds(0.01f);
-            collapseRate = (Time.time - initialCollapseTime) / collapseTime;
-            leftPress.transform.localScale = new Vector3(collapseRate * 20, 1, 1);
-            rightPress.transform.localScale = new Vector3(-collapseRate * 20, 1, 1);
-            if (collapseRate - doorCloseCounter * 0.2f > (float)1 / 12)
-            {
-                mapGrid[doorCloseCounter, row].CloseDoor("Up", false);
-                mapGrid[doorCloseCounter, row].CloseDoor("Down", false);
-                mapGrid[width - doorCloseCounter - 1, row].CloseDoor("Up", false);
-                mapGrid[width - doorCloseCounter - 1, row].CloseDoor("Down", false);
-                mapGrid[doorCloseCounter, row].isRoomDestroyed = true;
-                mapGrid[width - doorCloseCounter - 1, row].isRoomDestroyed = true;
-                doorCloseCounter++;
-            }
-            if (collapseRate - roomDestroyCounter * 0.2f > 0.2f)
-            {
-                if (mapGrid[roomDestroyCounter, row] == currentRoom || mapGrid[width - roomDestroyCounter - 1, row] == currentRoom)
-                {
-                    GameManager.gameState = GameState.GameOver;
-                }
-                //Destroy(mapGrid[roomDestroyCounter, row].gameObject);
-                //Destroy(mapGrid[width - roomDestroyCounter - 1, row].gameObject);
-                roomDestroyCounter++;
-            }
-        }*/
         for (int i = row + 1; i < realHeight; i++)
         {
             if(isRowDeleting[i])
@@ -910,10 +880,9 @@ public class MapManager : MonoBehaviour {
                         if (specialRoomList5[i].leftDoorInfo[leftDoor] == true && specialRoomList5[i].rightDoorInfo[rightDoor] == true && specialRoomList5[i].concept[concept] == true)
                             specialRoomsDistributed[4, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList5[i]);*/
                 }
-        roomsSpritesDistributed[0].Add(roomsSprite1[0]);
-        for (RoomSpriteType spriteType = 0; (int)spriteType < 10; spriteType++)
+        for (RoomSpriteType spriteType = 0; (int)spriteType < 11; spriteType++)
         {
-            roomsSpritesDistributed[0].Add(roomsSprite1[(int)spriteType + 1]);
+            roomsSpritesDistributed[0].Add(roomsSprite1[(int)spriteType]);
             roomsSpritesDistributed[1].Add(roomsSprite2[(int)spriteType]);
             /*roomsSpritesDistributed[2].Add(roomsSprite3[(int)spriteType]);
             roomsSpritesDistributed[3].Add(roomsSprite4[(int)spriteType]);
@@ -944,7 +913,5 @@ public class MapManager : MonoBehaviour {
                 }
             }
         }
-        else
-            Debug.Log("Game Over");
     }
 }

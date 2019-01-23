@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour {
         }
         if(gameState == GameState.GameOver)
         {
+            Debug.Log("Game Over");
             Time.timeScale = 0;
         }
     }
