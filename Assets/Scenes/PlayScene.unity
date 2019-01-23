@@ -265,6 +265,23 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1623439448163086, guid: 3d077a5f727dd1e4780e9265ed26e036,
     type: 2}
   m_PrefabInternal: {fileID: 1618052740}
+--- !u!114 &489222434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 489222433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ab58a64164eb984d8683df370ddce96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  attackA: 0
+  attackB: 0
+  attackC: 0
+  comboArray: 
+  StartTime: 0
 --- !u!1001 &677608594
 Prefab:
   m_ObjectHideFlags: 0
