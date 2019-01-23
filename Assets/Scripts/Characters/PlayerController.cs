@@ -231,11 +231,15 @@ public class PlayerController : MonoBehaviour
     }
     bool IsGrounded()   // Is player grounded?
     {
-        RaycastHit2D hit1 = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, groundLayer);
-        RaycastHit2D hit2 = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, platformLayer);
-        RaycastHit2D hit3 = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, outerwallLayer);
-        Debug.DrawRay(transform.position, rayDistance * Vector2.down, Color.white);
-        return (hit1.collider != null || hit2.collider != null || hit3.collider != null) && rb.velocity.y == 0;//플랫폼 점프 버그 방지
+        RaycastHit2D hit1 = Physics2D.Raycast(transform.position + new Vector3(Player.X/2f, 0, 0), Vector2.down, rayDistance, groundLayer);
+        RaycastHit2D hit2 = Physics2D.Raycast(transform.position + new Vector3(Player.X/2f, 0, 0), Vector2.down, rayDistance, platformLayer);
+        RaycastHit2D hit3 = Physics2D.Raycast(transform.position + new Vector3(Player.X/2f, 0, 0), Vector2.down, rayDistance, outerwallLayer);
+        RaycastHit2D hit4 = Physics2D.Raycast(transform.position - new Vector3(Player.X/2f, 0,0), Vector2.down, rayDistance, groundLayer);
+        RaycastHit2D hit5 = Physics2D.Raycast(transform.position - new Vector3(Player.X/2f, 0, 0), Vector2.down, rayDistance, platformLayer);
+        RaycastHit2D hit6 = Physics2D.Raycast(transform.position - new Vector3(Player.X/2f, 0, 0), Vector2.down, rayDistance, outerwallLayer);
+        Debug.DrawRay(transform.position + new Vector3(Player.X/2f, 0, 0), rayDistance * Vector2.down, Color.white);
+        return (hit1.collider != null || hit2.collider != null || hit3.collider != null|| 
+            hit4.collider != null || hit5.collider != null || hit6.collider != null) && rb.velocity.y == 0;//플랫폼 점프 버그 방지
     }
     bool IsInRope()   // Is player in rope?
     {

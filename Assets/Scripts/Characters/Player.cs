@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour {
     public LifeStoneManager LCUI;
     public static int tx, ty;
+    public static float X=0.7f, Y=1.6f;
     public int ttx;
     public int tty;
     Coroutine roomEnterFadeIn;
