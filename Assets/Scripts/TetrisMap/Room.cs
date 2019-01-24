@@ -77,6 +77,10 @@ public class Room : MonoBehaviour
     /// </summary>
     public RoomInGame roomInGame;
     /// <summary>
+    /// Portal of the room.
+    /// </summary>
+    public GameObject portal;
+    /// <summary>
     /// Check if room is clear and escapable.
     /// </summary>
     public bool isRoomCleared;
@@ -130,6 +134,30 @@ public class Room : MonoBehaviour
             }
         }
     }
+
+
+
+
+
+    /// <summary>
+    /// Create portal in cleared room.
+    /// </summary>
+    public void CreatePortal()
+    {
+        if(specialRoomType != RoomType.Normal)
+        {
+            portal.SetActive(true);
+        }
+        else
+        {
+           
+        }
+    }
+
+
+
+
+
     /// <summary>
     /// Open selected door of this room.
     /// </summary>

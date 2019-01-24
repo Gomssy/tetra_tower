@@ -152,6 +152,10 @@ public class MapManager : MonoBehaviour {
     /// Right door in ingame.
     /// </summary>
     public GameObject inGameDoorRight;
+    /// <summary>
+    /// Portal of a door.
+    /// </summary>
+    public GameObject Portal;
 
     public RoomInGame[] normalRoomList1;
     public RoomInGame[] normalRoomList2;
@@ -684,9 +688,6 @@ public class MapManager : MonoBehaviour {
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
         else
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType];
-
-
-
         if (currentGhost != null)
             currentGhost.rooms[i].GetComponent<SpriteRenderer>().sprite = room.GetComponent<SpriteRenderer>().sprite;
     }
@@ -777,6 +778,19 @@ public class MapManager : MonoBehaviour {
     {
         yield return new WaitForSeconds(1f);
         tetriminoSpawner.MakeTetrimino();
+    }
+    public void ChangeRoom()
+    {
+        Room room = currentRoom;
+        StartCoroutine(RoomFadeOut(room));
+        if (room.specialRoomType == RoomType.Normal)
+            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
+        else
+            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType];
+        currentRoom = tempRoom;
+        room = currentRoom;
+        StartCoroutine(RoomFadeIn(room));
+        room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Current];
     }
     /// <summary>
     /// Make room fade in.

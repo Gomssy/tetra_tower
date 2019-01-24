@@ -51,17 +51,7 @@ public class Door : MonoBehaviour {
                     break;
             }
             MapManager.isDoorClosing = true;
-            MapManager mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
-            Room room = MapManager.currentRoom;
-            StartCoroutine(mapManager.RoomFadeOut(room));
-            if(room.specialRoomType == RoomType.Normal)
-                room.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
-            else
-                room.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[room.stage][(int)room.specialRoomType];
-            MapManager.currentRoom = MapManager.tempRoom;
-            room = MapManager.currentRoom;
-            StartCoroutine(mapManager.RoomFadeIn(room));
-            room.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Current];
+            GameObject.Find("MapManager").GetComponent<MapManager>().ChangeRoom();
             if (MapManager.currentRoom.isRoomCleared != true)
             {
                 animatorThisRoom.SetBool("isPlayerTouchEnded", true);

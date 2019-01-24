@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -9,6 +10,15 @@ public class GameManager : MonoBehaviour {
     /// change later
     /// </summary>
     public static GameState gameState;
+
+    public Canvas gameOverScreen;
+
+    public void RestartGame()
+    {
+        gameOverScreen.gameObject.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
 
     // Use this for initialization
     void Start () {
@@ -32,8 +42,17 @@ public class GameManager : MonoBehaviour {
         }
         if(gameState == GameState.GameOver)
         {
-            Debug.Log("Game Over");
-            Time.timeScale = 0;
+            if(gameOverScreen.isActiveAndEnabled == false)
+                Debug.Log("Game Over");
+            gameOverScreen.gameObject.SetActive(true);
+        }
+        if (gameState == GameState.Portal)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                gameState = GameState.Ingame;
+                StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene());
+            }
         }
     }
 }

@@ -83,7 +83,7 @@ public class CameraController : MonoBehaviour {
                 GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, sizeDestination, Mathf.Sqrt(Time.deltaTime));
             }
         }
-        else if (GameManager.gameState == GameState.Tetris)
+        else if (GameManager.gameState == GameState.Tetris || GameManager.gameState == GameState.Portal)
         {
             StartCoroutine(mapManager.RoomFadeOut(MapManager.currentRoom));
             grid.transform.position = new Vector3(0, 0, 2);
