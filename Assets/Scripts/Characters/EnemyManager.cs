@@ -8,6 +8,9 @@ using UnityEngine.Assertions;
 public class EnemyManager : Singleton<EnemyManager>
 {
     // data
+    // static
+    private static readonly int poolSize = 10;
+
     // data of drop item
     public TextAsset dropTableData;
     public Dictionary<int, int[]> dropTableByID = new Dictionary<int, int[]>();
@@ -15,6 +18,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
     // enemy prefab
     public GameObject[] enemyPrefab;
+    public Dictionary<GameObject, GameObject[]> enemyPool = new Dictionary<GameObject, GameObject[]>();
 
     // method
     // Constructor - protect calling raw constructor
@@ -24,12 +28,62 @@ public class EnemyManager : Singleton<EnemyManager>
     private void Awake()
     {
         LoadDropTable(dropTableData);
+        createEnemyPool();
     }
 
     // Spawn Enemy to Map
     public void SpawnEnemy()
     {
-        GameObject spawnLocation = MapManager.currentRoom.roomInGame.transform.Find("enemy location").gameObject;
+        Transform enemySpots = MapManager.currentRoom.roomInGame.transform.Find("enemy spot");
+        foreach(Transform enemySpot in enemySpots)
+        {
+            GameObject enemy = enemySpot.gameObject.GetComponent<enemySpot>().enemyPrefab;
+            foreach(Transform location in enemySpot)
+            {
+                GameObject clone = pickFromPool(enemy);
+                clone.transform.position = location.position;
+            }
+        }
+    }
+
+    // Object Pool
+    private void createEnemyPool()
+    {
+        foreach(GameObject eachEnemy in enemyPrefab)
+        {
+            GameObject[] pool = new GameObject[poolSize];
+            for(int i = 0; i < pool.Length; i++)
+            {
+                pool[i] = Instantiate(eachEnemy);
+                pool[i].SetActive(false);
+            }
+            enemyPool.Add(eachEnemy, pool);
+        }
+    }
+
+    private GameObject pickFromPool(GameObject enemy)
+    {
+        GameObject[] pool = enemyPool[enemy];
+        foreach(GameObject obj in pool)
+        {
+            if (!obj.activeSelf)
+            {
+                obj.SetActive(true);
+                return obj;
+            }
+        }
+
+        int beforeExtend = pool.Length;
+        Array.Resize(ref pool, pool.Length + poolSize);
+        for(int i = beforeExtend; i < pool.Length; i++)
+        {
+            pool[i] = Instantiate(enemy);
+            pool[i].SetActive(false);
+        }
+        enemyPool[enemy] = pool;
+
+        pool[beforeExtend].SetActive(true);
+        return pool[beforeExtend];
     }
 
     // Load Dictionary

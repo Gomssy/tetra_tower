@@ -186,7 +186,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d73d07fdab522c4aa045e1cb6a92e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMaxHealth: 0
+  monsterID: 42
+  maxHealth: 0
+  weight: 0
 --- !u!212 &212906216626823524
 SpriteRenderer:
   m_ObjectHideFlags: 1
