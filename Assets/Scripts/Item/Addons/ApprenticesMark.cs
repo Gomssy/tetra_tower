@@ -9,9 +9,9 @@ public class ApprenticesMark : Addon
 {
     public override void Declare()
     {
-        id = 0; name = "apprentice's mark";
+        id = 1; name = "apprentice's mark";
         quality = ItemQuality.Study;
-        type = AddonType.Theory;
+        type = AddonType.Prop;
         sprite = Resources.Load<Sprite>("Sprites/Addons/apprentice's mark"); ;
         sizeInventory = new Vector2(80, 80);
     }
