@@ -8,6 +8,7 @@ public abstract class Item {
     public ItemQuality quality;
     public int skillNum;
     public string[] combo = new string[3];  //Capital Letters A B C
+    public AnimationClip[] animation = new AnimationClip[3];
     public bool[] attachable = new bool[4]; //0: prop 1: matter 2: component 3:theory
     public Addon[] addons = new Addon[4];   //0: prop 1: matter 2: component 3:theory
     public Sprite sprite;
@@ -27,6 +28,13 @@ public abstract class Item {
         }
         return false;
     }
+    public bool ComboAction(int currenSkill)
+    {
+        if (currenSkill == 0) PlaySkill1();
+        else if (currenSkill == 1) PlaySkill2();
+        else if (currenSkill == 2) PlaySkill3();
+        return true;
+    }
     public Item()
     {
         Declare();
@@ -39,6 +47,9 @@ public abstract class Item {
         combo = new string[3] { "", "", "" };
         attachable = new bool[4] { false, false, false, false };
         sprite = null;
+        animation[0] = null;
+        animation[1] = null;
+        animation[2] = null;
         sizeInventory = new Vector2(0, 0);
     }
     protected virtual void PlaySkill1()
