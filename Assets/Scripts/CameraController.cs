@@ -38,7 +38,7 @@ public class CameraController : MonoBehaviour {
             FollowPlayer();
             originPos = transform.position;
         }
-        else if (GameManager.gameState == GameState.Tetris)
+        else if (GameManager.gameState == GameState.Tetris || GameManager.gameState == GameState.Portal)
         {
             originPos = tetrisCameraCoord;
         }
@@ -66,39 +66,47 @@ public class CameraController : MonoBehaviour {
     /// Change scene between tetris and ingame.
     /// </summary>
     /// <returns></returns>
-    public IEnumerator ChangeScene()
+    public IEnumerator ChangeScene(GameState gameState)
     {
-        GameObject grid = GameObject.Find("Grid");
-        float sizeDestination = 0;
-        isSceneChanging = true;
-        if (GameManager.gameState == GameState.Ingame)
+        if(isSceneChanging != true)
         {
-            StartCoroutine(mapManager.RoomFadeIn(MapManager.currentRoom));
-            grid.transform.position = new Vector3(0, 0, 0);
-            sizeDestination = inGameCameraSize;
-            while (GetComponent<Camera>().orthographicSize > sizeDestination + 0.01)
+            GameObject grid = GameObject.Find("Grid");
+            float sizeDestination = 0;
+            isSceneChanging = true;
+            if (gameState == GameState.Ingame)
             {
-                yield return null;
-                FollowPlayer();
-                GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, sizeDestination, Mathf.Sqrt(Time.deltaTime));
+                GameManager.gameState = GameState.Ingame;
+                StartCoroutine(mapManager.RoomFadeIn(MapManager.currentRoom));
+                grid.transform.position = new Vector3(0, 0, 0);
+                sizeDestination = inGameCameraSize;
+                while (GetComponent<Camera>().orthographicSize > sizeDestination + 0.01)
+                {
+                    yield return null;
+                    FollowPlayer();
+                    GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, sizeDestination, Mathf.Sqrt(Time.deltaTime));
+                }
             }
-        }
-        else if (GameManager.gameState == GameState.Tetris || GameManager.gameState == GameState.Portal)
-        {
-            StartCoroutine(mapManager.RoomFadeOut(MapManager.currentRoom));
-            grid.transform.position = new Vector3(0, 0, 2);
-            sizeDestination = tetrisCameraSize;
-            while (GetComponent<Camera>().orthographicSize < sizeDestination - 2)
+            else if (gameState == GameState.Tetris || gameState == GameState.Portal)
             {
-                yield return null;
-                Vector2 coord = Vector2.Lerp(transform.position, tetrisCameraCoord, Mathf.Sqrt(Time.deltaTime));
-                transform.position = new Vector3(coord.x, coord.y, -1);
-                GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, sizeDestination, Mathf.Sqrt(Time.deltaTime));
+                if(gameState == GameState.Tetris)
+                    GameManager.gameState = GameState.Tetris;
+                else if(gameState == GameState.Portal)
+                    GameManager.gameState = GameState.Portal;
+                StartCoroutine(mapManager.RoomFadeOut(MapManager.currentRoom));
+                grid.transform.position = new Vector3(0, 0, 2);
+                sizeDestination = tetrisCameraSize;
+                while (GetComponent<Camera>().orthographicSize < sizeDestination - 2)
+                {
+                    yield return null;
+                    Vector2 coord = Vector2.Lerp(transform.position, tetrisCameraCoord, Mathf.Sqrt(Time.deltaTime));
+                    transform.position = new Vector3(coord.x, coord.y, -1);
+                    GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, sizeDestination, Mathf.Sqrt(Time.deltaTime));
+                }
+                transform.position = tetrisCameraCoord;
             }
-            transform.position = tetrisCameraCoord;
+            GetComponent<Camera>().orthographicSize = sizeDestination;
+            isSceneChanging = false;
         }
-        GetComponent<Camera>().orthographicSize = sizeDestination;
-        isSceneChanging = false;
     }
 
     void FollowPlayer()

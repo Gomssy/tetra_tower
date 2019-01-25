@@ -8,14 +8,23 @@ public class Portal : MonoBehaviour {
     {
         if (collision.tag.Equals("Player"))
         {
-            Debug.Log("Entered");
             if (Input.GetKeyDown(KeyCode.F))
             {
-                Debug.Log("Portal");
-                GameManager.gameState = GameState.Portal;
-                StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene());
+                for (int x = 0; x < MapManager.width; x++)
+                    MapManager.portalDistributedHorizontal[x].Clear();
+                for (int y = 0; y <= MapManager.realHeight; y++)
+                    MapManager.portalDistributedVertical[y].Clear();
+                for (int x = 0; x < MapManager.width; x++)
+                    for (int y = 0; y <= MapManager.realHeight; y++)
+                        if (MapManager.mapGrid[x, y] != null && MapManager.mapGrid[x, y].isPortal == true)
+                        {
+                            MapManager.portalGrid[x, y] = true;
+                            MapManager.portalDistributedHorizontal[x].Add(y);
+                            MapManager.portalDistributedVertical[y].Add(x);
+                        }
+                MapManager.portalDestination = MapManager.currentRoom.mapCoord;
+                StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Portal));
             }
-
         }
     }
 

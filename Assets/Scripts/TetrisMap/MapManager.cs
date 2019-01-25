@@ -38,7 +38,7 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Time tetrimino would wait until it falls.
     /// </summary>
-    public float timeToFallTetrimino = 100.0f;
+    public float timeToFallTetrimino;
     /// <summary>
     /// Time tetris waits to fall.
     /// </summary>
@@ -67,6 +67,12 @@ public class MapManager : MonoBehaviour {
     /// Absolute coordinates on tetris map.
     /// </summary>
     public static Room[,] mapGrid = new Room[width, height];
+    /// <summary>
+    /// Absolute coordinates on tetris map.
+    /// </summary>
+    public static bool[,] portalGrid = new bool[width, height];
+    public static List<int>[] portalDistributedVertical = new List<int>[20];
+    public static List<int>[] portalDistributedHorizontal = new List<int>[10];
     /// <summary>
     /// Check if tetrimino is falling.
     /// </summary>
@@ -153,9 +159,13 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public GameObject inGameDoorRight;
     /// <summary>
-    /// Portal of a door.
+    /// Indicates the location of the selected portal.
     /// </summary>
-    public GameObject Portal;
+    public GameObject portalSelected;
+    /// <summary>
+    /// Destination of portal player will move.
+    /// </summary>
+    public static Vector2 portalDestination;
 
     public RoomInGame[] normalRoomList1;
     public RoomInGame[] normalRoomList2;
@@ -779,18 +789,19 @@ public class MapManager : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         tetriminoSpawner.MakeTetrimino();
     }
-    public void ChangeRoom()
+    public void ChangeRoom(Room newRoom)
     {
         Room room = currentRoom;
+        Debug.Log(room.mapCoord + "prev");
         StartCoroutine(RoomFadeOut(room));
         if (room.specialRoomType == RoomType.Normal)
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
         else
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType];
-        currentRoom = tempRoom;
-        room = currentRoom;
-        StartCoroutine(RoomFadeIn(room));
-        room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Current];
+        currentRoom = newRoom;
+        StartCoroutine(RoomFadeIn(newRoom));
+        Debug.Log(newRoom.mapCoord + "current");
+        newRoom.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[newRoom.stage][(int)RoomSpriteType.Current];
     }
     /// <summary>
     /// Make room fade in.
@@ -834,6 +845,87 @@ public class MapManager : MonoBehaviour {
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
     }
 
+
+
+
+    public void PortalControl()
+    {
+        int difference = 100;
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            for (int i = (int)portalDestination.y + 1; i < realHeight + 1; i++)
+            {
+                if(portalDistributedVertical[i].Count != 0)
+                {
+                    for(int j = 0; j < portalDistributedVertical[i].Count; j++)
+                    {
+                        if (Mathf.Abs(portalDistributedVertical[i][j] - (int)portalDestination.x) < difference)
+                        {
+                            difference = portalDistributedVertical[i][j] - (int)portalDestination.x;
+                            portalDestination = new Vector2(portalDistributedVertical[i][j], i);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            for (int i = (int)portalDestination.y - 1; i >= 0; i--)
+            {
+                if(portalDistributedVertical[i].Count != 0)
+                {
+                    for (int j = 0; j < portalDistributedVertical[i].Count; j++)
+                    {
+                        if (Mathf.Abs(portalDistributedVertical[i][j] - (int)portalDestination.x) < difference)
+                        {
+                            difference = portalDistributedVertical[i][j] - (int)portalDestination.x;
+                            portalDestination = new Vector2(portalDistributedVertical[i][j], i);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            for (int i = (int)portalDestination.x - 1; i >= 0; i--)
+            {
+                if(portalDistributedHorizontal[i].Count != 0)
+                {
+                    for (int j = 0; j < portalDistributedHorizontal[i].Count; j++)
+                    {
+                        if (Mathf.Abs(portalDistributedHorizontal[i][j] - (int)portalDestination.y) < difference)
+                        {
+                            difference = portalDistributedHorizontal[i][j] - (int)portalDestination.y;
+                            portalDestination = new Vector2(i, portalDistributedHorizontal[i][j]);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            for (int i = (int)portalDestination.x + 1; i < width; i++)
+            {
+                if(portalDistributedHorizontal[i].Count != 0)
+                {
+                    for (int j = 0; j < portalDistributedHorizontal[i].Count; j++)
+                    {
+                        if (Mathf.Abs(portalDistributedHorizontal[i][j] - (int)portalDestination.y) < difference)
+                        {
+                            difference = portalDistributedHorizontal[i][j] - (int)portalDestination.y;
+                            portalDestination = new Vector2(i, portalDistributedHorizontal[i][j]);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        Debug.Log(portalDestination);
+    }
+
     void Awake()
     {
         Tetrimino.rotationInformation[0].horizontalLength = new int[4] { 1, 4, 1, 4 };  //I
@@ -859,6 +951,10 @@ public class MapManager : MonoBehaviour {
                         specialRoomsDistributed[stage, concept, leftDoor, rightDoor] = new List<RoomInGame>();
                     }
         }
+        for (int i = 0; i < 20; i++)
+            portalDistributedVertical[i] = new List<int>();
+        for (int i = 0; i < 10; i++)
+            portalDistributedHorizontal[i] = new List<int>();
         for (int concept = 0; concept < 4; concept++)
             for (int leftDoor = 0; leftDoor < 3; leftDoor++)
                 for (int rightDoor = 0; rightDoor < 3; rightDoor++)
@@ -925,6 +1021,10 @@ public class MapManager : MonoBehaviour {
                     GhostControl(currentGhost, currentTetrimino);
                     currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z);
                 }
+            }
+            if(GameManager.gameState == GameState.Portal)
+            {
+                PortalControl();
             }
         }
     }

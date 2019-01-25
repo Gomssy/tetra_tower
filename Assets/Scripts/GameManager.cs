@@ -35,24 +35,28 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Tab) && CameraController.isSceneChanging != true)
         {
             if (gameState == GameState.Ingame)
-                gameState = GameState.Tetris;
+            {
+                StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Tetris));
+            }
             else if (gameState == GameState.Tetris)
-                gameState = GameState.Ingame;
-            StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene());
+            {
+                StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Escape) && CameraController.isSceneChanging != true)
+        {
+            if (gameState == GameState.Portal)
+            {
+                GameObject.Find("Player").transform.position = MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portal.transform.position + new Vector3(2, 1, 0);
+                GameObject.Find("MapManager").GetComponent<MapManager>().ChangeRoom(MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y]);
+                StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
+            }
         }
         if(gameState == GameState.GameOver)
         {
             if(gameOverScreen.isActiveAndEnabled == false)
                 Debug.Log("Game Over");
             gameOverScreen.gameObject.SetActive(true);
-        }
-        if (gameState == GameState.Portal)
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                gameState = GameState.Ingame;
-                StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene());
-            }
         }
     }
 }
