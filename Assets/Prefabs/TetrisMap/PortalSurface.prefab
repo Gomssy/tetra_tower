@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4131413436280266}
   - component: {fileID: 212754017166168550}
   m_Layer: 0
-  m_Name: PortalSelcted
+  m_Name: PortalSurface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

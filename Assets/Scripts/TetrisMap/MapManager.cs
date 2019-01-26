@@ -159,9 +159,17 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public GameObject inGameDoorRight;
     /// <summary>
-    /// Indicates the location of the selected portal.
+    /// Indicates the location of the existing portal.
     /// </summary>
-    public GameObject portalSelected;
+    public GameObject portalSurface;
+    /// <summary>
+    /// Sprite of existing portals.
+    /// </summary>
+    public Sprite portalExist;
+    /// <summary>
+    /// Sprite of selected portals.
+    /// </summary>
+    public Sprite portalSelected;
     /// <summary>
     /// Destination of portal player will move.
     /// </summary>
@@ -792,7 +800,6 @@ public class MapManager : MonoBehaviour {
     public void ChangeRoom(Room newRoom)
     {
         Room room = currentRoom;
-        Debug.Log(room.mapCoord + "prev");
         StartCoroutine(RoomFadeOut(room));
         if (room.specialRoomType == RoomType.Normal)
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
@@ -800,7 +807,6 @@ public class MapManager : MonoBehaviour {
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType];
         currentRoom = newRoom;
         StartCoroutine(RoomFadeIn(newRoom));
-        Debug.Log(newRoom.mapCoord + "current");
         newRoom.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[newRoom.stage][(int)RoomSpriteType.Current];
     }
     /// <summary>
@@ -850,80 +856,89 @@ public class MapManager : MonoBehaviour {
 
     public void PortalControl()
     {
-        int difference = 100;
+        int minDifference = 100;
+        int difference = 0;
+        Vector2 tempDestination = new Vector2(0, 0);
         if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
             for (int i = (int)portalDestination.y + 1; i < realHeight + 1; i++)
             {
                 if(portalDistributedVertical[i].Count != 0)
                 {
-                    for(int j = 0; j < portalDistributedVertical[i].Count; j++)
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalExist;
+                    for (int j = 0; j < portalDistributedVertical[i].Count; j++)
                     {
-                        if (Mathf.Abs(portalDistributedVertical[i][j] - (int)portalDestination.x) < difference)
+                        difference = Mathf.Abs(portalDistributedVertical[i][j] - (int)portalDestination.x);
+                        if (difference < minDifference)
                         {
-                            difference = portalDistributedVertical[i][j] - (int)portalDestination.x;
-                            portalDestination = new Vector2(portalDistributedVertical[i][j], i);
+                            minDifference = difference;
+                            tempDestination = new Vector2(portalDistributedVertical[i][j], i);
                         }
                     }
-                    break;
+                    portalDestination = tempDestination;
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalSelected;
+                    return;
                 }
             }
-        }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
             for (int i = (int)portalDestination.y - 1; i >= 0; i--)
             {
                 if(portalDistributedVertical[i].Count != 0)
                 {
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalExist;
                     for (int j = 0; j < portalDistributedVertical[i].Count; j++)
                     {
-                        if (Mathf.Abs(portalDistributedVertical[i][j] - (int)portalDestination.x) < difference)
+                        difference = Mathf.Abs(portalDistributedVertical[i][j] - (int)portalDestination.x);
+                        if (difference < minDifference)
                         {
-                            difference = portalDistributedVertical[i][j] - (int)portalDestination.x;
-                            portalDestination = new Vector2(portalDistributedVertical[i][j], i);
+                            minDifference = difference;
+                            tempDestination = new Vector2(portalDistributedVertical[i][j], i);
                         }
                     }
-                    break;
+                    portalDestination = tempDestination;
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalSelected;
+                    return;
                 }
             }
-        }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
             for (int i = (int)portalDestination.x - 1; i >= 0; i--)
             {
                 if(portalDistributedHorizontal[i].Count != 0)
                 {
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalExist;
                     for (int j = 0; j < portalDistributedHorizontal[i].Count; j++)
                     {
-                        if (Mathf.Abs(portalDistributedHorizontal[i][j] - (int)portalDestination.y) < difference)
+                        difference = Mathf.Abs(portalDistributedHorizontal[i][j] - (int)portalDestination.y);
+                        if (difference < minDifference)
                         {
-                            difference = portalDistributedHorizontal[i][j] - (int)portalDestination.y;
-                            portalDestination = new Vector2(i, portalDistributedHorizontal[i][j]);
+                            minDifference = difference;
+                            tempDestination = new Vector2(i, portalDistributedHorizontal[i][j]);
                         }
                     }
-                    break;
+                    portalDestination = tempDestination;
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalSelected;
+                    return;
                 }
             }
-        }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
             for (int i = (int)portalDestination.x + 1; i < width; i++)
             {
                 if(portalDistributedHorizontal[i].Count != 0)
                 {
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalExist;
                     for (int j = 0; j < portalDistributedHorizontal[i].Count; j++)
                     {
-                        if (Mathf.Abs(portalDistributedHorizontal[i][j] - (int)portalDestination.y) < difference)
+                        difference = Mathf.Abs(portalDistributedHorizontal[i][j] - (int)portalDestination.y);
+                        if (difference < minDifference)
                         {
-                            difference = portalDistributedHorizontal[i][j] - (int)portalDestination.y;
-                            portalDestination = new Vector2(i, portalDistributedHorizontal[i][j]);
+                            minDifference = difference;
+                            tempDestination = new Vector2(i, portalDistributedHorizontal[i][j]);
                         }
                     }
-                    break;
+                    portalDestination = tempDestination;
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalSelected;
+                    return;
                 }
             }
-        }
-        Debug.Log(portalDestination);
     }
 
     void Awake()

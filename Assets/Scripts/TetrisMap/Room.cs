@@ -81,6 +81,10 @@ public class Room : MonoBehaviour
     /// </summary>
     public GameObject portal;
     /// <summary>
+    /// Portal surface of the room.
+    /// </summary>
+    public GameObject portalSurface;
+    /// <summary>
     /// Check if room is clear and escapable.
     /// </summary>
     public bool isRoomCleared;
@@ -380,7 +384,7 @@ public class Room : MonoBehaviour
             fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
             CreatePortal();
             if (isPortal == true)
-                Instantiate(GameObject.Find("MapManager").GetComponent<MapManager>().portalSelected, transform.position + new Vector3(12, 12, 0), Quaternion.identity, transform);
+                portalSurface = Instantiate(GameObject.Find("MapManager").GetComponent<MapManager>().portalSurface, transform.position + new Vector3(12, 12, 0), Quaternion.identity, transform);
             isRoomCleared = true;
             if (specialRoomType == RoomType.Boss)
                 MapManager.currentStage += 1;
