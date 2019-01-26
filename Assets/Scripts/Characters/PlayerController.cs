@@ -96,7 +96,6 @@ public class PlayerController : MonoBehaviour
                 else if (horizontalRaw == -1f) transform.localScale = new Vector3(1f, transform.localScale.y, transform.localScale.z);
             }
 
-
             if (verticalRaw == -1 && !isDownPlatform)
             {
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, platformLayer);
@@ -161,7 +160,6 @@ public class PlayerController : MonoBehaviour
                     else playerState = PlayerState.GoingDown;
                 }
                 
-
                 if (horizontalRaw != 0)
                 {
                     if (horizontal != 1 && horizontal != -1 && dashStart == 0)
@@ -185,7 +183,6 @@ public class PlayerController : MonoBehaviour
                     dashStart = 0;
                     isDashing = false;
                 }
-
 
                 if (isDashing)
                     rb.AddForce(horizontalRaw * dashAccerlation * Time.smoothDeltaTime * Vector2.right);

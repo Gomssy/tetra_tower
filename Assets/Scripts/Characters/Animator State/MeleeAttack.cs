@@ -6,9 +6,6 @@ public class MeleeAttack : StateMachineBehaviour {
     float timer;
     float attackDelay;
     float attackDuration;
-    public Sprite castingSprite;
-    public Sprite attackingSprite;
-    Sprite prevSprite;
 
     enum SubState
     {
@@ -20,9 +17,8 @@ public class MeleeAttack : StateMachineBehaviour {
     
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        prevSprite = animator.GetComponent<SpriteRenderer>().sprite;
-        attackDelay = animator.GetFloat("attackDelay");
-        attackDuration = animator.GetFloat("attackDuration");
+        attackDelay = animator.GetComponent<Enemy>().attackDelay;
+        attackDuration = animator.GetComponent<Enemy>().attackDuration;
         subState = SubState.BEFOREATTACK;
         timer = 0.0f;
     }
@@ -35,7 +31,6 @@ public class MeleeAttack : StateMachineBehaviour {
             if (subState == SubState.BEFOREATTACK)
             {
                 subState = SubState.CASTING;
-                animator.GetComponent<SpriteRenderer>().sprite = castingSprite;
             }
             // action during casting attack
         }
@@ -44,7 +39,6 @@ public class MeleeAttack : StateMachineBehaviour {
             if (subState == SubState.CASTING)
             {
                 subState = SubState.ATTACKING;
-                animator.GetComponent<SpriteRenderer>().sprite = attackingSprite;
                 animator.transform.GetChild(0).GetComponents<BoxCollider2D>()[0].enabled = true;
             }
         }
@@ -56,7 +50,6 @@ public class MeleeAttack : StateMachineBehaviour {
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        animator.GetComponent<SpriteRenderer>().sprite = prevSprite;
         animator.transform.GetChild(0).GetComponents<BoxCollider2D>()[0].enabled = false;
     }
 

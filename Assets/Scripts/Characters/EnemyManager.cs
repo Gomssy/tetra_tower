@@ -11,6 +11,9 @@ public class EnemyManager : Singleton<EnemyManager>
     // static
     private static readonly int poolSize = 10;
 
+    // hold player for animation
+    public GameObject player;
+
     // data of drop item
     public TextAsset dropTableData;
     public Dictionary<int, int[]> dropTableByID = new Dictionary<int, int[]>();
@@ -27,8 +30,9 @@ public class EnemyManager : Singleton<EnemyManager>
     // Awake
     private void Awake()
     {
+        player = GameObject.Find("Player");
         LoadDropTable(dropTableData);
-        createEnemyPool();
+        CreateEnemyPool();
     }
 
     // Spawn Enemy to Map
@@ -40,14 +44,14 @@ public class EnemyManager : Singleton<EnemyManager>
             GameObject enemy = enemySpot.gameObject.GetComponent<enemySpot>().enemyPrefab;
             foreach(Transform location in enemySpot)
             {
-                GameObject clone = pickFromPool(enemy);
+                GameObject clone = PickFromPool(enemy);
                 clone.transform.position = location.position;
             }
         }
     }
 
     // Object Pool
-    private void createEnemyPool()
+    private void CreateEnemyPool()
     {
         foreach(GameObject eachEnemy in enemyPrefab)
         {
@@ -61,7 +65,7 @@ public class EnemyManager : Singleton<EnemyManager>
         }
     }
 
-    private GameObject pickFromPool(GameObject enemy)
+    private GameObject PickFromPool(GameObject enemy)
     {
         GameObject[] pool = enemyPool[enemy];
         foreach(GameObject obj in pool)

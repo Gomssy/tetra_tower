@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour {
 
-    // data
+// data
     // static
     static readonly float unitDist = 3;
     enum debuffCase { fire, ice, stun, blind, charm };
@@ -20,6 +20,14 @@ public class Enemy : MonoBehaviour {
     public int monsterID;
     public float maxHealth;
     public float weight;
+    public float patrolRange;
+    public float noticeRange;
+    public float attackRange;
+    public float patrolSpeed;
+    public float trackSpeed;
+    public float attackDelay;
+    public float attackDuration;
+    
     private float playerMaxHealth; //다른 스크립트에 있는 플레이어 최대체력 가져와야함
     private float currHealth;
 
@@ -28,42 +36,22 @@ public class Enemy : MonoBehaviour {
     bool[] immunity = new bool[] { false, }; //현재 에너미가 디버프 상태에 대해서 면역인지를 체크하는 변수
     
     // enemy manager
-    private readonly EnemyManager enemyManager = EnemyManager.Instance;
+    private EnemyManager enemyManager;
 
-	// drop item
-
-	// data for ignoring collision
-	Vector2 lastPosition;
-	Vector2 lastVelocity;
-	float lastAngularVelocity;
+    // drop item
 
 
 // method
-// constructor
-	public Enemy(int id, float maxHealth, float weight) {
-        this.maxHealth = maxHealth;
-        this.weight = weight;
-        this.currHealth = maxHealth;
+    // Awake & Start
+    private void Awake()
+    {
+        enemyManager = EnemyManager.Instance;
     }
 
-	// ignore collision with player
-	void FixedUpdate()
-	{
-		lastPosition = transform.position;
-		lastVelocity = GetComponent<Rigidbody2D>().velocity;
-		lastAngularVelocity = GetComponent<Rigidbody2D>().angularVelocity;
-	}
-
-	void OnCollisionEnter2D(Collision2D col)
-	{
-		if (col.gameObject.tag == "Player")
-		{
-			transform.position = lastPosition;
-			GetComponent<Rigidbody2D>().velocity = lastVelocity;
-			GetComponent<Rigidbody2D>().angularVelocity = lastAngularVelocity;
-			Physics2D.IgnoreCollision(col.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
-		}
-	}
+    private void Start()
+    {
+        this.currHealth = maxHealth;
+    }
 
 	// hit by player or debuff
 	public void GetDamaged(float damage) { 
