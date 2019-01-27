@@ -61,7 +61,7 @@ public class Enemy : MonoBehaviour {
             return;
         }
         float knockback_dist = damage * unitDist / weight;
-        // gameObject.GetComponent<Animator>().SetTrigger("DamagedTrigger");
+        gameObject.GetComponent<Animator>().SetTrigger("DamagedTrigger");
     }
     
 
