@@ -36,7 +36,7 @@ public class PlayerAttack : MonoBehaviour {
         SetTimeText(comboTime, comboEndTime - Time.time);
         for (int i = 0; i < 3; i++)
             attackRaw[i] = Input.GetAxisRaw("Fire" + (i+1));
-        cancelRaw = Input.GetAxisRaw("stop");
+        cancelRaw = Input.GetAxisRaw("Stop");
 
         for (int i = 0; i < 3; i++)
         {
