@@ -260,7 +260,7 @@ public class PlayerController : MonoBehaviour
     {
         Physics2D.IgnoreCollision(platformCollider, transform.GetComponent<Collider2D>(), true);
         yield return new WaitForSeconds(0.3f);
-        while (isInRope) yield return new WaitForSeconds(0.1f);
+        while (playerState == PlayerState.Rope) yield return new WaitForSeconds(0.1f);
         Physics2D.IgnoreCollision(platformCollider, transform.GetComponent<Collider2D>(), false);
         isDownPlatform = false;
     }
