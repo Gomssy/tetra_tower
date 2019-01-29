@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 251624575386420658}
   - component: {fileID: 50183738922984578}
   - component: {fileID: 2113883507072886892}
+  - component: {fileID: 66869307233286818}
   m_Layer: 11
   m_Name: platform
   m_TagString: Untagged
@@ -683,6 +684,26 @@ CompositeCollider2D:
       - {x: 7.3437505, y: 3}
       - {x: 7.6562495, y: 3}
   m_VertexDistance: 0.0005
+--- !u!66 &66869307233286818
+CompositeCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1401653411948646}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 1
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths: []
+  m_CompositePaths:
+    m_Paths: []
+  m_VertexDistance: 0.0005
 --- !u!114 &114745063720482226
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -710,8 +731,8 @@ PlatformEffector2D:
     m_Bits: 4294967295
   m_RotationalOffset: 0
   m_UseOneWay: 1
-  m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
+  m_UseOneWayGrouping: 1
+  m_SurfaceArc: 160
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
@@ -764,8 +785,8 @@ TilemapCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 1
-  m_UsedByComposite: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
 --- !u!483693784 &3664157343411002570
 TilemapRenderer:

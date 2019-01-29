@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private float dashAccerlation;
     [SerializeField]
     private bool isDashing = false;
-    public TilemapCollider2D[] platformArray;
+    public Collider2D platformCollider;
     // Bool values for jump & doublejump
     private bool isGrounded = true;
     private bool isJumpable = true;     // Can player jump or doublejump?
@@ -105,14 +105,10 @@ public class PlayerController : MonoBehaviour
 
                 if (verticalRaw == -1 && !isDownPlatform)
                 {
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, platformLayer);
-                    if (hit.collider != null && rb.velocity.y == 0)
-                    {
-                        Room curRoom = MapManager.mapGrid[Player.tx, Player.ty];
-                        platformArray = curRoom.GetComponentsInChildren<TilemapCollider2D>();
-                        isDownPlatform = true;
-                        StartCoroutine(DownPlatform());
-                    }
+                    Room curRoom = MapManager.mapGrid[Player.tx, Player.ty];
+                    platformCollider = curRoom.GetComponentInChildren<RoomInGame>().transform.Find("platform").GetComponent<CompositeCollider2D>();
+                    isDownPlatform = true;
+                    StartCoroutine(DownPlatform());
                 }
                 if (IsInRope())
                 {
@@ -262,17 +258,11 @@ public class PlayerController : MonoBehaviour
     }
     public IEnumerator DownPlatform()
     {
-        foreach (TilemapCollider2D element in platformArray)
-        {
-            if (element.name == "platform")
-            {
-                Physics2D.IgnoreCollision(element, transform.GetComponent<Collider2D>(), true);
-                yield return new WaitForSeconds(0.3f);
-                while (playerState == PlayerState.Rope) yield return new WaitForSeconds(0.1f);
-                Physics2D.IgnoreCollision(element, transform.GetComponent<Collider2D>(), false);
-                isDownPlatform = false;
-            }
-        }
+        Physics2D.IgnoreCollision(platformCollider, transform.GetComponent<Collider2D>(), true);
+        yield return new WaitForSeconds(0.3f);
+        while (isInRope) yield return new WaitForSeconds(0.1f);
+        Physics2D.IgnoreCollision(platformCollider, transform.GetComponent<Collider2D>(), false);
+        isDownPlatform = false;
     }
     public IEnumerator RopeDelay()
     {
