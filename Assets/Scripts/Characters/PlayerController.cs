@@ -47,13 +47,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private LayerMask ropeLayer;
     [SerializeField]
-    private LayerMask platformLayer;
-    [SerializeField]
-    private LayerMask outerwallLayer;
-    [SerializeField]
-    private float ropeDistance = 0.3f;
-    [SerializeField]
-    private float rayDistance;
+    private float boxHeight;
     [SerializeField]
     private float ropeUp, ropeDown;
 
@@ -213,27 +207,19 @@ public class PlayerController : MonoBehaviour
     }
     bool IsGrounded()   // Is player grounded?
     {
-        RaycastHit2D hit1 = Physics2D.Raycast(transform.position + new Vector3(Player.X/2f, 0, 0), Vector2.down, rayDistance, groundLayer);
-        RaycastHit2D hit2 = Physics2D.Raycast(transform.position + new Vector3(Player.X/2f, 0, 0), Vector2.down, rayDistance, platformLayer);
-        RaycastHit2D hit3 = Physics2D.Raycast(transform.position + new Vector3(Player.X/2f, 0, 0), Vector2.down, rayDistance, outerwallLayer);
-        RaycastHit2D hit4 = Physics2D.Raycast(transform.position - new Vector3(Player.X/2f, 0,0), Vector2.down, rayDistance, groundLayer);
-        RaycastHit2D hit5 = Physics2D.Raycast(transform.position - new Vector3(Player.X/2f, 0, 0), Vector2.down, rayDistance, platformLayer);
-        RaycastHit2D hit6 = Physics2D.Raycast(transform.position - new Vector3(Player.X/2f, 0, 0), Vector2.down, rayDistance, outerwallLayer);
-        Debug.DrawRay(transform.position + new Vector3(Player.X/2f, 0, 0), rayDistance * Vector2.down, Color.white);
-        return (hit1.collider != null || hit2.collider != null || hit3.collider != null|| 
-            hit4.collider != null || hit5.collider != null || hit6.collider != null) && rb.velocity.y == 0;//플랫폼 점프 버그 방지
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(Player.X, boxHeight), 0, Vector2.down, Player.Y / 2f, groundLayer);
+        Debug.DrawLine(transform.position + new Vector3(0, -Player.Y / 2f) + new Vector3(-Player.X, -boxHeight, 0) / 2,
+                       transform.position + new Vector3(0, -Player.Y / 2f) + new Vector3(Player.X, -boxHeight, 0) / 2);
+        return hit.collider != null && rb.velocity.y == 0; // 플랫폼 점프 버그 방지
     }
     bool IsInRope()   // Is player in rope?
     {
-        RaycastHit2D hit1 = Physics2D.Raycast(transform.position + ropeUp * Vector3.up, Vector2.right, ropeDistance, ropeLayer);
-        RaycastHit2D hit2 = Physics2D.Raycast(transform.position + ropeUp * Vector3.up, Vector2.left, ropeDistance, ropeLayer);
-        RaycastHit2D hit3 = Physics2D.Raycast(transform.position - ropeDown * Vector3.up, Vector2.right, ropeDistance, ropeLayer);
-        RaycastHit2D hit4 = Physics2D.Raycast(transform.position - ropeDown * Vector3.up, Vector2.left, ropeDistance, ropeLayer);
-        Debug.DrawRay(transform.position + ropeUp * Vector3.up, ropeDistance * Vector2.right, Color.red);
-        Debug.DrawRay(transform.position + ropeUp * Vector3.up, ropeDistance * Vector2.left, Color.red);
-        Debug.DrawRay(transform.position - ropeDown * Vector3.up, ropeDistance * Vector2.right, Color.red);
-        Debug.DrawRay(transform.position - ropeDown * Vector3.up, ropeDistance * Vector2.left, Color.red);
-        return hit1.collider != null || hit2.collider != null || hit3.collider != null || hit4.collider != null;
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position + new Vector3(0, (ropeUp - ropeDown) / 2f), new Vector2(Player.X, ropeUp + ropeDown), 0, Vector2.zero, 0, ropeLayer);
+        Debug.DrawLine(transform.position + new Vector3(-Player.X / 2f, ropeUp, 0),
+                       transform.position + new Vector3(Player.X / 2f, ropeUp, 0));
+        Debug.DrawLine(transform.position + new Vector3(-Player.X / 2f, -ropeDown, 0),
+                       transform.position + new Vector3(Player.X / 2f, -ropeDown, 0));
+        return hit.collider != null;
     }
     public IEnumerator DownPlatform()
     {
