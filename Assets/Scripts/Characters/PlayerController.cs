@@ -110,8 +110,8 @@ public class PlayerController : MonoBehaviour
                 {
                     if (playerState == PlayerState.Rope)
                     {
-                        // Horizontal move in rope
-                        if (horizontal != 0 && verticalRaw == 0)
+                        // Jump or Horizontal move in rope
+                        if (jump || (horizontal != 0 && verticalRaw == 0))
                         {
                             playerState = PlayerState.Idle;
                             rb.gravityScale = rbGravityScale;
@@ -233,7 +233,7 @@ public class PlayerController : MonoBehaviour
     {
         ropeEnabled = false;
         isJumpable = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         ropeEnabled = true;
 
     }
