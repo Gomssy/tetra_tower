@@ -10,11 +10,14 @@ public class InventoryManager : MonoBehaviour {
     public List<string> itemPool = new List<string>();
     public List<string> addonPool = new List<string>();
     public GameObject droppedPrefab;
+    GameObject player;
 
     private void Start()
     {
         ui = GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>();
-        //GameObject.Find("InventoryCanvas").SetActive(false);
+        GameObject.Find("InventoryCanvas").SetActive(false);
+
+        player = GameObject.Find("Player");
 
         //itemPool
         itemPool.Add("Baculus");
@@ -37,17 +40,17 @@ public class InventoryManager : MonoBehaviour {
         PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[0])));
         PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[2])));
         yield return new WaitForSeconds(1.5f);
-        ItemInstantiate(itemPool[0], GameObject.Find("Player").transform.position);
+        ItemInstantiate(itemPool[0], player.transform.position);
         yield return new WaitForSeconds(1.5f);
-        ItemInstantiate(itemPool[1], GameObject.Find("Player").transform.position);
+        ItemInstantiate(itemPool[1], player.transform.position);
         yield return new WaitForSeconds(1.5f);
-        ItemInstantiate(itemPool[2], GameObject.Find("Player").transform.position);
+        ItemInstantiate(itemPool[2], player.transform.position);
         yield return new WaitForSeconds(1.5f);
-        ItemInstantiate(itemPool[3], GameObject.Find("Player").transform.position);
+        ItemInstantiate(itemPool[3], player.transform.position);
         yield return new WaitForSeconds(1.5f);
-        AddonInstantiate(addonPool[0], GameObject.Find("Player").transform.position);
+        AddonInstantiate(addonPool[0], player.transform.position);
         yield return new WaitForSeconds(1.5f);
-        AddonInstantiate(addonPool[1], GameObject.Find("Player").transform.position);
+        AddonInstantiate(addonPool[1], player.transform.position);
         /*ItemSelect(0);
         yield return new WaitForSeconds(1f);
         PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[1])));
@@ -67,10 +70,20 @@ public class InventoryManager : MonoBehaviour {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init((Item)System.Activator.CreateInstance(System.Type.GetType(str)), pos);
     }
+    public void ItemInstantiate(Item item, Vector3 pos)
+    {
+        GameObject tmpItem = Instantiate(droppedPrefab);
+        tmpItem.GetComponent<DroppedItem>().Init(item, pos);
+    }
     public void AddonInstantiate(string str, Vector3 pos)
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init((Addon)System.Activator.CreateInstance(System.Type.GetType(str)), pos);
+    }
+    public void AddonInstantiate(Addon addon, Vector3 pos)
+    {
+        GameObject tmpItem = Instantiate(droppedPrefab);
+        tmpItem.GetComponent<DroppedItem>().Init(addon, pos);
     }
     public void SetOnPosition()
     {
@@ -106,21 +119,30 @@ public class InventoryManager : MonoBehaviour {
     public void DiscardItem(int index)
     {
         if (itemList.Count > index)
+        {
+            ItemInstantiate(itemList[index], player.transform.position);
             itemList.RemoveAt(index);
-        if (index == ui.selectedItem)
-            ui.selectedItem = -1;
+            if (index == ui.selectedItem)
+                ui.selectedItem = -1;
+        }
         ui.SetOnPosition(itemList, addonList);
     }
     public void DiscardAddon(int index)
     {
         if (addonList.Count > index)
+        {
+            AddonInstantiate(addonList[index], player.transform.position);
             addonList.RemoveAt(index);
+        }
         ui.SetOnPosition(itemList, addonList);
     }
     public void DiscardAddon(int itemIndex, AddonType addonType)
     {
         if (itemList[itemIndex].addons[(int)addonType] != null)
+        {
+            AddonInstantiate(itemList[itemIndex].addons[(int)addonType], player.transform.position);
             itemList[itemIndex].addons[(int)addonType] = null;
+        }
         ui.SetOnPosition(itemList, addonList);
     }
     public void AttachAddon(int itemIndex, int addonIndex)
