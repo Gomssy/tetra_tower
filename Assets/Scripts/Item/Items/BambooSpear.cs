@@ -9,7 +9,7 @@ public class BambooSpear : Item
 {
     public override void Declare()
     {
-        id = 2; name = "bamboo spear";
+        id = 26; name = "bamboo spear";
         quality = ItemQuality.Ordinary;
         skillNum = 2;
         combo = new string[3] { "BAA", "BAC", "" };

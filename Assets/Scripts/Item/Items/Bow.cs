@@ -15,6 +15,9 @@ public class Bow : Item {
         combo = new string[3] { "BB", "BC", "" };
         attachable = new bool[4] { true, true, true, true };
         sprite = Resources.Load<Sprite>("Sprites/Items/bow");
+        animation[0] = Resources.Load<AnimationClip>("Animations/normalAttackA");
+        animation[1] = Resources.Load<AnimationClip>("Animations/normalAttackA");
+        animation[2] = null;
         sizeInventory = new Vector2(90, 160);
     }
 }
