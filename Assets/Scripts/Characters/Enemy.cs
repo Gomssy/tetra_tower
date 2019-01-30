@@ -57,7 +57,7 @@ public class Enemy : MonoBehaviour {
 	public void GetDamaged(float damage) { 
         currHealth -= damage;
         if(currHealth <= 0) {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             return;
         }
         float knockback_dist = damage * unitDist / weight;
