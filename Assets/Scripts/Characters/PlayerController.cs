@@ -53,13 +53,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private LayerMask outerwallLayer;
     [SerializeField]
+    private LayerMask itemLayer;
+    [SerializeField]
     private float ropeDistance = 0.3f;
     [SerializeField]
     private float rayDistance;
     [SerializeField]
     private float ropeUp, ropeDown;
-
-    
+    [SerializeField]
+    private DroppedItem lastDropItem;
+    private DroppedLifeStone lastLifeStone;
+    private float interaction;
+    private bool interactionCoolDown=true;
     public PlayerState playerState, previousState;
     
     void Start()
@@ -73,7 +78,7 @@ public class PlayerController : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         horizontalRaw = Input.GetAxisRaw("Horizontal");
         verticalRaw = Input.GetAxisRaw("Vertical");
-
+        interaction = Input.GetAxisRaw("interaction");
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;
@@ -91,7 +96,24 @@ public class PlayerController : MonoBehaviour
                 rb.gravityScale = rbAttackGravityScale;
                 return;
             }
-                
+            if (GetItemRay() == false && lastDropItem!=null)
+            {
+                lastDropItem.HighlightSwitch(false);
+                lastDropItem = null;
+            }
+            if (interaction != 1f) interactionCoolDown = true;
+            if (lastDropItem!=null && interaction == 1f &&interactionCoolDown)
+            {
+                interactionCoolDown = false;
+                print(lastDropItem.PushItem()+"냠냠");
+            }
+            if(lastLifeStone!=null && interaction == 1f && interactionCoolDown)
+            {
+                interactionCoolDown = false;
+                lastLifeStone.ApplyLifeStone();
+                   print("생명석 냠냠");
+            }
+
             if (isGrounded)
                 isJumpable = true;
             if (playerState != PlayerState.Attack)
@@ -247,6 +269,76 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(transform.position + new Vector3(Player.X/2f, 0, 0), rayDistance * Vector2.down, Color.white);
         return (hit1.collider != null || hit2.collider != null || hit3.collider != null|| 
             hit4.collider != null || hit5.collider != null || hit6.collider != null) && rb.velocity.y == 0;//플랫폼 점프 버그 방지
+    }
+
+    bool GetItemRay()
+    {
+        RaycastHit2D hit1 = Physics2D.Raycast(transform.position + new Vector3(Player.X / 2f *0f, 0, 0), Vector2.down, rayDistance, itemLayer);
+       // RaycastHit2D hit2 = Physics2D.Raycast(transform.position - new Vector3(Player.X / 2f, 0, 0), Vector2.down, rayDistance, itemLayer);
+        Debug.DrawRay(transform.position + new Vector3(Player.X / 2f*0f, 0, 0), rayDistance * Vector2.down, Color.white);
+        if (hit1.collider != null)
+        {
+            DroppedItem temp = hit1.collider.GetComponent<DroppedItem>();
+            DroppedLifeStone stoneTemp;
+            if (temp == null)
+            {
+                stoneTemp = hit1.collider.GetComponent<DroppedLifeStone>();
+                if (lastLifeStone!= stoneTemp)
+                {
+                    if (lastLifeStone != null)
+                    {
+                        lastLifeStone.HighlightSwitch(false);
+
+                    }
+                    lastLifeStone = stoneTemp;
+                    stoneTemp.HighlightSwitch(true);
+                }
+
+            }
+           else if (lastDropItem != temp)
+            {
+                if (lastDropItem != null)
+                {
+                    lastDropItem.HighlightSwitch(false);
+
+                }
+                lastDropItem = temp;
+                temp.HighlightSwitch(true);
+            }
+            
+        }
+        /*else if(hit2.collider != null)
+        {
+            DroppedItem temp = hit2.collider.GetComponent<DroppedItem>();
+            DroppedLifeStone stoneTemp;
+            if (temp == null)
+            {
+                stoneTemp = hit2.collider.GetComponent<DroppedLifeStone>();
+                if (lastLifeStone != stoneTemp)
+                {
+                    if (lastLifeStone != null)
+                    {
+                        lastLifeStone.HighlightSwitch(false);
+
+                    }
+                    lastLifeStone = stoneTemp;
+                    stoneTemp.HighlightSwitch(true);
+                }
+
+            }
+            else if (lastDropItem != temp)
+            {
+                if (lastDropItem != null)
+                {
+                    lastDropItem.HighlightSwitch(false);
+                    
+                }
+                lastDropItem = temp;
+                temp.HighlightSwitch(true);
+
+            }
+        }*/
+        return hit1.collider != null  ;
     }
     bool IsInRope()   // Is player in rope?
     {
