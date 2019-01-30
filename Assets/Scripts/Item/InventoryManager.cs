@@ -13,6 +13,7 @@ public class InventoryManager : MonoBehaviour {
     private void Start()
     {
         ui = GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>();
+        GameObject.Find("InventoryCanvas").SetActive(false);
 
         //itemPool
         itemPool.Add("Bow");
@@ -30,7 +31,8 @@ public class InventoryManager : MonoBehaviour {
     {
         yield return null;
         PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[0])));
-        yield return new WaitForSeconds(1f);
+        PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[2])));
+        /*yield return new WaitForSeconds(1f);
         ItemSelect(0);
         yield return new WaitForSeconds(1f);
         PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[1])));
@@ -43,7 +45,7 @@ public class InventoryManager : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         AttachAddon(0, 0);
         yield return new WaitForSeconds(1f);
-
+        */
     }
     public void SetOnPosition()
     {

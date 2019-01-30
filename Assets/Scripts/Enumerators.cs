@@ -1,4 +1,13 @@
-﻿public enum ItemQuality
+﻿public enum EnemyDebuffCase
+{
+    fire,
+    ice,
+    stun,
+    blind,
+    charm
+};
+
+public enum ItemQuality
 {
     Study,
     Ordinary,
@@ -29,8 +38,7 @@ public enum ItemType
     MasterpieceAdd
 }
 
-public enum PlayerState { Idle, Walk, Run, GoingUp, GoingDown, Rope }
-public enum ComboState {Idle, Combo, Attack}
+public enum PlayerState { Idle, Walk, Run, GoingUp, GoingDown, Rope, Attack }
 
 /// <summary>
 /// Enum for game's state.

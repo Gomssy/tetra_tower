@@ -15,6 +15,9 @@ public class Ksanife : Item
         combo = new string[3] { "A", "AABAA", "" };
         attachable = new bool[4] { true, true, false, false };
         sprite = Resources.Load<Sprite>("Sprites/Items/ksanife");
+        animation[0] = Resources.Load<AnimationClip>("Animations/normalAttackA");
+        animation[1] = Resources.Load<AnimationClip>("Animations/normalAttackA");
+        animation[2] = null;
         sizeInventory = new Vector2(160, 160);
     }
 }

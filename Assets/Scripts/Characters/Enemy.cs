@@ -19,10 +19,9 @@ public class Enemy : MonoBehaviour {
     // debuff
     float[] immunity_time = new float[5] { 0.0f, 3.0f, 6.0f, 6.0f, 6.0f };//면역 시간
     bool[] immunity = new bool[] { false, }; //현재 에너미가 디버프 상태에 대해서 면역인지를 체크하는 변수
-    enum debuffCase { fire, ice, stun, blind, charm };
     struct EnemyDebuffed
     {
-        public debuffCase Case;
+        public EnemyDebuffCase Case;
         public float debuffTime;
     }
 
@@ -96,36 +95,36 @@ public class Enemy : MonoBehaviour {
     IEnumerator DebuffCase(EnemyDebuffed sCase)
     {
 
-        if (sCase.Case == debuffCase.fire)
+        if (sCase.Case == EnemyDebuffCase.fire)
         {
             StartCoroutine(OnFire(sCase));
         }
 
-        else if (sCase.Case == debuffCase.ice && !immunity[(int)debuffCase.ice])
+        else if (sCase.Case == EnemyDebuffCase.ice && !immunity[(int)EnemyDebuffCase.ice])
         {
             //Enemy 정지하는 코드 필요
-            immunity[(int)debuffCase.ice] = true;
+            immunity[(int)EnemyDebuffCase.ice] = true;
             yield return StartCoroutine(DebuffDoing(sCase));
         }
 
-        else if (sCase.Case == debuffCase.stun && !immunity[(int)debuffCase.stun])
+        else if (sCase.Case == EnemyDebuffCase.stun && !immunity[(int)EnemyDebuffCase.stun])
         {
             //Enemy 정지하는 코드 필요
-            immunity[(int)debuffCase.stun] = true;
+            immunity[(int)EnemyDebuffCase.stun] = true;
             yield return StartCoroutine(DebuffDoing(sCase));
         }
 
-        else if (sCase.Case == debuffCase.blind && !immunity[(int)debuffCase.blind])
+        else if (sCase.Case == EnemyDebuffCase.blind && !immunity[(int)EnemyDebuffCase.blind])
         {
             //Enemy의 공격이 적중하지 않는 코드 필요 
-            immunity[(int)debuffCase.stun] = true;
+            immunity[(int)EnemyDebuffCase.stun] = true;
             yield return StartCoroutine(DebuffDoing(sCase));
         }
 
-        else if (sCase.Case == debuffCase.charm && !immunity[(int)debuffCase.charm])
+        else if (sCase.Case == EnemyDebuffCase.charm && !immunity[(int)EnemyDebuffCase.charm])
         {
             //Enemy 공격이 플레이어 회복하는 코드 필요
-            immunity[(int)debuffCase.stun] = true;
+            immunity[(int)EnemyDebuffCase.stun] = true;
             yield return StartCoroutine(DebuffDoing(sCase));
         }
 

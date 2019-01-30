@@ -1,154 +1,173 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 public class PlayerAttack : MonoBehaviour {
-    public ComboState state;
-    public float attackA,attackB,attackC;
-    public float cancel;
+    public float[] attackRaw = new float[3];
+    public int[] attackKeyState = new int[3]; //0: released 1: push 2: pushing
+    public float cancelRaw;
+    public int cancelKeyState;
+    public bool playingSkill;
+    public float comboTime;
     public Text time, combo;
-    public static string comboArray;
-    public static float StartTime;
-    public bool keyCoolDown=true;
+    public string comboArray;
+    public float StartTime;
     public Animator anim;
-    public AttackCombo[] AttackArr= { new AttackCombo("화염발사", "ABC", 1.5f,"PlayerRunAnim"),
-    new AttackCombo("공격A", "A", 0.5f,"PlayerGoingDownAnim"),
-    new AttackCombo("공격B", "B", 0.5f,"PlayerWalkAnim"),
-    new AttackCombo("공격C", "C", 0.5f,"PlayerGoingUpAnim"),
-    new AttackCombo("콩", "AC", 1f,"PlayerIdleAnim"),
-    new AttackCombo("콩콩콩", "ACB", 2f,"PlayerIdleAnim"),
-};
-    public Queue comboQueue = new Queue();
+    public AnimatorOverrideController aoc;
+    public AnimationClip[] normalAttack = new AnimationClip[3];
+    public InventoryManager inventoryManager;
 
-    // Use this for initialization
-    void Start () {
-        StartTime = Time.time;
-        state = ComboState.Idle;
+    float comboEndTime;
+    bool comboTimeOn;
+    PlayerController playerController;
+
+    
+    void Awake ()
+    {
+        playerController = GetComponent<PlayerController>();
         anim = GetComponent<Animator>();
+        aoc = new AnimatorOverrideController(anim.runtimeAnimatorController);
+        anim.runtimeAnimatorController = aoc;
     }
-	
-	// Update is called once per frame
 	
     void Update()
     {
+        SetTimeText(comboTime, comboEndTime - Time.time);
+        for (int i = 0; i < 3; i++)
+            attackRaw[i] = Input.GetAxisRaw("Fire" + (i+1));
+        cancelRaw = Input.GetAxisRaw("Stop");
 
-        attackA = Input.GetAxisRaw("Fire1");
-        attackB = Input.GetAxisRaw("Fire2");
-        attackC = Input.GetAxisRaw("Fire3");
-        cancel = Input.GetAxisRaw("stop");
-        combo.text = comboArray;
-        float tempTime = Mathf.Clamp(StartTime - Time.time+1f , 0f, 9999f) ;
-        foreach (AttackCombo c in comboQueue)
+        for (int i = 0; i < 3; i++)
         {
-            tempTime += c.getTime();
+            if (attackRaw[i] > 0 && attackKeyState[i] < 2)
+                attackKeyState[i]++;
+            else if (attackRaw[i] == 0)
+                attackKeyState[i] = 0;
         }
-        
-        time.text=Mathf.Round(tempTime*10f)/10f+"";
-           
+        if (cancelRaw > 0 && cancelKeyState < 2)
+            cancelKeyState++;
+        else if (cancelRaw == 0)
+            cancelKeyState = 0;
 
-        if (attackA + attackB + attackC == 0)
+        if (cancelKeyState == 1)
         {
-            keyCoolDown = true;
-        }
-        
-        if (state == ComboState.Idle)
-        {
-            
-            if (attackA + attackB + attackC > 0 && keyCoolDown)
-            {
-               
-                state = ComboState.Attack;
-                StartTime = Time.time;
-
-                ComboCheck();
-
-            }
-            
-        }
-        else if (state == ComboState.Attack)
-        {
-            ComboCheck();
-            //공격중일때
-
-            if (Time.time > StartTime)
-            {
-                state = ComboState.Combo;
-            }
-            
-          
+            comboTimeOn = false;
         }
 
-       else if (state == ComboState.Combo)
+        if (!playingSkill)
         {
-            ComboCheck();
-            if (comboQueue.Count > 0) //콤보가 남아있다면
-            {
-
-                AttackCombo cur = (AttackCombo)comboQueue.Dequeue();
-                print(cur);
-                anim.Play(cur.getComboAnim());
-                //실제로는 애니메이션 가져옴
-                state = ComboState.Attack;
-                StartTime = Time.time + cur.getTime();
-            }
-            else if (Time.time > StartTime + 1f || cancel==1)
-            {
-                //현재 시간이 마지막 콤보 끝나는 시점보다 1초 지났다면
-                state = ComboState.Idle;
-                comboArray = "";
-            }
-            
-            
-
-        }
-
-        if (attackA + attackB + attackC > 0)
-        {
-            keyCoolDown = false;
+            for (int i = 0; i < 3; i++)
+                if (attackKeyState[i] == 1)
+                {
+                    comboArray += (char)('A' + i);
+                    CheckCombo();
+                    SetComboText();
+                    break;
+                }
         }
     }
 
-
-    void ComboCheck()
+    public void SetComboText()
     {
-        //들어갈 콤보가 있는지 확인함
-        if (attackA + attackB + attackC > 0 && keyCoolDown)
+        string conString = "";
+        if (comboArray.Equals(""))
         {
-            if (attackA == 1)
+            combo.text = "";
+            return;
+        }
+        conString += comboArray[0];
+        for (int i = 1; i < comboArray.Length; i++)
+            conString += " " + comboArray[i];
+        combo.text = conString;
+    }
+
+    public void SetTimeText(float fullTime, float currentTime)
+    {
+        if (comboTimeOn)
+        {
+            for (int i = 0; i < 20; i++)
             {
-                comboArray += "A";
-            }
-            else if (attackB == 1)
-            {
-                comboArray += "B";
-            }
-            else if (attackC == 1)
-            {
-                comboArray += "C";
-            }
-            bool success = false;
-            foreach (AttackCombo com in AttackArr)
-            {
-                if (com.Equals(comboArray))
+                if (currentTime / fullTime < (i + 1) * 0.05f)
                 {
-                    
-                    comboQueue.Enqueue(com);
-                    success = true;
-                }
-                
-            }
-            if (success==false) //콤보 실행에 실패했다면
-            {
-                string temp = comboArray[comboArray.Length - 1]+"";
-                foreach (AttackCombo com2 in AttackArr) //기본 글자 콤보 실행
-                {
-                    if (com2.Equals(temp))
-                    {
-                        comboQueue.Enqueue(com2);
-                    }
-                   
+                    string str = "";
+                    for (int j = 0; j < i + 1; j++) str += "-";
+                    time.text = str;
+                    break;
                 }
             }
         }
+        else
+        {
+            time.text = "";
+        }
+    }
+
+    public void SkillEnd()
+    {
+        if (CheckLongerCombo()) StartCoroutine(SkillEndCoroutine());
+        else
+        {
+            comboArray = "";
+            StartCoroutine(ComboTextReset());
+        }
+    }
+    IEnumerator ComboTextReset()
+    {
+        yield return new WaitForSeconds(1.5f);
+        SetComboText();
+    }
+    IEnumerator SkillEndCoroutine()
+    {
+        comboEndTime = Time.time + comboTime;
+        comboTimeOn = true;
+        while (Time.time < comboEndTime && comboTimeOn && !playingSkill)
+        {
+            yield return null;
+        }
+        if (!playingSkill)
+        {
+            comboArray = "";
+            SetComboText();
+        }
+        comboTimeOn = false;
+    }
+
+    void CheckCombo()
+    {
+        List<Item> itemList = inventoryManager.itemList;
+        foreach(Item item in itemList)
+        {
+            for(int i=0; i< item.skillNum; i++)
+            {
+                if(item.combo[i].Equals(comboArray))
+                {
+                    playerController.playerState = PlayerState.Attack;
+                    aoc["PlayerAttackAnim"] = item.animation[i];
+                    anim.SetTrigger("attack");
+                    item.ComboAction(i);
+                    playingSkill = true;
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x,-3f,3f), 0);
+                    return;
+                }
+            }
+        }
+
+        playerController.playerState = PlayerState.Attack;
+        aoc["PlayerAttackAnim"] = normalAttack[comboArray[comboArray.Length - 1] - 'A'];
+        anim.SetTrigger("attack");
+        playingSkill = true;
+        GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x, -3f, 3f), 0);
+        if (!CheckLongerCombo()) comboArray = comboArray[comboArray.Length - 1] + "";
+    }
+
+    bool CheckLongerCombo()
+    {
+        List<Item> itemList = inventoryManager.itemList;
+        foreach(Item item in itemList)
+            for (int i = 0; i < item.skillNum; i++)
+                if (item.combo[i].Length > comboArray.Length && item.combo[i].Substring(0, comboArray.Length).Equals(comboArray))
+                    return true;
+        return false;
     }
 }
