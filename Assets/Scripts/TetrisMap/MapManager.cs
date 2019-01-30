@@ -5,7 +5,6 @@ using UnityEngine;
 public class MapManager : MonoBehaviour {
 
 
-    public static bool isDoorClosing = false;
     /*
      * variables
      * */
@@ -81,6 +80,10 @@ public class MapManager : MonoBehaviour {
     /// Check if room is falling after room collapsed.
     /// </summary>
     public static bool isRoomFalling = false;
+    /// <summary>
+    /// Check if door is closing or not.
+    /// </summary>
+    public static bool isDoorClosing = false;
     /// <summary>
     /// Check if this row is being deleted.
     /// </summary>
@@ -303,11 +306,25 @@ public class MapManager : MonoBehaviour {
         int roomDestroyCounter = 0;
         int row = leftPress.row;
         float collapseSpeed = (float)20 / collapseTime * Time.deltaTime;
+        portalDistributedVertical[row].Clear();
+        for(int i = 0; i < portalDistributedHorizontal.Length; i++)
+            portalDistributedHorizontal[i].Remove(row);
+        for(int i = 0; i < width; i++)
+            if (mapGrid[i, row].isPortal == true)
+            {
+                mapGrid[i, row].isPortal = false;
+                Destroy(mapGrid[i, row].portalSurface);
+                mapGrid[i, row].portal.SetActive(false);
+            }
         leftPress.transform.localScale = new Vector3(0, 1, 1);
         rightPress.transform.localScale = new Vector3(0, 1, 1);
         float collapseRate = leftPress.transform.localScale.x;
         while (collapseRate < 20)
         {
+            while (GameManager.gameState == GameState.Portal)
+            {
+                yield return null;
+            }
             yield return null;
             if (currentRoom.mapCoord.y == row)
                 collapseSpeed = (float)2 / collapseTime * Time.deltaTime;
@@ -427,6 +444,10 @@ public class MapManager : MonoBehaviour {
         Vector3 previousPlayerRelativePosition = player.transform.position - currentRoom.transform.position;
         while (tetrisYCoord[top + 1] > bottom * tetrisMapSize)
         {
+            while (GameManager.gameState == GameState.Portal)
+            {
+                yield return null;
+            }
             yield return new WaitForSeconds(0.01f);
             if (isRowDeleting[top + 1])
             {
@@ -513,6 +534,11 @@ public class MapManager : MonoBehaviour {
     {
         while (!isTetriminoFalling)
         {
+            while (GameManager.gameState == GameState.Portal)
+            {
+                tetriminoCreatedTime += Time.deltaTime;
+                yield return null;
+            }
             yield return new WaitForSeconds(0.1f);
             tetriminoWaitedTime = Time.time - tetriminoCreatedTime;
         }
@@ -636,6 +662,10 @@ public class MapManager : MonoBehaviour {
     {
         while(te.transform.position.y > tetrisYCoord[(int)te.mapCoord.y])
         {
+            while (GameManager.gameState == GameState.Portal)
+            {
+                yield return null;
+            }
             yield return new WaitForSeconds(0.01f);
             fallTime = Time.time - initialFallTime;
             fallSpeed += gravity * fallTime * fallTime;
@@ -819,6 +849,8 @@ public class MapManager : MonoBehaviour {
         float alpha = 1;
         for (int i = 0; i < 20; i++)
         {
+            if(i == 6)
+                isDoorClosing = false;
             yield return new WaitForSeconds(0.01f);
             room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
@@ -828,7 +860,6 @@ public class MapManager : MonoBehaviour {
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-        isDoorClosing = false;
     }
     /// <summary>
     /// Make room fade out.
@@ -850,10 +881,9 @@ public class MapManager : MonoBehaviour {
         room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
     }
-
-
-
-
+    /// <summary>
+    /// Control portal's move.
+    /// </summary>
     public void PortalControl()
     {
         int minDifference = 100;

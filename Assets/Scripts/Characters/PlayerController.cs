@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = IsGrounded();
 
-        if (GameManager.gameState == GameState.Ingame)
+        if (GameManager.gameState == GameState.Ingame && MapManager.isDoorClosing != true)
         {
 
             if (isGrounded)

@@ -384,7 +384,21 @@ public class Room : MonoBehaviour
             fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
             CreatePortal();
             if (isPortal == true)
+            {
+                for (int x = 0; x < MapManager.width; x++)
+                    MapManager.portalDistributedHorizontal[x].Clear();
+                for (int y = 0; y <= MapManager.realHeight; y++)
+                    MapManager.portalDistributedVertical[y].Clear();
+                for (int x = 0; x < MapManager.width; x++)
+                    for (int y = 0; y <= MapManager.realHeight; y++)
+                        if (MapManager.mapGrid[x, y] != null && MapManager.mapGrid[x, y].isPortal == true)
+                        {
+                            MapManager.portalGrid[x, y] = true;
+                            MapManager.portalDistributedHorizontal[x].Add(y);
+                            MapManager.portalDistributedVertical[y].Add(x);
+                        }
                 portalSurface = Instantiate(GameObject.Find("MapManager").GetComponent<MapManager>().portalSurface, transform.position + new Vector3(12, 12, 0), Quaternion.identity, transform);
+            }
             isRoomCleared = true;
             if (specialRoomType == RoomType.Boss)
                 MapManager.currentStage += 1;

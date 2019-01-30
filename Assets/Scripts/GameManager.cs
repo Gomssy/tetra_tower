@@ -32,24 +32,33 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.Tab) && CameraController.isSceneChanging != true)
+        if(CameraController.isSceneChanging != true)
         {
-            if (gameState == GameState.Ingame)
+            if (Input.GetKeyDown(KeyCode.Tab))
             {
-                StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Tetris));
+                if (gameState == GameState.Ingame)
+                {
+                    StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Tetris));
+                }
+                else if (gameState == GameState.Tetris)
+                {
+                    StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
+                }
             }
-            else if (gameState == GameState.Tetris)
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
+                if (gameState == GameState.Portal && MapManager.currentRoom != MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y])
+                {
+                    GameObject.Find("Player").transform.position = MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portal.transform.position + new Vector3(2, 1, 0);
+                    GameObject.Find("MapManager").GetComponent<MapManager>().ChangeRoom(MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y]);
+                    MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
+                        GameObject.Find("MapManager").GetComponent<MapManager>().portalExist;
+                    StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
+                }
             }
-        }
-        if (Input.GetKeyDown(KeyCode.Escape) && CameraController.isSceneChanging != true)
-        {
-            if (gameState == GameState.Portal)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                GameObject.Find("Player").transform.position = MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portal.transform.position + new Vector3(2, 1, 0);
-                GameObject.Find("MapManager").GetComponent<MapManager>().ChangeRoom(MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y]);
-                MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
+                MapManager.mapGrid[(int)MapManager.currentRoom.mapCoord.x, (int)MapManager.currentRoom.mapCoord.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
                     GameObject.Find("MapManager").GetComponent<MapManager>().portalExist;
                 StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
             }
