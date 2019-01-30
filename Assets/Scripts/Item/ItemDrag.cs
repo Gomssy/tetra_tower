@@ -8,10 +8,12 @@ public class ItemDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public int num;
     InventoryUI ui;
     InventoryManager manager;
+    Transform discardBin;
     void Start()
     {
         ui = GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>();
         manager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        discardBin = ui.gameObject.transform.Find("DiscardBin");
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -25,6 +27,9 @@ public class ItemDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (CheckBetween(Input.mousePosition, discardBin.position, discardBin.GetComponent<RectTransform>().sizeDelta))
+            manager.DiscardItem(num);
+
         manager.SetOnPosition();
     }
 
@@ -32,5 +37,9 @@ public class ItemDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         ui.selectedItem = num;
         manager.SetOnPosition();
+    }
+    bool CheckBetween(Vector3 mouse, Vector3 center, Vector2 size)
+    {
+        return Mathf.Abs(mouse.x - center.x) <= size.x / 2f && Mathf.Abs(mouse.y - center.y) <= size.y / 2f;
     }
 }

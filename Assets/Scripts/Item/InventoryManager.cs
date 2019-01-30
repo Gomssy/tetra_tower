@@ -13,7 +13,7 @@ public class InventoryManager : MonoBehaviour {
     private void Start()
     {
         ui = GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>();
-        GameObject.Find("InventoryCanvas").SetActive(false);
+        //GameObject.Find("InventoryCanvas").SetActive(false);
 
         //itemPool
         itemPool.Add("Bow");
@@ -32,6 +32,8 @@ public class InventoryManager : MonoBehaviour {
         yield return null;
         PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[0])));
         PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[2])));
+        PushAddon((Addon)System.Activator.CreateInstance(System.Type.GetType(addonPool[0])));
+        PushAddon((Addon)System.Activator.CreateInstance(System.Type.GetType(addonPool[1])));
         /*yield return new WaitForSeconds(1f);
         ItemSelect(0);
         yield return new WaitForSeconds(1f);
@@ -72,6 +74,8 @@ public class InventoryManager : MonoBehaviour {
     {
         if (itemList.Count > index)
             itemList.RemoveAt(index);
+        if (index == ui.selectedItem)
+            ui.selectedItem = -1;
         ui.SetOnPosition(itemList, addonList);
     }
     public void DiscardAddon(int index)
