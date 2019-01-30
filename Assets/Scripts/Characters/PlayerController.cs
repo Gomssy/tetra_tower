@@ -39,9 +39,10 @@ public class PlayerController : MonoBehaviour
     private float horizontalRaw = 0;
     private float verticalRaw = 0;
     private bool upKeyDown = false;
+    private bool downKeyDown = false;
     private bool jump = false;
     private bool dash = false;
-    // Variables for IsGrounded()
+    // Variables for collsiion checking
     [SerializeField]
     private LayerMask groundLayer;
     [SerializeField]
@@ -50,7 +51,8 @@ public class PlayerController : MonoBehaviour
     private float boxHeight;
     [SerializeField]
     private float ropeUp, ropeDown;
-
+    [SerializeField]
+    private LayerMask platformLayer;
     
     public PlayerState playerState, previousState;
     
@@ -69,6 +71,7 @@ public class PlayerController : MonoBehaviour
         dash = Input.GetButton("Dash");
         
         if (!upKeyDown) upKeyDown = previous <= 0 && verticalRaw > 0;
+        if (!downKeyDown) downKeyDown = previous >= 0 && verticalRaw < 0;
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -99,11 +102,10 @@ public class PlayerController : MonoBehaviour
                 }
 
                 // Platform downjump
-                if (verticalRaw < 0 && !isDownPlatform)
+                if (OnPlatform() && downKeyDown)
                 {
                     Room curRoom = MapManager.mapGrid[Player.tx, Player.ty];
                     platformCollider = curRoom.GetComponentInChildren<RoomInGame>().transform.Find("platform").GetComponent<CompositeCollider2D>();
-                    isDownPlatform = true;
                     StartCoroutine(DownPlatform());
                 }
                 if (IsInRope())
@@ -111,7 +113,7 @@ public class PlayerController : MonoBehaviour
                     if (playerState == PlayerState.Rope)
                     {
                         // Jump or Horizontal move in rope
-                        if (jump || (horizontal != 0 && verticalRaw == 0))
+                        if (jump || horizontal != 0)
                         {
                             playerState = PlayerState.Idle;
                             rb.gravityScale = rbGravityScale;
@@ -203,6 +205,7 @@ public class PlayerController : MonoBehaviour
 
         }
         upKeyDown = false;
+        downKeyDown = false;
         jump = false;
     }
     bool IsGrounded()   // Is player grounded?
@@ -221,13 +224,17 @@ public class PlayerController : MonoBehaviour
                        transform.position + new Vector3(Player.X / 2f, -ropeDown, 0));
         return hit.collider != null;
     }
+    bool OnPlatform()
+    {
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(Player.X, boxHeight), 0, Vector2.down, Player.Y / 2f, platformLayer);
+        return hit.collider != null && rb.velocity.y == 0; // 플랫폼 점프 버그 방지
+    }
     public IEnumerator DownPlatform()
     {
         Physics2D.IgnoreCollision(platformCollider, transform.GetComponent<Collider2D>(), true);
         yield return new WaitForSeconds(0.3f);
         while (playerState == PlayerState.Rope) yield return null;
         Physics2D.IgnoreCollision(platformCollider, transform.GetComponent<Collider2D>(), false);
-        isDownPlatform = false;
     }
     public IEnumerator RopeDelay()
     {
@@ -235,7 +242,5 @@ public class PlayerController : MonoBehaviour
         isJumpable = true;
         yield return new WaitForSeconds(0.3f);
         ropeEnabled = true;
-
     }
-
 }

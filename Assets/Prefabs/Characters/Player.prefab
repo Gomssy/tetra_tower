@@ -178,8 +178,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rbGravityScale: 3
   rbAttackGravityScale: 0.5
-  maxSpeed: 3
-  maxDashSpeed: 6
+  maxSpeed: 4
+  maxDashSpeed: 7
   acceleration: 20
   deceleration: 20
   jumpSpeed: 11
@@ -196,6 +196,9 @@ MonoBehaviour:
   boxHeight: 0.3
   ropeUp: 0.6
   ropeDown: 0.8
+  platformLayer:
+    serializedVersion: 2
+    m_Bits: 2048
   playerState: 0
   previousState: 0
 --- !u!114 &114402380471012178
