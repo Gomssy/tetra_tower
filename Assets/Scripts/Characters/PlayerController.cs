@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     [SerializeField]
     private float rbGravityScale;
+    [SerializeField]
+    private float rbAttackGravityScale;
     // Speeds of player
     [SerializeField]
     private float maxSpeed;
@@ -30,7 +32,6 @@ public class PlayerController : MonoBehaviour
     // Bool values for jump & doublejump
     private bool isGrounded = true;
     private bool isJumpable = true;     // Can player jump or doublejump?
-    private bool isInRope = false;
     private bool isDownPlatform = false;
     private bool ropeEnabled = true;
     // Inputs
@@ -58,17 +59,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float ropeUp, ropeDown;
 
-    enum PlayerState { Idle, Walk, Run, GoingUp, GoingDown, Rope }
-    PlayerState playerState, previousState;
-
-    // Use this for initialization
+    
+    public PlayerState playerState, previousState;
+    
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         horizontal = Input.GetAxis("Horizontal");
@@ -85,134 +84,137 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = IsGrounded();
 
-        if (GameManager.gameState == GameState.Ingame)
+        if (GameManager.gameState == GameState.Ingame && MapManager.isDoorClosing != true)
         {
-
+            if (playerState == PlayerState.Attack)
+            {
+                rb.gravityScale = rbAttackGravityScale;
+                return;
+            }
+                
             if (isGrounded)
                 isJumpable = true;
-            if (isGrounded)
+            if (playerState != PlayerState.Attack)
             {
-                if (horizontalRaw == 1f) transform.localScale = new Vector3(-1f, transform.localScale.y, transform.localScale.z);
-                else if (horizontalRaw == -1f) transform.localScale = new Vector3(1f, transform.localScale.y, transform.localScale.z);
-            }
+                if (isGrounded)
+                {
+                    if (horizontalRaw == 1f) transform.localScale = new Vector3(-1f, transform.localScale.y, transform.localScale.z);
+                    else if (horizontalRaw == -1f) transform.localScale = new Vector3(1f, transform.localScale.y, transform.localScale.z);
+                }
 
 
-            if (verticalRaw == -1 && !isDownPlatform)
-            {
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, platformLayer);
-                if (hit.collider != null && rb.velocity.y == 0)
+                if (verticalRaw == -1 && !isDownPlatform)
                 {
                     Room curRoom = MapManager.mapGrid[Player.tx, Player.ty];
                     platformCollider = curRoom.GetComponentInChildren<RoomInGame>().transform.Find("platform").GetComponent<CompositeCollider2D>();
                     isDownPlatform = true;
                     StartCoroutine(DownPlatform());
                 }
-            }
-            if (IsInRope())
-            {
-                if (isInRope)
+                if (IsInRope())
                 {
-                    if (horizontalRaw != 0f && verticalRaw == 0f)
+                    if (playerState == PlayerState.Rope)
                     {
-                        isInRope = false;
-                        playerState = PlayerState.Idle;
-                        rb.gravityScale = rbGravityScale;
-                        StartCoroutine(RopeDelay());
+                        if (horizontalRaw != 0f && verticalRaw == 0f)
+                        {
+                            playerState = PlayerState.Idle;
+                            rb.gravityScale = rbGravityScale;
+                            StartCoroutine(RopeDelay());
+
+                        }
+                        rb.velocity = new Vector2(0f, verticalRaw * ropeSpeed);
 
                     }
-                    rb.velocity = new Vector2(0f, verticalRaw * ropeSpeed);
+                    else if (verticalRaw != 0 && ropeEnabled && horizontalRaw == 0)
+                    {
+                        playerState = PlayerState.Rope;
+                        rb.gravityScale = 0f;
+                        transform.position = new Vector2(Mathf.Round(transform.position.x - 0.5f) + 0.5f, transform.position.y);
+                        rb.velocity = new Vector2(0f, 0f);
+                    }
+                    anim.SetFloat("ropeUpDown", verticalRaw);
 
                 }
-                else if (verticalRaw != 0 && ropeEnabled && horizontalRaw == 0)
+                else
                 {
-                    isInRope = true;
-                    playerState = PlayerState.Rope;
-                    rb.gravityScale = 0f;
-                    transform.position = new Vector2(Mathf.Round(transform.position.x - 0.5f) + 0.5f, transform.position.y);
-                    rb.velocity = new Vector2(0f, 0f);
+                    playerState = PlayerState.Idle;
+                    rb.gravityScale = rbGravityScale;
                 }
-
-            }
-            else
-            {
-                isInRope = false;
-                playerState = PlayerState.Idle;
-                rb.gravityScale = rbGravityScale;
-            }
-            if (!isInRope)
-            {
-                float vertical = rb.velocity.y;
-                if (jump)
+                if (playerState != PlayerState.Rope)
                 {
+                    float vertical = rb.velocity.y;
+                    if (jump)
+                    {
+                        if (isGrounded)
+                        {
+                            vertical = jumpSpeed;
+                        }
+                        else if (isJumpable)
+                        {
+                            vertical = doubleJumpSpeed;
+                            isJumpable = false;
+                        }
+                    }
+
+                    if (!isGrounded)
+                    {
+                        if (vertical > 0) playerState = PlayerState.GoingUp;
+                        else playerState = PlayerState.GoingDown;
+                        rb.gravityScale = rbGravityScale;
+                    }
+
+
+                    if (horizontalRaw != 0)
+                    {
+                        if (horizontal != 1 && horizontal != -1 && dashStart == 0)
+                        {
+                            //짧게 눌렀을 때
+                            dashStart = 1;
+                        }
+                    }
+                    if (horizontalRaw == 0 && horizontal != 0 && dashStart == 1)
+                    {
+                        //방금 뗐을때
+                        dashStart = 2;
+                        //이제 빠르게 켜면 됨
+                    }
+                    if (dashStart == 2 && horizontalRaw != 0)
+                    {
+                        isDashing = true;
+                    }
+                    if (horizontalRaw == 0 && horizontal == 0)
+                    {
+                        dashStart = 0;
+                        isDashing = false;
+                    }
+
+
+                    if (isDashing)
+                        rb.AddForce(horizontalRaw * dashAccerlation * Time.smoothDeltaTime * Vector2.right);
+                    else
+                        rb.AddForce(horizontalRaw * accerlation * Time.smoothDeltaTime * Vector2.right);
+
+
                     if (isGrounded)
                     {
-                        vertical = jumpSpeed;
+                        if (horizontalRaw == 0) playerState = PlayerState.Idle;
+                        else
+                        {
+                            if (isDashing) playerState = PlayerState.Run;
+                            else playerState = PlayerState.Walk;
+                        }
                     }
-                    else if (isJumpable)
+
+
+                    if (((horizontalRaw == 0) || (rb.velocity.x > 0 && horizontalRaw < 0)
+                        || (rb.velocity.x < 0 && horizontalRaw > 0)) && (isGrounded))
                     {
-                        vertical = doubleJumpSpeed;
-                        isJumpable = false;
+                        // rb.AddForce(rb.velocity.x * (-100f) * Vector2.right * Time.smoothDeltaTime);
+                        rb.velocity = new Vector2(rb.velocity.x / (1.5f), rb.velocity.y);
                     }
-                }
-
-                if (!isGrounded)
-                {
-                    if (vertical > 0) playerState = PlayerState.GoingUp;
-                    else playerState = PlayerState.GoingDown;
-                }
-                
-
-                if (horizontalRaw != 0)
-                {
-                    if (horizontal != 1 && horizontal != -1 && dashStart == 0)
-                    {
-                        //짧게 눌렀을 때
-                        dashStart = 1;
-                    }
-                }
-                if (horizontalRaw == 0 && horizontal != 0 && dashStart == 1)
-                {
-                    //방금 뗐을때
-                    dashStart = 2;
-                    //이제 빠르게 켜면 됨
-                }
-                if (dashStart == 2 && horizontalRaw != 0)
-                {
-                    isDashing = true;
-                }
-                if (horizontalRaw == 0 && horizontal == 0)
-                {
-                    dashStart = 0;
-                    isDashing = false;
-                }
-
-
-                if (isDashing)
-                    rb.AddForce(horizontalRaw * dashAccerlation * Time.smoothDeltaTime * Vector2.right);
-                else
-                    rb.AddForce(horizontalRaw * accerlation * Time.smoothDeltaTime * Vector2.right);
-
-
-                if (isGrounded)
-                {
-                    if (horizontalRaw == 0) playerState = PlayerState.Idle;
+                    if (isDashing) rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxDashSpeed, maxDashSpeed), vertical);
                     else
-                    {
-                        if (isDashing) playerState = PlayerState.Run;
-                        else playerState = PlayerState.Walk;
-                    }
+                        rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), vertical);
                 }
-
-
-                if (((horizontalRaw == 0) || (rb.velocity.x > 0 && horizontalRaw < 0)
-                    || (rb.velocity.x < 0 && horizontalRaw > 0)) && (isGrounded))
-                {
-                    // rb.AddForce(rb.velocity.x * (-100f) * Vector2.right * Time.smoothDeltaTime);
-                    rb.velocity = new Vector2(rb.velocity.x / (1.5f), rb.velocity.y);
-                }
-                if (isDashing) rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxDashSpeed, maxDashSpeed), vertical);
-                else
-                    rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), vertical);
             }
             if (previousState != playerState)
                 switch (playerState)
@@ -224,6 +226,7 @@ public class PlayerController : MonoBehaviour
                     case PlayerState.GoingDown: anim.SetTrigger("downTrigger"); break;
                     case PlayerState.Rope: anim.SetTrigger("rope"); break;
                 }
+
             previousState = playerState;
 
         }
@@ -257,7 +260,7 @@ public class PlayerController : MonoBehaviour
     {
         Physics2D.IgnoreCollision(platformCollider, transform.GetComponent<Collider2D>(), true);
         yield return new WaitForSeconds(0.3f);
-        while (isInRope) yield return new WaitForSeconds(0.1f);
+        while (playerState == PlayerState.Rope) yield return new WaitForSeconds(0.1f);
         Physics2D.IgnoreCollision(platformCollider, transform.GetComponent<Collider2D>(), false);
         isDownPlatform = false;
     }

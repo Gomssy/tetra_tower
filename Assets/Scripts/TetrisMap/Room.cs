@@ -77,6 +77,14 @@ public class Room : MonoBehaviour
     /// </summary>
     public RoomInGame roomInGame;
     /// <summary>
+    /// Portal of the room.
+    /// </summary>
+    public GameObject portal;
+    /// <summary>
+    /// Portal surface of the room.
+    /// </summary>
+    public GameObject portalSurface;
+    /// <summary>
     /// Check if room is clear and escapable.
     /// </summary>
     public bool isRoomCleared;
@@ -130,6 +138,96 @@ public class Room : MonoBehaviour
             }
         }
     }
+
+
+    public bool isPortal = false;
+
+    /// <summary>
+    /// Create portal in cleared room.
+    /// </summary>
+    public void CreatePortal()
+    {
+        portal = roomInGame.transform.GetChild(roomInGame.transform.childCount - 1).gameObject;
+        if(specialRoomType != RoomType.Normal)
+        {
+            portal.SetActive(true);
+            isPortal = true;
+            return;
+        }
+        else
+        {
+            int portalDistance = 0;
+            for(int i = 1; i <= 3; i++)
+            {
+                for(int j = 0; j < i; j++)
+                {
+                    if(mapCoord.x + j < MapManager.width && mapCoord.y + (i - j) <= MapManager.realHeight &&
+                        MapManager.mapGrid[(int)mapCoord.x + j, (int)mapCoord.y + (i - j)] != null &&
+                        MapManager.mapGrid[(int)mapCoord.x + j, (int)mapCoord.y + (i - j)].isPortal == true)
+                    {
+                        portalDistance = i;
+                        break;
+                    }
+                    if (mapCoord.x + (i - j) < MapManager.width && mapCoord.y - j >= 0 &&
+                        MapManager.mapGrid[(int)mapCoord.x + (i - j), (int)mapCoord.y - j] != null &&
+                        MapManager.mapGrid[(int)mapCoord.x + (i - j), (int)mapCoord.y - j].isPortal == true)
+                    {
+                        portalDistance = i;
+                        break;
+                    }
+                    if (mapCoord.x - j >= 0 && mapCoord.y - (i - j) >= 0 &&
+                        MapManager.mapGrid[(int)mapCoord.x - j, (int)mapCoord.y - (i - j)] != null &&
+                        MapManager.mapGrid[(int)mapCoord.x - j, (int)mapCoord.y - (i - j)].isPortal == true)
+                    {
+                        portalDistance = i;
+                        break;
+                    }
+                    if (mapCoord.x - (i - j) >= 0 && mapCoord.y + j <= MapManager.realHeight &&
+                        MapManager.mapGrid[(int)mapCoord.x - (i - j), (int)mapCoord.y + j] != null &&
+                        MapManager.mapGrid[(int)mapCoord.x - (i - j), (int)mapCoord.y + j].isPortal == true)
+                    {
+                        portalDistance = i;
+                        break;
+                    }
+                }
+                if (portalDistance != 0)
+                    break;
+            }
+            switch (portalDistance)
+            {
+                case 1:
+                    return;
+                case 2:
+                    if (Random.Range(0, 10) % 10 == 0)
+                    {
+                        portal.SetActive(true);
+                        isPortal = true;
+                    }
+                    return;
+                case 3:
+                    if (Random.Range(0, 4) % 10 == 0)
+                    {
+                        portal.SetActive(true);
+                        isPortal = true;
+                    }
+                    return;
+                case 4:
+                    if (Random.Range(0, 2) % 10 == 0)
+                    {
+                        portal.SetActive(true);
+                        isPortal = true;
+                    }
+                    return;
+            }
+            portal.SetActive(true);
+            isPortal = true;
+        }
+    }
+
+
+
+
+
     /// <summary>
     /// Open selected door of this room.
     /// </summary>
@@ -284,6 +382,23 @@ public class Room : MonoBehaviour
             Destroy(fog);
             fog = Instantiate(GameObject.Find("MapManager").GetComponent<MapManager>().clearedFog, fogPosition, Quaternion.identity, transform);
             fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+            CreatePortal();
+            if (isPortal == true)
+            {
+                for (int x = 0; x < MapManager.width; x++)
+                    MapManager.portalDistributedHorizontal[x].Clear();
+                for (int y = 0; y <= MapManager.realHeight; y++)
+                    MapManager.portalDistributedVertical[y].Clear();
+                for (int x = 0; x < MapManager.width; x++)
+                    for (int y = 0; y <= MapManager.realHeight; y++)
+                        if (MapManager.mapGrid[x, y] != null && MapManager.mapGrid[x, y].isPortal == true)
+                        {
+                            MapManager.portalGrid[x, y] = true;
+                            MapManager.portalDistributedHorizontal[x].Add(y);
+                            MapManager.portalDistributedVertical[y].Add(x);
+                        }
+                portalSurface = Instantiate(GameObject.Find("MapManager").GetComponent<MapManager>().portalSurface, transform.position + new Vector3(12, 12, 0), Quaternion.identity, transform);
+            }
             isRoomCleared = true;
             if (specialRoomType == RoomType.Boss)
                 MapManager.currentStage += 1;

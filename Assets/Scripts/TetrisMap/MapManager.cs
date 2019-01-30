@@ -5,7 +5,6 @@ using UnityEngine;
 public class MapManager : MonoBehaviour {
 
 
-    public static bool isDoorClosing = false;
     /*
      * variables
      * */
@@ -38,7 +37,7 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Time tetrimino would wait until it falls.
     /// </summary>
-    public float timeToFallTetrimino = 100.0f;
+    public float timeToFallTetrimino;
     /// <summary>
     /// Time tetris waits to fall.
     /// </summary>
@@ -68,6 +67,12 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public static Room[,] mapGrid = new Room[width, height];
     /// <summary>
+    /// Absolute coordinates on tetris map.
+    /// </summary>
+    public static bool[,] portalGrid = new bool[width, height];
+    public static List<int>[] portalDistributedVertical = new List<int>[20];
+    public static List<int>[] portalDistributedHorizontal = new List<int>[10];
+    /// <summary>
     /// Check if tetrimino is falling.
     /// </summary>
     public static bool isTetriminoFalling = false;
@@ -75,6 +80,10 @@ public class MapManager : MonoBehaviour {
     /// Check if room is falling after room collapsed.
     /// </summary>
     public static bool isRoomFalling = false;
+    /// <summary>
+    /// Check if door is closing or not.
+    /// </summary>
+    public static bool isDoorClosing = false;
     /// <summary>
     /// Check if this row is being deleted.
     /// </summary>
@@ -152,6 +161,22 @@ public class MapManager : MonoBehaviour {
     /// Right door in ingame.
     /// </summary>
     public GameObject inGameDoorRight;
+    /// <summary>
+    /// Indicates the location of the existing portal.
+    /// </summary>
+    public GameObject portalSurface;
+    /// <summary>
+    /// Sprite of existing portals.
+    /// </summary>
+    public Sprite portalExist;
+    /// <summary>
+    /// Sprite of selected portals.
+    /// </summary>
+    public Sprite portalSelected;
+    /// <summary>
+    /// Destination of portal player will move.
+    /// </summary>
+    public static Vector2 portalDestination;
 
     public RoomInGame[] normalRoomList1;
     public RoomInGame[] normalRoomList2;
@@ -281,11 +306,25 @@ public class MapManager : MonoBehaviour {
         int roomDestroyCounter = 0;
         int row = leftPress.row;
         float collapseSpeed = (float)20 / collapseTime * Time.deltaTime;
+        portalDistributedVertical[row].Clear();
+        for(int i = 0; i < portalDistributedHorizontal.Length; i++)
+            portalDistributedHorizontal[i].Remove(row);
+        for(int i = 0; i < width; i++)
+            if (mapGrid[i, row].isPortal == true)
+            {
+                mapGrid[i, row].isPortal = false;
+                Destroy(mapGrid[i, row].portalSurface);
+                mapGrid[i, row].portal.SetActive(false);
+            }
         leftPress.transform.localScale = new Vector3(0, 1, 1);
         rightPress.transform.localScale = new Vector3(0, 1, 1);
         float collapseRate = leftPress.transform.localScale.x;
         while (collapseRate < 20)
         {
+            while (GameManager.gameState == GameState.Portal)
+            {
+                yield return null;
+            }
             yield return null;
             if (currentRoom.mapCoord.y == row)
                 collapseSpeed = (float)2 / collapseTime * Time.deltaTime;
@@ -405,6 +444,10 @@ public class MapManager : MonoBehaviour {
         Vector3 previousPlayerRelativePosition = player.transform.position - currentRoom.transform.position;
         while (tetrisYCoord[top + 1] > bottom * tetrisMapSize)
         {
+            while (GameManager.gameState == GameState.Portal)
+            {
+                yield return null;
+            }
             yield return new WaitForSeconds(0.01f);
             if (isRowDeleting[top + 1])
             {
@@ -491,6 +534,11 @@ public class MapManager : MonoBehaviour {
     {
         while (!isTetriminoFalling)
         {
+            while (GameManager.gameState == GameState.Portal)
+            {
+                tetriminoCreatedTime += Time.deltaTime;
+                yield return null;
+            }
             yield return new WaitForSeconds(0.1f);
             tetriminoWaitedTime = Time.time - tetriminoCreatedTime;
         }
@@ -614,6 +662,10 @@ public class MapManager : MonoBehaviour {
     {
         while(te.transform.position.y > tetrisYCoord[(int)te.mapCoord.y])
         {
+            while (GameManager.gameState == GameState.Portal)
+            {
+                yield return null;
+            }
             yield return new WaitForSeconds(0.01f);
             fallTime = Time.time - initialFallTime;
             fallSpeed += gravity * fallTime * fallTime;
@@ -684,9 +736,6 @@ public class MapManager : MonoBehaviour {
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
         else
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType];
-
-
-
         if (currentGhost != null)
             currentGhost.rooms[i].GetComponent<SpriteRenderer>().sprite = room.GetComponent<SpriteRenderer>().sprite;
     }
@@ -778,6 +827,18 @@ public class MapManager : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         tetriminoSpawner.MakeTetrimino();
     }
+    public void ChangeRoom(Room newRoom)
+    {
+        Room room = currentRoom;
+        StartCoroutine(RoomFadeOut(room));
+        if (room.specialRoomType == RoomType.Normal)
+            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
+        else
+            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType];
+        currentRoom = newRoom;
+        StartCoroutine(RoomFadeIn(newRoom));
+        newRoom.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[newRoom.stage][(int)RoomSpriteType.Current];
+    }
     /// <summary>
     /// Make room fade in.
     /// </summary>
@@ -788,6 +849,8 @@ public class MapManager : MonoBehaviour {
         float alpha = 1;
         for (int i = 0; i < 20; i++)
         {
+            if(i == 6)
+                isDoorClosing = false;
             yield return new WaitForSeconds(0.01f);
             room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
@@ -797,7 +860,6 @@ public class MapManager : MonoBehaviour {
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-        isDoorClosing = false;
     }
     /// <summary>
     /// Make room fade out.
@@ -818,6 +880,95 @@ public class MapManager : MonoBehaviour {
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+    }
+    /// <summary>
+    /// Control portal's move.
+    /// </summary>
+    public void PortalControl()
+    {
+        int minDifference = 100;
+        int difference = 0;
+        Vector2 tempDestination = new Vector2(0, 0);
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+            for (int i = (int)portalDestination.y + 1; i < realHeight + 1; i++)
+            {
+                if(portalDistributedVertical[i].Count != 0)
+                {
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalExist;
+                    for (int j = 0; j < portalDistributedVertical[i].Count; j++)
+                    {
+                        difference = Mathf.Abs(portalDistributedVertical[i][j] - (int)portalDestination.x);
+                        if (difference < minDifference)
+                        {
+                            minDifference = difference;
+                            tempDestination = new Vector2(portalDistributedVertical[i][j], i);
+                        }
+                    }
+                    portalDestination = tempDestination;
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalSelected;
+                    return;
+                }
+            }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+            for (int i = (int)portalDestination.y - 1; i >= 0; i--)
+            {
+                if(portalDistributedVertical[i].Count != 0)
+                {
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalExist;
+                    for (int j = 0; j < portalDistributedVertical[i].Count; j++)
+                    {
+                        difference = Mathf.Abs(portalDistributedVertical[i][j] - (int)portalDestination.x);
+                        if (difference < minDifference)
+                        {
+                            minDifference = difference;
+                            tempDestination = new Vector2(portalDistributedVertical[i][j], i);
+                        }
+                    }
+                    portalDestination = tempDestination;
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalSelected;
+                    return;
+                }
+            }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            for (int i = (int)portalDestination.x - 1; i >= 0; i--)
+            {
+                if(portalDistributedHorizontal[i].Count != 0)
+                {
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalExist;
+                    for (int j = 0; j < portalDistributedHorizontal[i].Count; j++)
+                    {
+                        difference = Mathf.Abs(portalDistributedHorizontal[i][j] - (int)portalDestination.y);
+                        if (difference < minDifference)
+                        {
+                            minDifference = difference;
+                            tempDestination = new Vector2(i, portalDistributedHorizontal[i][j]);
+                        }
+                    }
+                    portalDestination = tempDestination;
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalSelected;
+                    return;
+                }
+            }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+            for (int i = (int)portalDestination.x + 1; i < width; i++)
+            {
+                if(portalDistributedHorizontal[i].Count != 0)
+                {
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalExist;
+                    for (int j = 0; j < portalDistributedHorizontal[i].Count; j++)
+                    {
+                        difference = Mathf.Abs(portalDistributedHorizontal[i][j] - (int)portalDestination.y);
+                        if (difference < minDifference)
+                        {
+                            minDifference = difference;
+                            tempDestination = new Vector2(i, portalDistributedHorizontal[i][j]);
+                        }
+                    }
+                    portalDestination = tempDestination;
+                    mapGrid[(int)portalDestination.x, (int)portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite = portalSelected;
+                    return;
+                }
+            }
     }
 
     void Awake()
@@ -845,6 +996,10 @@ public class MapManager : MonoBehaviour {
                         specialRoomsDistributed[stage, concept, leftDoor, rightDoor] = new List<RoomInGame>();
                     }
         }
+        for (int i = 0; i < 20; i++)
+            portalDistributedVertical[i] = new List<int>();
+        for (int i = 0; i < 10; i++)
+            portalDistributedHorizontal[i] = new List<int>();
         for (int concept = 0; concept < 4; concept++)
             for (int leftDoor = 0; leftDoor < 3; leftDoor++)
                 for (int rightDoor = 0; rightDoor < 3; rightDoor++)
@@ -911,6 +1066,10 @@ public class MapManager : MonoBehaviour {
                     GhostControl(currentGhost, currentTetrimino);
                     currentGhost.transform.position = new Vector3(currentGhost.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)currentGhost.mapCoord.y], currentGhost.mapCoord.z);
                 }
+            }
+            if(GameManager.gameState == GameState.Portal)
+            {
+                PortalControl();
             }
         }
     }
