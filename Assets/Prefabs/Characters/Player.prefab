@@ -42,6 +42,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4710911479571038}
   - component: {fileID: 61129044981816742}
+  - component: {fileID: 114843094057276856}
+  - component: {fileID: 60342798607647292}
   m_Layer: 0
   m_Name: AttackColider
   m_TagString: Untagged
@@ -56,7 +58,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1623439448163086}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 1.8, z: 0}
+  m_LocalPosition: {x: 7.36, y: 1.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4710911479571038}
@@ -96,6 +98,34 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!60 &60342798607647292
+PolygonCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862495014651308}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.69, y: 0.7}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -1.7706409, y: 1.7276601}
+      - {x: -2.1208076, y: 1.4114912}
+      - {x: 0.18838578, y: -1.1243366}
+      - {x: 0.58778536, y: -0.80901694}
 --- !u!61 &61019994424895448
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -176,11 +206,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rbGravityScale: 3
-  rbAttackGravityScale: 3
+  rbAttackGravityScale: 0.5
   maxSpeed: 3
   maxDashSpeed: 6
   accerlation: 1200
-  jumpSpeed: 11
+  jumpSpeed: 12
   ropeSpeed: 3
   doubleJumpSpeed: 10
   dashAccerlation: 2000
@@ -207,6 +237,22 @@ MonoBehaviour:
   ropeDown: 0.8
   playerState: 0
   previousState: 0
+--- !u!114 &114843094057276856
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862495014651308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64f948f7c7aacab409fe963a6f9e0d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 0
+  knockBackMultiplier: 1
+  debuffNum: 0
+  debuffType: 
+  debuffTime: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!114 &114880704145925944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -218,13 +264,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab58a64164eb984d8683df370ddce96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
   attackRaw:
   - 0
   - 0
   - 0
   attackKeyState: 000000000000000000000000
-  cancel: 0
+  cancelRaw: 0
+  cancelKeyState: 0
   playingSkill: 0
   comboTime: 1
   time: {fileID: 0}
