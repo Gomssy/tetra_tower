@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         horizontalRaw = Input.GetAxisRaw("Horizontal");
         verticalRaw = Input.GetAxisRaw("Vertical");
-        dash = Input.GetButton("Dash");
+        if (isGrounded) dash = Input.GetButton("Dash");
         
         if (!upKeyDown) upKeyDown = previous <= 0 && verticalRaw > 0;
         if (!downKeyDown) downKeyDown = previous >= 0 && verticalRaw < 0;
