@@ -210,7 +210,7 @@ MonoBehaviour:
   maxSpeed: 3
   maxDashSpeed: 6
   accerlation: 1200
-  jumpSpeed: 11
+  jumpSpeed: 12
   ropeSpeed: 3
   doubleJumpSpeed: 10
   dashAccerlation: 2000
