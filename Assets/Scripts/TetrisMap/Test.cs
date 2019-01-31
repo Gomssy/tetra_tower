@@ -125,13 +125,5 @@ public class Test : MonoBehaviour {
             SpawnBossTetrimino();
         if(!MapManager.isTetriminoFalling)
             Timer();
-        /*if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState != GameManager.GameState.Tetris)
-        {
-            GameManager.gameState = GameManager.GameState.Tetris;
-            GameObject.Find("Main Camera").transform.position = tetrisCameraCoord;
-            GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize = tetrisMapSize;
-        }
-        else if (Input.GetKeyDown(KeyCode.Tab) && GameManager.gameState == GameManager.GameState.Tetris)
-            GameManager.gameState = GameManager.GameState.Ingame;*/
     }
 }

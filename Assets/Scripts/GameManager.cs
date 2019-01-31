@@ -11,11 +11,12 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public static GameState gameState;
 
-    public Canvas gameOverScreen;
+    public Canvas gameOverCanvas;
+    public Canvas inventoryCanvas;
 
     public void RestartGame()
     {
-        gameOverScreen.gameObject.SetActive(false);
+        gameOverCanvas.gameObject.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -45,7 +46,20 @@ public class GameManager : MonoBehaviour {
                     StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
                 }
             }
-            if (Input.GetKeyDown(KeyCode.F))
+            else if(Input.GetKeyDown(KeyCode.I))
+            {
+                if(gameState == GameState.Ingame)
+                {
+                    inventoryCanvas.gameObject.SetActive(true);
+                    gameState = GameState.Inventory;
+                }
+                else if(gameState == GameState.Inventory)
+                {
+                    inventoryCanvas.gameObject.SetActive(false);
+                    gameState = GameState.Ingame;
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.F))
             {
                 if (gameState == GameState.Portal && MapManager.currentRoom != MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y])
                 {
@@ -56,18 +70,26 @@ public class GameManager : MonoBehaviour {
                     StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
                 }
             }
-            if (Input.GetKeyDown(KeyCode.Escape))
+            else if(Input.GetButtonDown("Cancel"))
             {
-                MapManager.mapGrid[(int)MapManager.currentRoom.mapCoord.x, (int)MapManager.currentRoom.mapCoord.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
-                    GameObject.Find("MapManager").GetComponent<MapManager>().portalExist;
-                StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
+                if(gameState == GameState.Portal)
+                {
+                    MapManager.mapGrid[(int)MapManager.currentRoom.mapCoord.x, (int)MapManager.currentRoom.mapCoord.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
+                        GameObject.Find("MapManager").GetComponent<MapManager>().portalExist;
+                    StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
+                }
+                else if(gameState == GameState.Inventory)
+                {
+                    inventoryCanvas.gameObject.SetActive(false);
+                    gameState = GameState.Ingame;
+                }
             }
         }
         if(gameState == GameState.GameOver)
         {
-            if(gameOverScreen.isActiveAndEnabled == false)
+            if(gameOverCanvas.isActiveAndEnabled == false)
                 Debug.Log("Game Over");
-            gameOverScreen.gameObject.SetActive(true);
+            gameOverCanvas.gameObject.SetActive(true);
         }
     }
 }

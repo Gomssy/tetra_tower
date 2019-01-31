@@ -699,19 +699,19 @@ public class MapManager : MonoBehaviour {
     /// <param name="te">Tetrimino you want to move.</param>
     public void TetriminoControl(Tetrimino te)
     {
-        if((Input.GetKeyDown(KeyCode.Space) && GameManager.gameState == GameState.Tetris) || tetriminoWaitedTime > timeToFallTetrimino)
+
+        if ((Input.GetKeyDown(KeyCode.Space) && GameManager.gameState == GameState.Tetris) || tetriminoWaitedTime > timeToFallTetrimino)
         {
             isTetriminoFalling = true;
             TetriminoMapCoordDown(currentTetrimino);
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && GameManager.gameState == GameState.Tetris)
-            MoveTetriminoHorizontal(currentTetrimino, new Vector3(-1, 0, 0));
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && GameManager.gameState == GameState.Tetris)
-            MoveTetriminoHorizontal(currentTetrimino, new Vector3(1, 0, 0));
-        else if (Input.GetKeyDown(KeyCode.UpArrow) && GameManager.gameState == GameState.Tetris)
-            TetriminoRotate(currentTetrimino, 1);
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && GameManager.gameState == GameState.Tetris)
-            TetriminoRotate(currentTetrimino, -1);
+        if(GameManager.gameState == GameState.Tetris)
+        {
+            if (Input.GetButtonDown("Vertical"))
+                TetriminoRotate(currentTetrimino, (int)Input.GetAxisRaw("Vertical"));
+            else if (Input.GetButtonDown("Horizontal"))
+                MoveTetriminoHorizontal(currentTetrimino, new Vector3((int)Input.GetAxisRaw("Horizontal"), 0, 0));
+        }
     }
     /// <summary>
     /// Set rooms' mapCoord on this tetrimino.
@@ -889,7 +889,7 @@ public class MapManager : MonoBehaviour {
         int minDifference = 100;
         int difference = 0;
         Vector2 tempDestination = new Vector2(0, 0);
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") > 0)
             for (int i = (int)portalDestination.y + 1; i < realHeight + 1; i++)
             {
                 if(portalDistributedVertical[i].Count != 0)
@@ -909,7 +909,7 @@ public class MapManager : MonoBehaviour {
                     return;
                 }
             }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") < 0)
             for (int i = (int)portalDestination.y - 1; i >= 0; i--)
             {
                 if(portalDistributedVertical[i].Count != 0)
@@ -929,7 +929,7 @@ public class MapManager : MonoBehaviour {
                     return;
                 }
             }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0)
             for (int i = (int)portalDestination.x - 1; i >= 0; i--)
             {
                 if(portalDistributedHorizontal[i].Count != 0)
@@ -949,7 +949,7 @@ public class MapManager : MonoBehaviour {
                     return;
                 }
             }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") > 0)
             for (int i = (int)portalDestination.x + 1; i < width; i++)
             {
                 if(portalDistributedHorizontal[i].Count != 0)

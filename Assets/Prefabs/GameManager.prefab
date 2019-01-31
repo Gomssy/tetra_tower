@@ -51,5 +51,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97912f0a2214a8a4f8023ed30629bb30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverScreen: {fileID: 223237664237935382, guid: 692aad2449e06054799ea4706578fb23,
-    type: 2}
+  gameOverCanvas: {fileID: 0}
+  inventoryCanvas: {fileID: 0}
