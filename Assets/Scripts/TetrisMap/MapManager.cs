@@ -9,6 +9,7 @@ public class MapManager : MonoBehaviour {
      * variables
      * */
     TetriminoSpawner tetriminoSpawner;
+    LifeStoneManager lifeStoneManager;
     public GameObject player;
     /// <summary>
     /// Grid showing tiles.
@@ -125,6 +126,10 @@ public class MapManager : MonoBehaviour {
     /// Current stage of game.
     /// </summary>
     public static int currentStage;
+    /// <summary>
+    /// Gold need to control tetrimino.
+    /// </summary>
+    public int tetriminoCost = 1;
     /// <summary>
     /// Fog of the rooms.
     /// </summary>
@@ -699,8 +704,7 @@ public class MapManager : MonoBehaviour {
     /// <param name="te">Tetrimino you want to move.</param>
     public void TetriminoControl(Tetrimino te)
     {
-
-        if ((Input.GetKeyDown(KeyCode.Space) && GameManager.gameState == GameState.Tetris) || tetriminoWaitedTime > timeToFallTetrimino)
+        if (tetriminoWaitedTime > timeToFallTetrimino)
         {
             isTetriminoFalling = true;
             TetriminoMapCoordDown(currentTetrimino);
@@ -708,9 +712,21 @@ public class MapManager : MonoBehaviour {
         if(GameManager.gameState == GameState.Tetris)
         {
             if (Input.GetButtonDown("Vertical"))
+            {
                 TetriminoRotate(currentTetrimino, (int)Input.GetAxisRaw("Vertical"));
-            else if (Input.GetButtonDown("Horizontal"))
+
+            }
+            else if (Input.GetButtonDown("Horizontal") && lifeStoneManager.CountType(LifeStoneType.Gold) > 0)
+            {
                 MoveTetriminoHorizontal(currentTetrimino, new Vector3((int)Input.GetAxisRaw("Horizontal"), 0, 0));
+                lifeStoneManager.ChangeToNormal(LifeStoneType.Gold, tetriminoCost);
+            }
+            else if (Input.GetKeyDown(KeyCode.Space) && lifeStoneManager.CountType(LifeStoneType.Gold) > 0)
+            {
+                isTetriminoFalling = true;
+                TetriminoMapCoordDown(currentTetrimino);
+                lifeStoneManager.ChangeToNormal(LifeStoneType.Gold, tetriminoCost);
+            }
         }
     }
     /// <summary>
@@ -1044,6 +1060,7 @@ public class MapManager : MonoBehaviour {
             roomsSpritesDistributed[4].Add(roomsSprite5[(int)spriteType]);*/
         }
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
+        lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
         currentStage = 0;
     }
 
