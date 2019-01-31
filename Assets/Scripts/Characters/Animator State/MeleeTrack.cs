@@ -9,7 +9,7 @@ public class MeleeTrack : StateMachineBehaviour {
 	Vector3 leftsideAngle = new Vector3(0, 0, 0);
 	Vector3 rightsideAngle = new Vector3(0, 180, 0);
     readonly float dirChangeTime = 0.5f;
-    Transform animatorRoot;
+    Transform pivotTransform;
     readonly int maxFrame = 10;
     int frameCounter;
     Vector2 centerOfBody;
@@ -20,9 +20,9 @@ public class MeleeTrack : StateMachineBehaviour {
         attackRange = animator.GetComponent<Enemy>().attackRange;
         player = EnemyManager.Instance.player;
 
-        animatorRoot = animator.transform.parent;
-        float halfHeight = animatorRoot.gameObject.GetComponent<BoxCollider2D>().size.y / 2.0f;
-        Vector2 rootPosition2D = animatorRoot.position;
+        pivotTransform = animator.transform.parent;
+        float halfHeight = pivotTransform.gameObject.GetComponent<BoxCollider2D>().size.y / 2.0f;
+        Vector2 rootPosition2D = pivotTransform.position;
         centerOfBody = new Vector2(0, halfHeight) + rootPosition2D;
         frameCounter = 0;
 	}
@@ -32,7 +32,7 @@ public class MeleeTrack : StateMachineBehaviour {
         frameCounter += 1;
         if (frameCounter >= maxFrame)
         {
-            animatorRoot.eulerAngles = (player.transform.position.x - animatorRoot.position.x < 0) ? leftsideAngle : rightsideAngle;
+            pivotTransform.eulerAngles = (player.transform.position.x - pivotTransform.position.x < 0) ? leftsideAngle : rightsideAngle;
             frameCounter = 0;
         }
         if (animator.GetComponent<Enemy>().playerDistance < attackRange)
@@ -41,9 +41,9 @@ public class MeleeTrack : StateMachineBehaviour {
 			return;
 		}
 
-        Vector2 currPosition = animatorRoot.position;
-		Vector2 movingDistance = animatorRoot.right * trackSpeed * Time.deltaTime * -1;
-        animatorRoot.gameObject.GetComponent<Rigidbody2D>().MovePosition(currPosition + movingDistance);
+        Vector2 currPosition = pivotTransform.position;
+		Vector2 movingDistance = pivotTransform.right * trackSpeed * Time.deltaTime * -1;
+        pivotTransform.gameObject.GetComponent<Rigidbody2D>().MovePosition(currPosition + movingDistance);
 
 	}
 

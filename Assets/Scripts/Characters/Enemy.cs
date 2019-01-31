@@ -40,8 +40,6 @@ public class Enemy : MonoBehaviour {
     // for animation
     [HideInInspector]
     public float playerDistance;
-    public bool gotKnockback;
-    RuntimeAnimatorController ac;
 
     // drop item
 
@@ -51,7 +49,6 @@ public class Enemy : MonoBehaviour {
     private void Awake()
     {
         enemyManager = EnemyManager.Instance;
-        ac = GetComponent<Animator>().runtimeAnimatorController;
     }
 
     private void Start()
@@ -63,10 +60,6 @@ public class Enemy : MonoBehaviour {
     private void Update()
     {
         playerDistance = Vector2.Distance(enemyManager.player.transform.position, transform.parent.position);
-        if (gotKnockback)
-        {
-
-        }
     }
 
     // hit by player or debuff
