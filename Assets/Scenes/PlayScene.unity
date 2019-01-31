@@ -252,6 +252,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1161003025175732, guid: 378c41c0af7d4db41895ec01e1f50291, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 378c41c0af7d4db41895ec01e1f50291, type: 2}
   m_IsPrefabAsset: 0
@@ -1031,11 +1035,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4884929250924374, guid: e6794ab8e2e4c6340a23b382e9497cbb, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -955.5
+      value: -462
       objectReference: {fileID: 0}
     - target: {fileID: 4884929250924374, guid: e6794ab8e2e4c6340a23b382e9497cbb, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -530
+      value: -542
       objectReference: {fileID: 0}
     - target: {fileID: 4884929250924374, guid: e6794ab8e2e4c6340a23b382e9497cbb, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1065,6 +1069,15 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: UpgradeStage
+      objectReference: {fileID: 0}
+    - target: {fileID: 224008356030171754, guid: e6794ab8e2e4c6340a23b382e9497cbb,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083421967201116, guid: e6794ab8e2e4c6340a23b382e9497cbb, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6794ab8e2e4c6340a23b382e9497cbb, type: 2}
@@ -1169,6 +1182,10 @@ Prefab:
     - target: {fileID: 224402251087470820, guid: c179f0931cfabec428a868a6edc543b0,
         type: 2}
       propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1939101680453256, guid: c179f0931cfabec428a868a6edc543b0, type: 2}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
