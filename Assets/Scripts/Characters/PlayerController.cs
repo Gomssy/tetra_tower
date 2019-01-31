@@ -96,11 +96,20 @@ public class PlayerController : MonoBehaviour
                 rb.gravityScale = rbAttackGravityScale;
                 return;
             }
-            if (GetItemRay() == false && lastDropItem!=null)
+            if (GetItemRay() == false )
             {
-                lastDropItem.HighlightSwitch(false);
-                lastDropItem = null;
+                if (lastDropItem != null)
+                {
+                    lastDropItem.HighlightSwitch(false);
+                    lastDropItem = null;
+                }
+                if (lastLifeStone != null)
+                {
+                    lastLifeStone.HighlightSwitch(false);
+                    lastLifeStone = null;
+                }
             }
+            
             if (interaction != 1f) interactionCoolDown = true;
             if (lastDropItem!=null && interaction == 1f &&interactionCoolDown)
             {
@@ -284,7 +293,6 @@ public class PlayerController : MonoBehaviour
                     if (lastLifeStone != null)
                     {
                         lastLifeStone.HighlightSwitch(false);
-
                     }
                     lastLifeStone = stoneTemp;
                     stoneTemp.HighlightSwitch(true);
@@ -296,7 +304,6 @@ public class PlayerController : MonoBehaviour
                 if (lastDropItem != null)
                 {
                     lastDropItem.HighlightSwitch(false);
-
                 }
                 lastDropItem = temp;
                 temp.HighlightSwitch(true);
@@ -334,7 +341,7 @@ public class PlayerController : MonoBehaviour
 
             }
         }*/
-        return hit1.collider != null  ;
+        return hit1.collider != null;
     }
     bool IsInRope()   // Is player in rope?
     {
