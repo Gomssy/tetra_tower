@@ -26,7 +26,7 @@ public class MeleeIdle : StateMachineBehaviour {
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		if (Vector2.Distance(player.transform.position, animatorRoot.position) < noticeRange)
+		if (animator.GetComponent<Enemy>().playerDistance < noticeRange)
 		{
 			animator.SetTrigger("TrackTrigger");
 			return;

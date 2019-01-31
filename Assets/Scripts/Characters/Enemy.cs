@@ -28,47 +28,57 @@ public class Enemy : MonoBehaviour {
     public float attackRange;
     public float patrolSpeed;
     public float trackSpeed;
-    public float attackDelay;
-    public float attackDuration;
     
     private float playerMaxHealth; //다른 스크립트에 있는 플레이어 최대체력 가져와야함
     private float currHealth;
 
-    // debuff
-    float[] immunity_time = new float[5] { 0.0f, 3.0f, 6.0f, 6.0f, 6.0f };//면역 시간
-    bool[] immunity = new bool[] { false, }; //현재 에너미가 디버프 상태에 대해서 면역인지를 체크하는 변수
-    
+    // [HideInInspector]
+
     // enemy manager
     private EnemyManager enemyManager;
+
+    // for animation
+    [HideInInspector]
+    public float playerDistance;
+    public bool gotKnockback;
+    RuntimeAnimatorController ac;
 
     // drop item
 
 
-// method
-    // Awake & Start
+    // method
+    // Standard Method
     private void Awake()
     {
         enemyManager = EnemyManager.Instance;
+        ac = GetComponent<Animator>().runtimeAnimatorController;
     }
 
     private void Start()
     {
         this.currHealth = maxHealth;
+        playerDistance = Vector2.Distance(enemyManager.player.transform.position, transform.parent.position);
     }
 
-	// hit by player or debuff
-	public void GetDamaged(float damage) { 
+    private void Update()
+    {
+        playerDistance = Vector2.Distance(enemyManager.player.transform.position, transform.parent.position);
+        if (gotKnockback)
+        {
+
+        }
+    }
+
+    // hit by player or debuff
+    public void GetDamaged(float damage) { 
         currHealth -= damage;
         if(currHealth <= 0) {
             gameObject.SetActive(false);
             return;
         }
-        float knockback_dist = damage * unitDist / weight;
         gameObject.GetComponent<Animator>().SetTrigger("DamagedTrigger");
     }
-    
 
-    
     IEnumerator DebuffCase(EnemyDebuffed sCase)
     {
 
