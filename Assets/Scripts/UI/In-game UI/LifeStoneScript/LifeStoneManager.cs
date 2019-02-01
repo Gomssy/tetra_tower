@@ -63,8 +63,9 @@ public class LifeStoneManager : MonoBehaviour {
         lifeStoneArray = new int[50, 3];
 		lifeStoneUnit = new GameObject[50, 3];
         for (int i = 0; i < 50; i++) for (int j = 0; j < 3; j++) lifeStoneArray[i, j] = 0;
-		StartCoroutine("TestEnumerator");
-	}
+		//StartCoroutine("TestEnumerator");
+        PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 8), "AAAAAAAAAAAAAAAAAAAAAAAA"));
+    }
 	IEnumerator TestEnumerator()
 	{
         yield return null;

@@ -876,6 +876,10 @@ public class MapManager : MonoBehaviour {
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+        if(!room.isRoomCleared)
+        {
+            GameObject.Find("EnemyManager").GetComponent<EnemyManager>().SpawnEnemy();
+        }
     }
     /// <summary>
     /// Make room fade out.
