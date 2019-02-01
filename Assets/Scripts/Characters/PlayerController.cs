@@ -60,8 +60,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private DroppedItem lastDropItem;
     private DroppedLifeStone lastLifeStone;
-    private float interaction;
-    private bool interactionCoolDown=true;
+    private bool interaction;
     public PlayerState playerState, previousState;
     
     void Start()
@@ -81,10 +80,34 @@ public class PlayerController : MonoBehaviour
         if (!upKeyDown) upKeyDown = previous <= 0 && verticalRaw > 0;
         if (!downKeyDown) downKeyDown = previous >= 0 && verticalRaw < 0;
 
-        interaction = Input.GetAxisRaw("interaction");
+        interaction = Input.GetButtonDown("Interaction");
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;
+        }
+
+        if (GetItemRay() == false)
+        {
+            if (lastDropItem != null)
+            {
+                lastDropItem.HighlightSwitch(false);
+                lastDropItem = null;
+            }
+            if (lastLifeStone != null)
+            {
+                lastLifeStone.HighlightSwitch(false);
+                lastLifeStone = null;
+            }
+        }
+
+        if (lastDropItem != null && interaction)
+        {
+            print(lastDropItem.PushItem() + "냠냠");
+        }
+        if (lastLifeStone != null && interaction)
+        {
+            lastLifeStone.ApplyLifeStone();
+            print("생명석 냠냠");
         }
     }
 
@@ -98,32 +121,6 @@ public class PlayerController : MonoBehaviour
             {
                 rb.gravityScale = rbAttackGravityScale;
                 return;
-            }
-            if (GetItemRay() == false )
-            {
-                if (lastDropItem != null)
-                {
-                    lastDropItem.HighlightSwitch(false);
-                    lastDropItem = null;
-                }
-                if (lastLifeStone != null)
-                {
-                    lastLifeStone.HighlightSwitch(false);
-                    lastLifeStone = null;
-                }
-            }
-            
-            if (interaction != 1f) interactionCoolDown = true;
-            if (lastDropItem!=null && interaction == 1f &&interactionCoolDown)
-            {
-                interactionCoolDown = false;
-                print(lastDropItem.PushItem()+"냠냠");
-            }
-            if(lastLifeStone!=null && interaction == 1f && interactionCoolDown)
-            {
-                interactionCoolDown = false;
-                lastLifeStone.ApplyLifeStone();
-                   print("생명석 냠냠");
             }
 
             if (isGrounded)
