@@ -40,6 +40,7 @@ public class Enemy : MonoBehaviour {
     // for animation
     [HideInInspector]
     public float playerDistance;
+    private Animator animator;
 
     // drop item
 
@@ -49,12 +50,12 @@ public class Enemy : MonoBehaviour {
     private void Awake()
     {
         enemyManager = EnemyManager.Instance;
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
     {
         this.currHealth = maxHealth;
-        playerDistance = Vector2.Distance(enemyManager.player.transform.position, transform.parent.position);
     }
 
     private void Update()
@@ -69,7 +70,8 @@ public class Enemy : MonoBehaviour {
             gameObject.SetActive(false);
             return;
         }
-        gameObject.GetComponent<Animator>().SetTrigger("DamagedTrigger");
+        animator.SetFloat("knockbackDistance", damage / this.weight);
+        animator.SetTrigger("DamagedTrigger");
     }
 
     IEnumerator DebuffCase(EnemyDebuffed sCase)
