@@ -696,6 +696,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1939101680453256, guid: c179f0931cfabec428a868a6edc543b0,
     type: 2}
   m_PrefabInternal: {fileID: 1711972807}
+--- !u!114 &1206751493 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114920782405449110, guid: c179f0931cfabec428a868a6edc543b0,
+    type: 2}
+  m_PrefabInternal: {fileID: 1711972807}
+  m_Script: {fileID: 11500000, guid: 7fe540ec78947fc449eabc76bd87823d, type: 3}
 --- !u!224 &1209430809 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224402251087470820, guid: c179f0931cfabec428a868a6edc543b0,
@@ -957,6 +963,11 @@ Prefab:
       propertyPath: inventoryManager
       value: 
       objectReference: {fileID: 2035175000}
+    - target: {fileID: 114880704145925944, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: lifeStoneManager
+      value: 
+      objectReference: {fileID: 1206751493}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d077a5f727dd1e4780e9265ed26e036, type: 2}
   m_IsPrefabAsset: 0
@@ -1140,10 +1151,6 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1939101680453256, guid: c179f0931cfabec428a868a6edc543b0, type: 2}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c179f0931cfabec428a868a6edc543b0, type: 2}

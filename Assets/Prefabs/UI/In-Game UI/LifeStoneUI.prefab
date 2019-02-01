@@ -83,7 +83,7 @@ MonoBehaviour:
   lifeStoneLocation: {x: 7, y: 7}
   standardImage: {fileID: 1001509239983906, guid: a48de94a6ab80f746aec69a02812f1e3,
     type: 2}
-  lifeStoneRowNum: 8
+  lifeStoneRowNum: 6
   lifeStoneSize: 40
   sprites:
   - {fileID: 21300004, guid: eff441d843b9c664e97a81fcb39d8410, type: 3}

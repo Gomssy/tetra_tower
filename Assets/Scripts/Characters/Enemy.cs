@@ -63,8 +63,8 @@ public class Enemy : MonoBehaviour {
     }
 
     // hit by player or debuff
-    public void GetDamaged(float damage) { 
-        currHealth -= damage;
+    public void GetDamaged(PlayerAttackInfo attack) { 
+        currHealth -= attack.damage;
         if(currHealth <= 0) {
             gameObject.SetActive(false);
             return;

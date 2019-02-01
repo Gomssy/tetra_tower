@@ -13,8 +13,10 @@ public class AttackProperty : MonoBehaviour{
         
         if (collision.CompareTag("Enemy"))
         {
+            PlayerAttackInfo curAttack = new PlayerAttackInfo(damage, knockBackMultiplier, debuffNum, debuffType, debuffTime);
+            Enemy enemyInfo = collision.transform.GetChild(0).GetComponent<Enemy>();
             Debug.Log("Ugh!");
-            collision.transform.GetChild(0).GetComponent<Enemy>().GetDamaged(damage);
+            collision.transform.GetChild(0).GetComponent<Enemy>().GetDamaged(curAttack);
         }
     }
 }

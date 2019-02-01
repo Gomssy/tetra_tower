@@ -17,6 +17,7 @@ public class PlayerAttack : MonoBehaviour {
     public AnimatorOverrideController aoc;
     public AnimationClip[] normalAttack = new AnimationClip[3];
     public InventoryManager inventoryManager;
+    public LifeStoneManager lifeStoneManager;
 
     float comboEndTime;
     bool comboTimeOn;
@@ -169,5 +170,10 @@ public class PlayerAttack : MonoBehaviour {
                 if (item.combo[i].Length > comboArray.Length && item.combo[i].Substring(0, comboArray.Length).Equals(comboArray))
                     return true;
         return false;
+    }
+
+    public void TakeDamage(EnemyAttackInfo attack)
+    {
+        lifeStoneManager.DestroyStone((int)Mathf.Ceil(attack.damage));
     }
 }
