@@ -8,10 +8,13 @@ public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public int num;
     InventoryUI ui;
     InventoryManager manager;
+    Transform addonGroup, discardBin;
     void Start()
     {
         ui = GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>();
         manager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        addonGroup = ui.gameObject.transform.Find("AddonGroup");
+        discardBin = ui.gameObject.transform.Find("DiscardBin");
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -25,11 +28,19 @@ public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        
+        if (CheckBetween(Input.mousePosition, discardBin.position, discardBin.GetComponent<RectTransform>().sizeDelta))
+        {
+            if (num < 9)
+                manager.DiscardAddon(num);
+            else
+                manager.DiscardAddon(ui.selectedItem, (AddonType)(num - 9));
+            manager.SetOnPosition();
+            return;
+        }
         if (num < 9)
         {
             int type = (int)manager.addonList[num].type;
-            if (manager.itemList[ui.selectedItem].attachable[type])
+            if (ui.selectedItem != -1 && manager.itemList[ui.selectedItem].attachable[type])
             {
                 if (CheckBetween(Input.mousePosition, ui.infoAddonsFrame[type].transform.position, ui.infoAddonsFrame[type].GetComponent<RectTransform>().sizeDelta))
                 {
@@ -40,7 +51,7 @@ public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         }
         else
         {
-            if (CheckBetween(Input.mousePosition, ui.gameObject.transform.Find("AddonGroup").position, ui.gameObject.transform.Find("AddonGroup").GetComponent<RectTransform>().sizeDelta))
+            if (CheckBetween(Input.mousePosition, addonGroup.position, addonGroup.GetComponent<RectTransform>().sizeDelta))
                 manager.DetachAddon(ui.selectedItem, (AddonType)(num - 9));
         }
         manager.SetOnPosition();

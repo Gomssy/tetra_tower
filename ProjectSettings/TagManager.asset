@@ -7,6 +7,8 @@ TagManager:
   - MapManager
   - Tetrimino
   - TetriminoSpawner
+  - DroppedLifeStone
+  - DroppedItem
   layers:
   - Default
   - TransparentFX
