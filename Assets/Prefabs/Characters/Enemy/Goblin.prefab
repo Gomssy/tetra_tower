@@ -209,9 +209,9 @@ MonoBehaviour:
   weight: 3
   patrolRange: 2
   noticeRange: 2
-  attackRange: 2
-  patrolSpeed: 5
-  trackSpeed: 7
+  attackRange: 1
+  patrolSpeed: 2.5
+  trackSpeed: 3.5
   playerDistance: 0
 --- !u!114 &114468655689627186
 MonoBehaviour:

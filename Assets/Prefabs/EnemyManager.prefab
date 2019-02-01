@@ -51,3 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7c7899a8a94c24cb9eb34d432133ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1623439448163086, guid: 3d077a5f727dd1e4780e9265ed26e036, type: 2}
+  dropTableData: {fileID: 4900000, guid: 6216895c658a2af40890a4446cc10a8c, type: 3}
+  dropItemList: []
+  enemyPrefab:
+  - {fileID: 1636491341446076, guid: a164c147037e89448820f7387c724c42, type: 2}

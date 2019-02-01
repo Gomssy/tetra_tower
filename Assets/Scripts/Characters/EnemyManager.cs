@@ -67,6 +67,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
     private GameObject PickFromPool(GameObject enemy)
     {
+        Debug.Log(enemy.name);
         GameObject[] pool = enemyPool[enemy];
         foreach(GameObject obj in pool)
         {

@@ -37,7 +37,7 @@ public class InventoryManager : MonoBehaviour {
     IEnumerator TestCoroutine()
     {
         yield return null;
-        PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[0])));
+        /*PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[0])));
         PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[2])));
         yield return new WaitForSeconds(1.5f);
         ItemInstantiate(itemPool[0], player.transform.position);
@@ -51,7 +51,7 @@ public class InventoryManager : MonoBehaviour {
         AddonInstantiate(addonPool[0], player.transform.position);
         yield return new WaitForSeconds(1.5f);
         AddonInstantiate(addonPool[1], player.transform.position);
-        /*ItemSelect(0);
+        ItemSelect(0);
         yield return new WaitForSeconds(1f);
         PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[1])));
         yield return new WaitForSeconds(1f);
