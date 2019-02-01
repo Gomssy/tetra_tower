@@ -6,7 +6,10 @@
     blind,
     charm
 };
+public enum PlayerDebuffCase
+{
 
+}
 public enum ItemQuality
 {
     Study,

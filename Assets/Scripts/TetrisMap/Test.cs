@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Test : MonoBehaviour {
 
     MapManager mapManager;
+    EnemyManager enemyManager;
     TetriminoSpawner tetriminoSpawner;
     public static Vector3 tetrisCameraCoord = new Vector3(180, 0, -1);
     public static float tetrisMapSize = 300;
@@ -49,6 +50,10 @@ public class Test : MonoBehaviour {
     public void ClearRoom()
     {
         MapManager.currentRoom.ClearRoom();
+    }
+    public void SummonEnemy()
+    {
+        enemyManager.SpawnEnemy();
     }
 
     public GameObject upDoor;
@@ -108,7 +113,7 @@ public class Test : MonoBehaviour {
     private void Awake()
     {
         //leftDoor.GetComponent<Animator>().SetInteger("doorPosition", 3);
-
+        enemyManager = EnemyManager.Instance;
         mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
     }

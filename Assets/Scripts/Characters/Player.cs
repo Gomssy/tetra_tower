@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿  using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,7 +18,7 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         tx = (int)(transform.position.x / 24f);
-        ty = (int)(transform.position.y-0.9f / 24f);
+        ty = (int)((transform.position.y-0.9f) / 24f);
         if ((ttx != tx || tty != ty) && MapManager.isRoomFalling != true)
         {
             MapManager.tempRoom = MapManager.mapGrid[tx, ty];

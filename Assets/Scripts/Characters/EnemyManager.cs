@@ -3,126 +3,128 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
-    // static variable
-    // about action
-    public enum State
-    {
-        Idle,
-        Track,
-        Attack
-    } // 상속을 통해 수정할 가능성 높음. 염두만 해 두자.
-
-    public enum EnemyData { Health, Weight, Height, Width, DetectRange,
-        AtkRange, AtkDistance, AtkDelay, PjtSpeed, MoveSpeed,
-        Damage } //Atk = Attack, Pjt = Projectile(투사체)
-    /* 기본적으로 각 경우에 대해 가지는 값은 양수일 것
-     * 하지만 특별한 경우가 있음
-     * 1. DetectRange(감지 범위) : DetectRange가 -1이면 방 전체를 감지한다는 뜻. -2이면 현재 에너미가 있는 플랫폼 전체, -3이면 플랫폼 전방만 감지를 뜻 함.
-     * 2. AtkRange(공격 범위) : -1이면 현재 위치한 플랫폼 전체를 의미, -2이면 플랫폼 전방만 의미.
-     * 3. AtkDistance(공격 사거리) : -1이면 현재 위치한 플랫폼 끝까지 의미.
-     * 4. AtkDelay(공격 딜레이) : -1이면 무한 즉, 단 1회 공격함.
-     */
-    public delegate void Action();
-
-
     // data
-    // dictionary
-    public readonly Dictionary<int, Dictionary<ItemType, int>> dropTableByID;
-    public readonly Dictionary<int, Dictionary<State, Action>> actionDictByID;
-    public readonly Dictionary<int, Dictionary<EnemyData, float>> enemyDataByID;
+    // static
+    private static readonly int poolSize = 10;
 
-    public GameObject enemyPrefab;
+    // hold player for animation
+    public GameObject player;
+
+    // data of drop item
+    public TextAsset dropTableData;
+    public Dictionary<int, int[]> dropTableByID = new Dictionary<int, int[]>();
+    public GameObject[] dropItemList; // insert drop item here(on right order)
+
+    // enemy prefab
+    public GameObject[] enemyPrefab;
+    public Dictionary<GameObject, GameObject[]> enemyPool = new Dictionary<GameObject, GameObject[]>();
+
     // method
-    // constructor
-    protected EnemyManager()
-    {
-        string dropTableDataPath = "";
-        string actionTableDataPath = "";
+    // Constructor - protect calling raw constructor
+    protected EnemyManager() { }
 
-        LoadDropTable(dropTableDataPath);
+    // Awake
+    private void Awake()
+    {
+        player = GameObject.Find("Player");
+        LoadDropTable(dropTableData);
+        CreateEnemyPool();
+    }
+
+    // Spawn Enemy to Map
+    public void SpawnEnemy()
+    {
+        Transform enemySpots = MapManager.currentRoom.roomInGame.transform.Find("enemy spot");
+        foreach(Transform enemySpot in enemySpots)
+        {
+            GameObject enemy = enemySpot.gameObject.GetComponent<enemySpot>().enemyPrefab;
+            foreach(Transform location in enemySpot)
+            {
+                GameObject clone = PickFromPool(enemy);
+                clone.transform.position = location.position;
+            }
+        }
+    }
+
+    // Object Pool
+    private void CreateEnemyPool()
+    {
+        foreach(GameObject eachEnemy in enemyPrefab)
+        {
+            GameObject[] pool = new GameObject[poolSize];
+            for(int i = 0; i < pool.Length; i++)
+            {
+                pool[i] = Instantiate(eachEnemy);
+                pool[i].SetActive(false);
+            }
+            enemyPool.Add(eachEnemy, pool);
+        }
+    }
+
+    private GameObject PickFromPool(GameObject enemy)
+    {
+        Debug.Log(enemy.name);
+        GameObject[] pool = enemyPool[enemy];
+        foreach(GameObject obj in pool)
+        {
+            if (!obj.activeSelf)
+            {
+                obj.SetActive(true);
+                return obj;
+            }
+        }
+
+        int beforeExtend = pool.Length;
+        Array.Resize(ref pool, pool.Length + poolSize);
+        for(int i = beforeExtend; i < pool.Length; i++)
+        {
+            pool[i] = Instantiate(enemy);
+            pool[i].SetActive(false);
+        }
+        enemyPool[enemy] = pool;
+
+        pool[beforeExtend].SetActive(true);
+        return pool[beforeExtend];
     }
 
     // Load Dictionary
-    private void LoadDropTable(string dataPath)
+    private void LoadDropTable(TextAsset dataFile)
     {
-        StreamReader strReader = new StreamReader(dataPath, Encoding.UTF8);
+        string[] linesFromText = dataFile.text.Split('\n');
         string[] cellValue = null;
-        string tableLine = null;
-        strReader.ReadLine();
-        Dictionary<ItemType, int> dropItemInfo = new Dictionary<ItemType, int>();
 
-        while ((tableLine = strReader.ReadLine()) != null)
+        int IDindex = 1; // index of monster ID is 1
+        int skipDistance = 3; // (Reason for 3): skip StageName, MonsterID, MonsterName (3 elements)
+
+        for (int i = 1; i < linesFromText.Length; i++) // (Reason i = 1): skip first line 
         {
-            if (string.IsNullOrEmpty(tableLine)) return;
-
-            cellValue = tableLine.Split(',');
+            cellValue = linesFromText[i].Split(',');
 
             int enemyID = -1;
-            int[] weight = {-1};
-            int sum = 0;
-            int[] cumulatedWeight = { -1 };
+            int.TryParse(cellValue[IDindex], out enemyID);
+            Assert.AreNotEqual(-1, enemyID); // case -1: read error
+            if (enemyID == 0) { continue; } // case 0: blank
 
-            int.TryParse(cellValue[0], out enemyID);
-            for(int i=1;i<17;i++)
-            {
-                int.TryParse(cellValue[i+1], out weight[i]);
-            }
+            int dropTableLength = cellValue.Length - skipDistance;
+            Assert.AreEqual(dropTableLength, dropItemList.Length);
+            int[] dropTable = new int[dropTableLength];
 
-            for(int i=0;i<16;i++)
+            int cumulated = 0;
+
+            for (int j = 0; j < dropTableLength; j++)
             {
-                sum += weight[i];
-                cumulatedWeight[i] = sum;
+                int weight = -1;
+                int.TryParse(cellValue[j + skipDistance], out weight);
+                Assert.AreNotEqual(-1, weight);
+                cumulated += weight;
+                dropTable[j] = cumulated;
             }
             
-            for(int i=0;i<16;i++)
-            {
-                dropItemInfo.Add((ItemType)i, cumulatedWeight[i]);
-            }
-
-            
-            dropTableByID.Add(enemyID, dropItemInfo);
+            dropTableByID.Add(enemyID, dropTable);
         }
-    }
-
-   
-
-    // Load ALL CSV Data
-    private void LoadEnemyData(string dataPath)
-    {
-        StreamReader strReader = new StreamReader(dataPath, Encoding.UTF8);
-        string[] cellValue = null;
-        string tableLine = null;
-        strReader.ReadLine();
-        Dictionary<EnemyData, float> EnemyInfo = new Dictionary<EnemyData, float>();
-        while ((tableLine = strReader.ReadLine()) != null)
-        {
-            cellValue = tableLine.Split(',');
-
-            int enemyID = -1;
-            float[] enemyData = { 0.0f };
-           
-            int.TryParse(cellValue[0], out enemyID);
-            for(int i = 0;i<11;i++)
-            {
-                float.TryParse(cellValue[i + 2], out enemyData[i]);
-            }
-
-            for(int i=0;i<12;i++)
-            {
-                EnemyInfo.Add((EnemyData)i, enemyData[i]);
-            }
-
-            enemyDataByID.Add(enemyID, EnemyInfo);
-        }
-    }
-    // called by gameManager to Spawn enemy
-    // little temporary. Many change will be exist.
-    public void SpawnEnemy()
-    {
-        Vector2 playerPosition = GameObject.Find("Player").transform.position;
-        Instantiate(enemyPrefab, playerPosition + new Vector2(7, 0), Quaternion.identity);
     }
 }

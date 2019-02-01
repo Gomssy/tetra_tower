@@ -9,7 +9,8 @@ public class DamageToPlayer : MonoBehaviour {
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Auch!");
+            EnemyAttackInfo attack = new EnemyAttackInfo(damage, 1f, 0, null, null);
+            collision.gameObject.GetComponent<PlayerAttack>().TakeDamage(attack);
         }
     }
 }

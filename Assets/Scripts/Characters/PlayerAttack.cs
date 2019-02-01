@@ -4,10 +4,8 @@ using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 public class PlayerAttack : MonoBehaviour {
-    public float[] attackRaw = new float[3];
-    public int[] attackKeyState = new int[3]; //0: released 1: push 2: pushing
-    public float cancelRaw;
-    public int cancelKeyState;
+    public bool[] attack = new bool[3];
+    public bool cancel;
     public bool playingSkill;
     public float comboTime;
     public Text time, combo;
@@ -17,6 +15,7 @@ public class PlayerAttack : MonoBehaviour {
     public AnimatorOverrideController aoc;
     public AnimationClip[] normalAttack = new AnimationClip[3];
     public InventoryManager inventoryManager;
+    public LifeStoneManager lifeStoneManager;
 
     float comboEndTime;
     bool comboTimeOn;
@@ -35,22 +34,10 @@ public class PlayerAttack : MonoBehaviour {
     {
         SetTimeText(comboTime, comboEndTime - Time.time);
         for (int i = 0; i < 3; i++)
-            attackRaw[i] = Input.GetAxisRaw("Fire" + (i+1));
-        cancelRaw = Input.GetAxisRaw("Stop");
-
-        for (int i = 0; i < 3; i++)
-        {
-            if (attackRaw[i] > 0 && attackKeyState[i] < 2)
-                attackKeyState[i]++;
-            else if (attackRaw[i] == 0)
-                attackKeyState[i] = 0;
-        }
-        if (cancelRaw > 0 && cancelKeyState < 2)
-            cancelKeyState++;
-        else if (cancelRaw == 0)
-            cancelKeyState = 0;
-
-        if (cancelKeyState == 1)
+            attack[i] = Input.GetButtonDown("Fire" + (i+1));
+        cancel = Input.GetButtonDown("Stop");
+        
+        if (cancel)
         {
             comboTimeOn = false;
         }
@@ -58,7 +45,7 @@ public class PlayerAttack : MonoBehaviour {
         if (!playingSkill)
         {
             for (int i = 0; i < 3; i++)
-                if (attackKeyState[i] == 1)
+                if (attack[i])
                 {
                     comboArray += (char)('A' + i);
                     CheckCombo();
@@ -169,5 +156,10 @@ public class PlayerAttack : MonoBehaviour {
                 if (item.combo[i].Length > comboArray.Length && item.combo[i].Substring(0, comboArray.Length).Equals(comboArray))
                     return true;
         return false;
+    }
+
+    public void TakeDamage(EnemyAttackInfo attack)
+    {
+        lifeStoneManager.DestroyStone((int)Mathf.Ceil(attack.damage));
     }
 }
