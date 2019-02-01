@@ -99,7 +99,7 @@ Transform:
   m_GameObject: {fileID: 1636491341446076}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 6.876, y: 1.034, z: -0.1645136}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4015301101001556}
   m_Father: {fileID: 0}
@@ -137,7 +137,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.030994058, y: 0.3586455}
+  m_Offset: {x: 0.08, y: 0.325}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -148,7 +148,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.4066851, y: 0.71662545}
+  m_Size: {x: 0.55, y: 1.1}
   m_EdgeRadius: 0
 --- !u!61 &61362187134790794
 BoxCollider2D:
@@ -212,9 +212,6 @@ MonoBehaviour:
   attackRange: 2
   patrolSpeed: 5
   trackSpeed: 7
-  attackDelay: 1
-  attackDuration: 1
-  invincible: 0
   playerDistance: 0
 --- !u!114 &114468655689627186
 MonoBehaviour:

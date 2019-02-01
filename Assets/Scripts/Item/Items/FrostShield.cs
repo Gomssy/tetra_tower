@@ -15,6 +15,9 @@ public class FrostShield : Item
         combo = new string[3] { "C", "", "" };
         attachable = new bool[4] { true, true, true, false };
         sprite = Resources.Load<Sprite>("Sprites/Items/frost shield");
+        animation[0] = Resources.Load<AnimationClip>("Animations/frostShieldAttack1");
+        animation[1] = null;
+        animation[2] = null;
         sizeInventory = new Vector2(90, 160);
     }
 }

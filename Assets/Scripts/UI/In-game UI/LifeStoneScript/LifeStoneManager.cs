@@ -325,8 +325,8 @@ public class LifeStoneManager : MonoBehaviour {
 	public int CountType(LifeStoneType type)
 	{
 		int count = 0;
-		for (int j = 0; j < 3; j++)
-			for (int i = 0; i < lifeStoneRowNum; i++)
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < lifeStoneRowNum; j++)
 				if (lifeStoneArray[j, i] == (int)type)
 					count++;
 		return count;

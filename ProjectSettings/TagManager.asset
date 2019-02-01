@@ -7,6 +7,8 @@ TagManager:
   - MapManager
   - Tetrimino
   - TetriminoSpawner
+  - DroppedLifeStone
+  - DroppedItem
   layers:
   - Default
   - TransparentFX
@@ -73,4 +75,7 @@ TagManager:
     locked: 0
   - name: TetrisSurface
     uniqueID: 3165498901
+    locked: 0
+  - name: PortalSelected
+    uniqueID: 3732261229
     locked: 0

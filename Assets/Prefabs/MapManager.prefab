@@ -73,6 +73,10 @@ MonoBehaviour:
     type: 2}
   inGameDoorRight: {fileID: 1668375270989012, guid: fa868e0924825b54896b61a69e93391f,
     type: 2}
+  portalSurface: {fileID: 1272210399781394, guid: 94f4bf6088d377c4780a5bc55baaabe0,
+    type: 2}
+  portalExist: {fileID: 21300000, guid: d2894481921999843ae1800d4b65ded6, type: 3}
+  portalSelected: {fileID: 21300000, guid: ab953b34dd9966f409d851b274ed4d9f, type: 3}
   normalRoomList1:
   - {fileID: 114452746530220676, guid: 3c35322ac2c308d49aadf20738b69c8b, type: 2}
   - {fileID: 114071400998216906, guid: 7fd2833846bb116479bd74d2a5b75487, type: 2}

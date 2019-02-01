@@ -53,3 +53,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPool: []
   addonPool: []
+  droppedPrefab: {fileID: 1610049888013262, guid: ee63f05b79e18ce4bad2c226aa70a28e,
+    type: 2}

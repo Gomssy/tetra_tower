@@ -112,6 +112,11 @@ public class InventoryUI : MonoBehaviour {
         else
         {
             frameObj.SetActive(false);
+            for (int i = 0; i < 4; i++)
+            {
+                infoAddons[i].SetActive(false);
+                infoAddonsFrame[i].SetActive(false);
+            }
         }
     }
 }
