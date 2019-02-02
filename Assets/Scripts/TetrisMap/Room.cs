@@ -14,6 +14,7 @@ public class Room : MonoBehaviour
     /// Not related to real location.
     /// </summary>
     public Vector3 mapCoord;
+    public bool[,] tileInfo = new bool[24, 24];
     /// <summary>
     /// Stage per rooms.
     /// </summary>

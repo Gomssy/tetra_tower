@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4821016865928708}
   - component: {fileID: 114144154128578016}
+  - component: {fileID: 114476419532778440}
   m_Layer: 0
   m_Name: MapManager
   m_TagString: MapManager
@@ -60,6 +61,7 @@ MonoBehaviour:
   tetriminoCreatedTime: 0
   collapseTime: 10
   spawnBossTetrimino: 0
+  tetriminoCost: 1
   fog: {fileID: 1100171732424598, guid: b8ab69a93ba618c47b27cc04eb431b3f, type: 2}
   clearedFog: {fileID: 1767033925555920, guid: df8687fe46befb34eaf9d4d63938d946, type: 2}
   press: {fileID: 114990664041074520, guid: 8e750fd197a05d84c9fb8557eb95c666, type: 2}
@@ -157,3 +159,22 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 11a6aa89a6f22a1498c4854c839c66e2, type: 3}
   - {fileID: 21300000, guid: b335c0d893e3c6847a861fd71c0348cd, type: 3}
   - {fileID: 21300000, guid: 00ec1514415c08349b130dbd95b9d270, type: 3}
+--- !u!114 &114476419532778440
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1519889983907966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adab373df646d5f4fb794a3b6ffdf2d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileFR: []
+  tileIT: []
+  tileWW: []
+  tileUT: []
+  map: {fileID: 0}
+  roomInGame: {fileID: 0}
+  fillLeftDoor: []
+  fillRightDoor: []
