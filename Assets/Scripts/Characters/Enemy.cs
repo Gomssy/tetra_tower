@@ -43,19 +43,25 @@ public class Enemy : MonoBehaviour {
     private Animator animator;
 
     // drop item
-
+    private InventoryManager inventoryManager;
+    private int[] dropTable;
+    // for test
+    public GameObject droppedItem;
+    public Item item;
 
     // method
     // Standard Method
     private void Awake()
     {
         enemyManager = EnemyManager.Instance;
+        inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
         animator = GetComponent<Animator>();
     }
 
     private void Start()
     {
         this.currHealth = maxHealth;
+        dropTable = enemyManager.dropTableByID[monsterID];
     }
 
     private void Update()
@@ -67,11 +73,32 @@ public class Enemy : MonoBehaviour {
     public void GetDamaged(float damage) { 
         currHealth -= damage;
         if(currHealth <= 0) {
-            gameObject.SetActive(false);
+            processDeath();
             return;
         }
         animator.SetFloat("knockbackDistance", damage / this.weight);
         animator.SetTrigger("DamagedTrigger");
+    }
+
+    private void processDeath()
+    {
+        float denominator = dropTable[dropTable.Length - 1];
+        float numerator = Random.Range(0, denominator);
+
+        int indexOfItem = 0;
+        for (int i = 0; i < dropTable.Length; i++)
+        {
+            if(numerator <= dropTable[i])
+            {
+                indexOfItem = i;
+                break;
+            }
+        }
+        inventoryManager.ItemInstantiate(enemyManager.dropItemList[indexOfItem], transform.parent.position);
+
+        gameObject.SetActive(false);
+        // animator.SetTrigger("DeadTrigger");
+        return;
     }
 
     IEnumerator DebuffCase(EnemyDebuffed sCase)

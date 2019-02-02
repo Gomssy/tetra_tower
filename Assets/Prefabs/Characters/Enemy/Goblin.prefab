@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4015301101001556}
   - component: {fileID: 212540714587432698}
   - component: {fileID: 95413729269184064}
-  - component: {fileID: 114138317320723260}
+  - component: {fileID: 114118738857420128}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -193,7 +193,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114138317320723260
+--- !u!114 &114118738857420128
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1225288737757304}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f12bf401d26646a488bc32ca7e3845be, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d73d07fdab522c4aa045e1cb6a92e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   monsterID: 101
