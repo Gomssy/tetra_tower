@@ -968,6 +968,26 @@ Prefab:
       propertyPath: lifeStoneManager
       value: 
       objectReference: {fileID: 1206751493}
+    - target: {fileID: 114402380471012178, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: damage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880704145925944, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: normalAttack.Array.data[0]
+      value: 
+      objectReference: {fileID: 7400000, guid: b1bf5cd583e214e448b83335f6c2d7a6, type: 2}
+    - target: {fileID: 114880704145925944, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: normalAttack.Array.data[1]
+      value: 
+      objectReference: {fileID: 7400000, guid: b1bf5cd583e214e448b83335f6c2d7a6, type: 2}
+    - target: {fileID: 114880704145925944, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: normalAttack.Array.data[2]
+      value: 
+      objectReference: {fileID: 7400000, guid: b1bf5cd583e214e448b83335f6c2d7a6, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d077a5f727dd1e4780e9265ed26e036, type: 2}
   m_IsPrefabAsset: 0
