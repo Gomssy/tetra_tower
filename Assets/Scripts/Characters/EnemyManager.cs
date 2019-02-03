@@ -17,7 +17,7 @@ public class EnemyManager : Singleton<EnemyManager>
     // data of drop item
     public TextAsset dropTableData;
     public Dictionary<int, int[]> dropTableByID = new Dictionary<int, int[]>();
-    public GameObject[] dropItemList; // insert drop item here(on right order)
+    public string[] dropItemList; // insert drop item here(on right order)
 
     // enemy prefab
     public GameObject[] enemyPrefab;
