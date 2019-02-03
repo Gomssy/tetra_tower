@@ -8,6 +8,7 @@ public class DroppedItem : MonoBehaviour
     public bool itemAddon; //false: item true: addon
     public Item item;
     public Addon addon;
+    public GameObject highlight;
     float itemSizeMultiplier = 0.0077f;
     Rigidbody2D rb2D;
     BoxCollider2D bc2D;
@@ -23,8 +24,12 @@ public class DroppedItem : MonoBehaviour
 
         transform.position = pos;
         sprt.sprite = item.sprite;
+        highlight.GetComponent<SpriteRenderer>().sprite = item.highlight;
+        highlight.SetActive(false);
         bc2D.size = sprt.size;
         transform.localScale = new Vector3((item.sizeInventory.x * itemSizeMultiplier) / sprt.size.x, (item.sizeInventory.y * itemSizeMultiplier) / sprt.size.y, 1);
+
+
         
     }
     public void Init(Addon _addon, Vector3 pos)
@@ -38,7 +43,8 @@ public class DroppedItem : MonoBehaviour
 
         transform.position = pos;
         sprt.sprite = addon.sprite;
-        sprt.size = addon.sizeInventory / 100f;
+        highlight.GetComponent<SpriteRenderer>().sprite = addon.highlight;
+        highlight.SetActive(false);
         bc2D.size = sprt.size;
         transform.localScale = new Vector3((addon.sizeInventory.x * itemSizeMultiplier) / sprt.size.x, (addon.sizeInventory.y * itemSizeMultiplier) / sprt.size.y, 1);
     }
@@ -58,7 +64,6 @@ public class DroppedItem : MonoBehaviour
     }
     public void HighlightSwitch(bool enabled)
     {
-        if (itemAddon) Debug.Log(addon.name + (enabled ? "on" : "off"));
-        else Debug.Log(item.name + (enabled ? "on" : "off"));
+        highlight.SetActive(enabled);
     }
 }

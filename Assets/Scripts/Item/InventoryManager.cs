@@ -35,6 +35,7 @@ public class InventoryManager : MonoBehaviour {
         }
 
         itemPool[0].Add("Bow");
+        itemPool[0].Add("Dagger");
 
         itemPool[1].Add("Baculus");
         itemPool[1].Add("BambooSpear");
@@ -82,7 +83,7 @@ public class InventoryManager : MonoBehaviour {
     IEnumerator TestCoroutine()
     {
         yield return null;
-        ItemInstantiate(ItemQuality.Ordinary, player.transform.position);
+        ItemInstantiate(ItemQuality.Study, player.transform.position);
         /*PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[0])));
         PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[2])));
         yield return new WaitForSeconds(1.5f);
