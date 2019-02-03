@@ -8,6 +8,7 @@ public abstract class Addon {
     public ItemQuality quality;
     public AddonType type;
     public Sprite sprite;
+    public Sprite highlight;
     public Vector2 sizeInventory;
 
     public Addon()
@@ -20,6 +21,7 @@ public abstract class Addon {
         quality = ItemQuality.Study;
         type = AddonType.Prop;
         sprite = null;
+        highlight = null;
         sizeInventory = new Vector2(0, 0);
     }
 }

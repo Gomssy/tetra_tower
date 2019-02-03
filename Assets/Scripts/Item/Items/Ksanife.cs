@@ -15,6 +15,7 @@ public class Ksanife : Item
         combo = new string[3] { "A", "AABAA", "" };
         attachable = new bool[4] { true, true, false, false };
         sprite = Resources.Load<Sprite>("Sprites/Items/ksanife");
+        highlight = Resources.Load<Sprite>("Sprites/Items/ksanife");
         animation[0] = Resources.Load<AnimationClip>("Animations/ksanifeAttack1");
         animation[1] = Resources.Load<AnimationClip>("Animations/ksanifeAttack2");
         animation[2] = null;

@@ -15,6 +15,7 @@ public class ChainSickle : Item
         combo = new string[3] { "AAB", "AABC", "" };
         attachable = new bool[4] { true, false, true, true };
         sprite = Resources.Load<Sprite>("Sprites/Items/chain sickle");
+        highlight = Resources.Load<Sprite>("Sprites/Items/chain sickle");
         animation[0] = Resources.Load<AnimationClip>("Animations/chainSickleAttack1");
         animation[1] = Resources.Load<AnimationClip>("Animations/chainSickleAttack2");
         animation[2] = null;
