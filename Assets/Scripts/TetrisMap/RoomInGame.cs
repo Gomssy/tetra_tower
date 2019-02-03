@@ -10,4 +10,5 @@ public class RoomInGame : MonoBehaviour {
     /// Information for stage.
     /// </summary>
     public bool[] concept = new bool[4];
+    public bool[,] tileInfo = new bool[24, 24];
 }

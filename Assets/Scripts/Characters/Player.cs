@@ -42,7 +42,7 @@ public class Player : MonoBehaviour {
         }
         ttx = tx;
         tty = ty;
-        if (lifeStoneManager.CountType(LifeStoneType.Normal) == 0)
+        if (lifeStoneManager.CountType(LifeStoneType.Normal) + lifeStoneManager.CountType(LifeStoneType.Gold) + lifeStoneManager.CountType(LifeStoneType.Amethyst) == 0)
             GameManager.gameState = GameState.GameOver;
 	}
 }

@@ -5,30 +5,6 @@ using UnityEngine.Tilemaps;
 
 public class TileManager : MonoBehaviour
 {
-    public Tilemap map;
-    public RoomInGame roomInGame;
-    public TileBase[] fillLeftDoor;
-    public TileBase[] fillRightDoor;
-    public TileBase[] tile11;
-    public TileBase[] tile12;
-    public TileBase[] tile13;
-    public TileBase[] tile14;
-    public TileBase[] tile21;
-    public TileBase[] tile22;
-    public TileBase[] tile23;
-    public TileBase[] tile24;
-    public TileBase[] tile31;
-    public TileBase[] tile32;
-    public TileBase[] tile33;
-    public TileBase[] tile34;
-    public TileBase[] tile41;
-    public TileBase[] tile42;
-    public TileBase[] tile43;
-    public TileBase[] tile44;
-    public TileBase[] tile51;
-    public TileBase[] tile52;
-    public TileBase[] tile53;
-    public TileBase[] tile54;
     public TileBase[] allTiles;
 
     Dictionary<string, TileBase>[,] tilesDistributed = new Dictionary<string, TileBase>[5, 4];
@@ -37,53 +13,54 @@ public class TileManager : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 4; j++)
-                tiles[i, j] = new Dictionary<string, TileBase>();
+                tilesDistributed[i, j] = new Dictionary<string, TileBase>();
         string tileName;
         for(int i = 0; i < allTiles.Length; i++)
         {
             tileName = allTiles[i].name;
-            tiles[int.Parse(tileName[0].ToString()) - 1, int.Parse(tileName[1].ToString()) - 1].Add(tileName.Substring(2), allTiles[i]);
+            tilesDistributed[int.Parse(tileName.Substring(0, 1)) - 1, int.Parse(tileName.Substring(1, 1)) - 1].Add(tileName.Substring(2), allTiles[i]);
         }
     }
 
-    public void CheckAllTiles(Room room)
+    public void CheckAllTiles(RoomInGame roomInGame)
     {
-        Tilemap roomTileMap = room.roomInGame.transform.GetChild(3).GetComponent<Tilemap>();
+        Tilemap roomTileMap = null;
+        for(int i = 0; i < roomInGame.transform.childCount; i++)
+        {
+            if (roomInGame.transform.GetChild(i).name.Equals("wall"))
+            {
+                roomTileMap = roomInGame.transform.GetChild(i).GetComponent<Tilemap>();
+                break;
+            }
+        }
         for(int x = 0; x < 24; x++)
             for(int y = 0; y < 24; y++)
             {
                 if (roomTileMap.GetTile(new Vector3Int(x, y, 0)))
-                    room.tileInfo[x, y] = true;
+                    roomInGame.tileInfo[x, y] = true;
                 else
-                    room.tileInfo[x, y] = false;
+                    roomInGame.tileInfo[x, y] = false;
             }
     }
 
-    public char CheckQuarterTile(Room room, Vector2Int originPos, Vector2Int checkPos)
+    public char CheckQuarterTile(RoomInGame roomInGame, Vector2Int originPos, Vector2Int checkPos)
     {
         int verticalTile = 0, horizontalTile = 0;
-        bool[,] tileInfo = room.tileInfo;
-        if ((originPos.x == 0 && (originPos.y + checkPos.y == room.doorLocations[room.leftDoorLocation]
-            || originPos.y + checkPos.y == room.doorLocations[room.leftDoorLocation] + 1))
-            || (originPos.x == 23 && (originPos.y + checkPos.y == room.doorLocations[room.rightDoorLocation]
-            || originPos.y + checkPos.y == room.doorLocations[room.rightDoorLocation] + 1)))
-            verticalTile = 3;
-        else if (!IsTileInRoom(originPos.x + checkPos.x))
+        bool[,] tileInfo = roomInGame.tileInfo;
+        if (!IsTileInRoom(originPos.x + checkPos.x))
             horizontalTile = 2;
         else if (tileInfo[originPos.x + checkPos.x, originPos.y])
             horizontalTile = 1;
-        if ((originPos.y == 0 && (originPos.x == 11 || originPos.x == 12)) || (originPos.y == 23 && (originPos.x == 11 || originPos.x == 12)))
-            horizontalTile = 3;
-        else if (!IsTileInRoom(originPos.y + checkPos.y))
+        if (!IsTileInRoom(originPos.y + checkPos.y))
             verticalTile = 2;
         else if (tileInfo[originPos.x, originPos.y + checkPos.y])
             verticalTile = 1;
-        if((verticalTile == 2 && horizontalTile == 2) || (verticalTile == 3 && horizontalTile == 2) || (verticalTile == 2 && horizontalTile == 3))
-            return 'B';
+        if ((verticalTile == 2 && horizontalTile == 2) || (verticalTile == 0 && horizontalTile == 2) || (verticalTile == 2 && horizontalTile == 0))
+            return '3';
         else if (verticalTile == 2)
-            return 'H';
+            return '1';
         else if (horizontalTile == 2)
-            return 'V';
+            return '2';
         else if (verticalTile == 1 && horizontalTile == 1)
         {
             if (tileInfo[originPos.x + checkPos.x, originPos.y + checkPos.y])
@@ -103,22 +80,49 @@ public class TileManager : MonoBehaviour
     {
         return n >= 0 && n < 24;
     }
-    
-    public void ChangeTile(Room room)
+
+    public IEnumerator ChangeAllTiles(RoomInGame roomInGame)
     {
         int stage = MapManager.currentStage;
-        int concept = room.roomConcept;
-        Tilemap roomTileMap = room.roomInGame.transform.GetChild(3).GetComponent<Tilemap>();
-        CheckAllTiles(room);
-        for(int x = 0; x < 24; x++)
-            for(int y = 0; y < 24; y++)
+        //int concept = room.roomConcept;
+        int concept = 0;
+        Tilemap roomTileMap = null;
+        for (int i = 0; i < roomInGame.transform.childCount; i++)
+        {
+            if (roomInGame.transform.GetChild(i).name.Equals("wall"))
             {
-                string tileName = CheckQuarterTile(room, new Vector2Int(x, y), new Vector2Int(-1, 1)).ToString() +
-                CheckQuarterTile(room, new Vector2Int(x, y), new Vector2Int(1, 1)).ToString() +
-                CheckQuarterTile(room, new Vector2Int(x, y), new Vector2Int(-1, -1)).ToString() +
-                CheckQuarterTile(room, new Vector2Int(x, y), new Vector2Int(1, -1)).ToString();
-                roomTileMap.SetTile(new Vector3Int(x, y, 0), tilesDistributed[stage, concept][tileName]);
+                roomTileMap = roomInGame.transform.GetChild(i).GetComponent<Tilemap>();
+                break;
             }
+        }
+        CheckAllTiles(roomInGame);
+        for(int y = 0; y < 24; y++)
+        {
+            if (y % 2 == 0)
+                yield return null;
+            for(int x = 0; x < 24; x++)
+            {
+                if (roomInGame.tileInfo[x, y])
+                {
+                    string tileName = CheckQuarterTile(roomInGame, new Vector2Int(x, y), new Vector2Int(-1, 1)).ToString() +
+                    CheckQuarterTile(roomInGame, new Vector2Int(x, y), new Vector2Int(1, 1)).ToString() +
+                    CheckQuarterTile(roomInGame, new Vector2Int(x, y), new Vector2Int(-1, -1)).ToString() +
+                    CheckQuarterTile(roomInGame, new Vector2Int(x, y), new Vector2Int(1, -1)).ToString();
+                    Debug.Log(tileName);
+                    roomTileMap.SetTile(new Vector3Int(x, y, 0), tilesDistributed[stage, concept][tileName]);
+                }
+            }
+        }
+        yield return null;
+    }
+
+    public IEnumerator SetTetriminoTiles(Tetrimino tetrimino)
+    {
+        for(int i = 0; i < tetrimino.rooms.Length; i++)
+        {
+            yield return null;
+            StartCoroutine(ChangeAllTiles(tetrimino.rooms[i].roomInGame));
+        }
     }
 }
 

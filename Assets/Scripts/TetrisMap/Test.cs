@@ -55,6 +55,10 @@ public class Test : MonoBehaviour {
     {
         enemyManager.SpawnEnemy();
     }
+    public void ChangeTile()
+    {
+        GameObject.Find("MapManager").GetComponent<TileManager>().ChangeAllTiles(MapManager.currentRoom.roomInGame);
+    }
 
 
     private void Awake()
