@@ -102,12 +102,11 @@ public class PlayerController : MonoBehaviour
 
         if (lastDropItem != null && interaction)
         {
-            print(lastDropItem.PushItem() + "냠냠");
+            lastDropItem.PushItem();
         }
         if (lastLifeStone != null && interaction)
         {
             lastLifeStone.ApplyLifeStone();
-            print("생명석 냠냠");
         }
     }
 

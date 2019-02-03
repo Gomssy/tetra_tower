@@ -64,58 +64,59 @@ public class LifeStoneManager : MonoBehaviour {
 		lifeStoneUnit = new GameObject[50, 3];
         for (int i = 0; i < 50; i++) for (int j = 0; j < 3; j++) lifeStoneArray[i, j] = 0;
 		//StartCoroutine("TestEnumerator");
-        PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 8), "AAAAAAAAAAAAAAAAAAAAAAAA"));
+        PushLifeStone(CreateLifeStoneInfo(new Vector2Int(3, 6), 0, 0));
     }
 	IEnumerator TestEnumerator()
 	{
         yield return null;
-        PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 8), "AAAAAAAAAAAAAAAAAAAAAAAA"));
-        /*
-        PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 1), "AAA"));
-        yield return new WaitForSeconds(2);
-        PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 2), "AAAA A"));
-        yield return new WaitForSeconds(2);
-        PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 2), "AAAA A"));
-        yield return new WaitForSeconds(2);
-        PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 2), "AAAA A"));
-        yield return new WaitForSeconds(2);
-        PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 2), "AAAA A"));
-        yield return new WaitForSeconds(2);
-        PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 2), "AAAA A"));
-        yield return new WaitForSeconds(2);
-        PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 2), "AAAA A"));
-        yield return new WaitForSeconds(2);
-        /*PushLifeStone(CreateLifeStoneInfo(5, 0.2f, 3));
-        yield return new WaitForSeconds(2);
-        PushLifeStone(CreateLifeStoneInfo(3, 0.2f, 0));
-        yield return new WaitForSeconds(2);
-        PushLifeStone(CreateLifeStoneInfo(4, 0.2f, 0));
-        yield return new WaitForSeconds(2);
-        InstantiateDroppedLifeStone(CreateLifeStoneInfo(4, 0.1f, 0), GameObject.Find("Player").transform.position + new Vector3(2,2,0));
-        yield return new WaitForSeconds(2);
-        ExpandRow(4);
-        PushLifeStone(new LifeStoneInfo(new Vector2Int(3, 8), "AAAAAAAAAAAAAAAAAAAAAAAA"));
-		PushLifeStone(new LifeStoneInfo(new Vector2Int(2, 5), " AAAABA A "));
-		yield return new WaitForSeconds(2);
-		PushLifeStone(new LifeStoneInfo(new Vector2Int(2, 3), " AAA A"));
-		yield return new WaitForSeconds(2);
-		ChangeFromNormal(2, 5);
-		yield return new WaitForSeconds(2);
-		ChangeToNormal(2, 3);
-		yield return new WaitForSeconds(2);
-		DestroyStone(3);*/
+
 
     }
+
+    /// <summary>
+    /// expand lifestoneframe row
+    /// </summary>
+    /// <param name="rowNum"></param>
     public void ExpandRow(int rowNum)
     {
         lifeStoneRowNum += rowNum;
         frameSuper.GetComponent<LifeStoneFrame>().AddRow(lifeStoneRowNum);
+    }
+
+    /// <summary>
+    /// Instantiate Dropped LifeStone
+    /// </summary>
+    /// <param name="info"></param>
+    /// <param name="pos"></param>
+    public void InstantiateDroppedLifeStone(Vector2Int size, int num, float goldPer, int ameNum, Vector3 pos)
+    {
+        GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
+        tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(size, num, goldPer, ameNum), pos);
+    }
+    public void InstantiateDroppedLifeStone(Vector2Int size, float goldPer, int ameNum, Vector3 pos)
+    {
+        GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
+        tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(size, goldPer, ameNum), pos);
+    }
+    public void InstantiateDroppedLifeStone(int num, float goldPer, int ameNum, Vector3 pos)
+    {
+        GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
+        tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(num, goldPer, ameNum), pos);
     }
     public void InstantiateDroppedLifeStone(LifeStoneInfo info, Vector3 pos)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
         tmpObj.GetComponent<DroppedLifeStone>().Init(info, pos);
     }
+
+    /// <summary>
+    /// Randomize LifeStone by size, num, gold probablity, number of ametyst 
+    /// </summary>
+    /// <param name="size"></param>
+    /// <param name="num"></param>
+    /// <param name="goldPer"></param>
+    /// <param name="ameNum"></param>
+    /// <returns></returns>
     public LifeStoneInfo CreateLifeStoneInfo(Vector2Int size, int num, float goldPer, int ameNum)
     {
         System.Random rnd = new System.Random();
@@ -228,7 +229,7 @@ public class LifeStoneManager : MonoBehaviour {
 	/// push LifeStone in LifeStoneFrame
 	/// </summary>
 	/// <param name="pushInfo"></param>
-	public void PushLifeStone(LifeStoneInfo pushInfo)
+	public bool PushLifeStone(LifeStoneInfo pushInfo)
 	{
 		System.Random rnd = new System.Random();
 		Vector2Int pSize = pushInfo.getSize();
@@ -258,6 +259,8 @@ public class LifeStoneManager : MonoBehaviour {
 
 		for (int i = 0; i <= 3 - pSize.x; i++)
 			if (minRow[i] < selectedRow) selectedRow = minRow[i];
+
+        if (selectedRow == lifeStoneRowNum) return false;
 
 		for (int i = 0; i <= 3 - pSize.x; i++)
 			if (minRow[i] == selectedRow) selColCand.Add(i);
@@ -319,10 +322,15 @@ public class LifeStoneManager : MonoBehaviour {
                 }
             }
         }
+        return true;
 	}
     
 
-
+    /// <summary>
+    /// count lifestoneunit in lifestoneframe by type
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
 	public int CountType(LifeStoneType type)
 	{
 		int count = 0;
@@ -332,8 +340,26 @@ public class LifeStoneManager : MonoBehaviour {
 					count++;
 		return count;
 	}
+    /// <summary>
+    /// count lifestoneunit in lifestoneframe
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public int CountType()
+    {
+        int count = 0;
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < lifeStoneRowNum; j++)
+                if (lifeStoneArray[j, i] > 0)
+                    count++;
+        return count;
+    }
 
-	public void DestroyStone(int num)
+    /// <summary>
+    /// destroy lifestone by number
+    /// </summary>
+    /// <param name="num"></param>
+    public void DestroyStone(int num)
 	{
 		System.Random rnd = new System.Random();
 		ArrayList candArray = new ArrayList();
@@ -361,6 +387,11 @@ public class LifeStoneManager : MonoBehaviour {
 		StartCoroutine(DestroyInPhase(candArray));
 	}
 
+    /// <summary>
+    /// make term among lifestone destroy
+    /// </summary>
+    /// <param name="candArray"></param>
+    /// <returns></returns>
 	IEnumerator DestroyInPhase(ArrayList candArray)
 	{
 		for (int i = 0; i < candArray.Count; i++)
@@ -372,6 +403,11 @@ public class LifeStoneManager : MonoBehaviour {
 		}
 	}
 
+    /// <summary>
+    /// change normal lifestone unit to type
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="num"></param>
 	public void ChangeFromNormal(LifeStoneType type, int num)
 	{
 		System.Random rnd = new System.Random();
@@ -390,6 +426,11 @@ public class LifeStoneManager : MonoBehaviour {
 		StartCoroutine(ChangeInPhase(candArray,(int)type));
 	}
 
+    /// <summary>
+    /// change type lifestone unit to normal
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="num"></param>
 	public void ChangeToNormal(LifeStoneType type, int num)
 	{
 		System.Random rnd = new System.Random();
@@ -408,6 +449,12 @@ public class LifeStoneManager : MonoBehaviour {
 		StartCoroutine(ChangeInPhase(candArray, 1));
 	}
 
+    /// <summary>
+    /// make term among changing
+    /// </summary>
+    /// <param name="candArray"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
 	IEnumerator ChangeInPhase(ArrayList candArray, int type)
 	{
 		System.Random rnd = new System.Random();
@@ -421,9 +468,14 @@ public class LifeStoneManager : MonoBehaviour {
 		}
 	}
 
+    /// <summary>
+    /// lifestoneframe vibration
+    /// </summary>
+    /// <param name="vibration">strength of vibration</param>
+    /// <returns></returns>
 	public IEnumerator VibrateEnumerator(float vibration)
 	{
-		while(vibration > lifeStoneSize * 0.05f)
+		while(vibration > lifeStoneSize * 0.005f)
 		{
 			Vector2 tmpVector = Random.insideUnitCircle;
 			transform.position = new Vector3(lifeStoneLocation.x + tmpVector.x * vibration * 0.3f, lifeStoneLocation.y + tmpVector.y * vibration, 0);
