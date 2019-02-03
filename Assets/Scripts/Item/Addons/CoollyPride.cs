@@ -13,7 +13,6 @@ public class CoollyPride : Addon
         quality = ItemQuality.Ordinary;
         type = AddonType.Theory;
         sprite = Resources.Load<Sprite>("Sprites/Addons/Coolly Pride"); ;
-        highlight = Resources.Load<Sprite>("Sprites/Addons/Coolly Pride"); ;
         sizeInventory = new Vector2(80, 80);
     }
 }

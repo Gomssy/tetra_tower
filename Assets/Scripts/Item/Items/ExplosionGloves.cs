@@ -15,7 +15,6 @@ public class ExplosionGloves : Item
         combo = new string[3] { "CAC", "CA", "" };
         attachable = new bool[4] { true, false, true, true };
         sprite = Resources.Load<Sprite>("Sprites/Items/explosion gloves");
-        highlight = Resources.Load<Sprite>("Sprites/Items/explosion gloves");
         animation[0] = Resources.Load<AnimationClip>("Animations/explosionGlovesAttack1");
         animation[1] = Resources.Load<AnimationClip>("Animations/explosionGlovesAttack2");
         animation[2] = null;

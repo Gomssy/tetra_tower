@@ -13,7 +13,6 @@ public class ApprenticesMark : Addon
         quality = ItemQuality.Study;
         type = AddonType.Prop;
         sprite = Resources.Load<Sprite>("Sprites/Addons/apprentice's mark"); ;
-        highlight = Resources.Load<Sprite>("Sprites/Addons/apprentice's mark"); ;
         sizeInventory = new Vector2(80, 80);
     }
 }

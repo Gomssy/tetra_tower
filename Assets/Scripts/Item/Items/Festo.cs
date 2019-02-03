@@ -15,7 +15,6 @@ public class Festo : Item
         combo = new string[3] { "", "", "" };
         attachable = new bool[4] { true, true, false, false };
         sprite = Resources.Load<Sprite>("Sprites/Items/Festo");
-        highlight = Resources.Load<Sprite>("Sprites/Items/Festo");
         sizeInventory = new Vector2(90, 160);
     }
 }

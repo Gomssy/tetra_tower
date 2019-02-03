@@ -13,7 +13,6 @@ public class GlowingHerb : Addon
         quality = ItemQuality.Ordinary;
         type = AddonType.Matter;
         sprite = Resources.Load<Sprite>("Sprites/Addons/Glowing Herb"); ;
-        highlight = Resources.Load<Sprite>("Sprites/Addons/Glowing Herb"); ;
         sizeInventory = new Vector2(80, 80);
     }
 }

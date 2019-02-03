@@ -15,7 +15,6 @@ public class MeteorSword : Item
         combo = new string[3] { "ABAAC", "ABACC", "" };
         attachable = new bool[4] { true, false, false, false };
         sprite = Resources.Load<Sprite>("Sprites/Items/meteor sword");
-        highlight = Resources.Load<Sprite>("Sprites/Items/meteor sword");
         animation[0] = Resources.Load<AnimationClip>("Animations/meteorSwordAttack1");
         animation[1] = Resources.Load<AnimationClip>("Animations/meteorSwordAttack2");
         animation[2] = null;

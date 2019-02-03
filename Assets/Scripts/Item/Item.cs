@@ -12,7 +12,6 @@ public abstract class Item {
     public bool[] attachable = new bool[4]; //0: prop 1: matter 2: component 3:theory
     public Addon[] addons = new Addon[4];   //0: prop 1: matter 2: component 3:theory
     public Sprite sprite;
-    public Sprite highlight;
     public Vector2 sizeInventory;
 
     public bool ComboAction(string currentCombo)
@@ -48,7 +47,6 @@ public abstract class Item {
         combo = new string[3] { "", "", "" };
         attachable = new bool[4] { false, false, false, false };
         sprite = null;
-        highlight = null;
         animation[0] = null;
         animation[1] = null;
         animation[2] = null;
