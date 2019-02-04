@@ -15,6 +15,7 @@ public class Bow : Item {
         combo = new string[3] { "BB", "BC", "" };
         attachable = new bool[4] { true, true, true, true };
         sprite = Resources.Load<Sprite>("Sprites/Items/bow");
+        highlight = Resources.Load<Sprite>("Sprites/Items/bow");
         animation[0] = Resources.Load<AnimationClip>("Animations/bowAttack1");
         animation[1] = Resources.Load<AnimationClip>("Animations/bowAttack2");
         animation[2] = null;

@@ -40,21 +40,28 @@ public class Enemy : MonoBehaviour {
     // for animation
     [HideInInspector]
     public float playerDistance;
+    private Animator animator;
 
     // drop item
-
+    private InventoryManager inventoryManager;
+    private int[] dropTable;
+    // for test
+    public GameObject droppedItem;
+    public Item item;
 
     // method
     // Standard Method
     private void Awake()
     {
         enemyManager = EnemyManager.Instance;
+        inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
     {
         this.currHealth = maxHealth;
-        playerDistance = Vector2.Distance(enemyManager.player.transform.position, transform.parent.position);
+        dropTable = enemyManager.dropTableByID[monsterID];
     }
 
     private void Update()
@@ -66,10 +73,32 @@ public class Enemy : MonoBehaviour {
     public void GetDamaged(PlayerAttackInfo attack) { 
         currHealth -= attack.damage;
         if(currHealth <= 0) {
-            gameObject.SetActive(false);
+            processDeath();
             return;
         }
-        gameObject.GetComponent<Animator>().SetTrigger("DamagedTrigger");
+        animator.SetFloat("knockbackDistance", attack.damage / this.weight * attack.knockBackMultiplier);
+        animator.SetTrigger("DamagedTrigger");
+    }
+
+    private void processDeath()
+    {
+        float denominator = dropTable[dropTable.Length - 1];
+        float numerator = Random.Range(0, denominator);
+
+        int indexOfItem = 0;
+        for (int i = 0; i < dropTable.Length; i++)
+        {
+            if(numerator <= dropTable[i])
+            {
+                indexOfItem = i;
+                break;
+            }
+        }
+        inventoryManager.ItemInstantiate(enemyManager.dropItemList[indexOfItem], transform.parent.position);
+
+        gameObject.SetActive(false);
+        // animator.SetTrigger("DeadTrigger");
+        return;
     }
 
     IEnumerator DebuffCase(EnemyDebuffed sCase)

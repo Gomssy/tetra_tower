@@ -15,6 +15,7 @@ public class BambooSpear : Item
         combo = new string[3] { "BAA", "BAC", "" };
         attachable = new bool[4] { true, false, true, true };
         sprite = Resources.Load<Sprite>("Sprites/Items/bamboo spear");
+        highlight = Resources.Load<Sprite>("Sprites/Items/bamboo spear");
         animation[0] = Resources.Load<AnimationClip>("Animations/bambooSpearAttack1");
         animation[1] = Resources.Load<AnimationClip>("Animations/bambooSpearAttack2");
         animation[2] = null;

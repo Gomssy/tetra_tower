@@ -32,7 +32,7 @@ public class DroppedLifeStone : MonoBehaviour
         unitObj = new GameObject[inSize.x * inSize.y];
         highObj = new GameObject[inSize.x * inSize.y];
 
-        transform.position = pos - new Vector3(inSize.x * unitSize, 0, 0);
+        transform.position = pos - new Vector3(inSize.x * unitSize / 2f, 0, 0);
 
         for (int i = 0; i < inSize.x * inSize.y; i++)
         {
@@ -44,7 +44,7 @@ public class DroppedLifeStone : MonoBehaviour
 
                 highObj[i] = Instantiate(highlightSprite, transform);
                 highObj[i].transform.localPosition = unitObj[i].transform.localPosition;
-                highObj[i].GetComponent<SpriteRenderer>().enabled = false;
+                highObj[i].SetActive(false);
             }
         }
         bc2D.offset = new Vector2(unitSize * inSize.x / 2f, unitSize * inSize.y / 2f);
@@ -52,8 +52,8 @@ public class DroppedLifeStone : MonoBehaviour
     }
     public void ApplyLifeStone()
     {
-        GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>().PushLifeStone(info);
-        Destroy(gameObject);
+        if(GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>().PushLifeStone(info))
+            Destroy(gameObject);
     }
     public void HighlightSwitch(bool enabled)
     {
@@ -62,7 +62,12 @@ public class DroppedLifeStone : MonoBehaviour
         for (int i = 0; i < inSize.x * inSize.y; i++)
         {
             if (inFill[i] != ' ')
-                highObj[i].GetComponent<SpriteRenderer>().enabled = enabled;
+            {
+                highObj[i].SetActive(enabled);
+                highObj[i].GetComponent<SpriteRenderer>().sortingOrder = -1 + (enabled ? 2 : 0);
+                unitObj[i].GetComponent<SpriteRenderer>().sortingOrder = (enabled ? 2 : 0);
+            }
+                
         }
     }
 }
