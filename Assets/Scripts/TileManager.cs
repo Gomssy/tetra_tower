@@ -33,7 +33,7 @@ public class TileManager : MonoBehaviour
     /// <param name="roomInGame">Room you want to check.</param>
     public void CheckAllTiles(RoomInGame roomInGame)
     {
-        Tilemap roomTileMap = MapManager.GetChildByName(roomInGame.transform, "wall").GetComponent<Tilemap>();
+        Tilemap roomTileMap = roomInGame.transform.Find("wall").GetComponent<Tilemap>();
         for (int x = 0; x < 24; x++)
             for(int y = 0; y < 24; y++)
             {
@@ -102,12 +102,12 @@ public class TileManager : MonoBehaviour
         int stage = MapManager.currentStage;
         //int concept = room.roomConcept;
         int concept = 0;
-        Tilemap roomTileMap = MapManager.GetChildByName(roomInGame.transform, "wall").GetComponent<Tilemap>();
+        Tilemap roomTileMap = roomInGame.transform.Find("wall").GetComponent<Tilemap>();
         CheckAllTiles(roomInGame);
         for(int y = 0; y < 24; y++)
         {
-            if (y % 3 == 0)
-                yield return null;
+            /*if (y % 3 == 0)
+                yield return null;*/
             for(int x = 0; x < 24; x++)
             {
                 if (roomInGame.tileInfo[x, y])

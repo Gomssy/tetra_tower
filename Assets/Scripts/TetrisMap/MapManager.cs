@@ -216,25 +216,6 @@ public class MapManager : MonoBehaviour {
      * functions
      * */
     /// <summary>
-    /// Find and return object's child by child's name.
-    /// </summary>
-    /// <param name="parent">Parent object.</param>
-    /// <param name="name">Name of the child object you want to find.</param>
-    /// <returns></returns>
-    public static Transform GetChildByName(Transform parent, string name)
-    {
-        Transform child;
-        for (int i = 0; i < parent.childCount; i++)
-        {
-            if (parent.GetChild(i).name.Equals(name))
-            {
-                child = parent.GetChild(i);
-                return child;
-            }
-        }
-        return null;
-    } 
-    /// <summary>
     /// Check if tetrimino is in right x coordinate.
     /// </summary>
     /// <param name="te">-1 for over left end, 1 for over right end, 2 for over bottom end, 3 for already existing, 0 for right place.</param>
@@ -733,7 +714,6 @@ public class MapManager : MonoBehaviour {
             if (Input.GetButtonDown("TetriminoVertical"))
             {
                 TetriminoRotate(currentTetrimino, (int)Input.GetAxisRaw("TetriminoVertical"));
-
             }
             else if (Input.GetButtonDown("TetriminoHorizontal") && lifeStoneManager.CountType(LifeStoneType.Gold) > 0)
             {

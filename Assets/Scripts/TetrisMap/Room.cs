@@ -120,7 +120,7 @@ public class Room : MonoBehaviour
     public void CreateDoors(GameObject _leftTetrisDoor, GameObject _rightTetrisDoor, GameObject _inGameDoorUp, GameObject _inGameDoorDown, GameObject _inGameDoorLeft, GameObject _inGameDoorRight)
     {
         float standardSize = MapManager.tetrisMapSize / 24;
-        Tilemap wallTileMap = MapManager.GetChildByName(roomInGame.transform, "wall").GetComponent<Tilemap>();
+        Tilemap wallTileMap = roomInGame.transform.Find("wall").GetComponent<Tilemap>();
         leftTetrisDoor = Instantiate(_leftTetrisDoor, transform.position + new Vector3(standardSize, doorLocations[leftDoorLocation], 0), Quaternion.identity, transform);
         rightTetrisDoor = Instantiate(_rightTetrisDoor, transform.position + new Vector3(standardSize * 23, doorLocations[rightDoorLocation], 0), Quaternion.identity, transform);
 
@@ -147,7 +147,7 @@ public class Room : MonoBehaviour
     /// </summary>
     public void CreatePortal()
     {
-        GameObject portal = MapManager.GetChildByName(roomInGame.transform, "Portal").gameObject;
+        GameObject portal = roomInGame.transform.Find("Portal").gameObject;
         if (specialRoomType != RoomType.Normal)
         {
             portal.SetActive(true);
