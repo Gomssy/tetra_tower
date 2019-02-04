@@ -216,6 +216,25 @@ public class MapManager : MonoBehaviour {
      * functions
      * */
     /// <summary>
+    /// Find and return object's child by child's name.
+    /// </summary>
+    /// <param name="parent">Parent object.</param>
+    /// <param name="name">Name of the child object you want to find.</param>
+    /// <returns></returns>
+    public static Transform GetChildByName(Transform parent, string name)
+    {
+        Transform child;
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            if (parent.GetChild(i).name.Equals(name))
+            {
+                child = parent.GetChild(i);
+                return child;
+            }
+        }
+        return null;
+    } 
+    /// <summary>
     /// Check if tetrimino is in right x coordinate.
     /// </summary>
     /// <param name="te">-1 for over left end, 1 for over right end, 2 for over bottom end, 3 for already existing, 0 for right place.</param>
@@ -711,14 +730,14 @@ public class MapManager : MonoBehaviour {
         }
         if(GameManager.gameState == GameState.Tetris)
         {
-            if (Input.GetButtonDown("Vertical"))
+            if (Input.GetButtonDown("TetriminoVertical"))
             {
-                TetriminoRotate(currentTetrimino, (int)Input.GetAxisRaw("Vertical"));
+                TetriminoRotate(currentTetrimino, (int)Input.GetAxisRaw("TetriminoVertical"));
 
             }
-            else if (Input.GetButtonDown("Horizontal") && lifeStoneManager.CountType(LifeStoneType.Gold) > 0)
+            else if (Input.GetButtonDown("TetriminoHorizontal") && lifeStoneManager.CountType(LifeStoneType.Gold) > 0)
             {
-                MoveTetriminoHorizontal(currentTetrimino, new Vector3((int)Input.GetAxisRaw("Horizontal"), 0, 0));
+                MoveTetriminoHorizontal(currentTetrimino, new Vector3((int)Input.GetAxisRaw("TetriminoHorizontal"), 0, 0));
                 lifeStoneManager.ChangeToNormal(LifeStoneType.Gold, tetriminoCost);
             }
             else if (Input.GetKeyDown(KeyCode.Space) && lifeStoneManager.CountType(LifeStoneType.Gold) > 0)

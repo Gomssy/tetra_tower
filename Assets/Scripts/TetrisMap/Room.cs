@@ -120,15 +120,7 @@ public class Room : MonoBehaviour
     public void CreateDoors(GameObject _leftTetrisDoor, GameObject _rightTetrisDoor, GameObject _inGameDoorUp, GameObject _inGameDoorDown, GameObject _inGameDoorLeft, GameObject _inGameDoorRight)
     {
         float standardSize = MapManager.tetrisMapSize / 24;
-        Tilemap wallTileMap = roomInGame.transform.GetChild(4).GetComponent<Tilemap>();
-        for (int i = 0; i < roomInGame.transform.childCount; i++)
-        {
-            if (roomInGame.transform.GetChild(i).name.Equals("wall"))
-            {
-                wallTileMap = roomInGame.transform.GetChild(i).GetComponent<Tilemap>();
-                break;
-            }
-        }
+        Tilemap wallTileMap = MapManager.GetChildByName(roomInGame.transform, "wall").GetComponent<Tilemap>();
         leftTetrisDoor = Instantiate(_leftTetrisDoor, transform.position + new Vector3(standardSize, doorLocations[leftDoorLocation], 0), Quaternion.identity, transform);
         rightTetrisDoor = Instantiate(_rightTetrisDoor, transform.position + new Vector3(standardSize * 23, doorLocations[rightDoorLocation], 0), Quaternion.identity, transform);
 
@@ -155,8 +147,8 @@ public class Room : MonoBehaviour
     /// </summary>
     public void CreatePortal()
     {
-        portal = roomInGame.transform.GetChild(roomInGame.transform.childCount - 1).gameObject;
-        if(specialRoomType != RoomType.Normal)
+        GameObject portal = MapManager.GetChildByName(roomInGame.transform, "Portal").gameObject;
+        if (specialRoomType != RoomType.Normal)
         {
             portal.SetActive(true);
             isPortal = true;

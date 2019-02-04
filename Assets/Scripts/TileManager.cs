@@ -5,8 +5,14 @@ using UnityEngine.Tilemaps;
 
 public class TileManager : MonoBehaviour
 {
+    /// <summary>
+    /// Array of all tiles.
+    /// </summary>
     public TileBase[] allTiles;
-
+    /// <summary>
+    /// Dictionary for distributing all tiles.
+    /// Each dimensions for stage and concept.
+    /// </summary>
     Dictionary<string, TileBase>[,] tilesDistributed = new Dictionary<string, TileBase>[5, 4];
 
     void Awake()
@@ -21,19 +27,14 @@ public class TileManager : MonoBehaviour
             tilesDistributed[int.Parse(tileName.Substring(0, 1)) - 1, int.Parse(tileName.Substring(1, 1)) - 1].Add(tileName.Substring(2), allTiles[i]);
         }
     }
-
+    /// <summary>
+    /// Check room's tilemap's all position that if tile exists there or not.
+    /// </summary>
+    /// <param name="roomInGame">Room you want to check.</param>
     public void CheckAllTiles(RoomInGame roomInGame)
     {
-        Tilemap roomTileMap = null;
-        for(int i = 0; i < roomInGame.transform.childCount; i++)
-        {
-            if (roomInGame.transform.GetChild(i).name.Equals("wall"))
-            {
-                roomTileMap = roomInGame.transform.GetChild(i).GetComponent<Tilemap>();
-                break;
-            }
-        }
-        for(int x = 0; x < 24; x++)
+        Tilemap roomTileMap = MapManager.GetChildByName(roomInGame.transform, "wall").GetComponent<Tilemap>();
+        for (int x = 0; x < 24; x++)
             for(int y = 0; y < 24; y++)
             {
                 if (roomTileMap.GetTile(new Vector3Int(x, y, 0)))
@@ -42,7 +43,13 @@ public class TileManager : MonoBehaviour
                     roomInGame.tileInfo[x, y] = false;
             }
     }
-
+    /// <summary>
+    /// Check tile and set name for specified direction.
+    /// </summary>
+    /// <param name="roomInGame">Room you want to check.</param>
+    /// <param name="originPos">Position of tile map you want to check.</param>
+    /// <param name="checkPos">Direction you want to check.</param>
+    /// <returns></returns>
     public char CheckQuarterTile(RoomInGame roomInGame, Vector2Int originPos, Vector2Int checkPos)
     {
         int verticalTile = 0, horizontalTile = 0;
@@ -75,30 +82,31 @@ public class TileManager : MonoBehaviour
         else
             return 'b';
     }
-
+    /// <summary>
+    /// Check if it is out of the room or not.
+    /// </summary>
+    /// <param name="n">Position you want to check.</param>
+    /// <returns></returns>
     bool IsTileInRoom(int n)
     {
         return n >= 0 && n < 24;
     }
-
-    public IEnumerator ChangeAllTiles(RoomInGame roomInGame)
+    /// <summary>
+    /// Set all tiles of the room.
+    /// Cut for every 72 tiles.
+    /// </summary>
+    /// <param name="roomInGame">Room you want to set.</param>
+    /// <returns></returns>
+    public IEnumerator SetAllTiles(RoomInGame roomInGame)
     {
         int stage = MapManager.currentStage;
         //int concept = room.roomConcept;
         int concept = 0;
-        Tilemap roomTileMap = null;
-        for (int i = 0; i < roomInGame.transform.childCount; i++)
-        {
-            if (roomInGame.transform.GetChild(i).name.Equals("wall"))
-            {
-                roomTileMap = roomInGame.transform.GetChild(i).GetComponent<Tilemap>();
-                break;
-            }
-        }
+        Tilemap roomTileMap = MapManager.GetChildByName(roomInGame.transform, "wall").GetComponent<Tilemap>();
         CheckAllTiles(roomInGame);
         for(int y = 0; y < 24; y++)
         {
-            if (y % 2 == 0)
+            if (y % 3 == 0)
                 yield return null;
             for(int x = 0; x < 24; x++)
             {
@@ -108,20 +116,25 @@ public class TileManager : MonoBehaviour
                     CheckQuarterTile(roomInGame, new Vector2Int(x, y), new Vector2Int(1, 1)).ToString() +
                     CheckQuarterTile(roomInGame, new Vector2Int(x, y), new Vector2Int(-1, -1)).ToString() +
                     CheckQuarterTile(roomInGame, new Vector2Int(x, y), new Vector2Int(1, -1)).ToString();
-                    Debug.Log(tileName);
-                    roomTileMap.SetTile(new Vector3Int(x, y, 0), tilesDistributed[stage, concept][tileName]);
+                    //Debug.Log(tileName);
+                    if(tilesDistributed[stage, concept].ContainsKey(tileName))
+                        roomTileMap.SetTile(new Vector3Int(x, y, 0), tilesDistributed[stage, concept][tileName]);
                 }
             }
         }
         yield return null;
     }
-
+    /// <summary>
+    /// Set tiles for all rooms in tetrimino.
+    /// </summary>
+    /// <param name="tetrimino">Tetrimino you want to set.</param>
+    /// <returns></returns>
     public IEnumerator SetTetriminoTiles(Tetrimino tetrimino)
     {
         for(int i = 0; i < tetrimino.rooms.Length; i++)
         {
             yield return null;
-            StartCoroutine(ChangeAllTiles(tetrimino.rooms[i].roomInGame));
+            StartCoroutine(SetAllTiles(tetrimino.rooms[i].roomInGame));
         }
     }
 }

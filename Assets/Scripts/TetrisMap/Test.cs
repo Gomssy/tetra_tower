@@ -57,7 +57,7 @@ public class Test : MonoBehaviour {
     }
     public void ChangeTile()
     {
-        GameObject.Find("MapManager").GetComponent<TileManager>().ChangeAllTiles(MapManager.currentRoom.roomInGame);
+        GameObject.Find("MapManager").GetComponent<TileManager>().SetAllTiles(MapManager.currentRoom.roomInGame);
     }
 
 
