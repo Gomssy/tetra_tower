@@ -9,6 +9,8 @@ TagManager:
   - TetriminoSpawner
   - DroppedLifeStone
   - DroppedItem
+  - Enemy
+  - DroppedPotion
   layers:
   - Default
   - TransparentFX
@@ -26,8 +28,8 @@ TagManager:
   - Item
   - Tetris
   - PlayerAttack
-  - 
-  - 
+  - EnemyCollider
+  - EnemyTrigger
   - 
   - 
   - 

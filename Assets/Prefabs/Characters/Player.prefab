@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 61129044981816742}
   - component: {fileID: 114402380471012178}
   - component: {fileID: 60342798607647292}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: AttackColider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,7 +232,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8192
   rayDistance: 1
-  lastDropItem: {fileID: 0}
   playerState: 0
   previousState: 0
 --- !u!114 &114402380471012178

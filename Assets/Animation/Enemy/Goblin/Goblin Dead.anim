@@ -109,7 +109,7 @@ AnimationClip:
   m_GenerateMotionCurves: 0
   m_Events:
   - time: 1
-    functionName: deadEvent
+    functionName: DeadEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

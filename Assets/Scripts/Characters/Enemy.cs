@@ -29,12 +29,11 @@ public class Enemy : MonoBehaviour {
     public float trackSpeed;
     
     private float playerMaxHealth; //다른 스크립트에 있는 플레이어 최대체력 가져와야함
-    [SerializeField]
     private float currHealth;
 
-    // [HideInInspector]
-
-    // enemy manager
+    // manager
+    private InventoryManager inventoryManager;
+    private LifeStoneManager lifeStoneManager;
     private EnemyManager enemyManager;
 
     // for animation
@@ -43,10 +42,7 @@ public class Enemy : MonoBehaviour {
     private Animator animator;
 
     // drop item
-    [HideInInspector]
-    public InventoryManager inventoryManager;
-    [HideInInspector]
-    public int[] dropTable;
+    private int[] dropTable;
 
     // method
     // Standard Method
@@ -54,6 +50,7 @@ public class Enemy : MonoBehaviour {
     {
         enemyManager = EnemyManager.Instance;
         inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        lifeStoneManager = GameObject.Find("UI Canvas").transform.GetChild(0).GetComponent<LifeStoneManager>();
         animator = GetComponent<Animator>();
     }
 
@@ -75,17 +72,15 @@ public class Enemy : MonoBehaviour {
         if (currHealth <= 0)
         {
             animator.SetTrigger("DeadTrigger");
+            return;
         }
-        else
-        {
-            animator.SetFloat("knockbackDistance", attack.damage / this.weight * attack.knockBackMultiplier);
-            animator.SetTrigger("DamagedTrigger");
-        }
+        animator.SetFloat("knockbackDistance", attack.damage / this.weight * attack.knockBackMultiplier);
+        animator.SetTrigger("DamagedTrigger");
     }
 
     // Animation Event
     // Dead
-    public void deadEvent()
+    public void DeadEvent()
     {
         transform.parent.gameObject.SetActive(false);
 
@@ -103,13 +98,11 @@ public class Enemy : MonoBehaviour {
             }
         }
 
-        if (indexOfItem == 0) // None
-        {
-            Debug.Log("None");
-        }
+        // if indexOfItem == 0 then don't drop anything
+
         if (indexOfItem >= 1 && indexOfItem <= 5) // Lifestone
         {
-            Debug.Log("LifeStone " + indexOfItem);
+            // insert!
         }
         if (indexOfItem == 6) // Gold Potion
         {
@@ -123,12 +116,10 @@ public class Enemy : MonoBehaviour {
         }
         if (indexOfItem >= 8 && indexOfItem <= 11) // Item
         {
-            Debug.Log("Item" + (ItemQuality)(indexOfItem - 8));
             inventoryManager.ItemInstantiate((ItemQuality)(indexOfItem - 8), transform.parent.position);
         }
         if (indexOfItem >= 12 && indexOfItem <= 15) // Addon
         {
-            Debug.Log("Addon" + (ItemQuality)(indexOfItem - 12));
             inventoryManager.AddonInstantiate((ItemQuality)(indexOfItem - 12), transform.parent.position);
         }
 
