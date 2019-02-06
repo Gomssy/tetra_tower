@@ -10,6 +10,8 @@ public class InventoryManager : MonoBehaviour {
     public List<string>[] itemPool = new List<string>[4];
     public List<string>[] addonPool = new List<string>[4];
     public GameObject droppedPrefab;
+    public float popoutStrengthMultiplier;
+    public float popoutTime;
     GameObject player;
 
     private void Start()
@@ -83,45 +85,48 @@ public class InventoryManager : MonoBehaviour {
     IEnumerator TestCoroutine()
     {
         yield return null;
-        ItemInstantiate(ItemQuality.Study, player.transform.position);
-        /*PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[0])));
-        PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[2])));
-        yield return new WaitForSeconds(1.5f);
-        ItemInstantiate(itemPool[0], player.transform.position);
-        yield return new WaitForSeconds(1.5f);
-        ItemInstantiate(itemPool[1], player.transform.position);
-        yield return new WaitForSeconds(1.5f);
-        ItemInstantiate(itemPool[2], player.transform.position);
-        yield return new WaitForSeconds(1.5f);
-        ItemInstantiate(itemPool[3], player.transform.position);
-        yield return new WaitForSeconds(1.5f);
-        AddonInstantiate(addonPool[0], player.transform.position);
-        yield return new WaitForSeconds(1.5f);
-        AddonInstantiate(addonPool[1], player.transform.position);
-        ItemSelect(0);
-        yield return new WaitForSeconds(1f);
-        PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[1])));
-        yield return new WaitForSeconds(1f);
-        PushItem((Item)System.Activator.CreateInstance(System.Type.GetType(itemPool[2])));
-        yield return new WaitForSeconds(1f);
-        PushAddon((Addon)System.Activator.CreateInstance(System.Type.GetType(addonPool[0])));
-        yield return new WaitForSeconds(1f);
-        PushAddon((Addon)System.Activator.CreateInstance(System.Type.GetType(addonPool[1])));
-        yield return new WaitForSeconds(1f);
-        AttachAddon(0, 0);
-        yield return new WaitForSeconds(1f);
-        */
+        yield return new WaitForSeconds(2.5f);
+        ItemInstantiate(ItemQuality.Study, player.transform.position, 1f);
+
     }
+
+    IEnumerator PopoutCoroutine(GameObject obj)
+    {
+        float endTime = Time.time + popoutTime;
+        Vector2 orgScale = obj.transform.localScale;
+        SpriteRenderer[] sprtArr = obj.GetComponents<SpriteRenderer>();
+        
+        while(Time.time < endTime)
+        {
+            obj.transform.localScale = (1 - ((endTime - Time.time) / popoutTime)) * orgScale;
+            foreach (SpriteRenderer sprt in sprtArr)
+                sprt.color = new Color(sprt.color.r, sprt.color.g, sprt.color.b, 1 - ((endTime - Time.time) / popoutTime));
+            yield return null;
+        }
+
+        obj.transform.localScale = orgScale;
+        foreach (SpriteRenderer sprt in sprtArr)
+            sprt.color = new Color(sprt.color.r, sprt.color.g, sprt.color.b, 1f);
+    }
+    void PopoutGenerator(GameObject obj, float popoutStrength)
+    {
+        popoutStrength *= popoutStrengthMultiplier;
+        float angle = Mathf.Deg2Rad * Random.Range(60f, 120f);
+        obj.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * popoutStrength;
+        StartCoroutine(PopoutCoroutine(obj));
+    }
+
     /// <summary>
     /// Instantiate random item by quality
     /// </summary>
     /// <param name="quality"></param>
     /// <param name="pos"></param>
-    public void ItemInstantiate(ItemQuality quality, Vector3 pos)
+    /// <param name="popoutStrength">0:no popout, 1:normal popout</param>
+    public void ItemInstantiate(ItemQuality quality, Vector3 pos, float popoutStrength)
     {
         if(itemPool[(int)quality].Count > 0)
         {
-            ItemInstantiate(itemPool[(int)quality][0], pos);
+            ItemInstantiate(itemPool[(int)quality][0], pos, popoutStrength);
             itemPool[(int)quality].RemoveAt(0);
         }
     }
@@ -130,21 +135,24 @@ public class InventoryManager : MonoBehaviour {
     /// </summary>
     /// <param name="str"></param>
     /// <param name="pos"></param>
-    public void ItemInstantiate(string str, Vector3 pos)
+    public void ItemInstantiate(string str, Vector3 pos, float popoutStrength)
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init((Item)System.Activator.CreateInstance(System.Type.GetType(str)), pos);
+        PopoutGenerator(tmpItem, popoutStrength);
     }
     /// <summary>
     /// Instantiate item by Item Instance on pos
     /// </summary>
     /// <param name="item"></param>
     /// <param name="pos"></param>
-    public void ItemInstantiate(Item item, Vector3 pos)
+    public void ItemInstantiate(Item item, Vector3 pos, float popoutStrength)
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init(item, pos);
+        PopoutGenerator(tmpItem, popoutStrength);
     }
+
     /// <summary>
     /// Instantiate random addon by quality
     /// </summary>
@@ -178,6 +186,7 @@ public class InventoryManager : MonoBehaviour {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init(addon, pos);
     }
+
     /// <summary>
     /// reset inventory canvas
     /// </summary>
@@ -185,6 +194,7 @@ public class InventoryManager : MonoBehaviour {
     {
         ui.SetOnPosition(itemList, addonList);
     }
+
     /// <summary>
     /// call when item has been clicked
     /// </summary>
@@ -234,7 +244,7 @@ public class InventoryManager : MonoBehaviour {
     {
         if (itemList.Count > index)
         {
-            ItemInstantiate(itemList[index], player.transform.position);
+            ItemInstantiate(itemList[index], player.transform.position, 1f);
             itemList.RemoveAt(index);
             if (index == ui.selectedItem)
                 ui.selectedItem = -1;

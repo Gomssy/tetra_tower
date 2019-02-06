@@ -9,7 +9,7 @@ public class DroppedItem : MonoBehaviour, IPlayerInteraction
     public Item item;
     public Addon addon;
     public GameObject highlight;
-    float itemSizeMultiplier = 0.0077f;
+    float itemSizeMultiplier = 0.007f;
     Rigidbody2D rb2D;
     BoxCollider2D bc2D;
     SpriteRenderer sprt;

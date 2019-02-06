@@ -129,6 +129,8 @@ public class Enemy : MonoBehaviour {
         return;
     }
 
+    // Coroutine
+
     IEnumerator DebuffCase(EnemyDebuffed sCase)
     {
 
