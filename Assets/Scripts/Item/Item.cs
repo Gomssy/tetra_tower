@@ -64,4 +64,10 @@ public abstract class Item {
     {
     }
 
+    public void AttackCalculation(PlayerAttackInfo attackInfo, Enemy enemyInfo)
+    {
+        
+    }
+    
+
 }
