@@ -6,8 +6,6 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
 // data
-    // static
-    static readonly float unitDist = 3;
 
     // debuff
     float[] immunity_time = new float[5] { 0.0f, 3.0f, 6.0f, 6.0f, 6.0f };//면역 시간
@@ -40,6 +38,7 @@ public class Enemy : MonoBehaviour {
     [HideInInspector]
     public float playerDistance;
     private Animator animator;
+    public bool untouchable = false;
 
     // drop item
     private int[] dropTable;
@@ -71,6 +70,7 @@ public class Enemy : MonoBehaviour {
         currHealth -= attack.damage;
         if (currHealth <= 0)
         {
+            untouchable = true;
             animator.SetTrigger("DeadTrigger");
             return;
         }
@@ -87,7 +87,6 @@ public class Enemy : MonoBehaviour {
         // Drop 아이템 결정. 인덱스 별 아이템은 맨 밑에 서술
         float denominator = dropTable[dropTable.Length - 1];
         float numerator = Random.Range(0, denominator);
-
         int indexOfItem = 0;
         for (int i = 0; i < dropTable.Length; i++)
         {
@@ -102,12 +101,12 @@ public class Enemy : MonoBehaviour {
 
         if (indexOfItem >= 1 && indexOfItem <= 5) // Lifestone
         {
-            // insert!
+            lifeStoneManager.InstantiateDroppedLifeStone(
+                indexOfItem, EnemyManager.goldPer, EnemyManager.ameNum, transform.parent.position, EnemyManager.dropObjStrength);
         }
         if (indexOfItem == 6) // Gold Potion
         {
-            Debug.Log("Gold Potion");
-            // insert!
+            lifeStoneManager.InstantiatePotion(transform.parent.position, EnemyManager.dropObjStrength);
         }
         if (indexOfItem == 7) // Amethyst Potion
         {
@@ -116,21 +115,21 @@ public class Enemy : MonoBehaviour {
         }
         if (indexOfItem >= 8 && indexOfItem <= 11) // Item
         {
-            inventoryManager.ItemInstantiate((ItemQuality)(indexOfItem - 8), transform.parent.position);
+            Debug.Log("Item");
+            inventoryManager.ItemInstantiate((ItemQuality)(indexOfItem - 8), transform.parent.position, EnemyManager.dropObjStrength);
         }
         if (indexOfItem >= 12 && indexOfItem <= 15) // Addon
         {
             inventoryManager.AddonInstantiate((ItemQuality)(indexOfItem - 12), transform.parent.position);
         }
 
-        // Pool로 돌아가기 전 Enemy의 상태를 초기화
         this.currHealth = this.maxHealth;
-
+        this.untouchable = false;
         return;
     }
 
     // Coroutine
-
+    // Debuff
     IEnumerator DebuffCase(EnemyDebuffed sCase)
     {
 

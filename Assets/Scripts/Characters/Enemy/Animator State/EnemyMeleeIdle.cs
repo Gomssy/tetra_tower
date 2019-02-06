@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeIdle : StateMachineBehaviour {
+public class EnemyMeleeIdle : StateMachineBehaviour {
 
 	Vector2 origin;
 	float patrolRange;
 	float patrolSpeed;
 	float noticeRange;
-	GameObject player;
 	Vector3 leftsideAngle = new Vector3(0, 0, 0);
 	Vector3 rightsideAngle = new Vector3(0, 180, 0);
     Transform animatorRoot;
@@ -20,7 +19,6 @@ public class MeleeIdle : StateMachineBehaviour {
         patrolRange = animator.GetComponent<Enemy>().patrolRange;
         noticeRange = animator.GetComponent<Enemy>().noticeRange;
         patrolSpeed = animator.GetComponent<Enemy>().patrolSpeed;
-        player = EnemyManager.Instance.player;
         animatorRoot = animator.transform.parent;
     }
 

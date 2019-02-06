@@ -267,10 +267,8 @@ MonoBehaviour:
   attackRange: 1
   patrolSpeed: 2.5
   trackSpeed: 3.5
-  currHealth: 0
   playerDistance: 0
-  inventoryManager: {fileID: 0}
-  dropTable: 
+  untouchable: 0
 --- !u!114 &114173716467154830
 MonoBehaviour:
   m_ObjectHideFlags: 1

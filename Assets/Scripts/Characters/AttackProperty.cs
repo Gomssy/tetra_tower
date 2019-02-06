@@ -11,7 +11,7 @@ public class AttackProperty : MonoBehaviour{
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Enemy") && !collision.transform.GetChild(0).GetComponent<Enemy>().untouchable)
         {
             Debug.Log(damage);
             PlayerAttackInfo curAttack = new PlayerAttackInfo(damage, knockBackMultiplier, debuffNum, debuffType, debuffTime);

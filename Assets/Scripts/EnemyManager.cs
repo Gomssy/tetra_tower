@@ -9,7 +9,11 @@ public class EnemyManager : Singleton<EnemyManager>
 {
     // data
     // static
-    private static readonly int poolSize = 10;
+    private readonly int poolSize = 10;
+
+    public static readonly float goldPer = 0.5f;
+    public static readonly int ameNum = 0;
+    public static readonly float dropObjStrength = 1f;
 
     // hold player for animation
     public GameObject player;
