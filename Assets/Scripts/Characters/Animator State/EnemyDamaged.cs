@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Damaged : StateMachineBehaviour {
+public class EnemyDamaged : StateMachineBehaviour {
 
     RuntimeAnimatorController ac;
     float knockbackTime;

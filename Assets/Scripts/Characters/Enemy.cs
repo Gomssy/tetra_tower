@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 
 public class Enemy : MonoBehaviour {
@@ -30,6 +29,7 @@ public class Enemy : MonoBehaviour {
     public float trackSpeed;
     
     private float playerMaxHealth; //다른 스크립트에 있는 플레이어 최대체력 가져와야함
+    [SerializeField]
     private float currHealth;
 
     // [HideInInspector]
@@ -43,11 +43,10 @@ public class Enemy : MonoBehaviour {
     private Animator animator;
 
     // drop item
-    private InventoryManager inventoryManager;
-    private int[] dropTable;
-    // for test
-    public GameObject droppedItem;
-    public Item item;
+    [HideInInspector]
+    public InventoryManager inventoryManager;
+    [HideInInspector]
+    public int[] dropTable;
 
     // method
     // Standard Method
@@ -62,6 +61,7 @@ public class Enemy : MonoBehaviour {
     {
         this.currHealth = maxHealth;
         dropTable = enemyManager.dropTableByID[monsterID];
+        Physics2D.IgnoreCollision(enemyManager.player.gameObject.GetComponent<Collider2D>(), transform.parent.GetComponent<Collider2D>());
     }
 
     private void Update()
@@ -72,32 +72,69 @@ public class Enemy : MonoBehaviour {
     // hit by player or debuff
     public void GetDamaged(PlayerAttackInfo attack) { 
         currHealth -= attack.damage;
-        if(currHealth <= 0) {
-            processDeath();
-            return;
+        if (currHealth <= 0)
+        {
+            animator.SetTrigger("DeadTrigger");
         }
-        animator.SetFloat("knockbackDistance", attack.damage / this.weight * attack.knockBackMultiplier);
-        animator.SetTrigger("DamagedTrigger");
+        else
+        {
+            animator.SetFloat("knockbackDistance", attack.damage / this.weight * attack.knockBackMultiplier);
+            animator.SetTrigger("DamagedTrigger");
+        }
     }
 
-    private void processDeath()
+    // Animation Event
+    // Dead
+    public void deadEvent()
     {
+        transform.parent.gameObject.SetActive(false);
+
+        // Drop 아이템 결정. 인덱스 별 아이템은 맨 밑에 서술
         float denominator = dropTable[dropTable.Length - 1];
         float numerator = Random.Range(0, denominator);
 
         int indexOfItem = 0;
         for (int i = 0; i < dropTable.Length; i++)
         {
-            if(numerator <= dropTable[i])
+            if (numerator <= dropTable[i])
             {
                 indexOfItem = i;
                 break;
             }
         }
-        inventoryManager.ItemInstantiate(enemyManager.dropItemList[indexOfItem], transform.parent.position);
 
-        gameObject.SetActive(false);
-        // animator.SetTrigger("DeadTrigger");
+        if (indexOfItem == 0) // None
+        {
+            Debug.Log("None");
+        }
+        if (indexOfItem >= 1 && indexOfItem <= 5) // Lifestone
+        {
+            Debug.Log("LifeStone " + indexOfItem);
+        }
+        if (indexOfItem == 6) // Gold Potion
+        {
+            Debug.Log("Gold Potion");
+            // insert!
+        }
+        if (indexOfItem == 7) // Amethyst Potion
+        {
+            Debug.Log("Amethyst Potion");
+            // insert!
+        }
+        if (indexOfItem >= 8 && indexOfItem <= 11) // Item
+        {
+            Debug.Log("Item" + (ItemQuality)(indexOfItem - 8));
+            inventoryManager.ItemInstantiate((ItemQuality)(indexOfItem - 8), transform.parent.position);
+        }
+        if (indexOfItem >= 12 && indexOfItem <= 15) // Addon
+        {
+            Debug.Log("Addon" + (ItemQuality)(indexOfItem - 12));
+            inventoryManager.AddonInstantiate((ItemQuality)(indexOfItem - 12), transform.parent.position);
+        }
+
+        // Pool로 돌아가기 전 Enemy의 상태를 초기화
+        this.currHealth = this.maxHealth;
+
         return;
     }
 
@@ -172,3 +209,22 @@ public class Enemy : MonoBehaviour {
 
 //얼음일때 깨어나기
 //공격이 적중했을 때 매혹에서 깨어나기
+
+/* Item Drop Index
+ * 0 - None
+ * 1 - Lifestone 1
+ * 2 - Lifestone 2
+ * 3 - Lifestone 3
+ * 4 - Lifestone 4
+ * 5 - Lifestone 5
+ * 6 - Gold Potion
+ * 7 - Amethyst Potion
+ * 8 - Item(Study)
+ * 9 - Item(Ordinary)
+ * 10 - Item(Superior)
+ * 11 - Item(Masterpiece)
+ * 12 - Addon(Study)
+ * 13 - Addon(Ordinary)
+ * 14 - Addon(Superior)
+ * 15 - Addon(Masterpiece)
+*/

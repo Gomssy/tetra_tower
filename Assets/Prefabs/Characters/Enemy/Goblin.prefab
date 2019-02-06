@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 4639192263818050}
   - component: {fileID: 50293901552157806}
   - component: {fileID: 61254635014177320}
-  - component: {fileID: 114715916143850132}
+  - component: {fileID: 114374764041062114}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Enemy
@@ -137,7 +137,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.020877361, y: 0.5497493}
+  m_Offset: {x: -0.001632452, y: 0.5538476}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -148,7 +148,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5978651, y: 1.1179954}
+  m_Size: {x: 0.5742383, y: 1.126192}
   m_EdgeRadius: 0
 --- !u!61 &61362187134790794
 BoxCollider2D:
@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d73d07fdab522c4aa045e1cb6a92e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterID: 101
+  monsterID: 117
   maxHealth: 5
   weight: 1
   patrolRange: 2
@@ -212,7 +212,21 @@ MonoBehaviour:
   attackRange: 1
   patrolSpeed: 2.5
   trackSpeed: 3.5
+  currHealth: 0
   playerDistance: 0
+  inventoryManager: {fileID: 0}
+  dropTable: 
+--- !u!114 &114374764041062114
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1636491341446076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d57aad92e0a1940b2258c8b7537027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114468655689627186
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -225,17 +239,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
---- !u!114 &114715916143850132
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1636491341446076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31d57aad92e0a1940b2258c8b7537027, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &212540714587432698
 SpriteRenderer:
   m_ObjectHideFlags: 1

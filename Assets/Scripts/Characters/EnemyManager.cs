@@ -17,7 +17,6 @@ public class EnemyManager : Singleton<EnemyManager>
     // data of drop item
     public TextAsset dropTableData;
     public Dictionary<int, int[]> dropTableByID = new Dictionary<int, int[]>();
-    public string[] dropItemList; // insert drop item here(on right order)
 
     // enemy prefab
     public GameObject[] enemyPrefab;
@@ -110,7 +109,6 @@ public class EnemyManager : Singleton<EnemyManager>
             if (enemyID == 0) { continue; } // case 0: blank
 
             int dropTableLength = cellValue.Length - skipDistance;
-            Assert.AreEqual(dropTableLength, dropItemList.Length);
             int[] dropTable = new int[dropTableLength];
 
             int cumulated = 0;
