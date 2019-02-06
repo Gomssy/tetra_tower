@@ -35,6 +35,7 @@ public class LifeStoneManager : MonoBehaviour {
 	/// lifeStoneUnit Prefab
 	/// </summary>
 	public GameObject lifeUnitPrefab;
+    public GameObject goldPotionPrefab;
 	/// <summary>
 	/// strength of vibration when Lifestone falls
 	/// </summary>
@@ -81,6 +82,11 @@ public class LifeStoneManager : MonoBehaviour {
     {
         lifeStoneRowNum += rowNum;
         frameSuper.GetComponent<LifeStoneFrame>().AddRow(lifeStoneRowNum);
+    }
+
+    public void InstantiatePotion(Vector3 pos)
+    {
+        Instantiate(goldPotionPrefab, pos, Quaternion.identity);
     }
 
     /// <summary>

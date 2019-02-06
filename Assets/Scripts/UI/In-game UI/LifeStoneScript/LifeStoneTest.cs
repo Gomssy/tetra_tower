@@ -40,4 +40,8 @@ public class LifeStoneTest : MonoBehaviour {
     {
         uii.ExpandRow(Convert.ToInt32(rowText.GetComponent<InputField>().text));
     }
+    public void goldPotion()
+    {
+        uii.InstantiatePotion(GameObject.Find("Player").transform.position);
+    }
 }

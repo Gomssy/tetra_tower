@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DroppedLifeStone : MonoBehaviour
+public class DroppedLifeStone : MonoBehaviour, IPlayerInteraction
 {
     LifeStoneInfo info;
     public Sprite[] sprites;
@@ -50,7 +50,7 @@ public class DroppedLifeStone : MonoBehaviour
         bc2D.offset = new Vector2(unitSize * inSize.x / 2f, unitSize * inSize.y / 2f);
         bc2D.size = new Vector2(unitSize * inSize.x, unitSize * inSize.y);
     }
-    public void ApplyLifeStone()
+    public void Apply()
     {
         if(GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>().PushLifeStone(info))
             Destroy(gameObject);
