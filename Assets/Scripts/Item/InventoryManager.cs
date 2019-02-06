@@ -158,11 +158,11 @@ public class InventoryManager : MonoBehaviour {
     /// </summary>
     /// <param name="quality"></param>
     /// <param name="pos"></param>
-    public void AddonInstantiate(ItemQuality quality, Vector3 pos)
+    public void AddonInstantiate(ItemQuality quality, Vector3 pos, float popoutStrength)
     {
         if (addonPool[(int)quality].Count > 0)
         {
-            AddonInstantiate(addonPool[(int)quality][0], pos);
+            AddonInstantiate(addonPool[(int)quality][0], pos, popoutStrength);
             addonPool[(int)quality].RemoveAt(0);
         }
     }
@@ -171,20 +171,22 @@ public class InventoryManager : MonoBehaviour {
     /// </summary>
     /// <param name="str"></param>
     /// <param name="pos"></param>
-    public void AddonInstantiate(string str, Vector3 pos)
+    public void AddonInstantiate(string str, Vector3 pos, float popoutStrength)
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init((Addon)System.Activator.CreateInstance(System.Type.GetType(str)), pos);
+        PopoutGenerator(tmpItem, popoutStrength);
     }
     /// <summary>
     /// Instantiate addon by Addon Instance on pos
     /// </summary>
     /// <param name="item"></param>
     /// <param name="pos"></param>
-    public void AddonInstantiate(Addon addon, Vector3 pos)
+    public void AddonInstantiate(Addon addon, Vector3 pos, float popoutStrength)
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init(addon, pos);
+        PopoutGenerator(tmpItem, popoutStrength);
     }
 
     /// <summary>
@@ -259,7 +261,7 @@ public class InventoryManager : MonoBehaviour {
     {
         if (addonList.Count > index)
         {
-            AddonInstantiate(addonList[index], player.transform.position);
+            AddonInstantiate(addonList[index], player.transform.position, 1f);
             addonList.RemoveAt(index);
         }
         ui.SetOnPosition(itemList, addonList);
@@ -273,7 +275,7 @@ public class InventoryManager : MonoBehaviour {
     {
         if (itemList[itemIndex].addons[(int)addonType] != null)
         {
-            AddonInstantiate(itemList[itemIndex].addons[(int)addonType], player.transform.position);
+            AddonInstantiate(itemList[itemIndex].addons[(int)addonType], player.transform.position, 1f);
             itemList[itemIndex].addons[(int)addonType] = null;
         }
         ui.SetOnPosition(itemList, addonList);
