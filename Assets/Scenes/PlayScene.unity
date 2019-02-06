@@ -506,21 +506,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 224627740379736590, guid: 799f0e9cc16535e449586b399b37aa56,
-        type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224627740379736590, guid: 799f0e9cc16535e449586b399b37aa56,
-        type: 2}
-      propertyPath: m_LocalScale.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224627740379736590, guid: 799f0e9cc16535e449586b399b37aa56,
-        type: 2}
-      propertyPath: m_LocalScale.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 114627791461826676, guid: 799f0e9cc16535e449586b399b37aa56,
         type: 2}
       propertyPath: ui

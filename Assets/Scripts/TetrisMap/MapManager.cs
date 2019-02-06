@@ -711,14 +711,13 @@ public class MapManager : MonoBehaviour {
         }
         if(GameManager.gameState == GameState.Tetris)
         {
-            if (Input.GetButtonDown("Vertical"))
+            if (Input.GetButtonDown("TetriminoVertical"))
             {
-                TetriminoRotate(currentTetrimino, (int)Input.GetAxisRaw("Vertical"));
-
+                TetriminoRotate(currentTetrimino, (int)Input.GetAxisRaw("TetriminoVertical"));
             }
-            else if (Input.GetButtonDown("Horizontal") && lifeStoneManager.CountType(LifeStoneType.Gold) > 0)
+            else if (Input.GetButtonDown("TetriminoHorizontal") && lifeStoneManager.CountType(LifeStoneType.Gold) > 0)
             {
-                MoveTetriminoHorizontal(currentTetrimino, new Vector3((int)Input.GetAxisRaw("Horizontal"), 0, 0));
+                MoveTetriminoHorizontal(currentTetrimino, new Vector3((int)Input.GetAxisRaw("TetriminoHorizontal"), 0, 0));
                 lifeStoneManager.ChangeToNormal(LifeStoneType.Gold, tetriminoCost);
             }
             else if (Input.GetKeyDown(KeyCode.Space) && lifeStoneManager.CountType(LifeStoneType.Gold) > 0)
@@ -786,6 +785,7 @@ public class MapManager : MonoBehaviour {
             if (room.mapCoord.x < width - 1 && mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y] != null && mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].isRoomCleared == true)
                 room.OpenDoor("Right");
         }
+        StartCoroutine(GetComponent<TileManager>().SetTetriminoTiles(te));
         Destroy(te.gameObject);
     }
     /// <summary>
@@ -1020,6 +1020,10 @@ public class MapManager : MonoBehaviour {
             portalDistributedVertical[i] = new List<int>();
         for (int i = 0; i < 10; i++)
             portalDistributedHorizontal[i] = new List<int>();
+
+
+
+        TileManager tileManager = GetComponent<TileManager>();
         for (int concept = 0; concept < 4; concept++)
             for (int leftDoor = 0; leftDoor < 3; leftDoor++)
                 for (int rightDoor = 0; rightDoor < 3; rightDoor++)

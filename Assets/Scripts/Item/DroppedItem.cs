@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DroppedItem : MonoBehaviour
+public class DroppedItem : MonoBehaviour, IPlayerInteraction
 {
     InventoryManager inventoryManager;
     public bool itemAddon; //false: item true: addon
@@ -48,22 +48,21 @@ public class DroppedItem : MonoBehaviour
         bc2D.size = sprt.size;
         transform.localScale = new Vector3((addon.sizeInventory.x * itemSizeMultiplier) / sprt.size.x, (addon.sizeInventory.y * itemSizeMultiplier) / sprt.size.y, 1);
     }
-    public bool PushItem()
+    public void Apply()
     {
         if (!itemAddon && inventoryManager.PushItem(item))
         {
             Destroy(gameObject);
-            return true;
         }
         else if (itemAddon && inventoryManager.PushAddon(addon))
         {
             Destroy(gameObject);
-            return true;
         }
-        return false;
     }
     public void HighlightSwitch(bool enabled)
     {
         highlight.SetActive(enabled);
+        highlight.GetComponent<SpriteRenderer>().sortingOrder = -1 + (enabled ? 2 : 0);
+        GetComponent<SpriteRenderer>().sortingOrder = (enabled ? 2 : 0);
     }
 }

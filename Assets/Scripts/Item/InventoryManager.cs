@@ -34,7 +34,7 @@ public class InventoryManager : MonoBehaviour {
             addonPool[i] = new List<string>();
         }
 
-        itemPool[0].Add("Bow");
+        //itemPool[0].Add("Bow");
         itemPool[0].Add("Dagger");
 
         itemPool[1].Add("Baculus");

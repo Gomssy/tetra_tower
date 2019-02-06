@@ -6,7 +6,7 @@ public class Portal : MonoBehaviour {
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag.Equals("Player") && Input.GetKeyDown(KeyCode.F))
+        if (collision.tag.Equals("Player") && Input.GetButtonDown("Interaction"))
         {
             StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Portal));
         }
