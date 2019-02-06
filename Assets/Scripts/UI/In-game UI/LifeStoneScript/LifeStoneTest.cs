@@ -18,7 +18,7 @@ public class LifeStoneTest : MonoBehaviour {
 
     public void push()
     {
-        uii.InstantiateDroppedLifeStone(Convert.ToInt32(numText.GetComponent<InputField>().text), Convert.ToSingle(goldPerText.GetComponent<InputField>().text), Convert.ToInt32(ameNumText.GetComponent<InputField>().text),GameObject.Find("Player").transform.position);
+        uii.InstantiateDroppedLifeStone(Convert.ToInt32(numText.GetComponent<InputField>().text), Convert.ToSingle(goldPerText.GetComponent<InputField>().text), Convert.ToInt32(ameNumText.GetComponent<InputField>().text),GameObject.Find("Player").transform.position,1f);
     }
     public void gold()
     {
@@ -42,6 +42,6 @@ public class LifeStoneTest : MonoBehaviour {
     }
     public void goldPotion()
     {
-        uii.InstantiatePotion(GameObject.Find("Player").transform.position);
+        uii.InstantiatePotion(GameObject.Find("Player").transform.position, 1f);
     }
 }

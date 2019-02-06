@@ -99,6 +99,8 @@ MonoBehaviour:
   droppedLifeStonePrefab: {fileID: 1149595688849768, guid: 8255a117a93935941b32b4aed9b299a0,
     type: 2}
   frameBorder: 0.2
+  popoutStrengthMultiplier: 3
+  popoutTime: 0.3
 --- !u!224 &224255635903845628
 RectTransform:
   m_ObjectHideFlags: 1

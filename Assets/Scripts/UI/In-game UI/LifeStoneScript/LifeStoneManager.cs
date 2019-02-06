@@ -58,7 +58,10 @@ public class LifeStoneManager : MonoBehaviour {
 
     public float frameBorder;
 
-	void Start () {
+    public float popoutStrengthMultiplier;
+    public float popoutTime;
+
+    void Start () {
         transform.position = new Vector3(lifeStoneLocation.x, lifeStoneLocation.y, 0);
         frameSuper.GetComponent<LifeStoneFrame>().Init(frameSuper.transform, standardImage, lifeStoneRowNum, lifeStoneSize, sprites, frameBorder);
         lifeStoneArray = new int[50, 3];
@@ -84,9 +87,35 @@ public class LifeStoneManager : MonoBehaviour {
         frameSuper.GetComponent<LifeStoneFrame>().AddRow(lifeStoneRowNum);
     }
 
-    public void InstantiatePotion(Vector3 pos)
+    public void InstantiatePotion(Vector3 pos, float popoutStrength)
     {
-        Instantiate(goldPotionPrefab, pos, Quaternion.identity);
+        PopoutGenerator(Instantiate(goldPotionPrefab, pos, Quaternion.identity), popoutStrength);
+    }
+
+    IEnumerator PopoutCoroutine(GameObject obj)
+    {
+        float endTime = Time.time + popoutTime;
+        Vector2 orgScale = obj.transform.localScale;
+        SpriteRenderer[] sprtArr = obj.GetComponents<SpriteRenderer>();
+
+        while (Time.time < endTime)
+        {
+            obj.transform.localScale = (1 - ((endTime - Time.time) / popoutTime)) * orgScale;
+            foreach (SpriteRenderer sprt in sprtArr)
+                sprt.color = new Color(sprt.color.r, sprt.color.g, sprt.color.b, 1 - ((endTime - Time.time) / popoutTime));
+            yield return null;
+        }
+
+        obj.transform.localScale = orgScale;
+        foreach (SpriteRenderer sprt in sprtArr)
+            sprt.color = new Color(sprt.color.r, sprt.color.g, sprt.color.b, 1f);
+    }
+    void PopoutGenerator(GameObject obj, float popoutStrength)
+    {
+        popoutStrength *= popoutStrengthMultiplier;
+        float angle = Mathf.Deg2Rad * Random.Range(60f, 120f);
+        obj.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * popoutStrength;
+        StartCoroutine(PopoutCoroutine(obj));
     }
 
     /// <summary>
@@ -94,25 +123,29 @@ public class LifeStoneManager : MonoBehaviour {
     /// </summary>
     /// <param name="info"></param>
     /// <param name="pos"></param>
-    public void InstantiateDroppedLifeStone(Vector2Int size, int num, float goldPer, int ameNum, Vector3 pos)
+    public void InstantiateDroppedLifeStone(Vector2Int size, int num, float goldPer, int ameNum, Vector3 pos, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
         tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(size, num, goldPer, ameNum), pos);
+        PopoutGenerator(tmpObj, popoutStrength);
     }
-    public void InstantiateDroppedLifeStone(Vector2Int size, float goldPer, int ameNum, Vector3 pos)
+    public void InstantiateDroppedLifeStone(Vector2Int size, float goldPer, int ameNum, Vector3 pos, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
         tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(size, goldPer, ameNum), pos);
+        PopoutGenerator(tmpObj, popoutStrength);
     }
-    public void InstantiateDroppedLifeStone(int num, float goldPer, int ameNum, Vector3 pos)
+    public void InstantiateDroppedLifeStone(int num, float goldPer, int ameNum, Vector3 pos, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
         tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(num, goldPer, ameNum), pos);
+        PopoutGenerator(tmpObj, popoutStrength);
     }
-    public void InstantiateDroppedLifeStone(LifeStoneInfo info, Vector3 pos)
+    public void InstantiateDroppedLifeStone(LifeStoneInfo info, Vector3 pos, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
         tmpObj.GetComponent<DroppedLifeStone>().Init(info, pos);
+        PopoutGenerator(tmpObj, popoutStrength);
     }
 
     /// <summary>
@@ -324,7 +357,8 @@ public class LifeStoneManager : MonoBehaviour {
                     }
                     InstantiateDroppedLifeStone(CreateLifeStoneInfo(
                         new LifeStoneInfo(new Vector2Int(pSize.x, pSize.y - cutRow), new string(newFill))),
-                        GameObject.Find("Player").transform.position + new Vector3(droppedLifeStonePrefab.GetComponent<DroppedLifeStone>().unitSprite.GetComponent<SpriteRenderer>().bounds.size.x * i,0,0));
+                        GameObject.Find("Player").transform.position + new Vector3(droppedLifeStonePrefab.GetComponent<DroppedLifeStone>().unitSprite.GetComponent<SpriteRenderer>().bounds.size.x * i,0,0),
+                        1f);
                 }
             }
         }

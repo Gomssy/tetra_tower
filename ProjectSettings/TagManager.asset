@@ -9,6 +9,8 @@ TagManager:
   - TetriminoSpawner
   - DroppedLifeStone
   - DroppedItem
+  - Enemy
+  - DroppedPotion
   layers:
   - Default
   - TransparentFX

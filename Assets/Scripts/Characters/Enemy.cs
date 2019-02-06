@@ -94,7 +94,7 @@ public class Enemy : MonoBehaviour {
                 break;
             }
         }
-        inventoryManager.ItemInstantiate(enemyManager.dropItemList[indexOfItem], transform.parent.position);
+        inventoryManager.ItemInstantiate(enemyManager.dropItemList[indexOfItem], transform.parent.position, 1f);
 
         gameObject.SetActive(false);
         // animator.SetTrigger("DeadTrigger");
