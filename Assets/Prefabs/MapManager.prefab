@@ -170,8 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adab373df646d5f4fb794a3b6ffdf2d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map: {fileID: 0}
-  roomInGame: {fileID: 0}
   allTiles:
   - {fileID: 11400000, guid: cad5b727dcc80234584fe4c3d4bac3ac, type: 2}
   - {fileID: 11400000, guid: 648b887233c145948994a645b8a15292, type: 2}
