@@ -28,6 +28,10 @@ public class InventoryUI : MonoBehaviour {
     GameObject[] items;
     GameObject[] addons;
     public GameObject[] infoAddonsFrame;
+    public GameObject[] comboStringFrame;
+    public GameObject[] comboCharPrefab;
+    public float pixelBetweenChar;
+    GameObject[,] comboChars = new GameObject[3, 8];
     GameObject[] infoAddons;
     public int selectedItem = -1;
 
@@ -53,6 +57,16 @@ public class InventoryUI : MonoBehaviour {
             infoAddons[i].SetActive(false);
             
         }
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                comboChars[i, j] = Instantiate(comboCharPrefab[0], comboStringFrame[i].transform);
+                comboChars[i, j].SetActive(false);
+            }
+            comboStringFrame[i].SetActive(false);
+        }
+        
         infoSpace.transform.Find("Frame").gameObject.SetActive(false);
     }
     public void SetOnPosition(List<Item> itemList, List<Addon> addonList)
@@ -79,13 +93,40 @@ public class InventoryUI : MonoBehaviour {
             addons[i].SetActive(false);
 
         GameObject frameObj = infoSpace.transform.Find("Frame").gameObject;
-        if(selectedItem >= 0)
+        if (selectedItem >= 0)
         {
             frameObj.SetActive(true);
             frameObj.GetComponent<Image>().sprite = infoFrameQuality[(int)itemList[selectedItem].quality];
             frameObj.transform.Find("ItemSprite").gameObject.GetComponent<Image>().sprite = itemFrameQuality[(int)itemList[selectedItem].quality];
             frameObj.transform.Find("ItemSprite").Find("Sprite").gameObject.GetComponent<Image>().sprite = itemList[selectedItem].sprite;
             frameObj.transform.Find("ItemSprite").Find("Sprite").gameObject.GetComponent<RectTransform>().sizeDelta = itemList[selectedItem].sizeInventory;
+            for (int i = 0; i < 3; i++)
+            {
+                if (i < itemList[selectedItem].skillNum)
+                {
+                    comboStringFrame[i].SetActive(true);
+                    float tmpx = 0;
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if(j < itemList[selectedItem].combo[i].Length)
+                        {
+                            comboChars[i, j].SetActive(true);
+                            comboChars[i, j].GetComponent<Image>().sprite = comboCharPrefab[itemList[selectedItem].combo[i][j] - 'A'].GetComponent<Image>().sprite;
+                            comboChars[i, j].GetComponent<RectTransform>().sizeDelta = comboCharPrefab[itemList[selectedItem].combo[i][j] - 'A'].GetComponent<RectTransform>().sizeDelta;
+                            comboChars[i, j].GetComponent<RectTransform>().localPosition += new Vector3(tmpx, 0, 0);
+                            tmpx += comboChars[i, j].GetComponent<RectTransform>().sizeDelta.x + pixelBetweenChar;
+                        }
+                        else
+                        {
+                            comboChars[i, j].SetActive(false);
+                        }
+                    }
+                }
+                else
+                {
+                    comboStringFrame[i].SetActive(false);
+                }
+            }
             for (int i=0; i<4; i++)
             {
                 

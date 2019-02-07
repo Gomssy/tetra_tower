@@ -13,6 +13,7 @@ public class KnightsStirrup : Addon
         quality = ItemQuality.Study;
         type = AddonType.Prop;
         sprite = Resources.Load<Sprite>("Sprites/Addons/Knight's stirrup"); ;
+        highlight = Resources.Load<Sprite>("Sprites/Addons/Knight's stirrup"); ;
         sizeInventory = new Vector2(80, 80);
     }
 }

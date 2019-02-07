@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Portal : MonoBehaviour {
+public class Portal : MonoBehaviour, IPlayerInteraction  {
 
-    private void OnTriggerStay2D(Collider2D collision)
+    public void Apply()
     {
-        if (collision.tag.Equals("Player") && Input.GetKeyDown(KeyCode.F))
-        {
+        if(GameManager.gameState == GameState.Ingame)
             StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Portal));
-        }
+    }
+
+    public void HighlightSwitch(bool enabled)
+    {
     }
 
     // Use this for initialization

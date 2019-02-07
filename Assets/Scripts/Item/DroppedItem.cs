@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DroppedItem : MonoBehaviour
+public class DroppedItem : MonoBehaviour, IPlayerInteraction
 {
     InventoryManager inventoryManager;
     public bool itemAddon; //false: item true: addon
     public Item item;
     public Addon addon;
-    float itemSizeMultiplier = 0.0077f;
+    public GameObject highlight;
+    float itemSizeMultiplier = 0.007f;
     Rigidbody2D rb2D;
     BoxCollider2D bc2D;
     SpriteRenderer sprt;
@@ -23,8 +24,12 @@ public class DroppedItem : MonoBehaviour
 
         transform.position = pos;
         sprt.sprite = item.sprite;
+        highlight.GetComponent<SpriteRenderer>().sprite = item.highlight;
+        highlight.SetActive(false);
         bc2D.size = sprt.size;
         transform.localScale = new Vector3((item.sizeInventory.x * itemSizeMultiplier) / sprt.size.x, (item.sizeInventory.y * itemSizeMultiplier) / sprt.size.y, 1);
+
+
         
     }
     public void Init(Addon _addon, Vector3 pos)
@@ -38,27 +43,26 @@ public class DroppedItem : MonoBehaviour
 
         transform.position = pos;
         sprt.sprite = addon.sprite;
-        sprt.size = addon.sizeInventory / 100f;
+        highlight.GetComponent<SpriteRenderer>().sprite = addon.highlight;
+        highlight.SetActive(false);
         bc2D.size = sprt.size;
         transform.localScale = new Vector3((addon.sizeInventory.x * itemSizeMultiplier) / sprt.size.x, (addon.sizeInventory.y * itemSizeMultiplier) / sprt.size.y, 1);
     }
-    public bool PushItem()
+    public void Apply()
     {
         if (!itemAddon && inventoryManager.PushItem(item))
         {
             Destroy(gameObject);
-            return true;
         }
         else if (itemAddon && inventoryManager.PushAddon(addon))
         {
             Destroy(gameObject);
-            return true;
         }
-        return false;
     }
     public void HighlightSwitch(bool enabled)
     {
-        if (itemAddon) Debug.Log(addon.name + (enabled ? "on" : "off"));
-        else Debug.Log(item.name + (enabled ? "on" : "off"));
+        highlight.SetActive(enabled);
+        highlight.GetComponent<SpriteRenderer>().sortingOrder = -1 + (enabled ? 2 : 0);
+        GetComponent<SpriteRenderer>().sortingOrder = (enabled ? 2 : 0);
     }
 }

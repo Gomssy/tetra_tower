@@ -15,6 +15,7 @@ public class Morgenstern : Item
         combo = new string[3] { "BBCAA", "BBB", "" };
         attachable = new bool[4] { false, true, false, true };
         sprite = Resources.Load<Sprite>("Sprites/Items/Morgenstern");
+        highlight = Resources.Load<Sprite>("Sprites/Items/Morgenstern");
         animation[0] = Resources.Load<AnimationClip>("Animations/morgensternAttack1");
         animation[1] = Resources.Load<AnimationClip>("Animations/morgensternAttack2");
         animation[2] = null;

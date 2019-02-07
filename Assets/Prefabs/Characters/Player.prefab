@@ -44,7 +44,6 @@ GameObject:
   - component: {fileID: 61129044981816742}
   - component: {fileID: 114402380471012178}
   - component: {fileID: 60342798607647292}
-  - component: {fileID: 114190796731463818}
   m_Layer: 0
   m_Name: AttackColider
   m_TagString: Untagged
@@ -195,22 +194,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114190796731463818
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1862495014651308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64f948f7c7aacab409fe963a6f9e0d2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 0
-  knockBackMultiplier: 1
-  debuffNum: 0
-  debuffType: 
-  debuffTime: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!114 &114294925164316638
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -279,13 +262,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab58a64164eb984d8683df370ddce96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRaw:
-  - 0
-  - 0
-  - 0
-  attackKeyState: 000000000000000000000000
-  cancelRaw: 0
-  cancelKeyState: 0
+  attack: 000000
+  cancel: 0
   playingSkill: 0
   comboTime: 1
   time: {fileID: 0}
@@ -295,10 +273,11 @@ MonoBehaviour:
   anim: {fileID: 95992411616135034}
   aoc: {fileID: 0}
   normalAttack:
-  - {fileID: 7400000, guid: be4bdbaff27cc7c46a79b3ef4e1fe3f6, type: 2}
-  - {fileID: 7400000, guid: be4bdbaff27cc7c46a79b3ef4e1fe3f6, type: 2}
-  - {fileID: 7400000, guid: be4bdbaff27cc7c46a79b3ef4e1fe3f6, type: 2}
+  - {fileID: 7400000, guid: e27c281d8654edd4cafc9f13a3ba66e1, type: 2}
+  - {fileID: 7400000, guid: e27c281d8654edd4cafc9f13a3ba66e1, type: 2}
+  - {fileID: 7400000, guid: e27c281d8654edd4cafc9f13a3ba66e1, type: 2}
   inventoryManager: {fileID: 0}
+  lifeStoneManager: {fileID: 0}
 --- !u!114 &114906702720267008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -310,7 +289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7635365ab870ce46bd38a4af729df1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LCUI: {fileID: 0}
   ttx: 8
   tty: 0
 --- !u!212 &212187280661781960

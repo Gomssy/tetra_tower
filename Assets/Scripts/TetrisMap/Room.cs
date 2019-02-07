@@ -92,6 +92,10 @@ public class Room : MonoBehaviour
     /// Check if room is destroyed.
     /// </summary>
     public bool isRoomDestroyed = false;
+    /// <summary>
+    /// Check if portal is active or not.
+    /// </summary>
+    public bool isPortal = false;
 
     /*
      *  functions
@@ -116,7 +120,7 @@ public class Room : MonoBehaviour
     public void CreateDoors(GameObject _leftTetrisDoor, GameObject _rightTetrisDoor, GameObject _inGameDoorUp, GameObject _inGameDoorDown, GameObject _inGameDoorLeft, GameObject _inGameDoorRight)
     {
         float standardSize = MapManager.tetrisMapSize / 24;
-        Tilemap outerWallMap = roomInGame.transform.GetChild(4).GetComponent<Tilemap>();
+        Tilemap wallTileMap = roomInGame.transform.Find("wall").GetComponent<Tilemap>();
         leftTetrisDoor = Instantiate(_leftTetrisDoor, transform.position + new Vector3(standardSize, doorLocations[leftDoorLocation], 0), Quaternion.identity, transform);
         rightTetrisDoor = Instantiate(_rightTetrisDoor, transform.position + new Vector3(standardSize * 23, doorLocations[rightDoorLocation], 0), Quaternion.identity, transform);
 
@@ -128,27 +132,23 @@ public class Room : MonoBehaviour
         {
             if (i != leftDoorLocation)
             {
-                outerWallMap.SetTile(new Vector3Int(0, doorLocations[i] + 1, 0), outerWallMap.GetTile(new Vector3Int(0, 0, 0)));
-                outerWallMap.SetTile(new Vector3Int(0, doorLocations[i], 0), outerWallMap.GetTile(new Vector3Int(0, 0, 0)));
+                wallTileMap.SetTile(new Vector3Int(0, doorLocations[i] + 1, 0), wallTileMap.GetTile(new Vector3Int(0, 0, 0)));
+                wallTileMap.SetTile(new Vector3Int(0, doorLocations[i], 0), wallTileMap.GetTile(new Vector3Int(0, 0, 0)));
             }
             if (i != rightDoorLocation)
             {
-                outerWallMap.SetTile(new Vector3Int(23, doorLocations[i] + 1, 0), outerWallMap.GetTile(new Vector3Int(0, 0, 0)));
-                outerWallMap.SetTile(new Vector3Int(23, doorLocations[i], 0), outerWallMap.GetTile(new Vector3Int(0, 0, 0)));
+                wallTileMap.SetTile(new Vector3Int(23, doorLocations[i] + 1, 0), wallTileMap.GetTile(new Vector3Int(0, 0, 0)));
+                wallTileMap.SetTile(new Vector3Int(23, doorLocations[i], 0), wallTileMap.GetTile(new Vector3Int(0, 0, 0)));
             }
         }
     }
-
-
-    public bool isPortal = false;
-
     /// <summary>
     /// Create portal in cleared room.
     /// </summary>
     public void CreatePortal()
     {
-        portal = roomInGame.transform.GetChild(roomInGame.transform.childCount - 1).gameObject;
-        if(specialRoomType != RoomType.Normal)
+        GameObject portal = roomInGame.transform.Find("Portal").gameObject;
+        if (specialRoomType != RoomType.Normal)
         {
             portal.SetActive(true);
             isPortal = true;
@@ -223,11 +223,6 @@ public class Room : MonoBehaviour
             isPortal = true;
         }
     }
-
-
-
-
-
     /// <summary>
     /// Open selected door of this room.
     /// </summary>
