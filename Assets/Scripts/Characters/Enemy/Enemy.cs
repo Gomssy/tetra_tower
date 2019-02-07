@@ -120,7 +120,7 @@ public class Enemy : MonoBehaviour {
         }
         if (indexOfItem >= 12 && indexOfItem <= 15) // Addon
         {
-            inventoryManager.AddonInstantiate((ItemQuality)(indexOfItem - 12), transform.parent.position);
+            inventoryManager.AddonInstantiate((ItemQuality)(indexOfItem - 12), transform.parent.position, EnemyManager.dropObjStrength);
         }
 
         this.currHealth = this.maxHealth;
