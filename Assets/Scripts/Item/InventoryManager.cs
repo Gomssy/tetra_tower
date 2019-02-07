@@ -86,7 +86,7 @@ public class InventoryManager : MonoBehaviour {
     {
         yield return null;
         yield return new WaitForSeconds(2.5f);
-        ItemInstantiate(ItemQuality.Study, player.transform.position, 1f);
+        ItemInstantiate("Dagger", player.transform.position, 0f);
 
     }
 
