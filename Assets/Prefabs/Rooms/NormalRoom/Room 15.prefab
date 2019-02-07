@@ -11,6 +11,37 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1964712858545370}
   m_IsPrefabAsset: 1
+--- !u!1 &1113074501602910
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4557073477511444}
+  - component: {fileID: 114000789384529348}
+  m_Layer: 0
+  m_Name: goblin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1236762604459974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4415568697132562}
+  m_Layer: 0
+  m_Name: enemy spot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1600949908462568
 GameObject:
   m_ObjectHideFlags: 0
@@ -44,6 +75,21 @@ GameObject:
   - component: {fileID: 66147367040988466}
   m_Layer: 11
   m_Name: platform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1728272580727650
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4941654559234346}
+  m_Layer: 0
+  m_Name: location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131,6 +177,34 @@ Transform:
   m_Father: {fileID: 4577277286495218}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4415568697132562
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1236762604459974}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4557073477511444}
+  m_Father: {fileID: 4577277286495218}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4557073477511444
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1113074501602910}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4941654559234346}
+  m_Father: {fileID: 4415568697132562}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4577277286495218
 Transform:
   m_ObjectHideFlags: 1
@@ -145,6 +219,7 @@ Transform:
   - {fileID: 4066620816308544}
   - {fileID: 4805081465108728}
   - {fileID: 4270461719590420}
+  - {fileID: 4415568697132562}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -172,6 +247,19 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4577277286495218}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4941654559234346
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1728272580727650}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.5, y: 12, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4557073477511444}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &50157691830015846
@@ -441,18 +529,6 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 2113883504809934830}
     m_ColliderPaths:
-    - - X: 10000000
-        Y: 230000000
-      - X: 110000000
-        Y: 230000000
-      - X: 110000000
-        Y: 240000000
-      - X: 0
-        Y: 240000000
-      - X: 0
-        Y: 190000000
-      - X: 10000000
-        Y: 190000000
     - - X: 240000000
         Y: 240000000
       - X: 130000000
@@ -464,6 +540,18 @@ CompositeCollider2D:
       - X: 230000000
         Y: 190000000
       - X: 240000000
+        Y: 190000000
+    - - X: 10000000
+        Y: 230000000
+      - X: 110000000
+        Y: 230000000
+      - X: 110000000
+        Y: 240000000
+      - X: 0
+        Y: 240000000
+      - X: 0
+        Y: 190000000
+      - X: 10000000
         Y: 190000000
     - - X: 50000000
         Y: 100000000
@@ -565,14 +653,6 @@ CompositeCollider2D:
         Y: 80000000
       - X: 50000000
         Y: 80000000
-    - - X: 240000000
-        Y: 170000000
-      - X: 230000000
-        Y: 170000000
-      - X: 230000000
-        Y: 110000000
-      - X: 240000000
-        Y: 110000000
     - - X: 10000000
         Y: 170000000
       - X: 0
@@ -580,6 +660,14 @@ CompositeCollider2D:
       - X: 0
         Y: 110000000
       - X: 10000000
+        Y: 110000000
+    - - X: 240000000
+        Y: 170000000
+      - X: 230000000
+        Y: 170000000
+      - X: 230000000
+        Y: 110000000
+      - X: 240000000
         Y: 110000000
     - - X: 140000000
         Y: 120000000
@@ -663,18 +751,18 @@ CompositeCollider2D:
         Y: 0
   m_CompositePaths:
     m_Paths:
-    - - {x: 1, y: 23}
-      - {x: 11, y: 23}
-      - {x: 11, y: 24}
-      - {x: 0, y: 24}
-      - {x: 0, y: 19}
-      - {x: 1, y: 19}
     - - {x: 24, y: 24}
       - {x: 13, y: 24}
       - {x: 13, y: 23}
       - {x: 23, y: 23}
       - {x: 23, y: 19}
       - {x: 24, y: 19}
+    - - {x: 1, y: 23}
+      - {x: 11, y: 23}
+      - {x: 11, y: 24}
+      - {x: 0, y: 24}
+      - {x: 0, y: 19}
+      - {x: 1, y: 19}
     - - {x: 5, y: 10}
       - {x: 6, y: 10}
       - {x: 6, y: 12}
@@ -725,14 +813,14 @@ CompositeCollider2D:
       - {x: 4, y: 11}
       - {x: 4, y: 8}
       - {x: 5, y: 8}
-    - - {x: 24, y: 17}
-      - {x: 23, y: 17}
-      - {x: 23, y: 11}
-      - {x: 24, y: 11}
     - - {x: 1, y: 17}
       - {x: 0, y: 17}
       - {x: 0, y: 11}
       - {x: 1, y: 11}
+    - - {x: 24, y: 17}
+      - {x: 23, y: 17}
+      - {x: 23, y: 11}
+      - {x: 24, y: 11}
     - - {x: 14, y: 12}
       - {x: 10, y: 12}
       - {x: 10, y: 11}
@@ -774,6 +862,19 @@ CompositeCollider2D:
       - {x: 0, y: 0}
       - {x: 11, y: 0}
   m_VertexDistance: 0.0005
+--- !u!114 &114000789384529348
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1113074501602910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d27745292051704a87740def5391766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 1636491341446076, guid: a164c147037e89448820f7387c724c42,
+    type: 2}
 --- !u!114 &114704609222524120
 MonoBehaviour:
   m_ObjectHideFlags: 1
