@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;     // RigidBody2D of this game object
     private Animator anim;
+    private AudioSource audio;
     [SerializeField]
     private float rbGravityScale;
     [SerializeField]
@@ -64,8 +65,9 @@ public class PlayerController : MonoBehaviour
     
     void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
     }
     
     void Update()
@@ -100,7 +102,13 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        isGrounded = IsGrounded();
+        bool tmp = IsGrounded();
+        if (!isGrounded && tmp)
+        {
+            audio.enabled = false;
+            audio.enabled = true;
+        }
+        isGrounded = tmp;
 
         if (GameManager.gameState == GameState.Ingame && MapManager.isDoorClosing != true)
         {
