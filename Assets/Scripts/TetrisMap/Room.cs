@@ -147,7 +147,7 @@ public class Room : MonoBehaviour
     /// </summary>
     public void CreatePortal()
     {
-        GameObject portal = roomInGame.transform.Find("Portal").gameObject;
+        portal = roomInGame.transform.Find("Portal").gameObject;
         if (specialRoomType != RoomType.Normal)
         {
             portal.SetActive(true);

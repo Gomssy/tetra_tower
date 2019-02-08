@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour {
                     gameState = GameState.Ingame;
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.F))
+            else if (Input.GetButtonDown("Interaction"))
             {
                 if (gameState == GameState.Portal && MapManager.currentRoom != MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y])
                 {
