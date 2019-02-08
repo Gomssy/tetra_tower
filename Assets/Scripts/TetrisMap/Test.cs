@@ -11,6 +11,9 @@ public class Test : MonoBehaviour {
     public static Vector3 tetrisCameraCoord = new Vector3(180, 0, -1);
     public static float tetrisMapSize = 300;
     public Text timer;
+    public GameObject testUI;
+    public GameObject lifeStoneTestUI;
+    bool isTestUiActive = true;
 
     public void ChangeTetrimino()
     {
@@ -55,10 +58,6 @@ public class Test : MonoBehaviour {
     {
         enemyManager.SpawnEnemy();
     }
-    public void ChangeTile()
-    {
-        GameObject.Find("MapManager").GetComponent<TileManager>().SetAllTiles(MapManager.currentRoom.roomInGame);
-    }
 
 
     private void Awake()
@@ -79,7 +78,22 @@ public class Test : MonoBehaviour {
             ChangeTetrimino();
         if (Input.GetKeyDown(KeyCode.Alpha2))
             SpawnBossTetrimino();
-        if(!MapManager.isTetriminoFalling)
+        if (Input.GetKeyDown(KeyCode.BackQuote))
+        {
+            if (isTestUiActive)
+            {
+                testUI.SetActive(false);
+                lifeStoneTestUI.SetActive(false);
+                isTestUiActive = false;
+            }
+            else if (!isTestUiActive)
+            {
+                testUI.SetActive(true);
+                lifeStoneTestUI.SetActive(true);
+                isTestUiActive = true;
+            }
+        }
+        if (!MapManager.isTetriminoFalling)
             Timer();
     }
 }

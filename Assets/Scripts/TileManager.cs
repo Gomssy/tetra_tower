@@ -97,11 +97,12 @@ public class TileManager : MonoBehaviour
     /// </summary>
     /// <param name="roomInGame">Room you want to set.</param>
     /// <returns></returns>
-    public IEnumerator SetAllTiles(RoomInGame roomInGame)
+    public IEnumerator SetAllTiles(Room room)
     {
         int stage = MapManager.currentStage;
         //int concept = room.roomConcept;
-        int concept = 0;
+        int concept = room.roomConcept % 2;
+        RoomInGame roomInGame = room.roomInGame;
         Tilemap roomTileMap = roomInGame.transform.Find("wall").GetComponent<Tilemap>();
         CheckAllTiles(roomInGame);
         for(int y = 0; y < 24; y++)
@@ -134,7 +135,7 @@ public class TileManager : MonoBehaviour
         for(int i = 0; i < tetrimino.rooms.Length; i++)
         {
             yield return null;
-            StartCoroutine(SetAllTiles(tetrimino.rooms[i].roomInGame));
+            StartCoroutine(SetAllTiles(tetrimino.rooms[i]));
         }
     }
 }

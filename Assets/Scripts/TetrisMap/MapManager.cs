@@ -188,11 +188,13 @@ public class MapManager : MonoBehaviour {
     /*public RoomInGame[] normalRoomList3;
     public RoomInGame[] normalRoomList4;
     public RoomInGame[] normalRoomList5;*/
+    
     public RoomInGame[] specialRoomList1;
     public RoomInGame[] specialRoomList2;
     /*public RoomInGame[] specialRoomList3;
     public RoomInGame[] specialRoomList4;
     public RoomInGame[] specialRoomList5;*/
+
     /// <summary>
     /// Array sorted normal rooms by location of side doors.
     /// Each dimension for stage, concept, left door, right door.
@@ -200,9 +202,9 @@ public class MapManager : MonoBehaviour {
     public List<RoomInGame>[,,,] normalRoomsDistributed = new List<RoomInGame>[5, 4, 3, 3];
     /// <summary>
     /// Array sorted normal rooms by location of side doors.
-    /// Each dimension for stage, concept, left door, right door.
+    /// Each dimension for stage, concept, room type, left door, right door.
     /// </summary>
-    public List<RoomInGame>[,,,] specialRoomsDistributed = new List<RoomInGame>[5, 4, 3, 3];
+    public List<RoomInGame>[,,,,] specialRoomsDistributed = new List<RoomInGame>[5, 4, 6, 3, 3];
 
     public List<Sprite>[] roomsSpritesDistributed = new List<Sprite>[5];
 
@@ -715,10 +717,9 @@ public class MapManager : MonoBehaviour {
             {
                 TetriminoRotate(currentTetrimino, (int)Input.GetAxisRaw("TetriminoVertical"));
             }
-            else if (Input.GetButtonDown("TetriminoHorizontal") && lifeStoneManager.CountType(LifeStoneType.Gold) >= tetriminoCost)
+            else if (Input.GetButtonDown("TetriminoHorizontal"))
             {
                 MoveTetriminoHorizontal(currentTetrimino, new Vector3((int)Input.GetAxisRaw("TetriminoHorizontal"), 0, 0));
-                lifeStoneManager.ChangeToNormal(LifeStoneType.Gold, tetriminoCost);
             }
             else if (Input.GetKeyDown(KeyCode.Space) && lifeStoneManager.CountType(LifeStoneType.Gold) >= tetriminoCost)
             {
@@ -747,10 +748,10 @@ public class MapManager : MonoBehaviour {
     public void SetRoomSprite(Room room, int i)
     {
         //When start and special rooms' sprites added, modify this.
-        if (room.specialRoomType == RoomType.Normal)
+        if (room.specialRoomType == RoomType.Normal || room.specialRoomType == RoomType.Start)
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
         else
-            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType];
+            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
         if (currentGhost != null)
             currentGhost.rooms[i].GetComponent<SpriteRenderer>().sprite = room.GetComponent<SpriteRenderer>().sprite;
     }
@@ -774,8 +775,9 @@ public class MapManager : MonoBehaviour {
                 room.roomInGame = Instantiate(normalRoomsDistributed[room.stage, room.roomConcept, left, right]
                     [Random.Range(0, normalRoomsDistributed[room.stage, room.roomConcept, left, right].Count)], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
             else
-                room.roomInGame = Instantiate(specialRoomsDistributed[room.stage, room.roomConcept, left, right]
-                    [(int)room.specialRoomType], room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
+                room.roomInGame = Instantiate(specialRoomsDistributed[room.stage, room.roomConcept, (int)room.specialRoomType, left, right]
+                    [Random.Range(0, specialRoomsDistributed[room.stage, room.roomConcept, (int)room.specialRoomType, left, right].Count)], 
+                    room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
             room.CreateDoors(leftDoor, rightDoor, inGameDoorUp, inGameDoorDown, inGameDoorLeft, inGameDoorRight);
             room.fog = Instantiate(fog, room.transform.position + new Vector3(12, 12, 2), Quaternion.identity, room.transform);
             if (room.mapCoord.y > 0 && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1] != null && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].isRoomCleared == true)
@@ -847,10 +849,10 @@ public class MapManager : MonoBehaviour {
     {
         Room room = currentRoom;
         StartCoroutine(RoomExit(room));
-        if (room.specialRoomType == RoomType.Normal)
+        if (room.specialRoomType == RoomType.Normal || room.specialRoomType == RoomType.Start)
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
         else
-            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType];
+            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
         currentRoom = newRoom;
         StartCoroutine(RoomEnter(newRoom));
         newRoom.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[newRoom.stage][(int)RoomSpriteType.Current];
@@ -878,11 +880,12 @@ public class MapManager : MonoBehaviour {
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         if(!room.isRoomCleared)
         {
-            //GameObject.Find("EnemyManager").GetComponent<EnemyManager>().SpawnEnemy();
-            InventoryManager inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
-            LifeStoneManager lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
-            if(room.specialRoomType == RoomType.Item)
+            if(room.specialRoomType == RoomType.Normal)
+                GameObject.Find("EnemyManager").GetComponent<EnemyManager>().SpawnEnemy();
+            else if(room.specialRoomType == RoomType.Item)
             {
+                InventoryManager inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+                LifeStoneManager lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
                 int probability = Random.Range(0, 100);
                 Vector3 itemPosition = room.roomInGame.transform.Find("ItemSpawnPoint").position;
                 switch (room.itemRoomType)
@@ -1134,7 +1137,8 @@ public class MapManager : MonoBehaviour {
                     for (int rightDoor = 0; rightDoor < 3; rightDoor++)
                     {
                         normalRoomsDistributed[stage, concept, leftDoor, rightDoor] = new List<RoomInGame>();
-                        specialRoomsDistributed[stage, concept, leftDoor, rightDoor] = new List<RoomInGame>();
+                        for(int roomType = 0; roomType < 6; roomType++)
+                            specialRoomsDistributed[stage, concept, roomType, leftDoor, rightDoor] = new List<RoomInGame>();
                     }
         }
         for (int i = 0; i < 20; i++)
@@ -1142,9 +1146,7 @@ public class MapManager : MonoBehaviour {
         for (int i = 0; i < 10; i++)
             portalDistributedHorizontal[i] = new List<int>();
 
-
-
-        TileManager tileManager = GetComponent<TileManager>();
+        
         for (int concept = 0; concept < 4; concept++)
             for (int leftDoor = 0; leftDoor < 3; leftDoor++)
                 for (int rightDoor = 0; rightDoor < 3; rightDoor++)
@@ -1164,12 +1166,12 @@ public class MapManager : MonoBehaviour {
                     for (int i = 0; i < normalRoomList5.Length; i++)
                         if (normalRoomList5[i].leftDoorInfo[leftDoor] == true && normalRoomList5[i].rightDoorInfo[rightDoor] == true && normalRoomList5[i].concept[concept] == true)
                             normalRoomsDistributed[4, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList1[i]);*/
-                    for (int i = 0; i < specialRoomList1.Length; i++)
+                    /*for (int i = 0; i < specialRoomList1.Length; i++)
                         if (specialRoomList1[i].leftDoorInfo[leftDoor] == true && specialRoomList1[i].rightDoorInfo[rightDoor] == true && specialRoomList1[i].concept[concept] == true)
                             specialRoomsDistributed[0, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList1[i]);
                     for (int i = 0; i < specialRoomList2.Length; i++)
                         if (specialRoomList2[i].leftDoorInfo[leftDoor] == true && specialRoomList2[i].rightDoorInfo[rightDoor] == true && specialRoomList2[i].concept[concept] == true)
-                            specialRoomsDistributed[1, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList2[i]);
+                            specialRoomsDistributed[1, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList2[i]);*/
                     /*for (int i = 0; i < specialRoomList3.Length; i++)
                         if (specialRoomList3[i].leftDoorInfo[leftDoor] == true && specialRoomList3[i].rightDoorInfo[rightDoor] == true && specialRoomList3[i].concept[concept] == true)
                             specialRoomsDistributed[2, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList3[i]);
@@ -1180,7 +1182,95 @@ public class MapManager : MonoBehaviour {
                         if (specialRoomList5[i].leftDoorInfo[leftDoor] == true && specialRoomList5[i].rightDoorInfo[rightDoor] == true && specialRoomList5[i].concept[concept] == true)
                             specialRoomsDistributed[4, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList5[i]);*/
                 }
-        for (RoomSpriteType spriteType = 0; (int)spriteType < 11; spriteType++)
+        for (int concept = 0; concept < 4; concept++)
+            for (int leftDoor = 0; leftDoor < 3; leftDoor++)
+                for (int rightDoor = 0; rightDoor < 3; rightDoor++)
+                {
+                    for (int i = 0; i < specialRoomList1.Length; i++)
+                        if (specialRoomList1[i].leftDoorInfo[leftDoor] == true && specialRoomList1[i].rightDoorInfo[rightDoor] == true && specialRoomList1[i].concept[concept] == true)
+                        {
+                            if (specialRoomList1[i].name.Contains("Start"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Start, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList1[i]);
+                            else if (specialRoomList1[i].name.Contains("Item"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Item, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList1[i]);
+                            else if (specialRoomList1[i].name.Contains("BothSide"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.BothSide, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList1[i]);
+                            else if (specialRoomList1[i].name.Contains("Gold"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Gold, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList1[i]);
+                            else if (specialRoomList1[i].name.Contains("Amethyst"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Amethyst, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList1[i]);
+                            else if (specialRoomList1[i].name.Contains("Boss"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Boss, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList1[i]);
+                        }
+                    for (int i = 0; i < specialRoomList2.Length; i++)
+                        if (specialRoomList2[i].leftDoorInfo[leftDoor] == true && specialRoomList2[i].rightDoorInfo[rightDoor] == true && specialRoomList2[i].concept[concept] == true)
+                        {
+                            if (specialRoomList2[i].name.Contains("Start"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Start, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList2[i]);
+                            else if (specialRoomList2[i].name.Contains("Item"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Item, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList2[i]);
+                            else if (specialRoomList2[i].name.Contains("BothSide"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.BothSide, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList2[i]);
+                            else if (specialRoomList2[i].name.Contains("Gold"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Gold, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList2[i]);
+                            else if (specialRoomList2[i].name.Contains("Amethyst"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Amethyst, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList2[i]);
+                            else if (specialRoomList2[i].name.Contains("Boss"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Boss, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList2[i]);
+                        }
+                    /*for (int i = 0; i < SpecialRoomList3.Length; i++)
+                        if (SpecialRoomList3[i].leftDoorInfo[leftDoor] == true && SpecialRoomList3[i].rightDoorInfo[rightDoor] == true && SpecialRoomList3[i].concept[concept] == true)
+                        {
+                            if (SpecialRoomList3[i].name.Contains("Start"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Start, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList3[i]);
+                            else if (SpecialRoomList3[i].name.Contains("Item"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Item, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList3[i]);
+                            else if (SpecialRoomList3[i].name.Contains("BothSide"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.BothSide, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList3[i]);
+                            else if (SpecialRoomList3[i].name.Contains("Gold"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Gold, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList3[i]);
+                            else if (SpecialRoomList3[i].name.Contains("Amethyst"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Amethyst, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList3[i]);
+                            else if (SpecialRoomList3[i].name.Contains("Boss"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Boss, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList3[i]);
+                        }
+                    for (int i = 0; i < SpecialRoomList4.Length; i++)
+                        if (SpecialRoomList4[i].leftDoorInfo[leftDoor] == true && SpecialRoomList4[i].rightDoorInfo[rightDoor] == true && SpecialRoomList4[i].concept[concept] == true)
+                        {
+                            if (SpecialRoomList4[i].name.Contains("Start"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Start, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList4[i]);
+                            else if (SpecialRoomList4[i].name.Contains("Item"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Item, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList4[i]);
+                            else if (SpecialRoomList4[i].name.Contains("BothSide"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.BothSide, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList4[i]);
+                            else if (SpecialRoomList4[i].name.Contains("Gold"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Gold, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList4[i]);
+                            else if (SpecialRoomList4[i].name.Contains("Amethyst"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Amethyst, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList4[i]);
+                            else if (SpecialRoomList4[i].name.Contains("Boss"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Boss, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList4[i]);
+                        }
+                    for (int i = 0; i < SpecialRoomList5.Length; i++)
+                        if (SpecialRoomList5[i].leftDoorInfo[leftDoor] == true && SpecialRoomList5[i].rightDoorInfo[rightDoor] == true && SpecialRoomList5[i].concept[concept] == true)
+                        {
+                            if (SpecialRoomList5[i].name.Contains("Start"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Start, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList5[i]);
+                            else if (SpecialRoomList5[i].name.Contains("Item"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Item, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList5[i]);
+                            else if (SpecialRoomList5[i].name.Contains("BothSide"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.BothSide, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList5[i]);
+                            else if (SpecialRoomList5[i].name.Contains("Gold"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Gold, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList5[i]);
+                            else if (SpecialRoomList5[i].name.Contains("Amethyst"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Amethyst, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList5[i]);
+                            else if (SpecialRoomList5[i].name.Contains("Boss"))
+                                specialRoomsDistributed[0, concept, (int)RoomType.Boss, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList5[i]);
+                        }*/
+                }
+        
+
+
+        for (RoomSpriteType spriteType = 0; (int)spriteType < 10; spriteType++)
         {
             roomsSpritesDistributed[0].Add(roomsSprite1[(int)spriteType]);
             roomsSpritesDistributed[1].Add(roomsSprite2[(int)spriteType]);

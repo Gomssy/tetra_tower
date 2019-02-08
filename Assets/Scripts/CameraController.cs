@@ -138,7 +138,7 @@ public class CameraController : MonoBehaviour {
             //방의 중심과 비교하여 어느게 더 가까운가
         }
         if (MapManager.isRoomFalling != true)
-            transform.position = Vector3.Lerp(transform.position, new Vector3(posx, posy, -1), 4f * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, new Vector3(posx, posy, -1), 8f * Time.deltaTime);
         else if (MapManager.isRoomFalling == true)
             transform.position = Vector3.Lerp(transform.position, new Vector3(posx, posy, -1), 0.9f);
         transform.position = new Vector3(transform.position.x, transform.position.y, -1);

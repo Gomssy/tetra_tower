@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public static GameState gameState;
 
+    Vector3 warpPosition = new Vector3(2, 1, 0);
+
     public Canvas gameOverCanvas;
     public Canvas inventoryCanvas;
 
@@ -26,7 +28,7 @@ public class GameManager : MonoBehaviour {
         gameState = GameState.Ingame;
         GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>().MakeInitialTetrimino();
         Vector2 coord = MapManager.currentRoom.transform.position;
-        GameObject.Find("Player").transform.position = new Vector2(coord.x, coord.y) + new Vector2(3, 3);
+        GameObject.Find("Player").transform.position = MapManager.currentRoom.portal.transform.position + warpPosition;
         GameObject.Find("Main Camera").transform.position = GameObject.Find("Player").transform.position;
     }
 	
@@ -63,7 +65,7 @@ public class GameManager : MonoBehaviour {
             {
                 if (gameState == GameState.Portal && MapManager.currentRoom != MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y])
                 {
-                    GameObject.Find("Player").transform.position = MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portal.transform.position + new Vector3(2, 1, 0);
+                    GameObject.Find("Player").transform.position = MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portal.transform.position + warpPosition;
                     GameObject.Find("MapManager").GetComponent<MapManager>().ChangeRoom(MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y]);
                     MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
                         GameObject.Find("MapManager").GetComponent<MapManager>().portalExist;
@@ -74,6 +76,8 @@ public class GameManager : MonoBehaviour {
             {
                 if(gameState == GameState.Portal)
                 {
+                    MapManager.mapGrid[(int)MapManager.currentRoom.mapCoord.x, (int)MapManager.currentRoom.mapCoord.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
+                        GameObject.Find("MapManager").GetComponent<MapManager>().portalExist;
                     MapManager.mapGrid[(int)MapManager.currentRoom.mapCoord.x, (int)MapManager.currentRoom.mapCoord.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
                         GameObject.Find("MapManager").GetComponent<MapManager>().portalExist;
                     StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
