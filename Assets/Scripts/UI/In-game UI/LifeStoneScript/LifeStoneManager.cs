@@ -113,7 +113,7 @@ public class LifeStoneManager : MonoBehaviour {
     void PopoutGenerator(GameObject obj, float popoutStrength)
     {
         popoutStrength *= popoutStrengthMultiplier;
-        float angle = Mathf.Deg2Rad * Random.Range(60f, 120f);
+        float angle = Mathf.Deg2Rad * Random.Range(80f, 100f);
         obj.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * popoutStrength;
         StartCoroutine(PopoutCoroutine(obj));
     }

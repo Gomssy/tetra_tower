@@ -86,7 +86,7 @@ public class InventoryManager : MonoBehaviour {
     {
         yield return null;
         yield return new WaitForSeconds(2.5f);
-        ItemInstantiate(ItemQuality.Study, player.transform.position, 1f);
+        ItemInstantiate("Dagger", player.transform.position, 0f);
 
     }
 
@@ -111,7 +111,7 @@ public class InventoryManager : MonoBehaviour {
     void PopoutGenerator(GameObject obj, float popoutStrength)
     {
         popoutStrength *= popoutStrengthMultiplier;
-        float angle = Mathf.Deg2Rad * Random.Range(60f, 120f);
+        float angle = Mathf.Deg2Rad * Random.Range(80f, 100f);
         obj.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * popoutStrength;
         StartCoroutine(PopoutCoroutine(obj));
     }
