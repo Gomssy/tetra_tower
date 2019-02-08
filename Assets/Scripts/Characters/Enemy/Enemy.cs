@@ -75,7 +75,8 @@ public class Enemy : MonoBehaviour {
             return;
         }
         animator.SetFloat("knockbackDistance", attack.damage / this.weight * attack.knockBackMultiplier);
-        animator.SetTrigger("DamagedTrigger");
+        if(attack.damage / this.weight >= 0.25f)
+            animator.SetTrigger("DamagedTrigger");
     }
 
     // Animation Event

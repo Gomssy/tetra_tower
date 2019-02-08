@@ -260,13 +260,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterID: 117
-  maxHealth: 5
-  weight: 1
+  maxHealth: 15
+  weight: 10
   patrolRange: 2
   noticeRange: 2
   attackRange: 1
-  patrolSpeed: 2.5
-  trackSpeed: 3.5
+  patrolSpeed: 1.5
+  trackSpeed: 2.5
   playerDistance: 0
   untouchable: 0
 --- !u!114 &114173716467154830
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 908a1b16b9926f747807d321c5ecc8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 4
 --- !u!212 &212540714587432698
 SpriteRenderer:
   m_ObjectHideFlags: 1
