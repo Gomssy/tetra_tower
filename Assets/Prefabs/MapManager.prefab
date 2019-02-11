@@ -75,10 +75,11 @@ MonoBehaviour:
     type: 2}
   inGameDoorRight: {fileID: 1668375270989012, guid: fa868e0924825b54896b61a69e93391f,
     type: 2}
+  playerIcon: {fileID: 1704656476422024, guid: 1725346a264c79d409df9ac2ec2f9c8e, type: 2}
   portalSurface: {fileID: 1272210399781394, guid: 94f4bf6088d377c4780a5bc55baaabe0,
     type: 2}
-  portalExist: {fileID: 21300000, guid: d2894481921999843ae1800d4b65ded6, type: 3}
-  portalSelected: {fileID: 21300000, guid: ab953b34dd9966f409d851b274ed4d9f, type: 3}
+  portalExist: {fileID: 21300000, guid: 31d41144371533545b72f857de9c3f96, type: 3}
+  portalSelected: {fileID: 21300000, guid: ea8aefbf7c356d148a1e49d713a7f8d2, type: 3}
   normalRoomList1:
   - {fileID: 114200477176800928, guid: 3c35322ac2c308d49aadf20738b69c8b, type: 2}
   - {fileID: 114820825671342974, guid: 7fd2833846bb116479bd74d2a5b75487, type: 2}
@@ -123,7 +124,7 @@ MonoBehaviour:
   - {fileID: 114410341130824760, guid: bfa57985877d23b46929238f077b40df, type: 2}
   specialRoomList1:
   - {fileID: 114330503780891850, guid: 7da800d1a4355fd4aa02e3518cd9e1fb, type: 2}
-  - {fileID: 114905207151996772, guid: 2514de8c1d17b734592b5fe2cdc74560, type: 2}
+  - {fileID: 114788631920660382, guid: 2514de8c1d17b734592b5fe2cdc74560, type: 2}
   - {fileID: 114276487283992380, guid: 8e573eb3b8b071c47a4ee92adf1a9644, type: 2}
   - {fileID: 114356134236679564, guid: ea5defee5777b0044b3d684971c1dc40, type: 2}
   - {fileID: 114533677780758920, guid: fe17cba28f910e54faf7b866f86bfd3e, type: 2}
@@ -135,7 +136,7 @@ MonoBehaviour:
   - {fileID: 114844722971494232, guid: 4643eac2d148bd146be89238dcdfa419, type: 2}
   specialRoomList2:
   - {fileID: 114330503780891850, guid: 7da800d1a4355fd4aa02e3518cd9e1fb, type: 2}
-  - {fileID: 114905207151996772, guid: 2514de8c1d17b734592b5fe2cdc74560, type: 2}
+  - {fileID: 114788631920660382, guid: 2514de8c1d17b734592b5fe2cdc74560, type: 2}
   - {fileID: 114276487283992380, guid: 8e573eb3b8b071c47a4ee92adf1a9644, type: 2}
   - {fileID: 114356134236679564, guid: ea5defee5777b0044b3d684971c1dc40, type: 2}
   - {fileID: 114533677780758920, guid: fe17cba28f910e54faf7b866f86bfd3e, type: 2}
@@ -145,7 +146,7 @@ MonoBehaviour:
   - {fileID: 114792926073732986, guid: 0443c2e9410bbe545bda40dc30fa6a63, type: 2}
   - {fileID: 114155825416261646, guid: 7ecb75df9a2e95647b4a221c95b9f4f0, type: 2}
   - {fileID: 114844722971494232, guid: 4643eac2d148bd146be89238dcdfa419, type: 2}
-  roomsSprite1:
+  roomSurfaceSprite1:
   - {fileID: 21300000, guid: 5e6d29c00a95b8140a33c81d93aac0b2, type: 3}
   - {fileID: 21300000, guid: 45c68bb908319e942b8dcdaba688c080, type: 3}
   - {fileID: 21300000, guid: ab2da97d516ecf24fb8779aba9a0462d, type: 3}
@@ -155,8 +156,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2d4a5ffd54cb0b643a0a0151351080b0, type: 3}
   - {fileID: 21300000, guid: 53d3da01722c1354ab7f0a0e5a6d3ba1, type: 3}
   - {fileID: 21300000, guid: 8044a9fe8c979f141a047ee76dc5a4b3, type: 3}
-  - {fileID: 21300000, guid: 5d862de53793b134ba9ac6e49dc42a5c, type: 3}
-  roomsSprite2:
+  roomSurfaceSprite2:
   - {fileID: 21300000, guid: 990a04fc86d19064abd85a9264ea1784, type: 3}
   - {fileID: 21300000, guid: c7a48bb0766c8ee49b3bfb18aa2d66df, type: 3}
   - {fileID: 21300000, guid: a72bd325e8d5ca24b8106b397c9f1573, type: 3}
@@ -166,7 +166,16 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 103ce1f49cac64044ba4f89b2c8b44c6, type: 3}
   - {fileID: 21300000, guid: 11a6aa89a6f22a1498c4854c839c66e2, type: 3}
   - {fileID: 21300000, guid: b335c0d893e3c6847a861fd71c0348cd, type: 3}
-  - {fileID: 21300000, guid: 00ec1514415c08349b130dbd95b9d270, type: 3}
+  roomBackgroundSprite1:
+  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
+  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
+  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
+  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
+  roomBackgroundSprite2:
+  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
+  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
+  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
+  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
 --- !u!114 &114476419532778440
 MonoBehaviour:
   m_ObjectHideFlags: 1

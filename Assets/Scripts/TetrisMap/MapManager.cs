@@ -167,6 +167,10 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public GameObject inGameDoorRight;
     /// <summary>
+    /// Indicates the room where player exists.
+    /// </summary>
+    public GameObject playerIcon;
+    /// <summary>
     /// Indicates the location of the existing portal.
     /// </summary>
     public GameObject portalSurface;
@@ -205,14 +209,22 @@ public class MapManager : MonoBehaviour {
     /// Each dimension for stage, concept, room type, left door, right door.
     /// </summary>
     public List<RoomInGame>[,,,,] specialRoomsDistributed = new List<RoomInGame>[5, 4, 6, 3, 3];
+    //
+    public List<Sprite>[] roomSurfaceSpritesDistributed = new List<Sprite>[5];
 
-    public List<Sprite>[] roomsSpritesDistributed = new List<Sprite>[5];
+    public Sprite[] roomSurfaceSprite1;
+    public Sprite[] roomSurfaceSprite2;
+    /*public Sprite[] roomSurfaceSprite3;
+    public Sprite[] roomSurfaceSprite4;
+    public Sprite[] roomSurfaceSprite5;*/
 
-    public Sprite[] roomsSprite1;
-    public Sprite[] roomsSprite2;
-    /*public Sprite[] roomsSprite3;
-    public Sprite[] roomsSprite4;
-    public Sprite[] roomsSprite5;*/
+    public List<Sprite>[] roomBackgroundSpritesDistributed = new List<Sprite>[5];
+
+    public Sprite[] roomBackgroundSprite1;
+    public Sprite[] roomBackgroundSprite2;
+    /*public Sprite[] roomBackgroundSprite3;
+    public Sprite[] roomBackgroundSprite4;
+    public Sprite[] roomBackgroundSprite5;*/
 
     /*
      * functions
@@ -749,9 +761,9 @@ public class MapManager : MonoBehaviour {
     {
         //When start and special rooms' sprites added, modify this.
         if (room.specialRoomType == RoomType.Normal || room.specialRoomType == RoomType.Start)
-            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
+            room.GetComponent<SpriteRenderer>().sprite = roomSurfaceSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
         else
-            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
+            room.GetComponent<SpriteRenderer>().sprite = roomSurfaceSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
         if (currentGhost != null)
             currentGhost.rooms[i].GetComponent<SpriteRenderer>().sprite = room.GetComponent<SpriteRenderer>().sprite;
     }
@@ -786,6 +798,7 @@ public class MapManager : MonoBehaviour {
                 room.OpenDoor("Left");
             if (room.mapCoord.x < width - 1 && mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y] != null && mapGrid[(int)room.mapCoord.x + 1, (int)room.mapCoord.y].isRoomCleared == true)
                 room.OpenDoor("Right");
+            room.roomInGame.GetComponent<SpriteRenderer>().sprite = roomBackgroundSpritesDistributed[room.stage][room.roomConcept];
         }
         StartCoroutine(GetComponent<TileManager>().SetTetriminoTiles(te));
         Destroy(te.gameObject);
@@ -850,12 +863,13 @@ public class MapManager : MonoBehaviour {
         Room room = currentRoom;
         StartCoroutine(RoomFadeOut(room));
         if (room.specialRoomType == RoomType.Normal || room.specialRoomType == RoomType.Start)
-            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
+            room.GetComponent<SpriteRenderer>().sprite = roomSurfaceSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
         else
-            room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
+            room.GetComponent<SpriteRenderer>().sprite = roomSurfaceSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
         currentRoom = newRoom;
         StartCoroutine(RoomFadeIn(newRoom));
-        newRoom.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[newRoom.stage][(int)RoomSpriteType.Current];
+        playerIcon.transform.position = currentRoom.mapCoord * tetrisMapSize + new Vector3(0, 0, -2);
+        //newRoom.GetComponent<SpriteRenderer>().sprite = roomSurfaceSpritesDistributed[newRoom.stage][(int)RoomSpriteType.Current];
     }
     /// <summary>
     /// Make room fade in.
@@ -1005,7 +1019,8 @@ public class MapManager : MonoBehaviour {
             isRowDeleting[i] = false;
         for (int stage = 0; stage < 5; stage++)
         {
-            roomsSpritesDistributed[stage] = new List<Sprite>();
+            roomSurfaceSpritesDistributed[stage] = new List<Sprite>();
+            roomBackgroundSpritesDistributed[stage] = new List<Sprite>();
             for (int concept = 0; concept < 4; concept++)
                 for (int leftDoor = 0; leftDoor < 3; leftDoor++)
                     for (int rightDoor = 0; rightDoor < 3; rightDoor++)
@@ -1040,21 +1055,6 @@ public class MapManager : MonoBehaviour {
                     for (int i = 0; i < normalRoomList5.Length; i++)
                         if (normalRoomList5[i].leftDoorInfo[leftDoor] == true && normalRoomList5[i].rightDoorInfo[rightDoor] == true && normalRoomList5[i].concept[concept] == true)
                             normalRoomsDistributed[4, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList1[i]);*/
-                    /*for (int i = 0; i < specialRoomList1.Length; i++)
-                        if (specialRoomList1[i].leftDoorInfo[leftDoor] == true && specialRoomList1[i].rightDoorInfo[rightDoor] == true && specialRoomList1[i].concept[concept] == true)
-                            specialRoomsDistributed[0, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList1[i]);
-                    for (int i = 0; i < specialRoomList2.Length; i++)
-                        if (specialRoomList2[i].leftDoorInfo[leftDoor] == true && specialRoomList2[i].rightDoorInfo[rightDoor] == true && specialRoomList2[i].concept[concept] == true)
-                            specialRoomsDistributed[1, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList2[i]);*/
-                    /*for (int i = 0; i < specialRoomList3.Length; i++)
-                        if (specialRoomList3[i].leftDoorInfo[leftDoor] == true && specialRoomList3[i].rightDoorInfo[rightDoor] == true && specialRoomList3[i].concept[concept] == true)
-                            specialRoomsDistributed[2, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList3[i]);
-                    for (int i = 0; i < specialRoomList4.Length; i++)
-                        if (specialRoomList4[i].leftDoorInfo[leftDoor] == true && specialRoomList4[i].rightDoorInfo[rightDoor] == true && specialRoomList4[i].concept[concept] == true)
-                            specialRoomsDistributed[3, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList4[i]);
-                    for (int i = 0; i < specialRoomList5.Length; i++)
-                        if (specialRoomList5[i].leftDoorInfo[leftDoor] == true && specialRoomList5[i].rightDoorInfo[rightDoor] == true && specialRoomList5[i].concept[concept] == true)
-                            specialRoomsDistributed[4, concept, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList5[i]);*/
                 }
         for (int concept = 0; concept < 4; concept++)
             for (int leftDoor = 0; leftDoor < 3; leftDoor++)
@@ -1141,17 +1141,24 @@ public class MapManager : MonoBehaviour {
                                 specialRoomsDistributed[0, concept, (int)RoomType.Boss, 2 - leftDoor, 2 - rightDoor].Add(SpecialRoomList5[i]);
                         }*/
                 }
-        
-
-
-        for (RoomSpriteType spriteType = 0; (int)spriteType < 10; spriteType++)
+        for (RoomSpriteType spriteType = 0; (int)spriteType < 9; spriteType++)
         {
-            roomsSpritesDistributed[0].Add(roomsSprite1[(int)spriteType]);
-            roomsSpritesDistributed[1].Add(roomsSprite2[(int)spriteType]);
-            /*roomsSpritesDistributed[2].Add(roomsSprite3[(int)spriteType]);
-            roomsSpritesDistributed[3].Add(roomsSprite4[(int)spriteType]);
-            roomsSpritesDistributed[4].Add(roomsSprite5[(int)spriteType]);*/
+            roomSurfaceSpritesDistributed[0].Add(roomSurfaceSprite1[(int)spriteType]);
+            roomSurfaceSpritesDistributed[1].Add(roomSurfaceSprite2[(int)spriteType]);
+            /*roomSurfaceSpritesDistributed[2].Add(roomSurfaceSprite3[(int)spriteType]);
+            roomSurfaceSpritesDistributed[3].Add(roomSurfaceSprite4[(int)spriteType]);
+            roomSurfaceSpritesDistributed[4].Add(roomSurfaceSprite5[(int)spriteType]);*/
         }
+        for(int i = 0; i < roomBackgroundSprite1.Length; i++)
+            roomBackgroundSpritesDistributed[0].Add(roomBackgroundSprite1[i]);
+        for (int i = 0; i < roomBackgroundSprite2.Length; i++)
+            roomBackgroundSpritesDistributed[1].Add(roomBackgroundSprite2[i]);
+        /*for (int i = 0; i < roomBackgroundSprite3.Length; i++)
+            roomBackgroundSpritesDistributed[2].Add(roomBackgroundSprite3[i]);
+        for (int i = 0; i < roomBackgroundSprite4.Length; i++)
+            roomBackgroundSpritesDistributed[3].Add(roomBackgroundSprite4[i]);
+        for (int i = 0; i < roomBackgroundSprite5.Length; i++)
+            roomBackgroundSpritesDistributed[4].Add(roomBackgroundSprite5[i]);*/
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
         lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
         currentStage = 0;

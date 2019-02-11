@@ -102,9 +102,12 @@ public class TetriminoSpawner : MonoBehaviour {
             mapManager.UpdateMap(MapManager.currentTetrimino);
             mapManager.CreateRoom(MapManager.currentTetrimino);
             MapManager.currentRoom.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-            MapManager.currentRoom.GetComponent<SpriteRenderer>().sprite = mapManager.roomsSpritesDistributed[MapManager.currentStage][(int)RoomSpriteType.Current];
+            mapManager.playerIcon.transform.position = MapManager.currentRoom.mapCoord * MapManager.tetrisMapSize + new Vector3(0, 0, -2);
+            //MapManager.currentRoom.GetComponent<SpriteRenderer>().sprite = mapManager.roomSurfaceSpritesDistributed[MapManager.currentStage][(int)RoomSpriteType.Current];
             MapManager.currentRoom.ClearRoom();
             MapManager.tempRoom = MapManager.currentRoom;
+            mapManager.playerIcon = Instantiate(mapManager.playerIcon, MapManager.currentRoom.mapCoord * MapManager.tetrisMapSize + new Vector3(0, 0, -2)
+                , Quaternion.identity, mapManager.grid);
             MakeTetrimino();
         }
     }

@@ -54,20 +54,20 @@ TagManager:
   - name: Wall
     uniqueID: 3278214247
     locked: 0
-  - name: Rope
-    uniqueID: 4128835647
-    locked: 0
   - name: Platform
     uniqueID: 3617270137
     locked: 0
-  - name: Fog
-    uniqueID: 3423500867
+  - name: Rope
+    uniqueID: 4128835647
     locked: 0
-  - name: Door
-    uniqueID: 343148499
+  - name: Portal
+    uniqueID: 2979608311
     locked: 0
   - name: Player
     uniqueID: 2216026111
+    locked: 0
+  - name: Spike
+    uniqueID: 3612720217
     locked: 0
   - name: ItemHighlight
     uniqueID: 996861525
@@ -75,9 +75,15 @@ TagManager:
   - name: Item
     uniqueID: 2145601713
     locked: 0
+  - name: Door
+    uniqueID: 343148499
+    locked: 0
+  - name: Fog
+    uniqueID: 3423500867
+    locked: 0
   - name: TetrisSurface
     uniqueID: 3165498901
     locked: 0
-  - name: PortalSelected
+  - name: PortalSurface
     uniqueID: 3732261229
     locked: 0
