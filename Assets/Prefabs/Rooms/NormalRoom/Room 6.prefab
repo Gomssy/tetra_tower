@@ -153,7 +153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4853642473613286}
-  - component: {fileID: 114798299154452666}
+  - component: {fileID: 114145055468461478}
   m_Layer: 0
   m_Name: Room 6
   m_TagString: Untagged
@@ -1137,6 +1137,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1636491341446076, guid: a164c147037e89448820f7387c724c42,
     type: 2}
+--- !u!114 &114145055468461478
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1911328364365940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf6d749e71686be4c97f04d7b5bc5385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftDoorInfo: 010101
+  rightDoorInfo: 000001
+  concept: 00000100
 --- !u!114 &114175644060320630
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1148,20 +1162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5ed2c384310eb6408bb42c91b195e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114798299154452666
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1911328364365940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftDoorInfo: 010101
-  rightDoorInfo: 000001
-  concept: 00000100
 --- !u!212 &212337744966288824
 SpriteRenderer:
   m_ObjectHideFlags: 1

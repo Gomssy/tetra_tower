@@ -141,7 +141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4887294886093860}
-  - component: {fileID: 114565175836539902}
+  - component: {fileID: 114776106650425756}
   m_Layer: 0
   m_Name: Room 4
   m_TagString: Untagged
@@ -889,7 +889,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1636491341446076, guid: a164c147037e89448820f7387c724c42,
     type: 2}
---- !u!114 &114565175836539902
+--- !u!114 &114776106650425756
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -897,7 +897,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1730226871509360}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
+  m_Script: {fileID: 11500000, guid: bf6d749e71686be4c97f04d7b5bc5385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftDoorInfo: 010101

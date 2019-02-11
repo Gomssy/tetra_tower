@@ -56,7 +56,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4622051243928964}
-  - component: {fileID: 114631435503427844}
+  - component: {fileID: 114905207151996772}
   m_Layer: 0
   m_Name: Room Boss 1-1
   m_TagString: Untagged
@@ -696,7 +696,7 @@ CompositeCollider2D:
       - {x: 0, y: 0}
       - {x: 11, y: 0}
   m_VertexDistance: 0.0005
---- !u!114 &114631435503427844
+--- !u!114 &114905207151996772
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -704,7 +704,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1858345963707376}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 670b1c4e0ae0aff4a99f20c7fb01e3dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftDoorInfo: 010101

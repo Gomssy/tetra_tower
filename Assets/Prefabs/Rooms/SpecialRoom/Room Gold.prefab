@@ -117,7 +117,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4180646400299094}
-  - component: {fileID: 114834209009617488}
+  - component: {fileID: 114453972306455548}
   m_Layer: 8
   m_Name: Room Gold
   m_TagString: Untagged
@@ -1020,7 +1020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5ed2c384310eb6408bb42c91b195e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114834209009617488
+--- !u!114 &114453972306455548
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1028,7 +1028,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1934928217517870}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 6ff5decceea685f41b81b6ab573b9f51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftDoorInfo: 010101

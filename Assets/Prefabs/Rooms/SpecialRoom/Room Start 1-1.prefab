@@ -115,7 +115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4874486600194970}
-  - component: {fileID: 114217630873874362}
+  - component: {fileID: 114792926073732986}
   m_Layer: 0
   m_Name: Room Start 1-1
   m_TagString: Untagged
@@ -945,20 +945,6 @@ CompositeCollider2D:
       - {x: 11, y: -0.203125}
       - {x: 13, y: -0.203125}
   m_VertexDistance: 0.0005
---- !u!114 &114217630873874362
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1915452461634262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftDoorInfo: 010101
-  rightDoorInfo: 010101
-  concept: 01010100
 --- !u!114 &114725036181420190
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -970,6 +956,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5ed2c384310eb6408bb42c91b195e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114792926073732986
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1915452461634262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f53a6169652364c98a033f08ee84bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftDoorInfo: 010101
+  rightDoorInfo: 010101
+  concept: 01010100
 --- !u!212 &212993751766265268
 SpriteRenderer:
   m_ObjectHideFlags: 1

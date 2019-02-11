@@ -34,7 +34,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4930907941621578}
-  - component: {fileID: 114810370914620236}
+  - component: {fileID: 114645493085120532}
   m_Layer: 0
   m_Name: Room 10
   m_TagString: Untagged
@@ -884,7 +884,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5ed2c384310eb6408bb42c91b195e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114810370914620236
+--- !u!114 &114645493085120532
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -892,7 +892,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1111999493008200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
+  m_Script: {fileID: 11500000, guid: bf6d749e71686be4c97f04d7b5bc5385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftDoorInfo: 010100

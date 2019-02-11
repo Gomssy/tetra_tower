@@ -5,7 +5,6 @@ using UnityEngine.Tilemaps;
 
 public class Room : MonoBehaviour
 {
-
     /*
      *  variables
      */
@@ -377,7 +376,8 @@ public class Room : MonoBehaviour
             Destroy(fog);
             fog = Instantiate(GameObject.Find("MapManager").GetComponent<MapManager>().clearedFog, fogPosition, Quaternion.identity, transform);
             fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-            CreatePortal();
+            if(specialRoomType != RoomType.Start)
+                CreatePortal();
             if (isPortal == true)
             {
                 for (int x = 0; x < MapManager.width; x++)

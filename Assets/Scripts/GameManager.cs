@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour {
         gameState = GameState.Ingame;
         GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>().MakeInitialTetrimino();
         Vector2 coord = MapManager.currentRoom.transform.position;
-        GameObject.Find("Player").transform.position = MapManager.currentRoom.portal.transform.position + warpPosition;
+        GameObject.Find("Player").transform.position = MapManager.currentRoom.roomInGame.transform.Find("Portal").position + warpPosition;
         GameObject.Find("Main Camera").transform.position = GameObject.Find("Player").transform.position;
     }
 	

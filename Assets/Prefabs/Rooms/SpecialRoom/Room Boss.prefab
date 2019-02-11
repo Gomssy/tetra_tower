@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4313894866937792}
-  - component: {fileID: 114076836714455396}
+  - component: {fileID: 114737697187198556}
   - component: {fileID: 8195094281106998726}
   - component: {fileID: 3664157343968197366}
   - component: {fileID: 50100935345839574}
@@ -279,7 +279,7 @@ CompositeCollider2D:
       - {x: 17, y: 4}
       - {x: 19, y: 4}
   m_VertexDistance: 0.0005
---- !u!114 &114076836714455396
+--- !u!114 &114737697187198556
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -287,7 +287,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1466272683455294}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 670b1c4e0ae0aff4a99f20c7fb01e3dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftDoorInfo: 010101

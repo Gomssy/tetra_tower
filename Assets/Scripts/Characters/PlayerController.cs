@@ -110,7 +110,8 @@ public class PlayerController : MonoBehaviour
         }
         isGrounded = tmp;
 
-        if (GameManager.gameState == GameState.Ingame && MapManager.isDoorClosing != true)
+
+        if (GameManager.gameState == GameState.Ingame && MapManager.isDoorWorking != true)
         {
             if (playerState == PlayerState.Attack)
             {
@@ -217,20 +218,25 @@ public class PlayerController : MonoBehaviour
                     rb.velocity = new Vector2(xVelocity, yVelocity);
                 }
             }
-            if (previousState != playerState)
-                switch (playerState)
-                {
-                    case PlayerState.Idle: anim.SetTrigger("idle"); break;
-                    case PlayerState.Walk: anim.SetTrigger("walk"); break;
-                    case PlayerState.Run: anim.SetTrigger("run"); break;
-                    case PlayerState.GoingUp: anim.SetTrigger("upTrigger"); break;
-                    case PlayerState.GoingDown: anim.SetTrigger("downTrigger"); break;
-                    case PlayerState.Rope: anim.SetTrigger("rope"); break;
-                }
-
-            previousState = playerState;
 
         }
+        else
+        {
+            playerState = PlayerState.Idle;
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
+        }
+        if (previousState != playerState)
+            switch (playerState)
+            {
+                case PlayerState.Idle: anim.SetTrigger("idle"); break;
+                case PlayerState.Walk: anim.SetTrigger("walk"); break;
+                case PlayerState.Run: anim.SetTrigger("run"); break;
+                case PlayerState.GoingUp: anim.SetTrigger("upTrigger"); break;
+                case PlayerState.GoingDown: anim.SetTrigger("downTrigger"); break;
+                case PlayerState.Rope: anim.SetTrigger("rope"); break;
+            }
+
+        previousState = playerState;
         upKeyDown = false;
         downKeyDown = false;
         jump = false;

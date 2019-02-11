@@ -84,7 +84,7 @@ public class MapManager : MonoBehaviour {
     /// <summary>
     /// Check if door is closing or not.
     /// </summary>
-    public static bool isDoorClosing = false;
+    public static bool isDoorWorking = false;
     /// <summary>
     /// Check if this row is being deleted.
     /// </summary>
@@ -848,13 +848,13 @@ public class MapManager : MonoBehaviour {
     public void ChangeRoom(Room newRoom)
     {
         Room room = currentRoom;
-        StartCoroutine(RoomExit(room));
+        StartCoroutine(RoomFadeOut(room));
         if (room.specialRoomType == RoomType.Normal || room.specialRoomType == RoomType.Start)
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
         else
             room.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
         currentRoom = newRoom;
-        StartCoroutine(RoomEnter(newRoom));
+        StartCoroutine(RoomFadeIn(newRoom));
         newRoom.GetComponent<SpriteRenderer>().sprite = roomsSpritesDistributed[newRoom.stage][(int)RoomSpriteType.Current];
     }
     /// <summary>
@@ -862,13 +862,13 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     /// <param name="room">Room you want to fade in.</param>
     /// <returns></returns>
-    public IEnumerator RoomEnter(Room room)
+    public IEnumerator RoomFadeIn(Room room)
     {
         float alpha = 1;
         for (int i = 0; i < 20; i++)
         {
             if(i == 6)
-                isDoorClosing = false;
+                isDoorWorking = false;
             yield return new WaitForSeconds(0.01f);
             room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
@@ -878,139 +878,13 @@ public class MapManager : MonoBehaviour {
         room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-        if(!room.isRoomCleared)
-        {
-            if(room.specialRoomType == RoomType.Normal)
-                GameObject.Find("EnemyManager").GetComponent<EnemyManager>().SpawnEnemy();
-            else if(room.specialRoomType == RoomType.Item)
-            {
-                InventoryManager inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
-                LifeStoneManager lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
-                int probability = Random.Range(0, 100);
-                Vector3 itemPosition = room.roomInGame.transform.Find("ItemSpawnPoint").position;
-                switch (room.itemRoomType)
-                {
-                    case 1:
-                        if(probability < 25)
-                        {
-                            if(probability % 2 == 0)
-                                inventoryManager.ItemInstantiate(ItemQuality.Ordinary, itemPosition, 1);
-                            else
-                                inventoryManager.AddonInstantiate(ItemQuality.Ordinary, itemPosition, 1);
-                            lifeStoneManager.InstantiatePotion(itemPosition, 1);
-                            lifeStoneManager.InstantiatePotion(itemPosition, 1);
-                        }
-                        else if (25 <= probability && probability < 50)
-                        {
-                            if (probability % 2 == 0)
-                                inventoryManager.ItemInstantiate(ItemQuality.Ordinary, itemPosition, 1);
-                            else
-                                inventoryManager.AddonInstantiate(ItemQuality.Ordinary, itemPosition, 1);
-                            lifeStoneManager.InstantiateDroppedLifeStone(4, 1, 0, itemPosition, 1);
-                        }
-                        else if (50 <= probability && probability < 67)
-                        {
-                            inventoryManager.ItemInstantiate(ItemQuality.Ordinary, itemPosition, 1);
-                            inventoryManager.AddonInstantiate(ItemQuality.Ordinary, itemPosition, 1);
-                        }
-                        else if (67 <= probability && probability < 92)
-                        {
-                            inventoryManager.ItemInstantiate(ItemQuality.Ordinary, itemPosition, 1);
-                            inventoryManager.AddonInstantiate(ItemQuality.Study, itemPosition, 1);
-                        }
-                        else
-                        {
-                            if (probability % 2 == 0)
-                                inventoryManager.ItemInstantiate(ItemQuality.Superior, itemPosition, 1);
-                            else
-                                inventoryManager.AddonInstantiate(ItemQuality.Superior, itemPosition, 1);
-                        }
-                        break;
-                    case 2:
-                        if(probability % 5 == 0)
-                        {
-                            if (probability % 2 == 0)
-                                inventoryManager.ItemInstantiate(ItemQuality.Superior, itemPosition, 1);
-                            else
-                                inventoryManager.AddonInstantiate(ItemQuality.Superior, itemPosition, 1);
-                            lifeStoneManager.InstantiatePotion(itemPosition, 1);
-                            lifeStoneManager.InstantiatePotion(itemPosition, 1);
-                            lifeStoneManager.InstantiatePotion(itemPosition, 1);
-                        }
-                        else if(probability % 5 == 1)
-                        {
-                            inventoryManager.AddonInstantiate(ItemQuality.Superior, itemPosition, 1);
-                            inventoryManager.AddonInstantiate(ItemQuality.Ordinary, itemPosition, 1);
-                            inventoryManager.AddonInstantiate(ItemQuality.Study, itemPosition, 1);
-                        }
-                        else if (probability % 5 == 2)
-                        {
-                            inventoryManager.ItemInstantiate(ItemQuality.Superior, itemPosition, 1);
-                            inventoryManager.AddonInstantiate(ItemQuality.Study, itemPosition, 1);
-                            inventoryManager.AddonInstantiate(ItemQuality.Study, itemPosition, 1);
-                        }
-                        else if (probability % 5 == 3)
-                        {
-                            inventoryManager.ItemInstantiate(ItemQuality.Superior, itemPosition, 1);
-                            inventoryManager.AddonInstantiate(ItemQuality.Ordinary, itemPosition, 1);
-                            lifeStoneManager.InstantiateDroppedLifeStone(3, 0, 0, itemPosition, 1);
-                        }
-                        else if (probability % 5 == 4)
-                        {
-                            if (probability % 2 == 0)
-                                inventoryManager.ItemInstantiate(ItemQuality.Superior, itemPosition, 1);
-                            else
-                                inventoryManager.AddonInstantiate(ItemQuality.Superior, itemPosition, 1);
-                            lifeStoneManager.InstantiateDroppedLifeStone(3, 0, 0, itemPosition, 1);
-                            lifeStoneManager.InstantiateDroppedLifeStone(3, 0, 0, itemPosition, 1);
-                            lifeStoneManager.InstantiateDroppedLifeStone(3, 0, 0, itemPosition, 1);
-                        }
-                        break;
-                    case 3:
-                        if(probability < 67)
-                        {
-                            if (probability % 2 == 0)
-                                inventoryManager.ItemInstantiate(ItemQuality.Ordinary, itemPosition, 1);
-                            else
-                                inventoryManager.AddonInstantiate(ItemQuality.Ordinary, itemPosition, 1);
-                            inventoryManager.ItemInstantiate(ItemQuality.Superior, itemPosition, 1);
-                            inventoryManager.AddonInstantiate(ItemQuality.Superior, itemPosition, 1);
-                            lifeStoneManager.InstantiatePotion(itemPosition, 1);
-                        }
-                        else
-                        {
-                            if (probability % 2 == 0)
-                                inventoryManager.ItemInstantiate(ItemQuality.Masterpiece, itemPosition, 1);
-                            else
-                                inventoryManager.AddonInstantiate(ItemQuality.Masterpiece, itemPosition, 1);
-                        }
-                        break;
-                    case 4:
-                        if (probability % 2 == 0)
-                            inventoryManager.ItemInstantiate(ItemQuality.Masterpiece, itemPosition, 1);
-                        else
-                            inventoryManager.AddonInstantiate(ItemQuality.Masterpiece, itemPosition, 1);
-                        lifeStoneManager.InstantiatePotion(itemPosition, 1);
-                        lifeStoneManager.InstantiatePotion(itemPosition, 1);
-                        break;
-                    default:
-                        if (probability % 2 == 0)
-                            inventoryManager.ItemInstantiate(ItemQuality.Masterpiece, itemPosition, 1);
-                        else
-                            inventoryManager.AddonInstantiate(ItemQuality.Masterpiece, itemPosition, 1);
-                        lifeStoneManager.InstantiateDroppedLifeStone(3 * room.itemRoomType - 4, 0, 0, itemPosition, 1);
-                        lifeStoneManager.ExpandRow(room.itemRoomType - 4);
-                        break;
-                }
-            }
-        }
     }
     /// <summary>
     /// Make room fade out.
     /// </summary>
     /// <param name="room">Room you want to fade out.</param>
     /// <returns></returns>
-    public IEnumerator RoomExit(Room room)
+    public IEnumerator RoomFadeOut(Room room)
     {
         float alpha = 0;
         for(int i = 0; i < 20; i++)

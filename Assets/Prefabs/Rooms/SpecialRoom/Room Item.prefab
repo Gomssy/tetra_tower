@@ -113,7 +113,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4721597541747138}
-  - component: {fileID: 114206258087780418}
+  - component: {fileID: 114896647211626948}
   m_Layer: 8
   m_Name: Room Item
   m_TagString: Untagged
@@ -220,7 +220,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4721597541747138}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4988769571006008
 Transform:
@@ -962,20 +962,6 @@ CompositeCollider2D:
       - {x: 20, y: 7.640625}
       - {x: 21, y: 7.640625}
   m_VertexDistance: 0.0005
---- !u!114 &114206258087780418
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1612134338541166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftDoorInfo: 010101
-  rightDoorInfo: 010101
-  concept: 01010101
 --- !u!114 &114463579564781292
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -987,6 +973,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5ed2c384310eb6408bb42c91b195e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114896647211626948
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1612134338541166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4970a764e59870046814a6c66e011fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftDoorInfo: 010101
+  rightDoorInfo: 010101
+  concept: 01010101
 --- !u!212 &212480382596399844
 SpriteRenderer:
   m_ObjectHideFlags: 1

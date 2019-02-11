@@ -56,7 +56,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4184740428590750}
-  - component: {fileID: 114261393134231884}
+  - component: {fileID: 114330503780891850}
   m_Layer: 0
   m_Name: Room Amethyst
   m_TagString: Untagged
@@ -921,7 +921,7 @@ CompositeCollider2D:
       - {x: 13, y: 0}
       - {x: 24, y: 0}
   m_VertexDistance: 0.0005
---- !u!114 &114261393134231884
+--- !u!114 &114330503780891850
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -929,7 +929,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1553313331837198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
+  m_Script: {fileID: 11500000, guid: c08ccd80c2fc50441b54dc681acedf3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftDoorInfo: 010101

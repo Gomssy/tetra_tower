@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class RoomInGame : MonoBehaviour {
 
+    /*
+     * variables
+     * */
     public bool[] leftDoorInfo = new bool[3];
     public bool[] rightDoorInfo = new bool[3];
     /// <summary>
@@ -11,4 +14,19 @@ public class RoomInGame : MonoBehaviour {
     /// </summary>
     public bool[] concept = new bool[4];
     public bool[,] tileInfo = new bool[24, 24];
+
+    /*
+     * functions
+     * */
+     
+
+    public virtual void RoomEnter()
+    {
+
+    }
+
+
+
+
+
 }
