@@ -32,7 +32,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: knockbackDistance
+  - m_Name: knockbackTime
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -287,7 +287,7 @@ AnimatorState:
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_TimeParameter: knockbackTime
 --- !u!1102 &1102455672269219010
 AnimatorState:
   serializedVersion: 5
@@ -314,7 +314,7 @@ AnimatorState:
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
-  m_TimeParameter: knockbackDistance
+  m_TimeParameter: knockbackTime
 --- !u!1102 &1102828359910447394
 AnimatorState:
   serializedVersion: 5
