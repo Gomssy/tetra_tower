@@ -57,6 +57,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private LayerMask itemLayer;
     [SerializeField]
+    private LayerMask portalLayer;
+    [SerializeField]
     private float rayDistance;
     [SerializeField]
     private IPlayerInteraction lastDropItem;
@@ -245,16 +247,29 @@ public class PlayerController : MonoBehaviour
 
     bool GetItemRay()
     {
-        RaycastHit2D hit1 = Physics2D.Raycast(transform.position , Vector2.down, rayDistance, itemLayer);
-        Debug.DrawRay(transform.position , rayDistance * Vector2.down, Color.red);
-        if (hit1.collider != null)
+        RaycastHit2D hit = Physics2D.Raycast(transform.position , Vector2.down, rayDistance, itemLayer);
+
+        if (hit.collider != null)
         {
-            IPlayerInteraction temp = hit1.collider.GetComponent<IPlayerInteraction>();
+            IPlayerInteraction temp = hit.collider.GetComponent<IPlayerInteraction>();
             if (lastDropItem != null) lastDropItem.HighlightSwitch(false);
             if (temp != null) temp.HighlightSwitch(true);
             lastDropItem = temp;
         }
-        return hit1.collider != null;
+        else
+        {
+            hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, portalLayer);
+
+            if (hit.collider != null)
+            {
+                IPlayerInteraction temp = hit.collider.GetComponent<IPlayerInteraction>();
+                if (lastDropItem != null) lastDropItem.HighlightSwitch(false);
+                if (temp != null) temp.HighlightSwitch(true);
+                lastDropItem = temp;
+            }
+        }
+
+        return hit.collider != null;
     }
     bool IsInRope()   // Is player in rope?
     {

@@ -126,24 +126,28 @@ public class LifeStoneManager : MonoBehaviour {
     public void InstantiateDroppedLifeStone(Vector2Int size, int num, float goldPer, int ameNum, Vector3 pos, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
+        tmpObj.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(size, num, goldPer, ameNum), pos);
         PopoutGenerator(tmpObj, popoutStrength);
     }
     public void InstantiateDroppedLifeStone(Vector2Int size, float goldPer, int ameNum, Vector3 pos, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
+        tmpObj.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(size, goldPer, ameNum), pos);
         PopoutGenerator(tmpObj, popoutStrength);
     }
     public void InstantiateDroppedLifeStone(int num, float goldPer, int ameNum, Vector3 pos, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
+        tmpObj.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(num, goldPer, ameNum), pos);
         PopoutGenerator(tmpObj, popoutStrength);
     }
     public void InstantiateDroppedLifeStone(LifeStoneInfo info, Vector3 pos, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
+        tmpObj.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         tmpObj.GetComponent<DroppedLifeStone>().Init(info, pos);
         PopoutGenerator(tmpObj, popoutStrength);
     }
