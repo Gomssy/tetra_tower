@@ -24,7 +24,7 @@ public class EnemyDamaged : StateMachineBehaviour {
         }
         knockbackSpeed = animator.GetFloat("knockbackDistance") / knockbackTime;
 
-        Transform playerTransform = EnemyManager.Instance.player.transform;
+        Transform playerTransform = EnemyManager.Instance.Player.transform;
         pivotTransform = animator.transform.parent;
         pivotTransform.eulerAngles = (playerTransform.position.x - pivotTransform.position.x < 0) ? leftsideAngle : rightsideAngle;
         knockbackDir = (playerTransform.position.x - pivotTransform.position.x < 0) ? 1 : -1;

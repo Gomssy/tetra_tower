@@ -881,7 +881,7 @@ public class MapManager : MonoBehaviour {
         if(!room.isRoomCleared)
         {
             if(room.specialRoomType == RoomType.Normal)
-                GameObject.Find("EnemyManager").GetComponent<EnemyManager>().SpawnEnemy();
+                GameObject.Find("EnemyManager").GetComponent<EnemyManager>().SpawnEnemyToMap();
             else if(room.specialRoomType == RoomType.Item)
             {
                 InventoryManager inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();

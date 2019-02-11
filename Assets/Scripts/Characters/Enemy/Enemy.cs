@@ -56,13 +56,13 @@ public class Enemy : MonoBehaviour {
     private void Start()
     {
         this.currHealth = maxHealth;
-        dropTable = enemyManager.dropTableByID[monsterID];
-        Physics2D.IgnoreCollision(enemyManager.player.gameObject.GetComponent<Collider2D>(), transform.parent.GetComponent<Collider2D>());
+        dropTable = enemyManager.DropTableByID[monsterID];
+        Physics2D.IgnoreCollision(enemyManager.Player.gameObject.GetComponent<Collider2D>(), transform.parent.GetComponent<Collider2D>());
     }
 
     private void Update()
     {
-        playerDistance = Vector2.Distance(enemyManager.player.transform.position, transform.parent.position);
+        playerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
     }
 
     // hit by player or debuff
@@ -84,6 +84,7 @@ public class Enemy : MonoBehaviour {
     public void DeadEvent()
     {
         transform.parent.gameObject.SetActive(false);
+        enemyManager.EnemyDeadCount++; // 다른 enemy로 인해 소환되는 enemy가 추가될 경우 여기를 건드려야 함
 
         // Drop 아이템 결정. 인덱스 별 아이템은 맨 밑에 서술
         float denominator = dropTable[dropTable.Length - 1];

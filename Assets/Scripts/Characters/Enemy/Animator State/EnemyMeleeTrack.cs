@@ -16,7 +16,7 @@ public class EnemyMeleeTrack : StateMachineBehaviour {
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         trackSpeed = animator.GetComponent<Enemy>().trackSpeed;
         attackRange = animator.GetComponent<Enemy>().attackRange;
-        player = EnemyManager.Instance.player;
+        player = EnemyManager.Instance.Player;
 
         pivotTransform = animator.transform.parent;
         float halfHeight = pivotTransform.gameObject.GetComponent<BoxCollider2D>().size.y / 2.0f;
