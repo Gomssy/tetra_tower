@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     private bool isJumpable = true;     // Can player jump or doublejump?
     private bool isDownPlatform = false;
     private bool ropeEnabled = true;
+    public bool airAttack = true;
     // Inputs
     private float horizontal = 0;
     private float horizontalRaw = 0;
@@ -116,8 +117,7 @@ public class PlayerController : MonoBehaviour
         {
             if (playerState == PlayerState.Attack)
             {
-                rb.gravityScale = rbAttackGravityScale;
-                return;
+                rb.gravityScale = rb.velocity.y < 0 ? rbAttackGravityScale : rbGravityScale;
             }
 
             if (isGrounded)
@@ -219,6 +219,8 @@ public class PlayerController : MonoBehaviour
                     rb.velocity = new Vector2(xVelocity, yVelocity);
                 }
             }
+            if (playerState != PlayerState.GoingUp && playerState != PlayerState.GoingDown && playerState != PlayerState.Attack)
+                airAttack = true;
             if (previousState != playerState)
                 switch (playerState)
                 {
@@ -229,10 +231,8 @@ public class PlayerController : MonoBehaviour
                     case PlayerState.GoingDown: anim.SetTrigger("downTrigger"); break;
                     case PlayerState.Rope: anim.SetTrigger("rope"); break;
                 }
-
-            previousState = playerState;
-
         }
+        previousState = playerState;
         upKeyDown = false;
         downKeyDown = false;
         jump = false;

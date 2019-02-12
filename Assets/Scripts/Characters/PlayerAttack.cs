@@ -6,6 +6,7 @@ public class PlayerAttack : MonoBehaviour {
     public bool[] attack = new bool[3];
     public bool cancel;
     public bool playingSkill;
+    private bool comboEndDelay = true;
     public float comboTime;
     public Text time, combo;
     public string comboArray;
@@ -41,11 +42,13 @@ public class PlayerAttack : MonoBehaviour {
             comboTimeOn = false;
         }
 
-        if (!playingSkill)
+        if (!playingSkill && playerController.airAttack && comboEndDelay)
         {
             for (int i = 0; i < 3; i++)
                 if (attack[i])
                 {
+                    if (playerController.playerState == PlayerState.GoingUp || playerController.playerState == PlayerState.GoingDown)
+                        playerController.airAttack = false;
                     comboArray += (char)('A' + i);
                     CheckCombo();
                     SetComboText();
@@ -88,13 +91,19 @@ public class PlayerAttack : MonoBehaviour {
             time.text = "";
         }
     }
-
+    IEnumerator ComboEndDelay()
+    {
+        comboEndDelay = false;
+        yield return new WaitForSeconds(0.3f);
+        comboEndDelay = true;
+    }
     public void SkillEnd()
     {
         if (CheckLongerCombo()) StartCoroutine(SkillEndCoroutine());
         else
         {
             comboArray = "";
+            StartCoroutine(ComboEndDelay());
             StartCoroutine(ComboTextReset());
         }
     }
@@ -114,6 +123,7 @@ public class PlayerAttack : MonoBehaviour {
         if (!playingSkill)
         {
             comboArray = "";
+            StartCoroutine(ComboEndDelay());
             SetComboText();
         }
         comboTimeOn = false;
@@ -133,7 +143,7 @@ public class PlayerAttack : MonoBehaviour {
                     anim.SetTrigger("attack");
                     item.ComboAction(i);
                     playingSkill = true;
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x,-3f,3f), 0);
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x,-0.5f,0.5f), Mathf.Min(GetComponent<Rigidbody2D>().velocity.y,0));
                     return;
                 }
             }
@@ -143,8 +153,9 @@ public class PlayerAttack : MonoBehaviour {
         aoc["PlayerAttackAnim"] = normalAttack[comboArray[comboArray.Length - 1] - 'A'];
         anim.SetTrigger("attack");
         playingSkill = true;
-        GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x, -3f, 3f), 0);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x, -0.5f, 0.5f), Mathf.Min(GetComponent<Rigidbody2D>().velocity.y, 0));
         if (!CheckLongerCombo()) comboArray = comboArray[comboArray.Length - 1] + "";
+
     }
 
     bool CheckLongerCombo()
