@@ -146,75 +146,80 @@ public class Room : MonoBehaviour
     /// </summary>
     public void CreatePortal()
     {
-        MapManager mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
-        portal = roomInGame.transform.Find("portalspot").gameObject;
-        if (specialRoomType != RoomType.Normal)
-            isPortal = true;
-        else
+        if(roomInGame.transform.Find("portal spot"))
         {
-            int portalDistance = 0;
-            for(int i = 1; i <= 3; i++)
+            if (specialRoomType != RoomType.Normal)
+                isPortal = true;
+            else
             {
-                for(int j = 0; j < i; j++)
+                int portalDistance = 0;
+                for(int i = 1; i <= 3; i++)
                 {
-                    if(mapCoord.x + j < MapManager.width && mapCoord.y + (i - j) <= MapManager.realHeight &&
-                        MapManager.mapGrid[(int)mapCoord.x + j, (int)mapCoord.y + (i - j)] != null &&
-                        MapManager.mapGrid[(int)mapCoord.x + j, (int)mapCoord.y + (i - j)].isPortal == true)
+                    for(int j = 0; j < i; j++)
                     {
-                        portalDistance = i;
-                        break;
+                        if(mapCoord.x + j < MapManager.width && mapCoord.y + (i - j) <= MapManager.realHeight &&
+                            MapManager.mapGrid[(int)mapCoord.x + j, (int)mapCoord.y + (i - j)] != null &&
+                            MapManager.mapGrid[(int)mapCoord.x + j, (int)mapCoord.y + (i - j)].isPortal == true)
+                        {
+                            portalDistance = i;
+                            break;
+                        }
+                        if (mapCoord.x + (i - j) < MapManager.width && mapCoord.y - j >= 0 &&
+                            MapManager.mapGrid[(int)mapCoord.x + (i - j), (int)mapCoord.y - j] != null &&
+                            MapManager.mapGrid[(int)mapCoord.x + (i - j), (int)mapCoord.y - j].isPortal == true)
+                        {
+                            portalDistance = i;
+                            break;
+                        }
+                        if (mapCoord.x - j >= 0 && mapCoord.y - (i - j) >= 0 &&
+                            MapManager.mapGrid[(int)mapCoord.x - j, (int)mapCoord.y - (i - j)] != null &&
+                            MapManager.mapGrid[(int)mapCoord.x - j, (int)mapCoord.y - (i - j)].isPortal == true)
+                        {
+                            portalDistance = i;
+                            break;
+                        }
+                        if (mapCoord.x - (i - j) >= 0 && mapCoord.y + j <= MapManager.realHeight &&
+                            MapManager.mapGrid[(int)mapCoord.x - (i - j), (int)mapCoord.y + j] != null &&
+                            MapManager.mapGrid[(int)mapCoord.x - (i - j), (int)mapCoord.y + j].isPortal == true)
+                        {
+                            portalDistance = i;
+                            break;
+                        }
                     }
-                    if (mapCoord.x + (i - j) < MapManager.width && mapCoord.y - j >= 0 &&
-                        MapManager.mapGrid[(int)mapCoord.x + (i - j), (int)mapCoord.y - j] != null &&
-                        MapManager.mapGrid[(int)mapCoord.x + (i - j), (int)mapCoord.y - j].isPortal == true)
-                    {
-                        portalDistance = i;
+                    if (portalDistance != 0)
                         break;
-                    }
-                    if (mapCoord.x - j >= 0 && mapCoord.y - (i - j) >= 0 &&
-                        MapManager.mapGrid[(int)mapCoord.x - j, (int)mapCoord.y - (i - j)] != null &&
-                        MapManager.mapGrid[(int)mapCoord.x - j, (int)mapCoord.y - (i - j)].isPortal == true)
-                    {
-                        portalDistance = i;
-                        break;
-                    }
-                    if (mapCoord.x - (i - j) >= 0 && mapCoord.y + j <= MapManager.realHeight &&
-                        MapManager.mapGrid[(int)mapCoord.x - (i - j), (int)mapCoord.y + j] != null &&
-                        MapManager.mapGrid[(int)mapCoord.x - (i - j), (int)mapCoord.y + j].isPortal == true)
-                    {
-                        portalDistance = i;
-                        break;
-                    }
                 }
-                if (portalDistance != 0)
-                    break;
+                switch (portalDistance)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        if (Random.Range(0, 10) % 10 == 0)
+                        {
+                            isPortal = true;
+                        }
+                        break;
+                    case 3:
+                        if (Random.Range(0, 4) % 10 == 0)
+                        {
+                            isPortal = true;
+                        }
+                        break;
+                    case 4:
+                        if (Random.Range(0, 2) % 10 == 0)
+                        {
+                            isPortal = true;
+                        }
+                        break;
+                }
             }
-            switch (portalDistance)
+            if (isPortal)
             {
-                case 1:
-                    break;
-                case 2:
-                    if (Random.Range(0, 10) % 10 == 0)
-                    {
-                        isPortal = true;
-                    }
-                    break;
-                case 3:
-                    if (Random.Range(0, 4) % 10 == 0)
-                    {
-                        isPortal = true;
-                    }
-                    break;
-                case 4:
-                    if (Random.Range(0, 2) % 10 == 0)
-                    {
-                        isPortal = true;
-                    }
-                    break;
+                MapManager mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
+                portal = roomInGame.transform.Find("portal spot").gameObject;
+                portal = Instantiate(mapManager.portal, portal.transform.position, Quaternion.identity, roomInGame.transform);
             }
         }
-        if(isPortal)
-            portal = Instantiate(mapManager.portal, portal.transform.position, Quaternion.identity, roomInGame.transform);
     }
     /// <summary>
     /// Open selected door of this room.

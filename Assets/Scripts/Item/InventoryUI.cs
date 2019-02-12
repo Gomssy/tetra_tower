@@ -113,8 +113,8 @@ public class InventoryUI : MonoBehaviour {
                             comboChars[i, j].SetActive(true);
                             comboChars[i, j].GetComponent<Image>().sprite = comboCharPrefab[itemList[selectedItem].combo[i][j] - 'A'].GetComponent<Image>().sprite;
                             comboChars[i, j].GetComponent<RectTransform>().sizeDelta = comboCharPrefab[itemList[selectedItem].combo[i][j] - 'A'].GetComponent<RectTransform>().sizeDelta;
-                            comboChars[i, j].GetComponent<RectTransform>().localPosition += new Vector3(tmpx, 0, 0);
-                            tmpx += comboChars[i, j].GetComponent<RectTransform>().sizeDelta.x + pixelBetweenChar;
+                            comboChars[i, j].GetComponent<RectTransform>().localPosition = new Vector3(tmpx, 0, 0);
+                            tmpx = comboChars[i, j].GetComponent<RectTransform>().sizeDelta.x + pixelBetweenChar;
                         }
                         else
                         {

@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     private bool isJumpable = true;     // Can player jump or doublejump?
     private bool isDownPlatform = false;
     private bool ropeEnabled = true;
+    public bool airAttack = true;
     // Inputs
     private float horizontal = 0;
     private float horizontalRaw = 0;
@@ -56,6 +57,8 @@ public class PlayerController : MonoBehaviour
     private LayerMask platformLayer;
     [SerializeField]
     private LayerMask itemLayer;
+    [SerializeField]
+    private LayerMask portalLayer;
     [SerializeField]
     private float rayDistance;
     [SerializeField]
@@ -115,8 +118,7 @@ public class PlayerController : MonoBehaviour
         {
             if (playerState == PlayerState.Attack)
             {
-                rb.gravityScale = rbAttackGravityScale;
-                return;
+                rb.gravityScale = rb.velocity.y < 0 ? rbAttackGravityScale : rbGravityScale;
             }
 
             if (isGrounded)
@@ -217,13 +219,22 @@ public class PlayerController : MonoBehaviour
 
                     rb.velocity = new Vector2(xVelocity, yVelocity);
                 }
+                if (playerState != PlayerState.GoingUp && playerState != PlayerState.GoingDown && playerState != PlayerState.Attack)
+                    airAttack = true;
             }
-
         }
         else
         {
+            float xVelocity = rb.velocity.x;
+            float yVelocity = rb.velocity.y;
+            float airResistance = isGrounded ? 1f : 0.5f;
             playerState = PlayerState.Idle;
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
+            float direction = Mathf.Sign(xVelocity);
+            xVelocity = Mathf.Abs(xVelocity) - deceleration * airResistance * Time.fixedDeltaTime;
+            if (xVelocity < 0) xVelocity = 0;
+            xVelocity *= direction;
+            if (isGrounded) playerState = PlayerState.Idle;
+            rb.velocity = new Vector2(xVelocity, yVelocity);
         }
         if (previousState != playerState)
             switch (playerState)
@@ -251,16 +262,29 @@ public class PlayerController : MonoBehaviour
 
     bool GetItemRay()
     {
-        RaycastHit2D hit1 = Physics2D.Raycast(transform.position , Vector2.down, rayDistance, itemLayer);
-        Debug.DrawRay(transform.position , rayDistance * Vector2.down, Color.red);
-        if (hit1.collider != null)
+        RaycastHit2D hit = Physics2D.Raycast(transform.position , Vector2.down, rayDistance, itemLayer);
+
+        if (hit.collider != null)
         {
-            IPlayerInteraction temp = hit1.collider.GetComponent<IPlayerInteraction>();
+            IPlayerInteraction temp = hit.collider.GetComponent<IPlayerInteraction>();
             if (lastDropItem != null) lastDropItem.HighlightSwitch(false);
             if (temp != null) temp.HighlightSwitch(true);
             lastDropItem = temp;
         }
-        return hit1.collider != null;
+        else
+        {
+            hit = Physics2D.Raycast(transform.position, Vector2.down, rayDistance, portalLayer);
+
+            if (hit.collider != null)
+            {
+                IPlayerInteraction temp = hit.collider.GetComponent<IPlayerInteraction>();
+                if (lastDropItem != null) lastDropItem.HighlightSwitch(false);
+                if (temp != null) temp.HighlightSwitch(true);
+                lastDropItem = temp;
+            }
+        }
+
+        return hit.collider != null;
     }
     bool IsInRope()   // Is player in rope?
     {

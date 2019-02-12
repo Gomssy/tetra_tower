@@ -11,7 +11,7 @@ public class ItemRoomInGame : RoomInGame {
         InventoryManager inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
         LifeStoneManager lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
         int probability = Random.Range(0, 100);
-        Vector3 itemPosition = transform.Find("ItemSpawnPoint").position;
+        Vector3 itemPosition = transform.Find("item spot").position;
         switch (room.itemRoomType)
         {
             case 1:
