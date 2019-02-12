@@ -146,13 +146,10 @@ public class Room : MonoBehaviour
     /// </summary>
     public void CreatePortal()
     {
-        portal = roomInGame.transform.Find("Portal").gameObject;
+        MapManager mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
+        portal = roomInGame.transform.Find("portalspot").gameObject;
         if (specialRoomType != RoomType.Normal)
-        {
-            portal.SetActive(true);
             isPortal = true;
-            return;
-        }
         else
         {
             int portalDistance = 0;
@@ -195,32 +192,29 @@ public class Room : MonoBehaviour
             switch (portalDistance)
             {
                 case 1:
-                    return;
+                    break;
                 case 2:
                     if (Random.Range(0, 10) % 10 == 0)
                     {
-                        portal.SetActive(true);
                         isPortal = true;
                     }
-                    return;
+                    break;
                 case 3:
                     if (Random.Range(0, 4) % 10 == 0)
                     {
-                        portal.SetActive(true);
                         isPortal = true;
                     }
-                    return;
+                    break;
                 case 4:
                     if (Random.Range(0, 2) % 10 == 0)
                     {
-                        portal.SetActive(true);
                         isPortal = true;
                     }
-                    return;
+                    break;
             }
-            portal.SetActive(true);
-            isPortal = true;
         }
+        if(isPortal)
+            portal = Instantiate(mapManager.portal, portal.transform.position, Quaternion.identity, roomInGame.transform);
     }
     /// <summary>
     /// Open selected door of this room.

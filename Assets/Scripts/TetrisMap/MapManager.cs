@@ -139,6 +139,10 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public GameObject clearedFog;
     /// <summary>
+    /// Portal of the room.
+    /// </summary>
+    public GameObject portal;
+    /// <summary>
     /// Press.
     /// </summary>
     public Press press;
@@ -869,7 +873,6 @@ public class MapManager : MonoBehaviour {
         currentRoom = newRoom;
         StartCoroutine(RoomFadeIn(newRoom));
         playerIcon.transform.position = currentRoom.mapCoord * tetrisMapSize + new Vector3(0, 0, -2);
-        //newRoom.GetComponent<SpriteRenderer>().sprite = roomSurfaceSpritesDistributed[newRoom.stage][(int)RoomSpriteType.Current];
     }
     /// <summary>
     /// Make room fade in.
@@ -1187,6 +1190,11 @@ public class MapManager : MonoBehaviour {
             if(GameManager.gameState == GameState.Portal)
             {
                 PortalControl();
+            }
+            if(!currentRoom.isRoomCleared && (GameObject.Find("EnemyManager").GetComponent<EnemyManager>().IsClear() || 
+                (currentRoom.specialRoomType != RoomType.Normal && currentRoom.specialRoomType != RoomType.Boss)))
+            {
+                currentRoom.ClearRoom();
             }
         }
     }
