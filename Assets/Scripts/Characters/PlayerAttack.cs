@@ -42,7 +42,7 @@ public class PlayerAttack : MonoBehaviour {
             comboTimeOn = false;
         }
 
-        if (!playingSkill && playerController.airAttack && comboEndDelay)
+        if (!playingSkill && comboEndDelay)
         {
             for (int i = 0; i < 3; i++)
                 if (attack[i])
@@ -138,22 +138,25 @@ public class PlayerAttack : MonoBehaviour {
             {
                 if(item.combo[i].Equals(comboArray))
                 {
-                    playerController.playerState = PlayerState.Attack;
+                    
                     aoc["PlayerAttackAnim"] = item.animation[i];
                     anim.SetTrigger("attack");
                     item.ComboAction(i);
                     playingSkill = true;
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x,-0.5f,0.5f), Mathf.Min(GetComponent<Rigidbody2D>().velocity.y,0));
+                    if (playerController.playerState != PlayerState.GoingUp && playerController.playerState != PlayerState.GoingDown)
+                        GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x,-0.5f,0.5f), GetComponent<Rigidbody2D>().velocity.y);
+                    playerController.playerState = PlayerState.Attack;
                     return;
                 }
             }
         }
-
-        playerController.playerState = PlayerState.Attack;
+        
         aoc["PlayerAttackAnim"] = normalAttack[comboArray[comboArray.Length - 1] - 'A'];
         anim.SetTrigger("attack");
         playingSkill = true;
-        GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x, -0.5f, 0.5f), Mathf.Min(GetComponent<Rigidbody2D>().velocity.y, 0));
+        if (playerController.playerState != PlayerState.GoingUp && playerController.playerState != PlayerState.GoingDown)
+            GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x, -0.5f, 0.5f),GetComponent<Rigidbody2D>().velocity.y);
+        playerController.playerState = PlayerState.Attack;
         if (!CheckLongerCombo()) comboArray = comboArray[comboArray.Length - 1] + "";
 
     }

@@ -87,3 +87,6 @@ TagManager:
   - name: PortalSurface
     uniqueID: 3732261229
     locked: 0
+  - name: Effect
+    uniqueID: 2841314395
+    locked: 0

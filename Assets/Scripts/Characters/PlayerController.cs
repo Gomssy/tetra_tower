@@ -116,11 +116,12 @@ public class PlayerController : MonoBehaviour
 
         if (GameManager.gameState == GameState.Ingame && MapManager.isDoorWorking != true)
         {
+            /*
             if (playerState == PlayerState.Attack)
             {
                 rb.gravityScale = rb.velocity.y < 0 ? rbAttackGravityScale : rbGravityScale;
             }
-
+            */
             if (isGrounded)
                 isJumpable = true;
             if (playerState != PlayerState.Attack)
@@ -187,6 +188,7 @@ public class PlayerController : MonoBehaviour
                         {
                             yVelocity = doubleJumpSpeed;
                             isJumpable = false;
+                            airAttack = true;
                         }
                     }
                     if (!isGrounded)
