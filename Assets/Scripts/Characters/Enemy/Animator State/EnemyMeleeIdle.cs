@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMeleeIdle : StateMachineBehaviour {
-
-	Vector2 origin;
 	float patrolRange;
 	float patrolSpeed;
 	float noticeRange;
-	Vector3 leftsideAngle = new Vector3(0, 0, 0);
-	Vector3 rightsideAngle = new Vector3(0, 180, 0);
+    Vector2 origin;
     Transform animatorRoot;
     Enemy enemy;
-    NumeratedDir moveDir = NumeratedDir.Left; // go left first
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
@@ -25,7 +21,7 @@ public class EnemyMeleeIdle : StateMachineBehaviour {
         patrolSpeed = enemy.patrolSpeed;
 
         enemy.ChangeDir(NumeratedDir.Left);
-        enemy.ChangeVelocityX((int)moveDir * patrolSpeed);
+        enemy.ChangeVelocityX(enemy.MoveDir * patrolSpeed);
     }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -35,16 +31,16 @@ public class EnemyMeleeIdle : StateMachineBehaviour {
 			animator.SetTrigger("TrackTrigger");
 			return;
 		}
-        int integerDir = (int)enemy.MoveDir;
         float span = animatorRoot.position.x - origin.x;
 
-        if ((Mathf.Abs(span) > patrolRange && span * integerDir > 0) ||
-            enemy.WallTest[(integerDir + 1) / 2]                     ||
-            enemy.CliffTest[(integerDir + 1) / 2]
+        if ((Mathf.Abs(span) > patrolRange && span * enemy.MoveDir > 0) ||
+            enemy.WallTest[(enemy.MoveDir + 1) / 2]                     ||
+            enemy.CliffTest[(enemy.MoveDir + 1) / 2]
         )
 		{
-            enemy.ChangeDir(integerDir * -1);
-		}
+            enemy.ChangeDir(enemy.MoveDir * -1);
+            enemy.ChangeVelocityX(enemy.MoveDir * patrolSpeed);
+        }
 	}
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state

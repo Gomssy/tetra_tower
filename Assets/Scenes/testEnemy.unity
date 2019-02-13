@@ -1340,7 +1340,7 @@ Prefab:
     - target: {fileID: 66792933649035248, guid: 0443c2e9410bbe545bda40dc30fa6a63,
         type: 2}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4874486600194970, guid: 0443c2e9410bbe545bda40dc30fa6a63, type: 2}
       propertyPath: m_LocalPosition.x
@@ -1376,7 +1376,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1915452461634262, guid: 0443c2e9410bbe545bda40dc30fa6a63, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0443c2e9410bbe545bda40dc30fa6a63, type: 2}
@@ -1963,7 +1963,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4639192263818050, guid: a164c147037e89448820f7387c724c42, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.405
       objectReference: {fileID: 0}
     - target: {fileID: 4639192263818050, guid: a164c147037e89448820f7387c724c42, type: 2}
       propertyPath: m_LocalPosition.z

@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour {
     public bool[] WallTest { get; private set; } // {left, right}
     public bool[] CliffTest { get; private set; } // {left, right}
 
-    public NumeratedDir MoveDir { get; private set; }
+    public int MoveDir { get; private set; }
 
     // drop item
     private int[] dropTable;
@@ -64,7 +64,7 @@ public class Enemy : MonoBehaviour {
 
     private void Start()
     {
-        MoveDir = NumeratedDir.Left;
+        MoveDir = (int)NumeratedDir.Left;
         currHealth = maxHealth;
         Invisible = DuringKnockback = false;
         dropTable = enemyManager.DropTableByID[monsterID];
@@ -146,16 +146,14 @@ public class Enemy : MonoBehaviour {
 
     public void ChangeDir(NumeratedDir dir)
     {
-        MoveDir = dir;
+        MoveDir = (int)dir;
         transform.parent.eulerAngles = (dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
-        ChangeVelocityX((int)dir * Mathf.Abs(transform.parent.GetComponent<Rigidbody2D>().velocity.x));
     }
 
     public void ChangeDir(int dir)
     {
-        MoveDir = (NumeratedDir)dir;
+        MoveDir = dir;
         transform.parent.eulerAngles = ((NumeratedDir)dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
-        ChangeVelocityX(dir * Mathf.Abs(transform.parent.GetComponent<Rigidbody2D>().velocity.x));
     }
 
     // Animation Event
