@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour {
     public float trackSpeed;
     
     private float playerMaxHealth; //다른 스크립트에 있는 플레이어 최대체력 가져와야함
-    private float currHealth;
+    public float currHealth;
 
     // manager
     private InventoryManager inventoryManager;

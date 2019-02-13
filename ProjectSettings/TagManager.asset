@@ -78,6 +78,12 @@ TagManager:
   - name: Door
     uniqueID: 343148499
     locked: 0
+  - name: HPBar
+    uniqueID: 338107509
+    locked: 0
+  - name: Effect
+    uniqueID: 2841314395
+    locked: 0
   - name: Fog
     uniqueID: 3423500867
     locked: 0
@@ -86,7 +92,4 @@ TagManager:
     locked: 0
   - name: PortalSurface
     uniqueID: 3732261229
-    locked: 0
-  - name: Effect
-    uniqueID: 2841314395
     locked: 0
