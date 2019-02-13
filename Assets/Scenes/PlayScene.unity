@@ -997,6 +997,11 @@ Prefab:
       value: 
       objectReference: {fileID: 11400000, guid: b556ab3a4d3d2db4b89081d94cca006c,
         type: 2}
+    - target: {fileID: 114144154128578016, guid: afe4a2cb44239b649a3ffa70af5c2d84,
+        type: 2}
+      propertyPath: timeToFallTetrimino
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afe4a2cb44239b649a3ffa70af5c2d84, type: 2}
   m_IsPrefabAsset: 0
