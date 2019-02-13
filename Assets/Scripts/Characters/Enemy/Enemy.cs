@@ -67,12 +67,12 @@ public class Enemy : MonoBehaviour {
         bool wallTest = IsTouchingWall();
         if (wallTest)
         {
-            Debug.Log("Touching wall");
+          //  Debug.Log("Touching wall");
         }
         bool cliffTest = IsAdvancingToCliff();
         if (cliffTest)
         {
-            Debug.Log("Advancing to cliff");
+           // Debug.Log("Advancing to cliff");
         }
     }
 

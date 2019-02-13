@@ -404,6 +404,27 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1623439448163086, guid: 3d077a5f727dd1e4780e9265ed26e036,
     type: 2}
   m_PrefabInternal: {fileID: 1618052740}
+--- !u!114 &489222434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 489222433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4458b2b5e7c3f842b29e2121f8400ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spikeTile:
+  - {fileID: 11400000, guid: 7f2c5cb43ad7207499b22fb5e0acd41a, type: 2}
+  - {fileID: 11400000, guid: f411e29431b787c4ab84b5ff59ca5e6e, type: 2}
+  - {fileID: 11400000, guid: 85440e0dd81e48840947ce485614bab6, type: 2}
+  - {fileID: 11400000, guid: 7dbb7c55a3417f54fbd38fafb369478e, type: 2}
+  rb: {fileID: 0}
+  SpikeLayer: 10
+  spikeDamage: 5
+  spikeKnockBackx: 10
+  spikeKnockBacky: 10
 --- !u!223 &647962947 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 223237664237935382, guid: 692aad2449e06054799ea4706578fb23,
@@ -1541,6 +1562,11 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114294925164316638, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: groundLayer.m_Bits
+      value: 7424
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d077a5f727dd1e4780e9265ed26e036, type: 2}
   m_IsPrefabAsset: 0
@@ -1812,6 +1838,11 @@ Prefab:
         type: 2}
       propertyPath: m_CullingMask.m_Bits
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 81874366432473632, guid: b67c2e6425443f14c85899a92710bf3f,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b67c2e6425443f14c85899a92710bf3f, type: 2}
