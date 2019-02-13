@@ -82,10 +82,6 @@ public class MapManager : MonoBehaviour {
     /// </summary>
     public static bool isRoomFalling = false;
     /// <summary>
-    /// Check if door is closing or not.
-    /// </summary>
-    public static bool isDoorWorking = false;
-    /// <summary>
     /// Check if this row is being deleted.
     /// </summary>
     public static bool[] isRowDeleting = new bool[20];
@@ -885,7 +881,7 @@ public class MapManager : MonoBehaviour {
         for (int i = 0; i < 20; i++)
         {
             if(i == 6)
-                isDoorWorking = false;
+                room.isDoorWorking = false;
             yield return new WaitForSeconds(0.01f);
             room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);

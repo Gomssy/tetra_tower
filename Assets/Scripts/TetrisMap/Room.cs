@@ -88,6 +88,10 @@ public class Room : MonoBehaviour
     /// </summary>
     public bool isRoomCleared;
     /// <summary>
+    /// Check if door is closing or not.
+    /// </summary>
+    public bool isDoorWorking = false;
+    /// <summary>
     /// Check if room is destroyed.
     /// </summary>
     public bool isRoomDestroyed = false;

@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour
         isGrounded = tmp;
 
 
-        if (GameManager.gameState == GameState.Ingame && MapManager.isDoorWorking != true)
+        if (GameManager.gameState == GameState.Ingame && MapManager.currentRoom.isDoorWorking != true)
         {
             
             if (playerState == PlayerState.Attack)

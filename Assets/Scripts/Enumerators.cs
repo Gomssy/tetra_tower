@@ -55,3 +55,5 @@ public enum RoomType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal }
 /// Enum for room's sprite types.
 /// </summary>
 public enum RoomSpriteType { Item, BothSide, Gold, Amethyst, Boss, Normal1, Normal2, Nomal3, Normal4 }
+
+public enum TileType { None, Wall, Rope, Platform, Spike }
