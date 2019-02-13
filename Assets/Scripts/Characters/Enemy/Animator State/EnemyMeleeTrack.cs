@@ -22,8 +22,15 @@ public class EnemyMeleeTrack : StateMachineBehaviour {
         attackRange = enemy.attackRange;
 
         NumeratedDir trackDir = (animatorRoot.position.x - player.transform.position.x > 0) ? NumeratedDir.Left : NumeratedDir.Right;
-        enemy.ChangeVelocityX(trackSpeed);
         enemy.ChangeDir(trackDir);
+        if (enemy.CliffTest[(enemy.MoveDir + 1) / 2] || animator.GetComponent<Enemy>().PlayerDistance < attackRange)
+        {
+            enemy.ChangeVelocityX(0.0f);
+        }
+        else
+        {
+            enemy.ChangeVelocityX(enemy.MoveDir * trackSpeed);
+        }
     }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -33,7 +40,6 @@ public class EnemyMeleeTrack : StateMachineBehaviour {
             animator.SetTrigger("AttackTrigger");
             return;
         }
-
         int integerDir = enemy.MoveDir;
         if (enemy.WallTest[(integerDir + 1) / 2] || enemy.CliffTest[(integerDir + 1) / 2])
         {
@@ -51,7 +57,7 @@ public class EnemyMeleeTrack : StateMachineBehaviour {
             enemy.ChangeDir(trackDir);
             frameCounter = 0;
         }
-	}
+    }
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	//override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

@@ -31,15 +31,18 @@ public class EnemyMeleeIdle : StateMachineBehaviour {
 			animator.SetTrigger("TrackTrigger");
 			return;
 		}
-        float span = animatorRoot.position.x - origin.x;
-
-        if ((Mathf.Abs(span) > patrolRange && span * enemy.MoveDir > 0) ||
-            enemy.WallTest[(enemy.MoveDir + 1) / 2]                     ||
-            enemy.CliffTest[(enemy.MoveDir + 1) / 2]
-        )
-		{
-            enemy.ChangeDir(enemy.MoveDir * -1);
-            enemy.ChangeVelocityX(enemy.MoveDir * patrolSpeed);
+        if (!enemy.DuringKnockback)
+        {
+            float span = animatorRoot.position.x - origin.x;
+            
+            if ((Mathf.Abs(span) > patrolRange && span * enemy.MoveDir > 0) ||
+                enemy.WallTest[(enemy.MoveDir + 1) / 2] ||
+                enemy.CliffTest[(enemy.MoveDir + 1) / 2]
+            )
+            {
+                enemy.ChangeDir(enemy.MoveDir * -1);
+                enemy.ChangeVelocityX(enemy.MoveDir * patrolSpeed);
+            }
         }
 	}
 

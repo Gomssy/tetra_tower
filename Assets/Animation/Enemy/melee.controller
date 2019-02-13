@@ -195,9 +195,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: TrackTrigger
     m_EventTreshold: 0
-  - m_ConditionMode: 1
-    m_ConditionEvent: TrackTrigger
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102455672269219010}
   m_Solo: 0
@@ -272,8 +269,7 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101117024733671452}
-  m_StateMachineBehaviours:
-  - {fileID: 114316214165794054}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1

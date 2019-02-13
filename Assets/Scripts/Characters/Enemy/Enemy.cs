@@ -41,8 +41,18 @@ public class Enemy : MonoBehaviour {
     public float PlayerDistance { get; private set; }
     private readonly float knockbackCritPoint = 0.25f;
 
-    public bool[] WallTest { get; private set; } // {left, right}
-    public bool[] CliffTest { get; private set; } // {left, right}
+    public bool[] WallTest { get; private set; }
+    public bool[] CliffTest { get; private set; }
+
+    /*
+    public bool[] WallTest { get { return wallTest; } private set { wallTest = value; } } // {left, right}
+    public bool[] CliffTest { get { return cliffTest; } private set { cliffTest = value; } } // {left, right}
+
+    [SerializeField]
+    private bool[] wallTest;
+    [SerializeField]
+    private bool[] cliffTest;
+    */
 
     public int MoveDir { get; private set; }
 
@@ -68,10 +78,11 @@ public class Enemy : MonoBehaviour {
         currHealth = maxHealth;
         Invisible = DuringKnockback = false;
         dropTable = enemyManager.DropTableByID[monsterID];
-        Physics2D.IgnoreCollision(enemyManager.Player.gameObject.GetComponent<Collider2D>(), transform.parent.GetComponent<Collider2D>());
+        //Physics2D.IgnoreCollision(enemyManager.Player.gameObject.GetComponent<Collider2D>(), transform.parent.GetComponent<Collider2D>());
+        PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
         CheckCliff(); CheckWall();
@@ -87,7 +98,7 @@ public class Enemy : MonoBehaviour {
         {
             Vector2 origin = (Vector2)transform.parent.position + Dir * new Vector2(colliderSize.x / 2.0f, 0);
             Vector2 direction = Vector2.down;
-            float distance = colliderSize.y / 2.0f;
+            float distance = colliderSize.y / 4.0f;
             int layerMask = LayerMask.NameToLayer("platform");
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
 
@@ -101,7 +112,7 @@ public class Enemy : MonoBehaviour {
 
         foreach (int Dir in Enum.GetValues(typeof(NumeratedDir)))
         {
-            Vector2 origin = (Vector2)transform.parent.position + Dir * new Vector2(colliderSize.x / 2.0f, 0);
+            Vector2 origin = (Vector2)transform.parent.position + new Vector2(Dir * colliderSize.x / 2.0f, colliderSize.y);
             Vector2 direction = Vector2.right * Dir;
             float distance = 0.02f;
             int layerMask = LayerMask.GetMask("Wall", "OuterWall");
@@ -124,35 +135,49 @@ public class Enemy : MonoBehaviour {
         float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
         float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
 
-        if (!DuringKnockback)
+        if (DuringKnockback)
         {
-            StartCoroutine(Knockback(knockbackDist, knockbackTime));
+            StopCoroutine("Knockback");
+        }
+        StartCoroutine(Knockback(knockbackDist, knockbackTime));
 
-            if (knockbackDist >= knockbackCritPoint)
-            {
-                animator.SetFloat("knockbackTime", knockbackTime);
-                animator.SetTrigger("DamagedTrigger");
-            }
+        if (knockbackDist >= knockbackCritPoint)
+        {
+            animator.SetFloat("knockbackTime", knockbackTime);
+            animator.SetTrigger("DamagedTrigger");
         }
     }
 
-    // change speed of rigidbody of enemy
+    // change direction, and speed of rigidbody of enemy
     public void ChangeVelocityX(float val)
+    {
+        if (!DuringKnockback)
+        {
+            Vector2 tempVelocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
+            tempVelocity.x = val;
+            transform.parent.GetComponent<Rigidbody2D>().velocity = tempVelocity;
+        }
+    }
+
+    private void SudoChangeVelocityX(float val)
     {
         Vector2 tempVelocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
         tempVelocity.x = val;
         transform.parent.GetComponent<Rigidbody2D>().velocity = tempVelocity;
     }
 
-    public void ChangeDir(NumeratedDir dir)
+    public void ChangeDir(object dir)
     {
-        MoveDir = (int)dir;
-        transform.parent.eulerAngles = (dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
+        if (!DuringKnockback)
+        {
+            MoveDir = (int)dir;
+            transform.parent.eulerAngles = ((NumeratedDir)dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
+        }
     }
 
-    public void ChangeDir(int dir)
+    private void SudoChangeDir(object dir)
     {
-        MoveDir = dir;
+        MoveDir = (int)dir;
         transform.parent.eulerAngles = ((NumeratedDir)dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
     }
 
@@ -210,19 +235,23 @@ public class Enemy : MonoBehaviour {
     IEnumerator Knockback(float knockbackDist, float knockbackTime)
     {
         DuringKnockback = true;
-        NumeratedDir isPlayerLeft = (enemyManager.Player.transform.position.x - transform.parent.position.x <= 0) ?
-                                          NumeratedDir.Left : NumeratedDir.Right;
-
-        float knockbackVelocity = (int)isPlayerLeft * knockbackDist / knockbackTime;
-        transform.parent.eulerAngles = (isPlayerLeft == NumeratedDir.Left) ? new Vector2(0.0f, 0.0f) : new Vector2(0.0f, 180.0f);
-
-        Vector2 tempVelocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
-        tempVelocity.x = knockbackVelocity;
-        transform.parent.GetComponent<Rigidbody2D>().velocity = tempVelocity;
-
-        yield return new WaitForSeconds(knockbackTime);
-
+        int knockbackDir = (enemyManager.Player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
+        float knockbackVelocity = knockbackDir * knockbackDist / knockbackTime;
+        SudoChangeDir(knockbackDir * -1);
+        SudoChangeVelocityX(knockbackVelocity);
+        
+        for (float timer = 0; timer <= knockbackTime; timer += Time.deltaTime)
+        {
+            if (CliffTest[(knockbackDir + 1) / 2])
+            {
+                SudoChangeVelocityX(0.0f);
+                yield return new WaitForSeconds(knockbackTime - timer);
+                break;
+            }
+            yield return new WaitForFixedUpdate();
+        }
         DuringKnockback = false;
+        ChangeVelocityX(0.0f);
     }
 
     // Debuff
