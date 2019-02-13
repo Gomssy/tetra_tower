@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour {
     // for animation
     private Animator animator;
     public bool Invisible { get; private set; }
-    public bool Untouchable { get; private set; }
+    public bool DuringKnockback { get; private set; }
     public float PlayerDistance { get; private set; }
     private readonly float knockbackCritPoint = 0.25f;
 
@@ -57,14 +57,60 @@ public class Enemy : MonoBehaviour {
     private void Start()
     {
         currHealth = maxHealth;
-        Invisible = Untouchable = false;
+        Invisible = DuringKnockback = false;
         dropTable = enemyManager.DropTableByID[monsterID];
         Physics2D.IgnoreCollision(enemyManager.Player.gameObject.GetComponent<Collider2D>(), transform.parent.GetComponent<Collider2D>());
+    }
+
+    private void FixedUpdate()
+    {
+        bool wallTest = IsTouchingWall();
+        if (wallTest)
+        {
+            Debug.Log("Touching wall");
+        }
+        bool cliffTest = IsAdvancingToCliff();
+        if (cliffTest)
+        {
+            Debug.Log("Advancing to cliff");
+        }
     }
 
     private void Update()
     {
         PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
+    }
+
+    // check whether enemy is advancing to cliff
+    public bool IsAdvancingToCliff()
+    {
+        Vector2 velocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
+        Vector2 colliderSize = transform.parent.GetComponent<BoxCollider2D>().size;
+
+        if (velocity.x == 0) { return false; }
+        int enemyDir = (velocity.x > 0) ? 1 : -1;
+
+        Vector2 origin = (Vector2)transform.parent.position + enemyDir * new Vector2(colliderSize.x / 2.0f, 0);
+        Vector2 direction = Vector2.down;
+        float distance = colliderSize.y / 2.0f;
+        int layerMask = LayerMask.NameToLayer("platform");
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
+
+        return (hit.collider == null);
+    }
+
+    public bool IsTouchingWall()
+    {
+        int enemyDir = (transform.parent.eulerAngles.y == 180.0f) ? 1 : -1;
+        Vector2 colliderSize = transform.parent.GetComponent<BoxCollider2D>().size;
+
+        Vector2 origin = (Vector2)transform.parent.position + enemyDir * new Vector2(colliderSize.x / 2.0f, 0);
+        Vector2 direction = Vector2.right * enemyDir;
+        float distance = 0.02f;
+        int layerMask = LayerMask.GetMask("Wall", "OuterWall");
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
+
+        return (hit.collider != null);
     }
 
     // hit by player or debuff
@@ -79,12 +125,15 @@ public class Enemy : MonoBehaviour {
         float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
         float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
 
-        StartCoroutine(Knockback(knockbackDist, knockbackTime));
-
-        if (knockbackDist >= knockbackCritPoint)
+        if (!DuringKnockback)
         {
-            animator.SetFloat("knockbackTime", knockbackTime);
-            animator.SetTrigger("DamagedTrigger");
+            StartCoroutine(Knockback(knockbackDist, knockbackTime));
+
+            if (knockbackDist >= knockbackCritPoint)
+            {
+                animator.SetFloat("knockbackTime", knockbackTime);
+                animator.SetTrigger("DamagedTrigger");
+            }
         }
     }
 
@@ -141,7 +190,7 @@ public class Enemy : MonoBehaviour {
     // Knockback
     IEnumerator Knockback(float knockbackDist, float knockbackTime)
     {
-        Untouchable = true;
+        DuringKnockback = true;
         bool isPlayerLeft = (enemyManager.Player.transform.position.x - transform.parent.position.x <= 0);
 
         float knockbackVelocity = ((isPlayerLeft) ? 1 : -1) * knockbackDist / knockbackTime;
@@ -153,7 +202,7 @@ public class Enemy : MonoBehaviour {
 
         yield return new WaitForSeconds(knockbackTime);
 
-        Untouchable = false;
+        DuringKnockback = false;
     }
 
     // Debuff
