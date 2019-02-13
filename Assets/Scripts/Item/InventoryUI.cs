@@ -30,6 +30,7 @@ public class InventoryUI : MonoBehaviour {
     public GameObject[] infoAddonsFrame;
     public GameObject[] comboStringFrame;
     public GameObject[] comboCharPrefab;
+    public GameObject[] comboNameFrame;
     public float pixelBetweenChar;
     GameObject[,] comboChars = new GameObject[3, 8];
     GameObject[] infoAddons;
@@ -65,6 +66,7 @@ public class InventoryUI : MonoBehaviour {
                 comboChars[i, j].SetActive(false);
             }
             comboStringFrame[i].SetActive(false);
+            comboNameFrame[i].SetActive(false);
         }
         
         infoSpace.transform.Find("Frame").gameObject.SetActive(false);
@@ -100,11 +102,13 @@ public class InventoryUI : MonoBehaviour {
             frameObj.transform.Find("ItemSprite").gameObject.GetComponent<Image>().sprite = itemFrameQuality[(int)itemList[selectedItem].quality];
             frameObj.transform.Find("ItemSprite").Find("Sprite").gameObject.GetComponent<Image>().sprite = itemList[selectedItem].sprite;
             frameObj.transform.Find("ItemSprite").Find("Sprite").gameObject.GetComponent<RectTransform>().sizeDelta = itemList[selectedItem].sizeInventory;
+            frameObj.transform.Find("ItemDescription").gameObject.GetComponent<Text>().text = itemList[selectedItem].itemInfo;
             for (int i = 0; i < 3; i++)
             {
                 if (i < itemList[selectedItem].skillNum)
                 {
                     comboStringFrame[i].SetActive(true);
+                    comboNameFrame[i].SetActive(true);
                     float tmpx = 0;
                     for (int j = 0; j < 8; j++)
                     {
@@ -115,6 +119,7 @@ public class InventoryUI : MonoBehaviour {
                             comboChars[i, j].GetComponent<RectTransform>().sizeDelta = comboCharPrefab[itemList[selectedItem].combo[i][j] - 'A'].GetComponent<RectTransform>().sizeDelta;
                             comboChars[i, j].GetComponent<RectTransform>().localPosition = new Vector3(tmpx, 0, 0);
                             tmpx = comboChars[i, j].GetComponent<RectTransform>().sizeDelta.x + pixelBetweenChar;
+                            comboNameFrame[i].GetComponent<Text>().text = itemList[selectedItem].comboName[i];
                         }
                         else
                         {

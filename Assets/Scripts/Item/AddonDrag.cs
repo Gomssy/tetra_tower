@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     public int num;
     InventoryUI ui;
@@ -54,6 +54,23 @@ public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             if (CheckBetween(Input.mousePosition, addonGroup.position, addonGroup.GetComponent<RectTransform>().sizeDelta))
                 manager.DetachAddon(ui.selectedItem, (AddonType)(num - 9));
         }
+        manager.SetOnPosition();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (num < 9)
+        {
+            int type = (int)manager.addonList[num].type;
+            if (ui.selectedItem != -1 && manager.itemList[ui.selectedItem].attachable[type])
+            {
+                if (manager.itemList[ui.selectedItem].addons[type] != null)
+                    manager.DetachAddon(ui.selectedItem, (AddonType)type);
+                manager.AttachAddon(ui.selectedItem, num);
+            }
+        }
+        else
+            manager.DetachAddon(ui.selectedItem, (AddonType)(num - 9));
         manager.SetOnPosition();
     }
     bool CheckBetween(Vector3 mouse, Vector3 center, Vector2 size)

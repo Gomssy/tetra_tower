@@ -14,6 +14,8 @@ public abstract class Item {
     public Sprite sprite;
     public Sprite highlight;
     public Vector2 sizeInventory;
+    public string itemInfo;
+    public string[] comboName = new string[3];
 
     public bool ComboAction(string currentCombo)
     {
@@ -53,6 +55,9 @@ public abstract class Item {
         animation[1] = null;
         animation[2] = null;
         sizeInventory = new Vector2(0, 0);
+        itemInfo = null;
+        comboName = new string[3] { "", "", "" };
+
     }
     protected virtual void PlaySkill1()
     {

@@ -24,6 +24,7 @@ public class InventoryManager : MonoBehaviour {
         SetPool();
 
         ItemInstantiate("Dagger", player.transform.position, 0f);
+        AddonInstantiate("ParchmentPiece", player.transform.position, 0f);
 
         StartCoroutine(TestCoroutine());
     }
