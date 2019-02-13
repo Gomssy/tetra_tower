@@ -35,10 +35,11 @@ public class Enemy : MonoBehaviour {
     private EnemyManager enemyManager;
 
     // for animation
-    [HideInInspector]
-    public float playerDistance;
     private Animator animator;
-    public bool untouchable = false;
+    public bool Invisible { get; private set; }
+    public bool Untouchable { get; private set; }
+    public float PlayerDistance { get; private set; }
+    private readonly float knockbackCritPoint = 0.25f;
 
     // drop item
     private int[] dropTable;
@@ -55,14 +56,15 @@ public class Enemy : MonoBehaviour {
 
     private void Start()
     {
-        this.currHealth = maxHealth;
-        dropTable = enemyManager.dropTableByID[monsterID];
-        Physics2D.IgnoreCollision(enemyManager.player.gameObject.GetComponent<Collider2D>(), transform.parent.GetComponent<Collider2D>());
+        currHealth = maxHealth;
+        Invisible = Untouchable = false;
+        dropTable = enemyManager.DropTableByID[monsterID];
+        Physics2D.IgnoreCollision(enemyManager.Player.gameObject.GetComponent<Collider2D>(), transform.parent.GetComponent<Collider2D>());
     }
 
     private void Update()
     {
-        playerDistance = Vector2.Distance(enemyManager.player.transform.position, transform.parent.position);
+        PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
     }
 
     // hit by player or debuff
@@ -70,13 +72,20 @@ public class Enemy : MonoBehaviour {
         currHealth -= attack.damage;
         if (currHealth <= 0)
         {
-            untouchable = true;
+            Invisible = true;
             animator.SetTrigger("DeadTrigger");
             return;
         }
-        animator.SetFloat("knockbackDistance", attack.damage / this.weight * attack.knockBackMultiplier);
-        if(attack.damage / this.weight >= 0.25f)
+        float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
+        float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
+
+        StartCoroutine(Knockback(knockbackDist, knockbackTime));
+
+        if (knockbackDist >= knockbackCritPoint)
+        {
+            animator.SetFloat("knockbackTime", knockbackTime);
             animator.SetTrigger("DamagedTrigger");
+        }
     }
 
     // Animation Event
@@ -84,6 +93,7 @@ public class Enemy : MonoBehaviour {
     public void DeadEvent()
     {
         transform.parent.gameObject.SetActive(false);
+        enemyManager.EnemyDeadCount++; // 다른 enemy로 인해 소환되는 enemy가 추가될 경우 여기를 건드려야 함
 
         // Drop 아이템 결정. 인덱스 별 아이템은 맨 밑에 서술
         float denominator = dropTable[dropTable.Length - 1];
@@ -111,12 +121,10 @@ public class Enemy : MonoBehaviour {
         }
         if (indexOfItem == 7) // Amethyst Potion
         {
-            Debug.Log("Amethyst Potion");
             // insert!
         }
         if (indexOfItem >= 8 && indexOfItem <= 11) // Item
         {
-            Debug.Log("Item");
             inventoryManager.ItemInstantiate((ItemQuality)(indexOfItem - 8), transform.parent.position, EnemyManager.dropObjStrength);
         }
         if (indexOfItem >= 12 && indexOfItem <= 15) // Addon
@@ -124,12 +132,30 @@ public class Enemy : MonoBehaviour {
             inventoryManager.AddonInstantiate((ItemQuality)(indexOfItem - 12), transform.parent.position, EnemyManager.dropObjStrength);
         }
 
-        this.currHealth = this.maxHealth;
-        this.untouchable = false;
+        currHealth = maxHealth;
+        Invisible = false;
         return;
     }
 
     // Coroutine
+    // Knockback
+    IEnumerator Knockback(float knockbackDist, float knockbackTime)
+    {
+        Untouchable = true;
+        bool isPlayerLeft = (enemyManager.Player.transform.position.x - transform.parent.position.x <= 0);
+
+        float knockbackVelocity = ((isPlayerLeft) ? 1 : -1) * knockbackDist / knockbackTime;
+        transform.parent.eulerAngles = (isPlayerLeft) ? new Vector2(0.0f, 0.0f) : new Vector2(0.0f, 180.0f);
+
+        Vector2 tempVelocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
+        tempVelocity.x = knockbackVelocity;
+        transform.parent.GetComponent<Rigidbody2D>().velocity = tempVelocity;
+
+        yield return new WaitForSeconds(knockbackTime);
+
+        Untouchable = false;
+    }
+
     // Debuff
     IEnumerator DebuffCase(EnemyDebuffed sCase)
     {
@@ -220,4 +246,4 @@ public class Enemy : MonoBehaviour {
  * 13 - Addon(Ordinary)
  * 14 - Addon(Superior)
  * 15 - Addon(Masterpiece)
-*/
+ */

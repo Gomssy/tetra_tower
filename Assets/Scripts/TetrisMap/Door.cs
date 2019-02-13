@@ -50,7 +50,6 @@ public class Door : MonoBehaviour {
                     enteredPosition = 1;
                     break;
             }
-            MapManager.isDoorClosing = true;
             GameObject.Find("MapManager").GetComponent<MapManager>().ChangeRoom(MapManager.tempRoom);
             if (MapManager.currentRoom.isRoomCleared != true)
             {
@@ -60,6 +59,7 @@ public class Door : MonoBehaviour {
                 animatorNextRoom.SetBool("doorOpen", false);
                 animatorThisRoom.SetBool("doorClose", true);
                 animatorNextRoom.SetBool("doorClose", true);
+                MapManager.currentRoom.roomInGame.RoomEnter();
             }
         }
     }

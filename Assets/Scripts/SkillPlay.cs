@@ -21,9 +21,9 @@ public class SkillPlay : StateMachineBehaviour {
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        playercontroller.playerState = PlayerState.Idle;
         playerattack.playingSkill = false;
         playerattack.SkillEnd();
+        playercontroller.playerState = PlayerState.Idle;
     }
 
 	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

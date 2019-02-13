@@ -24,7 +24,7 @@ public class EnemyMeleeIdle : StateMachineBehaviour {
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		if (animator.GetComponent<Enemy>().playerDistance < noticeRange)
+		if (animator.GetComponent<Enemy>().PlayerDistance < noticeRange)
 		{
 			animator.SetTrigger("TrackTrigger");
 			return;

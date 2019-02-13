@@ -9,22 +9,30 @@ public class EnemyManager : Singleton<EnemyManager>
 {
     // data
     // static
-    private readonly int poolSize = 10;
-
     public static readonly float goldPer = 0.5f;
     public static readonly int ameNum = 0;
     public static readonly float dropObjStrength = 1f;
 
     // hold player for animation
-    public GameObject player;
+    public GameObject Player { get; private set; }
 
     // data of drop item
-    public TextAsset dropTableData;
-    public Dictionary<int, int[]> dropTableByID = new Dictionary<int, int[]>();
+    [SerializeField]
+    private TextAsset dropTableData;
+    public Dictionary<int, int[]> DropTableByID { get; private set; }
 
-    // enemy prefab
-    public GameObject[] enemyPrefab;
-    public Dictionary<GameObject, GameObject[]> enemyPool = new Dictionary<GameObject, GameObject[]>();
+    // enemy prefab and pool
+    [SerializeField]
+    private GameObject[] enemyPrefab;
+    private readonly int poolSize = 10;
+    public Dictionary<GameObject, GameObject[]> EnemyPool { get; private set; }
+
+
+    // enemy count
+    [SerializeField]
+    private uint EnemySpawnCount;
+    public uint EnemyDeadCount;
+
 
     // method
     // Constructor - protect calling raw constructor
@@ -33,14 +41,15 @@ public class EnemyManager : Singleton<EnemyManager>
     // Awake
     private void Awake()
     {
-        player = GameObject.Find("Player");
+        Player = GameObject.Find("Player");
         LoadDropTable(dropTableData);
         CreateEnemyPool();
     }
 
     // Spawn Enemy to Map
-    public void SpawnEnemy()
+    public void SpawnEnemyToMap()
     {
+        EnemySpawnCount = EnemyDeadCount = 0;
         Transform enemySpots = MapManager.currentRoom.roomInGame.transform.Find("enemy spot");
         foreach(Transform enemySpot in enemySpots)
         {
@@ -49,14 +58,21 @@ public class EnemyManager : Singleton<EnemyManager>
             {
                 GameObject clone = PickFromPool(enemy);
                 clone.transform.position = location.position;
+                clone.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
             }
         }
+    }
+
+    public bool IsClear()
+    {
+        return (EnemyDeadCount == EnemySpawnCount);
     }
 
     // Object Pool
     private void CreateEnemyPool()
     {
-        foreach(GameObject eachEnemy in enemyPrefab)
+        EnemyPool = new Dictionary<GameObject, GameObject[]>();
+        foreach (GameObject eachEnemy in enemyPrefab)
         {
             GameObject[] pool = new GameObject[poolSize];
             for(int i = 0; i < pool.Length; i++)
@@ -64,14 +80,14 @@ public class EnemyManager : Singleton<EnemyManager>
                 pool[i] = Instantiate(eachEnemy);
                 pool[i].SetActive(false);
             }
-            enemyPool.Add(eachEnemy, pool);
+            EnemyPool.Add(eachEnemy, pool);
         }
     }
 
     private GameObject PickFromPool(GameObject enemy)
     {
-        Debug.Log(enemy.name);
-        GameObject[] pool = enemyPool[enemy];
+        EnemySpawnCount += 1;
+        GameObject[] pool = EnemyPool[enemy];
         foreach(GameObject obj in pool)
         {
             if (!obj.activeSelf)
@@ -88,7 +104,7 @@ public class EnemyManager : Singleton<EnemyManager>
             pool[i] = Instantiate(enemy);
             pool[i].SetActive(false);
         }
-        enemyPool[enemy] = pool;
+        EnemyPool[enemy] = pool;
 
         pool[beforeExtend].SetActive(true);
         return pool[beforeExtend];
@@ -97,6 +113,7 @@ public class EnemyManager : Singleton<EnemyManager>
     // Load Dictionary
     private void LoadDropTable(TextAsset dataFile)
     {
+        DropTableByID = new Dictionary<int, int[]>();
         string[] linesFromText = dataFile.text.Split('\n');
         string[] cellValue = null;
 
@@ -126,7 +143,7 @@ public class EnemyManager : Singleton<EnemyManager>
                 dropTable[j] = cumulated;
             }
             
-            dropTableByID.Add(enemyID, dropTable);
+            DropTableByID.Add(enemyID, dropTable);
         }
     }
 }
