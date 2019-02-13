@@ -6,6 +6,13 @@
     blind,
     charm
 };
+
+public enum NumeratedDir
+{
+    Left = -1,
+    Right = 1
+};
+
 public enum PlayerDebuffCase
 {
 

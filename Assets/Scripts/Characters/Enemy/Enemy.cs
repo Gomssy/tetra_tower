@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
-
+using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour {
 
@@ -34,12 +34,17 @@ public class Enemy : MonoBehaviour {
     private LifeStoneManager lifeStoneManager;
     private EnemyManager enemyManager;
 
-    // for animation
+    // for movement
     private Animator animator;
     public bool Invisible { get; private set; }
     public bool DuringKnockback { get; private set; }
     public float PlayerDistance { get; private set; }
     private readonly float knockbackCritPoint = 0.25f;
+
+    public bool[] WallTest { get; private set; } // {left, right}
+    public bool[] CliffTest { get; private set; } // {left, right}
+
+    public NumeratedDir MoveDir { get; private set; }
 
     // drop item
     private int[] dropTable;
@@ -52,69 +57,63 @@ public class Enemy : MonoBehaviour {
         inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
         lifeStoneManager = GameObject.Find("UI Canvas").transform.GetChild(0).GetComponent<LifeStoneManager>();
         animator = GetComponent<Animator>();
+
+        WallTest = new bool[] { false, false };
+        CliffTest = new bool[] { false, false };
     }
 
     private void Start()
     {
+        MoveDir = NumeratedDir.Left;
         currHealth = maxHealth;
         Invisible = DuringKnockback = false;
         dropTable = enemyManager.DropTableByID[monsterID];
         Physics2D.IgnoreCollision(enemyManager.Player.gameObject.GetComponent<Collider2D>(), transform.parent.GetComponent<Collider2D>());
     }
 
-    private void FixedUpdate()
-    {
-        bool wallTest = IsTouchingWall();
-        if (wallTest)
-        {
-            Debug.Log("Touching wall");
-        }
-        bool cliffTest = IsAdvancingToCliff();
-        if (cliffTest)
-        {
-            Debug.Log("Advancing to cliff");
-        }
-    }
-
     private void Update()
     {
         PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
+        CheckCliff(); CheckWall();
     }
 
-    // check whether enemy is advancing to cliff
-    public bool IsAdvancingToCliff()
+    // check whether enemy is near to cliff
+    private void CheckCliff()
     {
         Vector2 velocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
         Vector2 colliderSize = transform.parent.GetComponent<BoxCollider2D>().size;
 
-        if (velocity.x == 0) { return false; }
-        int enemyDir = (velocity.x > 0) ? 1 : -1;
+        foreach (int Dir in Enum.GetValues(typeof(NumeratedDir)))
+        {
+            Vector2 origin = (Vector2)transform.parent.position + Dir * new Vector2(colliderSize.x / 2.0f, 0);
+            Vector2 direction = Vector2.down;
+            float distance = colliderSize.y / 2.0f;
+            int layerMask = LayerMask.NameToLayer("platform");
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
 
-        Vector2 origin = (Vector2)transform.parent.position + enemyDir * new Vector2(colliderSize.x / 2.0f, 0);
-        Vector2 direction = Vector2.down;
-        float distance = colliderSize.y / 2.0f;
-        int layerMask = LayerMask.NameToLayer("platform");
-        RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
-
-        return (hit.collider == null);
+            CliffTest[(Dir + 1) / 2] = (hit.collider == null);
+        }
     }
-
-    public bool IsTouchingWall()
+    // check whether enemy is touching wall
+    private void CheckWall()
     {
-        int enemyDir = (transform.parent.eulerAngles.y == 180.0f) ? 1 : -1;
         Vector2 colliderSize = transform.parent.GetComponent<BoxCollider2D>().size;
 
-        Vector2 origin = (Vector2)transform.parent.position + enemyDir * new Vector2(colliderSize.x / 2.0f, 0);
-        Vector2 direction = Vector2.right * enemyDir;
-        float distance = 0.02f;
-        int layerMask = LayerMask.GetMask("Wall", "OuterWall");
-        RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
+        foreach (int Dir in Enum.GetValues(typeof(NumeratedDir)))
+        {
+            Vector2 origin = (Vector2)transform.parent.position + Dir * new Vector2(colliderSize.x / 2.0f, 0);
+            Vector2 direction = Vector2.right * Dir;
+            float distance = 0.02f;
+            int layerMask = LayerMask.GetMask("Wall", "OuterWall");
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
 
-        return (hit.collider != null);
+            WallTest[(Dir + 1) / 2] = (hit.collider != null);
+        }
     }
 
     // hit by player or debuff
-    public void GetDamaged(PlayerAttackInfo attack) { 
+    public void GetDamaged(PlayerAttackInfo attack)
+    { 
         currHealth -= attack.damage;
         if (currHealth <= 0)
         {
@@ -135,6 +134,28 @@ public class Enemy : MonoBehaviour {
                 animator.SetTrigger("DamagedTrigger");
             }
         }
+    }
+
+    // change speed of rigidbody of enemy
+    public void ChangeVelocityX(float val)
+    {
+        Vector2 tempVelocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
+        tempVelocity.x = val;
+        transform.parent.GetComponent<Rigidbody2D>().velocity = tempVelocity;
+    }
+
+    public void ChangeDir(NumeratedDir dir)
+    {
+        MoveDir = dir;
+        transform.parent.eulerAngles = (dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
+        ChangeVelocityX((int)dir * Mathf.Abs(transform.parent.GetComponent<Rigidbody2D>().velocity.x));
+    }
+
+    public void ChangeDir(int dir)
+    {
+        MoveDir = (NumeratedDir)dir;
+        transform.parent.eulerAngles = ((NumeratedDir)dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
+        ChangeVelocityX(dir * Mathf.Abs(transform.parent.GetComponent<Rigidbody2D>().velocity.x));
     }
 
     // Animation Event
@@ -191,10 +212,11 @@ public class Enemy : MonoBehaviour {
     IEnumerator Knockback(float knockbackDist, float knockbackTime)
     {
         DuringKnockback = true;
-        bool isPlayerLeft = (enemyManager.Player.transform.position.x - transform.parent.position.x <= 0);
+        NumeratedDir isPlayerLeft = (enemyManager.Player.transform.position.x - transform.parent.position.x <= 0) ?
+                                          NumeratedDir.Left : NumeratedDir.Right;
 
-        float knockbackVelocity = ((isPlayerLeft) ? 1 : -1) * knockbackDist / knockbackTime;
-        transform.parent.eulerAngles = (isPlayerLeft) ? new Vector2(0.0f, 0.0f) : new Vector2(0.0f, 180.0f);
+        float knockbackVelocity = (int)isPlayerLeft * knockbackDist / knockbackTime;
+        transform.parent.eulerAngles = (isPlayerLeft == NumeratedDir.Left) ? new Vector2(0.0f, 0.0f) : new Vector2(0.0f, 180.0f);
 
         Vector2 tempVelocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
         tempVelocity.x = knockbackVelocity;

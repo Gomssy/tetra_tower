@@ -11,30 +11,39 @@ public class EnemyMeleeIdle : StateMachineBehaviour {
 	Vector3 leftsideAngle = new Vector3(0, 0, 0);
 	Vector3 rightsideAngle = new Vector3(0, 180, 0);
     Transform animatorRoot;
-
+    Enemy enemy;
+    NumeratedDir moveDir = NumeratedDir.Left; // go left first
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		origin = animator.transform.position;
-        patrolRange = animator.GetComponent<Enemy>().patrolRange;
-        noticeRange = animator.GetComponent<Enemy>().noticeRange;
-        patrolSpeed = animator.GetComponent<Enemy>().patrolSpeed;
         animatorRoot = animator.transform.parent;
+        enemy = animator.GetComponent<Enemy>();
+
+        patrolRange = enemy.patrolRange;
+        noticeRange = enemy.noticeRange;
+        patrolSpeed = enemy.patrolSpeed;
+
+        enemy.ChangeDir(NumeratedDir.Left);
+        enemy.ChangeVelocityX((int)moveDir * patrolSpeed);
     }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		if (animator.GetComponent<Enemy>().PlayerDistance < noticeRange)
+		if (enemy.PlayerDistance < noticeRange)
 		{
 			animator.SetTrigger("TrackTrigger");
 			return;
 		}
-		Vector2 currPosition = animatorRoot.position;
-		Vector2 movingDistance = -1 * animatorRoot.right * patrolSpeed * Time.deltaTime; // go left first
-        animatorRoot.gameObject.GetComponent<Rigidbody2D>().MovePosition(currPosition + movingDistance);
-		if(Mathf.Abs(animatorRoot.position.x - origin.x) > patrolRange)
+        int integerDir = (int)enemy.MoveDir;
+        float span = animatorRoot.position.x - origin.x;
+
+        if ((Mathf.Abs(span) > patrolRange && span * integerDir > 0) ||
+            enemy.WallTest[(integerDir + 1) / 2]                     ||
+            enemy.CliffTest[(integerDir + 1) / 2]
+        )
 		{
-            animatorRoot.eulerAngles = (origin.x < animatorRoot.position.x) ? leftsideAngle : rightsideAngle;
+            enemy.ChangeDir(integerDir * -1);
 		}
 	}
 
