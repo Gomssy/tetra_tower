@@ -131,6 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemAddon: 0
   highlight: {fileID: 1886512004533810}
+  itemSizeMultiplier: 0.007
 --- !u!212 &212078234558260036
 SpriteRenderer:
   m_ObjectHideFlags: 1

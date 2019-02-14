@@ -24,7 +24,6 @@ public class InventoryManager : MonoBehaviour {
         SetPool();
 
         ItemInstantiate("Dagger", player.transform.position, 0f);
-
         StartCoroutine(TestCoroutine());
     }
     /// <summary>
@@ -227,6 +226,8 @@ public class InventoryManager : MonoBehaviour {
 
         itemList.Add(item);
         ui.SetOnPosition(itemList, addonList);
+
+        Debug.Log(itemList[0].combo[0] + " " + itemList[0].combo[1]);
         return true;
     }
     /// <summary>

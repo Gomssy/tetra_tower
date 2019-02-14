@@ -25,11 +25,13 @@ public class AttackProperty : MonoBehaviour{
             Enemy enemyInfo = collision.transform.GetChild(0).GetComponent<Enemy>();
             collision.transform.GetChild(0).GetComponent<Enemy>().GetDamaged(curAttack);
             
+
+            //make effect
             foreach (Collider2D col in GetComponents<Collider2D>())
                 if (col.isActiveAndEnabled)
                     tmpBounds = col.bounds;
 
-            if (!tmpBounds.Equals(new Bounds())) ;
+            if (!tmpBounds.Equals(new Bounds()))
                 effectManager.StartEffect(0, tmpBounds, collision.bounds);
         }
     }
