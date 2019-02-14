@@ -36,10 +36,11 @@ public class HPBar : MonoBehaviour {
             instRed.transform.localScale = new Vector3((width / instRed.GetComponent<SpriteRenderer>().size.x - height / instRed.GetComponent<SpriteRenderer>().size.y * 0.2f) * cur, height / instRed.GetComponent<SpriteRenderer>().size.y * 0.8f, 1);
             instRed.transform.position = transform.parent.position + new Vector3((width - height * 0.2f) / -2f, yOffset, 0);
         }
-        else
-        {
-            instBor.SetActive(false);
-            instRed.SetActive(false);
-        }
 	}
+
+    public void Inactivate()
+    {
+        instBor.SetActive(false);
+        instRed.SetActive(false);
+    }
 }

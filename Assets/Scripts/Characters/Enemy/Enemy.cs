@@ -141,6 +141,8 @@ public class Enemy : MonoBehaviour {
     // Dead
     public void DeadEvent()
     {
+        if(transform.parent.GetComponentInChildren<HPBar>())
+            transform.parent.GetComponentInChildren<HPBar>().Inactivate();
         transform.parent.gameObject.SetActive(false);
         enemyManager.EnemyDeadCount++; // 다른 enemy로 인해 소환되는 enemy가 추가될 경우 여기를 건드려야 함
 
