@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour {
     private void Awake()
     {
         enemyManager = EnemyManager.Instance;
-        inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        inventoryManager = InventoryManager.Instance;
         lifeStoneManager = GameObject.Find("UI Canvas").transform.GetChild(0).GetComponent<LifeStoneManager>();
         animator = GetComponent<Animator>();
     }

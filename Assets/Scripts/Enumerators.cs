@@ -4,7 +4,8 @@
     ice,
     stun,
     blind,
-    charm
+    charm,
+    END_POINTER
 };
 public enum PlayerDebuffCase
 {

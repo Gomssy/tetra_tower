@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour {
+public class InventoryManager : Singleton<InventoryManager> {
 
     public List<Item> itemList = new List<Item>();
     public List<Addon> addonList = new List<Addon>();

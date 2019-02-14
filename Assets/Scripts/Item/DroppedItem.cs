@@ -34,7 +34,7 @@ public class DroppedItem : MonoBehaviour, IPlayerInteraction
     }
     public void Init(Addon _addon, Vector3 pos)
     {
-        inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        inventoryManager = InventoryManager.Instance;
         addon = _addon;
         itemAddon = true;
         rb2D = GetComponent<Rigidbody2D>();
