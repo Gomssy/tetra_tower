@@ -4,7 +4,8 @@
     ice,
     stun,
     blind,
-    charm
+    charm,
+    END_POINTER
 };
 
 public enum NumeratedDir
@@ -61,4 +62,4 @@ public enum RoomType { Start, Item, BothSide, Gold, Amethyst, Boss, Normal }
 /// <summary>
 /// Enum for room's sprite types.
 /// </summary>
-public enum RoomSpriteType { Item, BothSide, Gold, Amethyst, Boss, Normal1, Normal2, Nomal3, Normal4, Current }
+public enum RoomSpriteType { Item, BothSide, Gold, Amethyst, Boss, Normal1, Normal2, Nomal3, Normal4 }

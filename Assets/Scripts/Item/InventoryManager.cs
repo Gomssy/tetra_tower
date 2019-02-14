@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour {
+public class InventoryManager : Singleton<InventoryManager> {
 
     public List<Item> itemList = new List<Item>();
     public List<Addon> addonList = new List<Addon>();
@@ -23,6 +23,7 @@ public class InventoryManager : MonoBehaviour {
 
         SetPool();
 
+        ItemInstantiate("Dagger", player.transform.position, 0f);
         StartCoroutine(TestCoroutine());
     }
     /// <summary>
@@ -85,8 +86,6 @@ public class InventoryManager : MonoBehaviour {
     IEnumerator TestCoroutine()
     {
         yield return null;
-        yield return new WaitForSeconds(2.5f);
-        ItemInstantiate("Dagger", player.transform.position, 0f);
 
     }
 
@@ -139,6 +138,7 @@ public class InventoryManager : MonoBehaviour {
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init((Item)System.Activator.CreateInstance(System.Type.GetType(str)), pos);
+        tmpItem.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         PopoutGenerator(tmpItem, popoutStrength);
     }
     /// <summary>
@@ -150,6 +150,7 @@ public class InventoryManager : MonoBehaviour {
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init(item, pos);
+        tmpItem.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         PopoutGenerator(tmpItem, popoutStrength);
     }
 
@@ -175,6 +176,7 @@ public class InventoryManager : MonoBehaviour {
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init((Addon)System.Activator.CreateInstance(System.Type.GetType(str)), pos);
+        tmpItem.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         PopoutGenerator(tmpItem, popoutStrength);
     }
     /// <summary>
@@ -186,6 +188,7 @@ public class InventoryManager : MonoBehaviour {
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init(addon, pos);
+        tmpItem.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         PopoutGenerator(tmpItem, popoutStrength);
     }
 
@@ -223,6 +226,8 @@ public class InventoryManager : MonoBehaviour {
 
         itemList.Add(item);
         ui.SetOnPosition(itemList, addonList);
+
+        Debug.Log(itemList[0].combo[0] + " " + itemList[0].combo[1]);
         return true;
     }
     /// <summary>

@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour {
     public float trackSpeed;
     
     private float playerMaxHealth; //다른 스크립트에 있는 플레이어 최대체력 가져와야함
-    private float currHealth;
+    public float currHealth;
 
     // manager
     private InventoryManager inventoryManager;
@@ -64,7 +64,7 @@ public class Enemy : MonoBehaviour {
     private void Awake()
     {
         enemyManager = EnemyManager.Instance;
-        inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        inventoryManager = InventoryManager.Instance;
         lifeStoneManager = GameObject.Find("UI Canvas").transform.GetChild(0).GetComponent<LifeStoneManager>();
         animator = GetComponent<Animator>();
 
@@ -185,6 +185,8 @@ public class Enemy : MonoBehaviour {
     // Dead
     public void DeadEvent()
     {
+        if(transform.parent.GetComponentInChildren<HPBar>())
+            transform.parent.GetComponentInChildren<HPBar>().Inactivate();
         transform.parent.gameObject.SetActive(false);
         enemyManager.EnemyDeadCount++; // 다른 enemy로 인해 소환되는 enemy가 추가될 경우 여기를 건드려야 함
 

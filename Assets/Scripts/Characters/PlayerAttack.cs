@@ -6,6 +6,7 @@ public class PlayerAttack : MonoBehaviour {
     public bool[] attack = new bool[3];
     public bool cancel;
     public bool playingSkill;
+    private bool comboEndDelay = true;
     public float comboTime;
     public Text time, combo;
     public string comboArray;
@@ -13,7 +14,7 @@ public class PlayerAttack : MonoBehaviour {
     public Animator anim;
     public AnimatorOverrideController aoc;
     public AnimationClip[] normalAttack = new AnimationClip[3];
-    public InventoryManager inventoryManager;
+    InventoryManager inventoryManager;
     public LifeStoneManager lifeStoneManager;
 
     float comboEndTime;
@@ -23,6 +24,7 @@ public class PlayerAttack : MonoBehaviour {
     
     void Awake ()
     {
+        inventoryManager = InventoryManager.Instance;
         playerController = GetComponent<PlayerController>();
         anim = GetComponent<Animator>();
         aoc = new AnimatorOverrideController(anim.runtimeAnimatorController);
@@ -41,11 +43,13 @@ public class PlayerAttack : MonoBehaviour {
             comboTimeOn = false;
         }
 
-        if (!playingSkill)
+        if (!playingSkill && comboEndDelay)
         {
             for (int i = 0; i < 3; i++)
                 if (attack[i])
                 {
+                    if (playerController.playerState == PlayerState.GoingUp || playerController.playerState == PlayerState.GoingDown)
+                        playerController.airAttack = false;
                     comboArray += (char)('A' + i);
                     CheckCombo();
                     SetComboText();
@@ -88,13 +92,19 @@ public class PlayerAttack : MonoBehaviour {
             time.text = "";
         }
     }
-
+    IEnumerator ComboEndDelay()
+    {
+        comboEndDelay = false;
+        yield return new WaitForSeconds(0.3f);
+        comboEndDelay = true;
+    }
     public void SkillEnd()
     {
         if (CheckLongerCombo()) StartCoroutine(SkillEndCoroutine());
         else
         {
             comboArray = "";
+            StartCoroutine(ComboEndDelay());
             StartCoroutine(ComboTextReset());
         }
     }
@@ -114,6 +124,7 @@ public class PlayerAttack : MonoBehaviour {
         if (!playingSkill)
         {
             comboArray = "";
+            StartCoroutine(ComboEndDelay());
             SetComboText();
         }
         comboTimeOn = false;
@@ -122,28 +133,33 @@ public class PlayerAttack : MonoBehaviour {
     void CheckCombo()
     {
         List<Item> itemList = inventoryManager.itemList;
-        foreach(Item item in itemList)
+
+        
+        foreach (Item item in itemList)
         {
             for(int i=0; i< item.skillNum; i++)
             {
                 if(item.combo[i].Equals(comboArray))
                 {
-                    playerController.playerState = PlayerState.Attack;
                     aoc["PlayerAttackAnim"] = item.animation[i];
                     anim.SetTrigger("attack");
                     item.ComboAction(i);
                     playingSkill = true;
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x,-3f,3f), 0);
+                    if (playerController.playerState != PlayerState.GoingUp && playerController.playerState != PlayerState.GoingDown)
+                        GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x,-0.5f,0.5f), GetComponent<Rigidbody2D>().velocity.y);
+                    playerController.playerState = PlayerState.Attack;
+                    
                     return;
                 }
             }
         }
-
-        playerController.playerState = PlayerState.Attack;
+        
         aoc["PlayerAttackAnim"] = normalAttack[comboArray[comboArray.Length - 1] - 'A'];
         anim.SetTrigger("attack");
         playingSkill = true;
-        GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x, -3f, 3f), 0);
+        if (playerController.playerState != PlayerState.GoingUp && playerController.playerState != PlayerState.GoingDown)
+            GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x, -0.5f, 0.5f),GetComponent<Rigidbody2D>().velocity.y);
+        playerController.playerState = PlayerState.Attack;
         if (!CheckLongerCombo()) comboArray = comboArray[comboArray.Length - 1] + "";
     }
 

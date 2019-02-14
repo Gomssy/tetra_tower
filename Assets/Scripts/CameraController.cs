@@ -76,7 +76,7 @@ public class CameraController : MonoBehaviour {
             if (gameState == GameState.Ingame)
             {
                 GameManager.gameState = GameState.Ingame;
-                StartCoroutine(mapManager.RoomEnter(MapManager.currentRoom));
+                StartCoroutine(mapManager.RoomFadeIn(MapManager.currentRoom));
                 grid.transform.position = new Vector3(0, 0, 0);
                 sizeDestination = inGameCameraSize;
                 while (GetComponent<Camera>().orthographicSize > sizeDestination + 0.01)
@@ -97,7 +97,7 @@ public class CameraController : MonoBehaviour {
                     MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
                         GameObject.Find("MapManager").GetComponent<MapManager>().portalSelected;
                 }
-                StartCoroutine(mapManager.RoomExit(MapManager.currentRoom));
+                StartCoroutine(mapManager.RoomFadeOut(MapManager.currentRoom));
                 grid.transform.position = new Vector3(0, 0, 2);
                 sizeDestination = tetrisCameraSize;
                 while (GetComponent<Camera>().orthographicSize < sizeDestination - 2)

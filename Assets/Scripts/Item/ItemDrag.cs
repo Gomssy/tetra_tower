@@ -12,7 +12,7 @@ public class ItemDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     void Start()
     {
         ui = GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>();
-        manager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        manager = InventoryManager.Instance;
         discardBin = ui.gameObject.transform.Find("DiscardBin");
     }
     public void OnBeginDrag(PointerEventData eventData)

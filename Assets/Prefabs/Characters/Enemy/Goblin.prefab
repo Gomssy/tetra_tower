@@ -29,6 +29,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1490498356237328
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4135647115308928}
+  - component: {fileID: 114851997656688694}
+  m_Layer: 0
+  m_Name: HPBar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1636491341446076
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,6 +111,19 @@ Transform:
   m_Father: {fileID: 4639192263818050}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4135647115308928
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1490498356237328}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4639192263818050}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4140258981397796
 Transform:
   m_ObjectHideFlags: 1
@@ -132,6 +161,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4015301101001556}
+  - {fileID: 4135647115308928}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -267,6 +297,7 @@ MonoBehaviour:
   attackRange: 1
   patrolSpeed: 1.5
   trackSpeed: 2.5
+  currHealth: 0
 --- !u!114 &114173716467154830
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -291,6 +322,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 4
+--- !u!114 &114851997656688694
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1490498356237328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493db5529c03fce44a56a2211507667e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 0.4
+  height: 0.1
+  yOffset: 1.3
+  barPrefab: {fileID: 1489501648010076, guid: bd708b07601179842bbd803b54afda40, type: 2}
+  bor: {fileID: 21300000, guid: f978754916ff69444aa0bd613b44f2c5, type: 3}
+  red: {fileID: 21300000, guid: 014c5204ddcb6e54e86aadaa34227552, type: 3}
 --- !u!212 &212540714587432698
 SpriteRenderer:
   m_ObjectHideFlags: 1

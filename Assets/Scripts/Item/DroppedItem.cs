@@ -9,7 +9,7 @@ public class DroppedItem : MonoBehaviour, IPlayerInteraction
     public Item item;
     public Addon addon;
     public GameObject highlight;
-    float itemSizeMultiplier = 0.007f;
+    public float itemSizeMultiplier;
     Rigidbody2D rb2D;
     BoxCollider2D bc2D;
     SpriteRenderer sprt;
@@ -34,7 +34,7 @@ public class DroppedItem : MonoBehaviour, IPlayerInteraction
     }
     public void Init(Addon _addon, Vector3 pos)
     {
-        inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        inventoryManager = InventoryManager.Instance;
         addon = _addon;
         itemAddon = true;
         rb2D = GetComponent<Rigidbody2D>();

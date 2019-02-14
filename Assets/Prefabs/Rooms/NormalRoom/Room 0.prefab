@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4484147109571248}
   - component: {fileID: 114608209787691684}
+  - component: {fileID: 114558227159052106}
   - component: {fileID: 8195094281012881762}
   - component: {fileID: 3664157343652781690}
   - component: {fileID: 50870299963199412}
@@ -195,6 +196,20 @@ CompositeCollider2D:
       - {x: 0, y: 0}
       - {x: 11, y: 0}
   m_VertexDistance: 0.0005
+--- !u!114 &114558227159052106
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1635552251844640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf6d749e71686be4c97f04d7b5bc5385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftDoorInfo: 000000
+  rightDoorInfo: 000000
+  concept: 00000000
 --- !u!114 &114608209787691684
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -206,7 +221,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2efb10f83deccf8428c34c30aa2032d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorInfo: 0
+  leftDoorInfo: 000000
+  rightDoorInfo: 000000
+  concept: 00000000
 --- !u!19719996 &2113883504908507434
 TilemapCollider2D:
   m_ObjectHideFlags: 1
