@@ -10,10 +10,10 @@ public class Enemy : MonoBehaviour {
     // debuff
     float[] immunity_time = new float[5] { 0.0f, 3.0f, 6.0f, 6.0f, 6.0f };//면역 시간
     bool[] immunity = new bool[] { false, }; //현재 에너미가 디버프 상태에 대해서 면역인지를 체크하는 변수
-    struct EnemyDebuffed
+    struct EnemyDebuff
     {
         public EnemyDebuffCase Case;
-        public float debuffTime;
+        public float Duration;
     }
 
     // stat
@@ -41,10 +41,11 @@ public class Enemy : MonoBehaviour {
     public float PlayerDistance { get; private set; }
     private readonly float knockbackCritPoint = 0.25f;
 
+    public int MoveDir { get; private set; }
     public bool[] WallTest { get; private set; }
     public bool[] CliffTest { get; private set; }
 
-    /*
+    /* Inspector에서 WallTest와 CliffTest를 확인해보고 싶으면 주석을 풀으시오
     public bool[] WallTest { get { return wallTest; } private set { wallTest = value; } } // {left, right}
     public bool[] CliffTest { get { return cliffTest; } private set { cliffTest = value; } } // {left, right}
 
@@ -54,13 +55,11 @@ public class Enemy : MonoBehaviour {
     private bool[] cliffTest;
     */
 
-    public int MoveDir { get; private set; }
-
     // drop item
     private int[] dropTable;
 
-    // method
-    // Standard Method
+// method
+    // Standard method
     private void Awake()
     {
         enemyManager = EnemyManager.Instance;
@@ -88,7 +87,9 @@ public class Enemy : MonoBehaviour {
         CheckCliff(); CheckWall();
     }
 
-    // check whether enemy is near to cliff
+    // Movement & Physics
+
+    // - Check whether enemy is near to cliff
     private void CheckCliff()
     {
         Vector2 velocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
@@ -105,7 +106,8 @@ public class Enemy : MonoBehaviour {
             CliffTest[(Dir + 1) / 2] = (hit.collider == null);
         }
     }
-    // check whether enemy is touching wall
+
+    // - Check whether enemy is touching wall
     private void CheckWall()
     {
         Vector2 colliderSize = transform.parent.GetComponent<BoxCollider2D>().size;
@@ -122,33 +124,7 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    // hit by player or debuff
-    public void GetDamaged(PlayerAttackInfo attack)
-    { 
-        currHealth -= attack.damage;
-        if (currHealth <= 0)
-        {
-            Invisible = true;
-            animator.SetTrigger("DeadTrigger");
-            return;
-        }
-        float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
-        float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
-
-        if (DuringKnockback)
-        {
-            StopCoroutine("Knockback");
-        }
-        StartCoroutine(Knockback(knockbackDist, knockbackTime));
-
-        if (knockbackDist >= knockbackCritPoint)
-        {
-            animator.SetFloat("knockbackTime", knockbackTime);
-            animator.SetTrigger("DamagedTrigger");
-        }
-    }
-
-    // change direction, and speed of rigidbody of enemy
+    // - Change direction, and speed of rigidbody of enemy
     public void ChangeVelocityX(float val)
     {
         if (!DuringKnockback)
@@ -181,13 +157,145 @@ public class Enemy : MonoBehaviour {
         transform.parent.eulerAngles = ((NumeratedDir)dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
     }
 
+    // - Knockback coroutine
+    IEnumerator Knockback(float knockbackDist, float knockbackTime)
+    {
+        DuringKnockback = true;
+        int knockbackDir = (enemyManager.Player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
+        float knockbackVelocity = knockbackDir * knockbackDist / knockbackTime;
+        SudoChangeDir(knockbackDir * -1);
+        SudoChangeVelocityX(knockbackVelocity);
+
+        for (float timer = 0; timer <= knockbackTime; timer += Time.deltaTime)
+        {
+            if (CliffTest[(knockbackDir + 1) / 2])
+            {
+                SudoChangeVelocityX(0.0f);
+                yield return new WaitForSeconds(knockbackTime - timer);
+                break;
+            }
+            yield return new WaitForFixedUpdate();
+        }
+        DuringKnockback = false;
+        ChangeVelocityX(0.0f);
+    }
+
+    // When damaged
+
+    // - Calculate value & Arrange information
+    public void GetDamaged(PlayerAttackInfo attack)
+    {
+        currHealth -= attack.damage;
+        if (currHealth <= 0)
+        {
+            Invisible = true;
+            animator.SetTrigger("DeadTrigger");
+            return;
+        }
+
+        float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
+        float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
+
+        if (DuringKnockback)
+        {
+            StopCoroutine("Knockback");
+        }
+        StartCoroutine(Knockback(knockbackDist, knockbackTime));
+
+        if (knockbackDist >= knockbackCritPoint)
+        {
+            animator.SetFloat("knockbackTime", knockbackTime);
+            animator.SetTrigger("DamagedTrigger");
+        }
+    }
+
+    public void GetDamaged(float damage)
+    {
+        currHealth -= damage;
+        if (currHealth <= 0)
+        {
+            Invisible = true;
+            animator.SetTrigger("DeadTrigger");
+            return;
+        }
+    }
+
+    // - Apply debuff
+    private void DebuffApply(EnemyDebuff debuff)
+    {
+        IEnumerator debuffFunc = null;
+        switch (debuff.Case)
+        {
+            case EnemyDebuffCase.fire:
+                debuffFunc = OnFire(debuff.Duration);
+                break;
+            case EnemyDebuffCase.ice:
+                debuffFunc = OnIce(debuff.Duration);
+                break;
+            case EnemyDebuffCase.stun:
+                debuffFunc = OnStun(debuff.Duration);
+                break;
+            case EnemyDebuffCase.blind:
+                debuffFunc = OnBlind(debuff.Duration);
+                break;
+            case EnemyDebuffCase.charm:
+                debuffFunc = OnCharm(debuff.Duration);
+                break;
+            default:
+                break;
+        }
+        StartCoroutine(debuffFunc);
+    }
+
+    // - Debuff coroutine
+    IEnumerator OnFire(float duration)
+    {
+        int dotCount = 0;
+
+        while(true)
+        {
+            dotCount += 1;
+            if (duration < dotCount) { break; }
+            yield return new WaitForSeconds(1.0f);
+            GetDamaged(lifeStoneManager.lifeStoneRowNum * 3);
+        }
+    }
+
+    IEnumerator OnIce(float duration)
+    {
+        yield return null;
+    }
+
+    IEnumerator OnStun(float duration)
+    {
+        yield return null;
+    }
+
+    IEnumerator OnBlind(float duration)
+    {
+        yield return null;
+    }
+
+    IEnumerator OnCharm(float duration)
+    {
+        yield return null;
+    }
+
+    IEnumerator ImmunityTimer(EnemyDebuff sCase)
+	{
+		yield return new WaitForSeconds(immunity_time[(int)sCase.Case]);
+		immunity[(int)sCase.Case] = false;
+	}
+
     // Animation Event
-    // Dead
+
+    // - When dead
     public void DeadEvent()
     {
-        if(transform.parent.GetComponentInChildren<HPBar>())
+        if (transform.parent.GetComponentInChildren<HPBar>())
             transform.parent.GetComponentInChildren<HPBar>().Inactivate();
         transform.parent.gameObject.SetActive(false);
+        StopAllCoroutines();
         enemyManager.EnemyDeadCount++; // 다른 enemy로 인해 소환되는 enemy가 추가될 경우 여기를 건드려야 함
 
         // Drop 아이템 결정. 인덱스 별 아이템은 맨 밑에 서술
@@ -231,103 +339,7 @@ public class Enemy : MonoBehaviour {
         Invisible = false;
         return;
     }
-
-    // Coroutine
-    // Knockback
-    IEnumerator Knockback(float knockbackDist, float knockbackTime)
-    {
-        DuringKnockback = true;
-        int knockbackDir = (enemyManager.Player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
-        float knockbackVelocity = knockbackDir * knockbackDist / knockbackTime;
-        SudoChangeDir(knockbackDir * -1);
-        SudoChangeVelocityX(knockbackVelocity);
-        
-        for (float timer = 0; timer <= knockbackTime; timer += Time.deltaTime)
-        {
-            if (CliffTest[(knockbackDir + 1) / 2])
-            {
-                SudoChangeVelocityX(0.0f);
-                yield return new WaitForSeconds(knockbackTime - timer);
-                break;
-            }
-            yield return new WaitForFixedUpdate();
-        }
-        DuringKnockback = false;
-        ChangeVelocityX(0.0f);
-    }
-
-    // Debuff
-    IEnumerator DebuffCase(EnemyDebuffed sCase)
-    {
-
-        if (sCase.Case == EnemyDebuffCase.fire)
-        {
-            StartCoroutine(OnFire(sCase));
-        }
-
-        else if (sCase.Case == EnemyDebuffCase.ice && !immunity[(int)EnemyDebuffCase.ice])
-        {
-            //Enemy 정지하는 코드 필요
-            immunity[(int)EnemyDebuffCase.ice] = true;
-            yield return StartCoroutine(DebuffDoing(sCase));
-        }
-
-        else if (sCase.Case == EnemyDebuffCase.stun && !immunity[(int)EnemyDebuffCase.stun])
-        {
-            //Enemy 정지하는 코드 필요
-            immunity[(int)EnemyDebuffCase.stun] = true;
-            yield return StartCoroutine(DebuffDoing(sCase));
-        }
-
-        else if (sCase.Case == EnemyDebuffCase.blind && !immunity[(int)EnemyDebuffCase.blind])
-        {
-            //Enemy의 공격이 적중하지 않는 코드 필요 
-            immunity[(int)EnemyDebuffCase.stun] = true;
-            yield return StartCoroutine(DebuffDoing(sCase));
-        }
-
-        else if (sCase.Case == EnemyDebuffCase.charm && !immunity[(int)EnemyDebuffCase.charm])
-        {
-            //Enemy 공격이 플레이어 회복하는 코드 필요
-            immunity[(int)EnemyDebuffCase.stun] = true;
-            yield return StartCoroutine(DebuffDoing(sCase));
-        }
-
-    }
-
-    IEnumerator OnFire(EnemyDebuffed sCase)
-    {
-        for (int i = 0; i < sCase.debuffTime / 1; i++)
-        {
-            yield return new WaitForSeconds(1.0f);
-            currHealth = currHealth - playerMaxHealth / 10;
-        }
-    }
-
-    IEnumerator DebuffDoing(EnemyDebuffed sCase)
-    {
-        yield return new WaitForSeconds(sCase.debuffTime);
-
-        yield return StartCoroutine(DebuffEnd(sCase));
-
-    }
-
-    IEnumerator DebuffEnd(EnemyDebuffed sCase)
-    {
-        //다시 동작하는 코드 필요
-
-        yield return StartCoroutine(ImmunityTimer(sCase));
-    }
-
-	IEnumerator ImmunityTimer(EnemyDebuffed sCase)
-	{
-		yield return new WaitForSeconds(immunity_time[(int)sCase.Case]);
-		immunity[(int)sCase.Case] = false;
-	}
 }
-
-//얼음일때 깨어나기
-//공격이 적중했을 때 매혹에서 깨어나기
 
 /* Item Drop Index
  * 0 - None
