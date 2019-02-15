@@ -22,5 +22,6 @@ public class Dagger : Item
         sizeInventory = new Vector2(127.5f, 125);
         itemInfo = "옛날 옛적 호랑이 담배 피던 시절부터 존재하던 단검이다.";
         comboName = new string[3] { "베기", "찌르기", "" };
+        itemQuality = "습작";
     }
 }

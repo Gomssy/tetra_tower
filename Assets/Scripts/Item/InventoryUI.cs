@@ -103,6 +103,8 @@ public class InventoryUI : MonoBehaviour {
             frameObj.transform.Find("ItemSprite").Find("Sprite").gameObject.GetComponent<Image>().sprite = itemList[selectedItem].sprite;
             frameObj.transform.Find("ItemSprite").Find("Sprite").gameObject.GetComponent<RectTransform>().sizeDelta = itemList[selectedItem].sizeInventory;
             frameObj.transform.Find("ItemDescription").gameObject.GetComponent<Text>().text = itemList[selectedItem].itemInfo;
+            frameObj.transform.Find("ItemDescription").Find("ItemQuality").gameObject.GetComponent<Text>().text = itemList[selectedItem].itemQuality;
+            frameObj.transform.Find("ItemDescription").Find("ItemName").gameObject.GetComponent<Text>().text = itemList[selectedItem].name;
             for (int i = 0; i < 3; i++)
             {
                 if (i < itemList[selectedItem].skillNum)
@@ -145,6 +147,11 @@ public class InventoryUI : MonoBehaviour {
                     infoAddons[i].transform.Find("Sprite").gameObject.GetComponent<Image>().sprite = itemList[selectedItem].addons[i].sprite;
                     infoAddons[i].transform.Find("Sprite").gameObject.GetComponent<RectTransform>().sizeDelta = itemList[selectedItem].addons[i].sizeInventory;
                     infoAddons[i].SetActive(true);
+                    infoAddonsFrame[i].transform.Find("Quality").GetComponent<Text>().text = itemList[selectedItem].addons[i].addonQuality;
+                    infoAddonsFrame[i].transform.Find("Name").GetComponent<Text>().text = itemList[selectedItem].addons[i].name;
+                    infoAddonsFrame[i].transform.Find("Description").GetComponent<Text>().text = itemList[selectedItem].addons[i].addonDescription;
+
+
                 }
                 else
                 {

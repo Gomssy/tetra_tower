@@ -16,6 +16,7 @@ public abstract class Item {
     public Vector2 sizeInventory;
     public string itemInfo;
     public string[] comboName = new string[3];
+    public string itemQuality;
 
     public bool ComboAction(string currentCombo)
     {
@@ -57,6 +58,7 @@ public abstract class Item {
         sizeInventory = new Vector2(0, 0);
         itemInfo = null;
         comboName = new string[3] { "", "", "" };
+        itemQuality = null;
 
     }
     protected virtual void PlaySkill1()

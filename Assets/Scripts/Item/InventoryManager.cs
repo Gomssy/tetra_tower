@@ -25,6 +25,7 @@ public class InventoryManager : MonoBehaviour {
 
         ItemInstantiate("Dagger", player.transform.position, 0f);
         AddonInstantiate("ParchmentPiece", player.transform.position, 0f);
+        ItemInstantiate("Bow", player.transform.position, 0f);
 
         StartCoroutine(TestCoroutine());
     }

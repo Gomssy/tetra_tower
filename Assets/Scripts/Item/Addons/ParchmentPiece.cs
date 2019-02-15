@@ -15,5 +15,7 @@ public class ParchmentPiece : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         sizeInventory = new Vector2(80, 80);
+        addonQuality = "습작";
+        addonDescription = "쓸모없는 애드온";
     }
 }

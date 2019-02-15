@@ -10,6 +10,8 @@ public abstract class Addon {
     public Sprite sprite;
     public Sprite highlight;
     public Vector2 sizeInventory;
+    public string addonDescription;
+    public string addonQuality;
 
     public Addon()
     {
@@ -23,5 +25,7 @@ public abstract class Addon {
         sprite = null;
         highlight = null;
         sizeInventory = new Vector2(0, 0);
+        addonDescription = null;
+        addonQuality = null;
     }
 }
