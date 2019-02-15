@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TileManager : MonoBehaviour
-{
+public class TileManager : MonoBehaviour {
     /// <summary>
     /// Array of all wall tiles.
     /// </summary>
@@ -14,13 +13,13 @@ public class TileManager : MonoBehaviour
     /// </summary>
     public TileBase[] allPlatformTiles;
     /// <summary>
-    /// Array of all spike tiles.
-    /// </summary>
-    public TileBase[] allSpikeTiles;
-    /// <summary>
     /// Array of all rope tiles.
     /// </summary>
     public TileBase[] allRopeTiles;
+    /// <summary>
+    /// Array of all spike tiles.
+    /// </summary>
+    public TileBase[] allSpikeTiles;
     /// <summary>
     /// Dictionary for distributing all wall tiles.
     /// Each dimensions for stage and concept.
@@ -50,33 +49,19 @@ public class TileManager : MonoBehaviour
     {
         Tilemap wallTileMap = roomInGame.transform.Find("wall").GetComponent<Tilemap>();
         Tilemap platformTileMap = roomInGame.transform.Find("platform").GetComponent<Tilemap>();
-        Tilemap spikeTileMap = roomInGame.transform.Find("spike").GetComponent<Tilemap>();
         Tilemap ropeTileMap = roomInGame.transform.Find("rope").GetComponent<Tilemap>();
+        Tilemap spikeTileMap = roomInGame.transform.Find("spike").GetComponent<Tilemap>();
         for (int x = 0; x < 24; x++)
             for(int y = 0; y < 24; y++)
             {
                 if (wallTileMap.GetTile(new Vector3Int(x, y, 0)))
-                {
-                    roomInGame.tileInfo[x, y] = (int)TileType.Wall;
-                    continue;
-                }
-                else if (platformTileMap.GetTile(new Vector3Int(x, y, 0)))
-                {
-                    roomInGame.tileInfo[x, y] = (int)TileType.Platform;
-                    continue;
-                }
-                else if (spikeTileMap.GetTile(new Vector3Int(x, y, 0)))
-                {
-                    roomInGame.tileInfo[x, y] = (int)TileType.Spike;
-                    continue;
-                }
-                else if (ropeTileMap.GetTile(new Vector3Int(x, y, 0)))
-                {
-                    roomInGame.tileInfo[x, y] = (int)TileType.Rope;
-                    continue;
-                }
-                else
-                    roomInGame.tileInfo[x, y] = (int)TileType.None;
+                    roomInGame.wallTileInfo[x, y] = true;
+                if (platformTileMap.GetTile(new Vector3Int(x, y, 0)))
+                    roomInGame.platformTileInfo[x, y] = true;
+                if (ropeTileMap.GetTile(new Vector3Int(x, y, 0)))
+                    roomInGame.ropeTileInfo[x, y] = true;
+                if (spikeTileMap.GetTile(new Vector3Int(x, y, 0)))
+                    roomInGame.spikeTileInfo[x, y] = true;
             }
     }
     /// <summary>
@@ -91,11 +76,11 @@ public class TileManager : MonoBehaviour
         int verticalTile = 0, horizontalTile = 0;
         if (!IsTileInRoom(originPos.x + checkPos.x))
             horizontalTile = 2;
-        else if (roomInGame.tileInfo[originPos.x + checkPos.x, originPos.y] == (int)TileType.Wall)
+        else if (roomInGame.wallTileInfo[originPos.x + checkPos.x, originPos.y])
             horizontalTile = 1;
         if (!IsTileInRoom(originPos.y + checkPos.y))
             verticalTile = 2;
-        else if (roomInGame.tileInfo[originPos.x, originPos.y + checkPos.y] == (int)TileType.Wall)
+        else if (roomInGame.wallTileInfo[originPos.x, originPos.y + checkPos.y])
             verticalTile = 1;
         if ((verticalTile == 2 && horizontalTile == 2) || (verticalTile == 0 && horizontalTile == 2) || (verticalTile == 2 && horizontalTile == 0))
             return '3';
@@ -105,7 +90,7 @@ public class TileManager : MonoBehaviour
             return '2';
         else if (verticalTile == 1 && horizontalTile == 1)
         {
-            if (roomInGame.tileInfo[originPos.x + checkPos.x, originPos.y + checkPos.y] == (int)TileType.Wall)
+            if (roomInGame.wallTileInfo[originPos.x + checkPos.x, originPos.y + checkPos.y])
                 return 'o';
             else
                 return 's';
@@ -120,9 +105,9 @@ public class TileManager : MonoBehaviour
     public char CheckPlatformTile(RoomInGame roomInGame, Vector2Int originPos)
     {
         bool left = false, right = false;
-        if(roomInGame.tileInfo[originPos.x + 1, originPos.y] == (int)TileType.Platform)
+        if(roomInGame.platformTileInfo[originPos.x + 1, originPos.y])
             right = true;
-        if (roomInGame.tileInfo[originPos.x - 1, originPos.y] == (int)TileType.Platform)
+        if (roomInGame.platformTileInfo[originPos.x - 1, originPos.y])
             left = true;
         if (left && right)
             return 'c';
@@ -136,9 +121,9 @@ public class TileManager : MonoBehaviour
     public char CheckRopeTile(RoomInGame roomInGame, Vector2Int originPos)
     {
         bool up = false, down = false;
-        if (roomInGame.tileInfo[originPos.x, originPos.y + 1] == (int)TileType.Platform)
+        if (roomInGame.ropeTileInfo[originPos.x, originPos.y + 1])
             up = true;
-        if (roomInGame.tileInfo[originPos.x, originPos.y - 1] == (int)TileType.Platform)
+        if (roomInGame.ropeTileInfo[originPos.x, originPos.y - 1])
             down = true;
         if (up && down)
             return 'c';
@@ -149,11 +134,11 @@ public class TileManager : MonoBehaviour
     }
     public char CheckSpikeTile(RoomInGame roomInGame, Vector2Int originPos)
     {
-        if (roomInGame.tileInfo[originPos.x + 1, originPos.y] == (int)TileType.Wall)
-            return 'r';
-        else if (roomInGame.tileInfo[originPos.x - 1, originPos.y] == (int)TileType.Wall)
+        if (roomInGame.wallTileInfo[originPos.x + 1, originPos.y])
             return 'l';
-        else if (roomInGame.tileInfo[originPos.x, originPos.y + 1] == (int)TileType.Wall)
+        else if (roomInGame.wallTileInfo[originPos.x - 1, originPos.y])
+            return 'r';
+        else if (roomInGame.wallTileInfo[originPos.x, originPos.y + 1])
             return 'd';
         else
             return 'u';
@@ -181,8 +166,8 @@ public class TileManager : MonoBehaviour
         RoomInGame roomInGame = room.roomInGame;
         Tilemap wallTileMap = roomInGame.transform.Find("wall").GetComponent<Tilemap>();
         Tilemap platformTileMap = roomInGame.transform.Find("platform").GetComponent<Tilemap>();
-        Tilemap spikeTileMap = roomInGame.transform.Find("spike").GetComponent<Tilemap>();
         Tilemap ropeTileMap = roomInGame.transform.Find("rope").GetComponent<Tilemap>();
+        Tilemap spikeTileMap = roomInGame.transform.Find("spike").GetComponent<Tilemap>();
         CheckAllTiles(roomInGame);
         for(int y = 0; y < 24; y++)
         {
@@ -190,7 +175,7 @@ public class TileManager : MonoBehaviour
                 yield return null;*/
             for(int x = 0; x < 24; x++)
             {
-                if (roomInGame.tileInfo[x, y] == (int)TileType.Wall)
+                if (roomInGame.wallTileInfo[x, y])
                 {
                     string tileName = CheckWallQuarterTile(roomInGame, new Vector2Int(x, y), new Vector2Int(-1, 1)).ToString() +
                     CheckWallQuarterTile(roomInGame, new Vector2Int(x, y), new Vector2Int(1, 1)).ToString() +
@@ -199,21 +184,21 @@ public class TileManager : MonoBehaviour
                     if(wallTilesDistributed[stage, concept].ContainsKey(tileName))
                         wallTileMap.SetTile(new Vector3Int(x, y, 0), wallTilesDistributed[stage, concept][tileName]);
                 }
-                else if (roomInGame.tileInfo[x, y] == (int)TileType.Platform && y != 0 && y != 23)
+                if (roomInGame.platformTileInfo[x, y] && y != 0 && y != 23)
                 {
                     string tileName = CheckPlatformTile(roomInGame, new Vector2Int(x, y)).ToString();
                     if (platformTilesDistributed[stage, concept].ContainsKey(tileName))
                         platformTileMap.SetTile(new Vector3Int(x, y, 0), platformTilesDistributed[stage, concept][tileName]);
                 }
-                else if (roomInGame.tileInfo[x, y] == (int)TileType.Rope)
+                if (roomInGame.ropeTileInfo[x, y])
                 {
                     string tileName = CheckRopeTile(roomInGame, new Vector2Int(x, y)).ToString();
                     if (ropeTilesDistributed[stage, concept].ContainsKey(tileName))
                         ropeTileMap.SetTile(new Vector3Int(x, y, 0), ropeTilesDistributed[stage, concept][tileName]);
                 }
-                else if (roomInGame.tileInfo[x, y] == (int)TileType.Spike)
+                if (roomInGame.spikeTileInfo[x, y])
                 {
-                    string tileName = CheckRopeTile(roomInGame, new Vector2Int(x, y)).ToString();
+                    string tileName = CheckSpikeTile(roomInGame, new Vector2Int(x, y)).ToString();
                     if (spikeTilesDistributed[stage, concept].ContainsKey(tileName))
                         spikeTileMap.SetTile(new Vector3Int(x, y, 0), spikeTilesDistributed[stage, concept][tileName]);
                 }

@@ -13,7 +13,10 @@ public class RoomInGame : MonoBehaviour {
     /// Information for stage.
     /// </summary>
     public bool[] concept = new bool[4];
-    public int[,] tileInfo = new int[24, 24];
+    public bool[,] wallTileInfo = new bool[24, 24];
+    public bool[,] platformTileInfo = new bool[24, 24];
+    public bool[,] ropeTileInfo = new bool[24, 24];
+    public bool[,] spikeTileInfo = new bool[24, 24];
 
     /*
      * functions

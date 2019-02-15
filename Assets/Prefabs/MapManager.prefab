@@ -56,7 +56,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   initialFallSpeed: -0.1
   gravity: 0.98
-  timeToFallTetrimino: 30
+  timeToFallTetrimino: 100
   tetriminoWaitedTime: 0
   tetriminoCreatedTime: 0
   collapseTime: 10
@@ -133,7 +133,6 @@ MonoBehaviour:
   - {fileID: 114384035641513528, guid: a2dadbc92c7cc7e449233fae6430dee7, type: 2}
   - {fileID: 114704192105535744, guid: a121f45347e4c3d4faf83b4e681c84f0, type: 2}
   - {fileID: 114792926073732986, guid: 0443c2e9410bbe545bda40dc30fa6a63, type: 2}
-  - {fileID: 114155825416261646, guid: 7ecb75df9a2e95647b4a221c95b9f4f0, type: 2}
   - {fileID: 114844722971494232, guid: 4643eac2d148bd146be89238dcdfa419, type: 2}
   specialRoomList2:
   - {fileID: 114330503780891850, guid: 7da800d1a4355fd4aa02e3518cd9e1fb, type: 2}
@@ -145,7 +144,6 @@ MonoBehaviour:
   - {fileID: 114384035641513528, guid: a2dadbc92c7cc7e449233fae6430dee7, type: 2}
   - {fileID: 114704192105535744, guid: a121f45347e4c3d4faf83b4e681c84f0, type: 2}
   - {fileID: 114792926073732986, guid: 0443c2e9410bbe545bda40dc30fa6a63, type: 2}
-  - {fileID: 114155825416261646, guid: 7ecb75df9a2e95647b4a221c95b9f4f0, type: 2}
   - {fileID: 114844722971494232, guid: 4643eac2d148bd146be89238dcdfa419, type: 2}
   roomSurfaceSprite1:
   - {fileID: 21300000, guid: 5e6d29c00a95b8140a33c81d93aac0b2, type: 3}
@@ -373,6 +371,26 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6c9bb38cfe5980245989e834385f7b2c, type: 2}
   - {fileID: 11400000, guid: 16924b8ecf8bd1940902343766fc4cdc, type: 2}
   - {fileID: 11400000, guid: b556ab3a4d3d2db4b89081d94cca006c, type: 2}
-  allPlatformTiles: []
-  allSpikeTiles: []
-  allRopeTiles: []
+  allPlatformTiles:
+  - {fileID: 11400000, guid: c25a20f570a6e474bb000881122106f7, type: 2}
+  - {fileID: 11400000, guid: 60035ce64a779ae4a9eeaaafe33f87e1, type: 2}
+  - {fileID: 11400000, guid: 9e0a3a715e976bb489ec8bedeeb2ab32, type: 2}
+  - {fileID: 11400000, guid: 3d63c558a17627b4c8a6eff233ae9aff, type: 2}
+  - {fileID: 11400000, guid: 0aa25d9458a285146be0f80438fbcac8, type: 2}
+  - {fileID: 11400000, guid: 8e289c63850dcb34a94a8cc69a245ed7, type: 2}
+  allRopeTiles:
+  - {fileID: 11400000, guid: 7fcb9c110fd1807479e950e97e3a09e4, type: 2}
+  - {fileID: 11400000, guid: 9f29d7f8294254245ba40ce099df2eda, type: 2}
+  - {fileID: 11400000, guid: 3c532ce77a13dca448f232a5f07b30b0, type: 2}
+  - {fileID: 11400000, guid: 6194ca365d1997a42979814a8ea47551, type: 2}
+  - {fileID: 11400000, guid: 7fe9bb41f3464d64c89f13c75fc4382f, type: 2}
+  - {fileID: 11400000, guid: f5d78fcc466db9a4183678471465678b, type: 2}
+  allSpikeTiles:
+  - {fileID: 11400000, guid: f411e29431b787c4ab84b5ff59ca5e6e, type: 2}
+  - {fileID: 11400000, guid: 85440e0dd81e48840947ce485614bab6, type: 2}
+  - {fileID: 11400000, guid: 7dbb7c55a3417f54fbd38fafb369478e, type: 2}
+  - {fileID: 11400000, guid: 7f2c5cb43ad7207499b22fb5e0acd41a, type: 2}
+  - {fileID: 11400000, guid: 034d5fb04a013124cb432284fdc8c423, type: 2}
+  - {fileID: 11400000, guid: f6a8681f94ddcf24eac96d8e4a5c82f6, type: 2}
+  - {fileID: 11400000, guid: 69359808565f98f4297a6efb8da5c4da, type: 2}
+  - {fileID: 11400000, guid: f9cdf78c8a087c94a9279cc07fc03a25, type: 2}
