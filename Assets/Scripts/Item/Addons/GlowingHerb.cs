@@ -9,11 +9,21 @@ public class GlowingHerb : Addon
 {
     public override void Declare()
     {
-        id = 14; name = "Glowing Herb";
+        id = 14; name = "이글거리는 약초";
         quality = ItemQuality.Ordinary;
         type = AddonType.Matter;
         sprite = Resources.Load<Sprite>("Sprites/Addons/Glowing Herb"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/Glowing Herb"); ;
         sizeInventory = new Vector2(80, 80);
+    }
+
+    public override float[] DebuffAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
+    {
+        float[] varArray = new float[(int)EnemyDebuffCase.END_POINTER];
+        for (int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++) varArray[i] = 0f;
+
+        varArray[(int)EnemyDebuffCase.fire] = 3f;
+
+        return varArray;
     }
 }

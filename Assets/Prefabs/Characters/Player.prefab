@@ -347,9 +347,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 2
   knockBackMultiplier: 1
-  debuffNum: 0
-  debuffType: 
-  debuffTime: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
+  debuffTime:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
 --- !u!114 &114880704145925944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -364,6 +367,7 @@ MonoBehaviour:
   attack: 000000
   cancel: 0
   playingSkill: 0
+  originComboTime: 1
   comboTime: 1
   time: {fileID: 0}
   combo: {fileID: 0}
@@ -375,7 +379,6 @@ MonoBehaviour:
   - {fileID: 7400000, guid: b1bf5cd583e214e448b83335f6c2d7a6, type: 2}
   - {fileID: 7400000, guid: b7ca0c87c2a73cb4e939b4d06abd4217, type: 2}
   - {fileID: 7400000, guid: 9133e696bcae7294c86f6702b20b4ae7, type: 2}
-  inventoryManager: {fileID: 0}
   lifeStoneManager: {fileID: 0}
 --- !u!114 &114906702720267008
 MonoBehaviour:

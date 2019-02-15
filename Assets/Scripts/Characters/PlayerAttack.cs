@@ -7,6 +7,7 @@ public class PlayerAttack : MonoBehaviour {
     public bool cancel;
     public bool playingSkill;
     private bool comboEndDelay = true;
+    public float originComboTime;
     public float comboTime;
     public Text time, combo;
     public string comboArray;
@@ -116,6 +117,7 @@ public class PlayerAttack : MonoBehaviour {
     IEnumerator SkillEndCoroutine()
     {
         comboEndTime = Time.time + comboTime;
+        comboTime = originComboTime;
         comboTimeOn = true;
         while (Time.time < comboEndTime && comboTimeOn && !playingSkill)
         {

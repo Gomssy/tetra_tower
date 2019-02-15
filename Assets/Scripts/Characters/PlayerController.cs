@@ -253,7 +253,7 @@ public class PlayerController : MonoBehaviour
         downKeyDown = false;
         jump = false;
     }
-    bool IsGrounded()   // Is player grounded?
+    public bool IsGrounded()   // Is player grounded?
     {
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, new Vector2(Player.X, boxHeight), 0, Vector2.down, Player.Y / 2f, groundLayer);
         Debug.DrawLine(transform.position + new Vector3(0, -Player.Y / 2f) + new Vector3(-Player.X, -boxHeight, 0) / 2,

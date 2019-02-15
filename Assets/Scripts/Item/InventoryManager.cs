@@ -226,8 +226,7 @@ public class InventoryManager : Singleton<InventoryManager> {
 
         itemList.Add(item);
         ui.SetOnPosition(itemList, addonList);
-
-        Debug.Log(itemList[0].combo[0] + " " + itemList[0].combo[1]);
+        
         return true;
     }
     /// <summary>

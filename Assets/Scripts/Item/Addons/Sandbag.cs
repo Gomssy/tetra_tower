@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// 애드온명: 양피지 조각
-/// 번호: 2
+/// 애드온명: 모래 주머니
+/// 번호: 29
 /// </summary>
-public class ParchmentPiece : Addon
+public class Sandbag : Addon
 {
     public override void Declare()
     {
-        id = 2; name = "양피지 조각";
-        quality = ItemQuality.Study;
+        id = 29; name = "모래 주머니";
+        quality = ItemQuality.Superior;
         type = AddonType.Prop;
         sprite = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         sizeInventory = new Vector2(80, 80);
     }
+    public override void OtherEffect(string combo)
+    {
+        GameObject.Find("Player").GetComponent<PlayerAttack>().comboTime *= 0.5f;
+    }
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
-        if (attackInfo.damage < 3) return 2f;
-        else return 1f;
+        return 2f;
     }
 }
