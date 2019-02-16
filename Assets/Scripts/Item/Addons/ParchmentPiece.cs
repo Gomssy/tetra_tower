@@ -15,6 +15,7 @@ public class ParchmentPiece : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece_border"); ;
         sizeInventory = new Vector2(70, 77.5f);
+        addonDescription = "쓸모없는 애드온";
     }
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {

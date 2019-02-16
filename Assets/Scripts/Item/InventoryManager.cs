@@ -23,6 +23,8 @@ public class InventoryManager : Singleton<InventoryManager> {
 
         SetPool();
         ItemInstantiate("Dagger", player.transform.position, 0f);
+        AddonInstantiate("ParchmentPiece", player.transform.position, 0f);
+        ItemInstantiate("Bow", player.transform.position, 0f);
 
         StartCoroutine(TestCoroutine());
     }
