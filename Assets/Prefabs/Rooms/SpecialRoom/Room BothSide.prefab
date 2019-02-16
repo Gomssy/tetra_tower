@@ -905,6 +905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c5900d925c965a468b2a5e67ec54116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomSize: {x: 24, y: 24}
   leftDoorInfo: 010101
   rightDoorInfo: 010101
   concept: 01010101
@@ -943,7 +944,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -951,7 +952,7 @@ SpriteRenderer:
   m_Size: {x: 24, y: 24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!251 &251571703798014412

@@ -50,7 +50,7 @@ public class Door : MonoBehaviour {
                     enteredPosition = 1;
                     break;
             }
-            GameObject.Find("MapManager").GetComponent<MapManager>().ChangeRoom(MapManager.tempRoom);
+            MapManager.Instance.ChangeRoom(MapManager.tempRoom);
             if (MapManager.currentRoom.isRoomCleared != true)
             {
                 animatorThisRoom.SetBool("isPlayerTouchEnded", true);

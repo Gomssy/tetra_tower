@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapManager : MonoBehaviour {
-
-
+public class MapManager : Singleton<MapManager> {
+    
     /*
      * variables
      * */
-    TetriminoSpawner tetriminoSpawner;
     LifeStoneManager lifeStoneManager;
     public GameObject player;
     /// <summary>
@@ -260,7 +258,7 @@ public class MapManager : MonoBehaviour {
         {
             if (te.rooms[i].mapCoord.y < 0)
                 return false;
-            else if (MapManager.mapGrid[(int)te.rooms[i].mapCoord.x, (int)te.rooms[i].mapCoord.y] != null)
+            else if (mapGrid[(int)te.rooms[i].mapCoord.x, (int)te.rooms[i].mapCoord.y] != null)
                 return false;
         }
         return true;
@@ -856,7 +854,7 @@ public class MapManager : MonoBehaviour {
     public IEnumerator MakeNextTetrimino()
     {
         yield return new WaitForSeconds(1f);
-        tetriminoSpawner.MakeTetrimino();
+        TetriminoSpawner.Instance.MakeTetrimino();
     }
     public void ChangeRoom(Room newRoom)
     {
@@ -868,7 +866,6 @@ public class MapManager : MonoBehaviour {
             room.GetComponent<SpriteRenderer>().sprite = roomSurfaceSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
         currentRoom = newRoom;
         StartCoroutine(RoomFadeIn(newRoom));
-        playerIcon.transform.position = currentRoom.mapCoord * tetrisMapSize + new Vector3(0, 0, -2);
     }
     /// <summary>
     /// Make room fade in.
@@ -1158,9 +1155,10 @@ public class MapManager : MonoBehaviour {
             roomBackgroundSpritesDistributed[3].Add(roomBackgroundSprite4[i]);
         for (int i = 0; i < roomBackgroundSprite5.Length; i++)
             roomBackgroundSpritesDistributed[4].Add(roomBackgroundSprite5[i]);*/
-        tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
         lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
         currentStage = 0;
+        player = GameObject.Find("Player");
+        grid = GameObject.Find("Grid").transform;
     }
 
     // Use this for initialization
@@ -1170,7 +1168,7 @@ public class MapManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (GameManager.gameState != GameState.GameOver)
+        if (GameManager.gameState != GameState.GameOver && currentTetrimino && currentGhost)
         {
             if (!isTetriminoFalling)
             {
@@ -1187,8 +1185,8 @@ public class MapManager : MonoBehaviour {
             {
                 PortalControl();
             }
-            if(!currentRoom.isRoomCleared && (GameObject.Find("EnemyManager").GetComponent<EnemyManager>().IsClear() || 
-                (currentRoom.specialRoomType != RoomType.Normal && currentRoom.specialRoomType != RoomType.Boss)))
+            playerIcon.transform.position = currentRoom.mapCoord * tetrisMapSize + new Vector3(0, 0, grid.transform.position.z - 2);
+            if (!currentRoom.isRoomCleared && (EnemyManager.Instance.IsClear() || (currentRoom.specialRoomType != RoomType.Normal && currentRoom.specialRoomType != RoomType.Boss)))
             {
                 currentRoom.ClearRoom();
             }

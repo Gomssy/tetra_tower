@@ -7,6 +7,6 @@ public class NormalRoomInGame : RoomInGame {
     public override void RoomEnter()
     {
         base.RoomEnter();
-        GameObject.Find("EnemyManager").GetComponent<EnemyManager>().SpawnEnemyToMap();
+        EnemyManager.Instance.SpawnEnemyToMap();
     }
 }

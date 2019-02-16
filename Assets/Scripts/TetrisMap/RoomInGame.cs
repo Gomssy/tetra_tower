@@ -7,10 +7,14 @@ public class RoomInGame : MonoBehaviour {
     /*
      * variables
      * */
+    /// <summary>
+    /// Size of the room counted by 1 unit.
+    /// </summary>
+    public Vector2 roomSize;
     public bool[] leftDoorInfo = new bool[3];
     public bool[] rightDoorInfo = new bool[3];
     /// <summary>
-    /// Information for stage.
+    /// Information for concept.
     /// </summary>
     public bool[] concept = new bool[4];
     public bool[,] wallTileInfo = new bool[24, 24];
@@ -21,15 +25,11 @@ public class RoomInGame : MonoBehaviour {
     /*
      * functions
      * */
-     
-
+    /// <summary>
+    /// This function is called when player enters the room.
+    /// </summary>
     public virtual void RoomEnter()
     {
 
     }
-
-
-
-
-
 }

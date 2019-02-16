@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
-
-    public MapManager mapManager;
+    
     public GameObject player;
     /// <summary>
     /// Check if scene is changing now.
@@ -21,7 +20,7 @@ public class CameraController : MonoBehaviour {
 
     private void Awake()
     {
-        mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
+        player = GameObject.Find("Player");
     }
 
     // Use this for initialization
@@ -33,7 +32,7 @@ public class CameraController : MonoBehaviour {
     // Update is called once per frame
     void LateUpdate()
     {
-        if (GameManager.gameState == GameState.Ingame)
+        if (GameManager.gameState == GameState.Tutorial || (GameManager.gameState == GameState.Ingame && MapManager.tempRoom == MapManager.currentRoom))
         {
             FollowPlayer();
             originPos = transform.position;
@@ -75,8 +74,9 @@ public class CameraController : MonoBehaviour {
             isSceneChanging = true;
             if (gameState == GameState.Ingame)
             {
+                GameManager.Instance.minimap.SetActive(true);
                 GameManager.gameState = GameState.Ingame;
-                StartCoroutine(mapManager.RoomFadeIn(MapManager.currentRoom));
+                StartCoroutine(MapManager.Instance.RoomFadeIn(MapManager.currentRoom));
                 grid.transform.position = new Vector3(0, 0, 0);
                 sizeDestination = inGameCameraSize;
                 while (GetComponent<Camera>().orthographicSize > sizeDestination + 0.01)
@@ -88,16 +88,17 @@ public class CameraController : MonoBehaviour {
             }
             else if (gameState == GameState.Tetris || gameState == GameState.Portal)
             {
-                if(gameState == GameState.Tetris)
+                GameManager.Instance.minimap.SetActive(false);
+                if (gameState == GameState.Tetris)
                     GameManager.gameState = GameState.Tetris;
                 else if(gameState == GameState.Portal)
                 {
                     GameManager.gameState = GameState.Portal;
                     MapManager.portalDestination = MapManager.currentRoom.mapCoord;
                     MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
-                        GameObject.Find("MapManager").GetComponent<MapManager>().portalSelected;
+                        MapManager.Instance.portalSelected;
                 }
-                StartCoroutine(mapManager.RoomFadeOut(MapManager.currentRoom));
+                StartCoroutine(MapManager.Instance.RoomFadeOut(MapManager.currentRoom));
                 grid.transform.position = new Vector3(0, 0, 2);
                 sizeDestination = tetrisCameraSize;
                 while (GetComponent<Camera>().orthographicSize < sizeDestination - 2)
@@ -126,7 +127,7 @@ public class CameraController : MonoBehaviour {
             posx = RoomCol("Left") + cameraXLimit;
         if (RoomCol("Right") != -1)
             posx = RoomCol("Right") - cameraXLimit;
-        if (RoomCol("Left") != -1 && RoomCol("Right") != -1)
+        /*if (RoomCol("Left") != -1 && RoomCol("Right") != -1)
         {
             float middle = Player.tx * 24f + 12f;
             if (middle - RoomCol("Left") > 20f)
@@ -136,7 +137,7 @@ public class CameraController : MonoBehaviour {
             else
                 posx = player.transform.position.x;
             //방의 중심과 비교하여 어느게 더 가까운가
-        }
+        }*/
         if (MapManager.isRoomFalling != true)
             transform.position = Vector3.Lerp(transform.position, new Vector3(posx, posy, -1), 8f * Time.deltaTime);
         else if (MapManager.isRoomFalling == true)
@@ -150,21 +151,37 @@ public class CameraController : MonoBehaviour {
         switch (direction)
         {
             case "Up":
-                if (position.y + cameraYLimit >= MapManager.tetrisYCoord[(int)MapManager.currentRoom.mapCoord.y] + 23f)
-                    return MapManager.tetrisYCoord[(int)MapManager.currentRoom.mapCoord.y] + 23f;
+                if (position.y + cameraYLimit >= MapManager.currentRoom.transform.position.y + MapManager.currentRoom.roomInGame.roomSize.y - 1)
+                    return MapManager.currentRoom.transform.position.y + MapManager.currentRoom.roomInGame.roomSize.y - 1;
                 break;
             case "Down":
-                if (position.y - cameraYLimit <= MapManager.tetrisYCoord[(int)MapManager.currentRoom.mapCoord.y] + 1f)
-                    return MapManager.tetrisYCoord[(int)MapManager.currentRoom.mapCoord.y] + 1f;
+                if (position.y - cameraYLimit <= MapManager.currentRoom.transform.position.y + 1)
+                    return MapManager.currentRoom.transform.position.y + 1;
                 break;
             case "Left":
-                if(position.x - cameraXLimit <= Player.tx * 24f + 1)
+                if (position.x - cameraXLimit <= MapManager.currentRoom.transform.position.x + 1)
+                    return MapManager.currentRoom.transform.position.x + 1;
+                break;
+            case "Right":
+                if (position.x + cameraXLimit >= MapManager.currentRoom.transform.position.x + MapManager.currentRoom.roomInGame.roomSize.x - 1)
+                    return MapManager.currentRoom.transform.position.x + MapManager.currentRoom.roomInGame.roomSize.x - 1;
+                break;
+            /*case "Up":
+                if (position.y + cameraYLimit >= MapManager.Instance.tetrisYCoord[(int)MapManager.Instance.currentRoom.mapCoord.y] + 23f)
+                    return MapManager.Instance.tetrisYCoord[(int)MapManager.Instance.currentRoom.mapCoord.y] + 23f;
+                break;
+            case "Down":
+                if (position.y - cameraYLimit <= MapManager.Instance.tetrisYCoord[(int)MapManager.Instance.currentRoom.mapCoord.y] + 1f)
+                    return MapManager.Instance.tetrisYCoord[(int)MapManager.Instance.currentRoom.mapCoord.y] + 1f;
+                break;
+            case "Left":
+                if (position.x - cameraXLimit <= Player.tx * 24f + 1)
                     return Player.tx * 24f + 1;
                 break;
             case "Right":
-                if(position.x + cameraXLimit >= (Player.tx + 1) * 24f - 1)
+                if (position.x + cameraXLimit >= (Player.tx + 1) * 24f - 1)
                     return (Player.tx + 1) * 24f - 1;
-                break;
+                break;*/
         }
         return -1;
     }

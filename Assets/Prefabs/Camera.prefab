@@ -68,7 +68,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1121859575758656}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.5802937, y: 6.4033027, z: -0.040029097}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4354682656029732}
@@ -83,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1849522522661772}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.5002937, y: -3.1933026, z: -0.9599709}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4133681489306484}
@@ -96,7 +96,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1771541226646862}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 100.41971, y: 233.5967, z: -2.959971}
+  m_LocalPosition: {x: 108, y: 240, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4133681489306484}
@@ -188,7 +188,7 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1771541226646862}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!81 &81874366432473632
 AudioListener:
   m_ObjectHideFlags: 1
@@ -208,9 +208,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapManager: {fileID: 0}
-  roomLayer:
-    serializedVersion: 2
-    m_Bits: 0
   player: {fileID: 0}
   tetrisCameraCoord: {x: 108, y: 240, z: -1}
   originPos: {x: 0, y: 0, z: 0}
