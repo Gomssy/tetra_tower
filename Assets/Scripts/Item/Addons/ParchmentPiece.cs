@@ -13,8 +13,8 @@ public class ParchmentPiece : Addon
         quality = ItemQuality.Study;
         type = AddonType.Prop;
         sprite = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
-        highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
-        sizeInventory = new Vector2(80, 80);
+        highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece_border"); ;
+        sizeInventory = new Vector2(70, 77.5f);
     }
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {

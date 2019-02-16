@@ -22,8 +22,8 @@ public class InventoryManager : Singleton<InventoryManager> {
         player = GameObject.Find("Player");
 
         SetPool();
-        ItemInstantiate("Bow", player.transform.position, 0f);
-        
+        ItemInstantiate("Dagger", player.transform.position, 0f);
+
         StartCoroutine(TestCoroutine());
     }
     /// <summary>

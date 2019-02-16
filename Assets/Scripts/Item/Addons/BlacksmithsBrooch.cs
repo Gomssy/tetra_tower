@@ -16,4 +16,9 @@ public class BlacksmithsBrooch : Addon
         highlight = Resources.Load<Sprite>("Sprites/Addons/Coolly Pride"); ;
         sizeInventory = new Vector2(80, 80);
     }
+
+    public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
+    {
+        return 1.55f;
+    }
 }
