@@ -38,5 +38,14 @@ public class Bow : Item {
         tmpObj.transform.localScale = new Vector3(Mathf.Sign(player.transform.localScale.x), 1, 1);
         tmpObj.GetComponent<Rigidbody2D>().velocity = new Vector2(-10f * Mathf.Sign(player.transform.localScale.x), 0f);
     }
-
+    protected override void PlaySkill2()
+    {
+        player.GetComponent<Player>().StartCoroutine(Shoot2());
+    }
+    IEnumerator Shoot2()
+    {
+        yield return new WaitForSeconds(0.3f);
+        GameObject tmpObj = Object.Instantiate(arrow, player.transform.position, Quaternion.Euler(0, 0, -90f));
+        tmpObj.GetComponent<Rigidbody2D>().velocity = new Vector2(0f,10f);
+    }
 }
