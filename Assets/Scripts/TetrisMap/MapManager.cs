@@ -1163,7 +1163,7 @@ public class MapManager : MonoBehaviour {
         for (int i = 0; i < roomBackgroundSprite5.Length; i++)
             roomBackgroundSpritesDistributed[4].Add(roomBackgroundSprite5[i]);*/
         tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
-        lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
+        lifeStoneManager = LifeStoneManager.Instance;
         currentStage = 0;
     }
 

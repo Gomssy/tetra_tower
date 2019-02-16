@@ -83,7 +83,7 @@ public class LifeUnitInFrame : MonoBehaviour {
         transform.localPosition = new Vector2(transform.localPosition.x, zeroPos.y + pos.y * size);
 
         if (vibration != 0)
-			StartCoroutine(GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>().VibrateEnumerator(vibration));
+			StartCoroutine(LifeStoneManager.Instance.VibrateEnumerator(vibration));
 	}
 	
 }

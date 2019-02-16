@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class LifeStoneManager : MonoBehaviour {
+public class LifeStoneManager : Singleton<LifeStoneManager> {
     /// <summary>
     /// Location of lifeStoneFrame on Canvas
     /// </summary>

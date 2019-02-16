@@ -18,7 +18,7 @@ public class JanusCoin : Addon
     }
     public override float DamageFinalAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
-        LifeStoneManager lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
+        LifeStoneManager lifeStoneManager = LifeStoneManager.Instance;
         if(Random.Range(0,2) == 0)
         {
             lifeStoneManager.DestroyStone(2);

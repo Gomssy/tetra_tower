@@ -16,7 +16,7 @@ public class PlayerAttack : MonoBehaviour {
     public AnimatorOverrideController aoc;
     public AnimationClip[] normalAttack = new AnimationClip[3];
     InventoryManager inventoryManager;
-    public LifeStoneManager lifeStoneManager;
+    LifeStoneManager lifeStoneManager;
 
     float comboEndTime;
     bool comboTimeOn;
@@ -26,6 +26,7 @@ public class PlayerAttack : MonoBehaviour {
     
     void Awake ()
     {
+        lifeStoneManager = LifeStoneManager.Instance;
         inventoryManager = InventoryManager.Instance;
         playerController = GetComponent<PlayerController>();
         attackProperty = GetComponentInChildren<AttackProperty>();

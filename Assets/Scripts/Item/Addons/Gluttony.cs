@@ -16,7 +16,7 @@ public class Gluttony : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         sizeInventory = new Vector2(80, 80);
-        lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
+        lifeStoneManager = LifeStoneManager.Instance;
     }
     public override void OtherEffect(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {

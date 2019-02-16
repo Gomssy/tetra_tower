@@ -8,7 +8,7 @@ public class DroppedPotion : MonoBehaviour, IPlayerInteraction {
 
     public void Apply()
     {
-        GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>().ChangeFromNormal(LifeStoneType.Gold, 3);
+        LifeStoneManager.Instance.ChangeFromNormal(LifeStoneType.Gold, 3);
         Destroy(gameObject);
     }
 
