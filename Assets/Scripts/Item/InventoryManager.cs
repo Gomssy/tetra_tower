@@ -22,8 +22,8 @@ public class InventoryManager : Singleton<InventoryManager> {
         player = GameObject.Find("Player");
 
         SetPool();
-
-        ItemInstantiate("Dagger", player.transform.position, 0f);
+        ItemInstantiate("Bow", player.transform.position, 0f);
+        
         StartCoroutine(TestCoroutine());
     }
     /// <summary>
@@ -85,8 +85,8 @@ public class InventoryManager : Singleton<InventoryManager> {
     }
     IEnumerator TestCoroutine()
     {
-        yield return null;
-
+        yield return new WaitForSeconds(1.5f); ;
+        
     }
 
     IEnumerator PopoutCoroutine(GameObject obj)

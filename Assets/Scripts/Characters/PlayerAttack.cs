@@ -21,12 +21,14 @@ public class PlayerAttack : MonoBehaviour {
     float comboEndTime;
     bool comboTimeOn;
     PlayerController playerController;
+    AttackProperty attackProperty;
 
     
     void Awake ()
     {
         inventoryManager = InventoryManager.Instance;
         playerController = GetComponent<PlayerController>();
+        attackProperty = GetComponentInChildren<AttackProperty>();
         anim = GetComponent<Animator>();
         aoc = new AnimatorOverrideController(anim.runtimeAnimatorController);
         anim.runtimeAnimatorController = aoc;
@@ -52,6 +54,7 @@ public class PlayerAttack : MonoBehaviour {
                     if (playerController.playerState == PlayerState.GoingUp || playerController.playerState == PlayerState.GoingDown)
                         playerController.airAttack = false;
                     comboArray += (char)('A' + i);
+                    attackProperty.attackCombo = comboArray;
                     CheckCombo();
                     SetComboText();
                     break;
