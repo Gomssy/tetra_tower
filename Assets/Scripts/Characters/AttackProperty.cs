@@ -19,6 +19,11 @@ public class AttackProperty : MonoBehaviour{
         inventoryManager = InventoryManager.Instance;
     }
 
+    public void Init(string combo)
+    {
+        attackCombo = combo;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         

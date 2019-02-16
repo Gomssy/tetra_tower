@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Gluttony : Addon
 {
+    LifeStoneManager lifeStoneManager;
     public override void Declare()
     {
         id = 17; name = "식탐";
@@ -15,12 +16,13 @@ public class Gluttony : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         sizeInventory = new Vector2(80, 80);
+        lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
     }
     public override void OtherEffect(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
-        if(attackInfo.damage > enemyInfo.currHealth)
+        if(attackInfo.damage >= enemyInfo.currHealth)
         {
-            //생명석 2개 회복
+            lifeStoneManager.FillLifeStone(1, LifeStoneType.Normal);
         }
     }
 }

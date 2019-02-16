@@ -11,11 +11,9 @@ public class LifeUnitInFrame : MonoBehaviour {
 	Vector2 zeroPos;
 	float size;
 	float v, accel;
+    bool isFall;
 	float vibration;
-	void Start()
-	{
-		
-	}
+
 	/// <summary>
 	/// Create LifeStoneUnit from above. Starts to fall
 	/// </summary>
@@ -24,10 +22,10 @@ public class LifeUnitInFrame : MonoBehaviour {
 	/// <param name="_pos"> destination point in lifestoneFrame</param>
 	/// <param name="_startPos"> starting point above the lifestoneFrame</param>
 	/// <param name="_zeroPos"> base position of (0,0) lifestoneFrame</param>
-	public void Init(int _type, float _size, Vector2Int _pos, Vector2Int _startPos, Vector2 _zeroPos, float _vibration)
+	public void Init(int _type, float _size, Vector2Int _pos, Vector2Int _startPos, Vector2 _zeroPos, bool _isFall , float _vibration)
 	{
 		animator = GetComponent<Animator>();
-		size = _size;	type = _type;	pos = _pos;	startPos = _startPos;	zeroPos = _zeroPos; vibration = _vibration;
+		size = _size;	type = _type;	pos = _pos;	startPos = _startPos;	zeroPos = _zeroPos; isFall = _isFall;   vibration = _vibration;
 		GetComponent<RectTransform>().sizeDelta = new Vector2(size, size);
 		transform.localPosition = new Vector2(zeroPos.x + startPos.x * size, zeroPos.y + startPos.y * size);
 		v = 0;
@@ -72,19 +70,19 @@ public class LifeUnitInFrame : MonoBehaviour {
 	}
 	IEnumerator FallEnumerator()
 	{
-		while (true)
+		while (isFall)
 		{
 			float vtmp = transform.localPosition.y - v;
 			if (vtmp <= zeroPos.y + pos.y * size)
-			{
-				transform.localPosition = new Vector2(transform.localPosition.x, zeroPos.y + pos.y * size);
 				break;
-			}
+			
 			transform.localPosition = new Vector2(transform.localPosition.x, vtmp);
 			v += accel;
 			yield return null;
 		}
-		if (vibration != 0)
+        transform.localPosition = new Vector2(transform.localPosition.x, zeroPos.y + pos.y * size);
+
+        if (vibration != 0)
 			StartCoroutine(GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>().VibrateEnumerator(vibration));
 	}
 	

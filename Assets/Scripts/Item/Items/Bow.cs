@@ -36,7 +36,8 @@ public class Bow : Item {
         yield return new WaitForSeconds(0.3f);
         GameObject tmpObj = Object.Instantiate(arrow, player.transform.position, Quaternion.identity);
         tmpObj.transform.localScale = new Vector3(Mathf.Sign(player.transform.localScale.x), 1, 1);
-        tmpObj.GetComponent<Rigidbody2D>().velocity = new Vector2(-10f * Mathf.Sign(player.transform.localScale.x), 0f);
+        tmpObj.GetComponent<Rigidbody2D>().velocity = new Vector2(-15f * Mathf.Sign(player.transform.localScale.x), 0f);
+        tmpObj.GetComponent<AttackProperty>().Init(combo[0]);
     }
     protected override void PlaySkill2()
     {
@@ -46,6 +47,7 @@ public class Bow : Item {
     {
         yield return new WaitForSeconds(0.3f);
         GameObject tmpObj = Object.Instantiate(arrow, player.transform.position, Quaternion.Euler(0, 0, -90f));
-        tmpObj.GetComponent<Rigidbody2D>().velocity = new Vector2(0f,10f);
+        tmpObj.GetComponent<Rigidbody2D>().velocity = new Vector2(0f,15f);
+        tmpObj.GetComponent<AttackProperty>().Init(combo[1]);
     }
 }

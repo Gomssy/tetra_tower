@@ -24,6 +24,7 @@ public class InventoryManager : Singleton<InventoryManager> {
         SetPool();
         ItemInstantiate("Dagger", player.transform.position, 0f);
         AddonInstantiate("ParchmentPiece", player.transform.position, 0f);
+        AddonInstantiate("Gluttony", player.transform.position, 0f);
         ItemInstantiate("Bow", player.transform.position, 0f);
 
         StartCoroutine(TestCoroutine());
@@ -57,13 +58,17 @@ public class InventoryManager : Singleton<InventoryManager> {
 
 
         addonPool[0].Add("ParchmentPiece");
-        addonPool[0].Add("KnightsStirrup");
         addonPool[0].Add("ApprenticesMark");
 
-        addonPool[1].Add("GlowingHerb");
+        addonPool[1].Add("BlacksmithsBrooch");
         addonPool[1].Add("CoollyPride");
+        addonPool[1].Add("GlowingHerb");
+        addonPool[1].Add("Gluttony");
+        addonPool[1].Add("SmallLens");
 
-        //addonPool[2].Add("");
+        addonPool[2].Add("JanusCoin");
+        addonPool[2].Add("DesignofRagur");
+        addonPool[2].Add("Sandbag");
 
         //addonPool[3].Add("");
 

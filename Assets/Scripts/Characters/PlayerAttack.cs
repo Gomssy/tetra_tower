@@ -54,7 +54,7 @@ public class PlayerAttack : MonoBehaviour {
                     if (playerController.playerState == PlayerState.GoingUp || playerController.playerState == PlayerState.GoingDown)
                         playerController.airAttack = false;
                     comboArray += (char)('A' + i);
-                    attackProperty.attackCombo = comboArray;
+                    attackProperty.Init(comboArray);
                     CheckCombo();
                     SetComboText();
                     break;
