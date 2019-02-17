@@ -5,12 +5,12 @@ using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour {
 
-// data
+    // data
 
     // debuff
-    float[] immunity_time = new float[(int)EnemyDebuffCase.END_POINTER] { 0.0f, 3.0f, 6.0f, 6.0f, 6.0f };
-    public DebuffState[] debuffState;
-    public float fireDuration = 0.0f;
+    readonly float[] immunity_time = new float[(int)EnemyDebuffCase.END_POINTER] { 0.0f, 3.0f, 6.0f, 6.0f, 6.0f };
+    DebuffState[] debuffState;
+    float fireDuration = 0.0f;
 
     // stat
     public int monsterID;
@@ -21,9 +21,8 @@ public class Enemy : MonoBehaviour {
     public float attackRange;
     public float patrolSpeed;
     public float trackSpeed;
-    
-    private float playerMaxHealth; //다른 스크립트에 있는 플레이어 최대체력 가져와야함
-    public float currHealth;
+    public float[] knockbackPercentage;
+    public float currHealth { get; private set; }
 
     // manager
     private InventoryManager inventoryManager;
@@ -37,7 +36,6 @@ public class Enemy : MonoBehaviour {
     public bool MovementLock { get; private set; }
     public bool KnockbackLock { get; private set; }
     public float PlayerDistance { get; private set; }
-    private readonly float knockbackCritPoint = 0.25f;
 
     public int MoveDir { get; private set; }
     public bool[] WallTest { get; private set; }
@@ -63,6 +61,9 @@ public class Enemy : MonoBehaviour {
 
         AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
         foreach (var clip in clips) { if (clip.name.Contains("Damaged")) { damagedAnimLength = clip.length; } }
+
+        Array.Sort(knockbackPercentage);
+        Array.Reverse(knockbackPercentage);
     }
 
     private void Start()
@@ -71,7 +72,6 @@ public class Enemy : MonoBehaviour {
         currHealth = maxHealth;
         Invisible = MovementLock = false;
         dropTable = enemyManager.DropTableByID[monsterID];
-        //Physics2D.IgnoreCollision(enemyManager.Player.gameObject.GetComponent<Collider2D>(), transform.parent.GetComponent<Collider2D>());
         PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
     }
 
@@ -151,7 +151,7 @@ public class Enemy : MonoBehaviour {
         bool[] lockArray = new bool[] { false, KnockbackLock };
         int knockbackDir = (enemyManager.Player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
         float knockbackVelocity = knockbackDir * knockbackDist / knockbackTime;
-        ChangeDir_lock(knockbackDir * -1, lockArray);
+        ChangeDir_lock(knockbackDir * -1, new bool[] { MovementLock, KnockbackLock });
         ChangeVelocityX_lock(knockbackVelocity, lockArray);
 
         for (float timer = 0; timer <= knockbackTime; timer += Time.deltaTime)
@@ -173,6 +173,7 @@ public class Enemy : MonoBehaviour {
     // - Calculate value & Arrange information
     public void GetDamaged(PlayerAttackInfo attack)
     {
+        float prevHealth = currHealth;
         currHealth -= attack.damage;
         if (currHealth <= 0)
         {
@@ -186,15 +187,23 @@ public class Enemy : MonoBehaviour {
         float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
         float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
 
-        if (MovementLock)
+        if (MovementLock) // 넉백이 진행 중
         {
             StopCoroutine("Knockback");
         }
         StartCoroutine(Knockback(knockbackDist, knockbackTime));
 
-        if (knockbackDist >= knockbackCritPoint)
+        float currHealthPercentage = currHealth / maxHealth;
+        float prevHealthPercentage = prevHealth / maxHealth;
+
+        foreach (float percentage in knockbackPercentage)
         {
-            animator.SetTrigger("DamagedTrigger");
+            if (currHealthPercentage > percentage) { break; }
+            if (prevHealthPercentage > percentage)
+            {
+                animator.SetTrigger("DamagedTrigger");
+                break;
+            }
         }
     }
 
