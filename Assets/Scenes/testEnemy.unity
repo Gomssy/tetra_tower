@@ -1108,11 +1108,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1711972807}
   m_Script: {fileID: 11500000, guid: 7fe540ec78947fc449eabc76bd87823d, type: 3}
---- !u!4 &1207417820 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4874486600194970, guid: 0443c2e9410bbe545bda40dc30fa6a63,
-    type: 2}
-  m_PrefabInternal: {fileID: 1787348169}
 --- !u!224 &1209430809 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224402251087470820, guid: c179f0931cfabec428a868a6edc543b0,
@@ -1155,7 +1150,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1207417820}
+  - {fileID: 1787348170}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1347,6 +1342,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114402380471012178, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: debuffTime.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4549734214569802, guid: 3d077a5f727dd1e4780e9265ed26e036, type: 2}
       propertyPath: m_LocalPosition.x
       value: 2
@@ -1399,6 +1399,11 @@ Prefab:
       propertyPath: lifeStoneManager
       value: 
       objectReference: {fileID: 1206751493}
+    - target: {fileID: 114402380471012178, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: debuffTime.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d077a5f727dd1e4780e9265ed26e036, type: 2}
   m_IsPrefabAsset: 0
@@ -1640,6 +1645,10 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0443c2e9410bbe545bda40dc30fa6a63, type: 2}
   m_IsPrefabAsset: 0
+--- !u!4 &1787348170 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1787348169}
 --- !u!114 &1908917313 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114939219159237616, guid: 62a83d11a7addc342ad436145784e698,

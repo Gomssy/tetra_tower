@@ -1,12 +1,19 @@
 ﻿public enum EnemyDebuffCase
 {
-    fire,
-    ice,
-    stun,
-    blind,
-    charm,
+    Fire,
+    Ice,
+    Stun,
+    Blind,
+    Charm,
     END_POINTER
 };
+
+public enum DebuffState
+{
+    Off,
+    On,
+    Immune,
+}
 
 public enum NumeratedDir
 {
