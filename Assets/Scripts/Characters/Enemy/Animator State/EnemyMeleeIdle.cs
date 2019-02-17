@@ -31,7 +31,7 @@ public class EnemyMeleeIdle : StateMachineBehaviour {
 			animator.SetTrigger("TrackTrigger");
 			return;
 		}
-        if (!enemy.KnockbackLock)
+        if (!enemy.MovementLock)
         {
             float span = animatorRoot.position.x - origin.x;
             

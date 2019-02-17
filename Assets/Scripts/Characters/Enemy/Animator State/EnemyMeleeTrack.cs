@@ -13,7 +13,7 @@ public class EnemyMeleeTrack : StateMachineBehaviour {
     int frameCounter = 0;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) { 
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         animatorRoot = animator.transform.parent;
         enemy = animator.GetComponent<Enemy>();
         player = EnemyManager.Instance.Player;

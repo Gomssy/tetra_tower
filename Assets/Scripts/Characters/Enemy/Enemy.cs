@@ -9,8 +9,8 @@ public class Enemy : MonoBehaviour {
 
     // debuff
     float[] immunity_time = new float[(int)EnemyDebuffCase.END_POINTER] { 0.0f, 3.0f, 6.0f, 6.0f, 6.0f };
-    DebuffState[] debuffState;
-    float fireDuration = 0.0f;
+    public DebuffState[] debuffState;
+    public float fireDuration = 0.0f;
 
     // stat
     public int monsterID;
@@ -32,9 +32,10 @@ public class Enemy : MonoBehaviour {
 
     // for movement
     private Animator animator;
+    private float damagedAnimLength;
     public bool Invisible { get; private set; }
+    public bool MovementLock { get; private set; }
     public bool KnockbackLock { get; private set; }
-    public bool DebuffLock { get; private set; }
     public float PlayerDistance { get; private set; }
     private readonly float knockbackCritPoint = 0.25f;
 
@@ -59,13 +60,16 @@ public class Enemy : MonoBehaviour {
 
         DebuffState _temp = DebuffState.Off;
         debuffState = new DebuffState[(int)EnemyDebuffCase.END_POINTER] { _temp, _temp, _temp, _temp, _temp };
+
+        AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
+        foreach (var clip in clips) { if (clip.name.Contains("Damaged")) { damagedAnimLength = clip.length; } }
     }
 
     private void Start()
     {
         MoveDir = (int)NumeratedDir.Left;
         currHealth = maxHealth;
-        Invisible = KnockbackLock = false;
+        Invisible = MovementLock = false;
         dropTable = enemyManager.DropTableByID[monsterID];
         //Physics2D.IgnoreCollision(enemyManager.Player.gameObject.GetComponent<Collider2D>(), transform.parent.GetComponent<Collider2D>());
         PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
@@ -106,8 +110,8 @@ public class Enemy : MonoBehaviour {
         {
             Vector2 origin = (Vector2)transform.parent.position + new Vector2(Dir * colliderSize.x / 2.0f, colliderSize.y);
             Vector2 direction = Vector2.right * Dir;
-            float distance = 0.02f;
-            int layerMask = LayerMask.GetMask("Wall", "OuterWall");
+            float distance = 0.5f;
+            LayerMask layerMask = LayerMask.GetMask("Wall", "OuterWall");
             RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
 
             WallTest[(Dir + 1) / 2] = (hit.collider != null);
@@ -117,16 +121,12 @@ public class Enemy : MonoBehaviour {
     // - Change direction, and speed of rigidbody of enemy
     public void ChangeVelocityX(float val)
     {
-        if (!KnockbackLock && !DebuffLock)
-        {
-            Vector2 tempVelocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
-            tempVelocity.x = val;
-            transform.parent.GetComponent<Rigidbody2D>().velocity = tempVelocity;
-        }
+        ChangeVelocityX_lock(val, new bool[] { MovementLock, KnockbackLock });
     }
 
-    private void SudoChangeVelocityX(float val)
+    private void ChangeVelocityX_lock(float val, bool[] lockArray)
     {
+        foreach(var Lock in lockArray) { if (Lock) return; }
         Vector2 tempVelocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
         tempVelocity.x = val;
         transform.parent.GetComponent<Rigidbody2D>().velocity = tempVelocity;
@@ -134,15 +134,12 @@ public class Enemy : MonoBehaviour {
 
     public void ChangeDir(object dir)
     {
-        if (!KnockbackLock && !DebuffLock)
-        {
-            MoveDir = (int)dir;
-            transform.parent.eulerAngles = ((NumeratedDir)dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
-        }
+        ChangeDir_lock(dir, new bool[] { MovementLock, KnockbackLock });
     }
 
-    private void SudoChangeDir(object dir)
+    private void ChangeDir_lock(object dir, bool[] lockArray)
     {
+        foreach (var Lock in lockArray) { if (Lock) return; }
         MoveDir = (int)dir;
         transform.parent.eulerAngles = ((NumeratedDir)dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
     }
@@ -150,23 +147,24 @@ public class Enemy : MonoBehaviour {
     // - Knockback coroutine
     IEnumerator Knockback(float knockbackDist, float knockbackTime)
     {
-        KnockbackLock = true;
+        MovementLock = true;
+        bool[] lockArray = new bool[] { false, KnockbackLock };
         int knockbackDir = (enemyManager.Player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
         float knockbackVelocity = knockbackDir * knockbackDist / knockbackTime;
-        SudoChangeDir(knockbackDir * -1);
-        SudoChangeVelocityX(knockbackVelocity);
+        ChangeDir_lock(knockbackDir * -1, lockArray);
+        ChangeVelocityX_lock(knockbackVelocity, lockArray);
 
         for (float timer = 0; timer <= knockbackTime; timer += Time.deltaTime)
         {
             if (CliffTest[(knockbackDir + 1) / 2])
             {
-                SudoChangeVelocityX(0.0f);
+                ChangeVelocityX_lock(0.0f, lockArray);
                 yield return new WaitForSeconds(knockbackTime - timer);
                 break;
             }
             yield return new WaitForFixedUpdate();
         }
-        KnockbackLock = false;
+        MovementLock = false;
         ChangeVelocityX(0.0f);
     }
 
@@ -183,10 +181,12 @@ public class Enemy : MonoBehaviour {
             return;
         }
 
+        DebuffApply(attack.debuffTime);
+
         float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
         float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
 
-        if (KnockbackLock)
+        if (MovementLock)
         {
             StopCoroutine("Knockback");
         }
@@ -194,16 +194,7 @@ public class Enemy : MonoBehaviour {
 
         if (knockbackDist >= knockbackCritPoint)
         {
-            animator.SetFloat("knockbackTime", knockbackTime);
             animator.SetTrigger("DamagedTrigger");
-        }
-
-        for(int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++)
-        {
-            if(attack.debuffTime[i] > 0.0f)
-            {
-                DebuffApply((EnemyDebuffCase)i, attack.debuffTime[i]);
-            }
         }
     }
 
@@ -219,34 +210,49 @@ public class Enemy : MonoBehaviour {
     }
 
     // - Apply debuff
-    private void DebuffApply(EnemyDebuffCase debuff, float duration)
+    private void DebuffApply(float[] debuffTime)
     {
-        IEnumerator debuffFunc = null;
-        int intCase = (int)debuff;
-        if (debuffState[intCase] == DebuffState.Immune) return;
-        debuffState[intCase] = DebuffState.On;
-        switch (debuff)
-        {
-            case EnemyDebuffCase.Fire:
-                if (fireDuration != 0.0f) { fireDuration += duration; }
-                else { debuffFunc = OnFire(duration); }
-                break;
-            case EnemyDebuffCase.Ice:
-                debuffFunc = OnIce(duration);
-                break;
-            case EnemyDebuffCase.Stun:
-                debuffFunc = OnStun(duration);
-                break;
-            case EnemyDebuffCase.Blind:
-                debuffFunc = OnBlind(duration);
-                break;
-            case EnemyDebuffCase.Charm:
-                debuffFunc = OnCharm(duration);
-                break;
-            default:
-                break;
+        if(debuffState[(int)EnemyDebuffCase.Ice] == DebuffState.On){
+            OffDebuff(EnemyDebuffCase.Ice);
         }
-        StartCoroutine(debuffFunc);
+
+        foreach (int debuff in Enum.GetValues(typeof(EnemyDebuffCase)))
+        {
+            if(debuff == (int)EnemyDebuffCase.END_POINTER || debuffTime[debuff] == 0.0f || debuffState[debuff] == DebuffState.Immune)
+            {
+                continue;
+            }
+            
+            float duration = debuffTime[debuff];
+            switch ((EnemyDebuffCase)debuff)
+            {
+                case EnemyDebuffCase.Fire:
+                    if (fireDuration != 0.0f) { fireDuration += duration; }
+                    else {
+                        debuffState[debuff] = DebuffState.On;
+                        StartCoroutine(OnFire(duration));
+                    }
+                    break;
+                case EnemyDebuffCase.Ice:
+                    debuffState[debuff] = DebuffState.On;
+                    StartCoroutine(OnIce(duration));
+                    break;
+                case EnemyDebuffCase.Stun:
+                    if(debuffState[debuff] != DebuffState.On) {
+                        debuffState[debuff] = DebuffState.On;
+                        StartCoroutine(OnStun(duration));
+                    } 
+                    break;
+                case EnemyDebuffCase.Blind:
+                    StartCoroutine(OnBlind(duration));
+                    break;
+                case EnemyDebuffCase.Charm:
+                    StartCoroutine(OnCharm(duration));
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     // - Debuff coroutine
@@ -254,15 +260,14 @@ public class Enemy : MonoBehaviour {
     {
         fireDuration = duration;
         float dotGap = 1.0f;
-
         while(true)
         {
+            yield return new WaitForSeconds(dotGap);
             fireDuration -= dotGap;
-            if (fireDuration <= 0.0f) {
-                fireDuration = 0;
+            if (fireDuration < 0.0f) {
+                fireDuration = 0.0f;
                 break;
             }
-            yield return new WaitForSeconds(1.0f);
             GetDamaged(lifeStoneManager.lifeStoneRowNum * 3);
         }
         debuffState[(int)EnemyDebuffCase.Fire] = DebuffState.Off;
@@ -270,18 +275,21 @@ public class Enemy : MonoBehaviour {
 
     IEnumerator OnIce(float duration)
     {
-        ChangeVelocityX(0.0f);
-        DebuffLock = true;
+        ChangeVelocityX_lock(0.0f, new bool[] { });
+        KnockbackLock = true;
+        animator.SetTrigger("StunnedTrigger");
+        animator.speed = damagedAnimLength / duration;
         yield return new WaitForSeconds(duration);
         OffDebuff(EnemyDebuffCase.Ice);
     }
 
     IEnumerator OnStun(float duration)
     {
-        ChangeVelocityX(0.0f);
-        DebuffLock = true;
+        ChangeVelocityX_lock(0.0f, new bool[] { });
+        animator.SetTrigger("StunnedTrigger");
+        animator.speed = damagedAnimLength / duration;
         yield return new WaitForSeconds(duration);
-        OffDebuff(EnemyDebuffCase.Ice);
+        OffDebuff(EnemyDebuffCase.Stun);
         yield return null;
     }
 
@@ -304,8 +312,23 @@ public class Enemy : MonoBehaviour {
 
     private void OffDebuff(EnemyDebuffCase Case)
     {
-        DebuffLock = false;
-        ImmuneTimer(Case, immunity_time[(int)Case]);
+        StartCoroutine(ImmuneTimer(Case, immunity_time[(int)Case]));
+        switch (Case)
+        {
+            case EnemyDebuffCase.Ice:
+                StopCoroutine("OnIce");
+                KnockbackLock = false;
+                animator.speed = 1.0f;
+                animator.SetTrigger("DisableStunTrigger");
+                break;
+            case EnemyDebuffCase.Stun:
+                StopCoroutine("OnStun");
+                animator.speed = 1.0f;
+                animator.SetTrigger("DisableStunTrigger");
+                break;
+            default:
+                break;
+        }
     }
 
     // Animation Event
@@ -359,6 +382,11 @@ public class Enemy : MonoBehaviour {
         currHealth = maxHealth;
         Invisible = false;
         return;
+    }
+
+    public void aaa()
+    {
+        Debug.Log("aaa");
     }
 }
 
