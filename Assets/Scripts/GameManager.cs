@@ -48,17 +48,19 @@ public class GameManager : Singleton<GameManager> {
 
     void Awake()
     {
-
+        gameState = GameState.Ingame;
+        minimap = GameObject.Find("Minimap");
+        minimap.SetActive(false);
+        MapManager.currentRoom = GameObject.Find("Room Tutorial").GetComponent<Room>();
+        MapManager.currentRoom.roomInGame.transform.Find("Portal").GetComponent<Portal>().isPortalTutorial = true;
+        GameObject.Find("Player").transform.position = MapManager.currentRoom.roomInGame.transform.Find("player spot").position + spawnPosition;
+        GameObject.Find("Main Camera").transform.position = GameObject.Find("Player").transform.position + new Vector3(0, 0, -1);
     }
 
     // Use this for initialization
     void Start () {
-        gameState = GameState.Tutorial;
-        minimap = GameObject.Find("Minimap");
-        minimap.SetActive(false);
-        MapManager.currentRoom = GameObject.Find("Room Tutorial").GetComponent<Room>();
-        GameObject.Find("Player").transform.position = MapManager.currentRoom.roomInGame.transform.Find("player spot").position + spawnPosition;
-        GameObject.Find("Main Camera").transform.position = GameObject.Find("Player").transform.position + new Vector3(0, 0, -1);
+
+
     }
 	
 	// Update is called once per frame

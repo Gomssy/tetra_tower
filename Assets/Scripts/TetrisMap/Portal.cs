@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour, IPlayerInteraction  {
 
-    bool isPortalUsed;
+    public bool isPortalTutorial = false;
+    bool isPortalUsed = false;
 
     public void Apply()
     {
-        if (GameManager.gameState == GameState.Ingame)
-            StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Portal));
-        else if (GameManager.gameState == GameState.Tutorial && !isPortalUsed)
+        if (isPortalTutorial && !isPortalUsed)
         {
             StartCoroutine(GameManager.Instance.EndTutorial());
             isPortalUsed = true;
         }
+        else if (GameManager.gameState == GameState.Ingame && !isPortalTutorial)
+            StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Portal));
+        
     }
 
     public void HighlightSwitch(bool enabled)

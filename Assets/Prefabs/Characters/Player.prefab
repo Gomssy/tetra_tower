@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 114906702720267008}
   - component: {fileID: 95992411616135034}
   - component: {fileID: 114880704145925944}
+  - component: {fileID: 114574072693989902}
   - component: {fileID: 82529156342294766}
   m_Layer: 0
   m_Name: Player
@@ -59,7 +60,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1623439448163086}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.56, y: 0.08, z: 0}
+  m_LocalPosition: {x: -5.64, y: 1.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4710911479571038}
@@ -361,6 +362,27 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   attackCombo: 
+--- !u!114 &114574072693989902
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1623439448163086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4458b2b5e7c3f842b29e2121f8400ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spikeTile:
+  - {fileID: 11400000, guid: 7f2c5cb43ad7207499b22fb5e0acd41a, type: 2}
+  - {fileID: 11400000, guid: f411e29431b787c4ab84b5ff59ca5e6e, type: 2}
+  - {fileID: 11400000, guid: 85440e0dd81e48840947ce485614bab6, type: 2}
+  - {fileID: 11400000, guid: 7dbb7c55a3417f54fbd38fafb369478e, type: 2}
+  rb: {fileID: 0}
+  SpikeLayer: 10
+  spikeDamage: 5
+  spikeKnockBackx: 8
+  spikeKnockBacky: 8
 --- !u!114 &114880704145925944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -387,7 +409,6 @@ MonoBehaviour:
   - {fileID: 7400000, guid: b1bf5cd583e214e448b83335f6c2d7a6, type: 2}
   - {fileID: 7400000, guid: b7ca0c87c2a73cb4e939b4d06abd4217, type: 2}
   - {fileID: 7400000, guid: 9133e696bcae7294c86f6702b20b4ae7, type: 2}
-  lifeStoneManager: {fileID: 0}
 --- !u!114 &114906702720267008
 MonoBehaviour:
   m_ObjectHideFlags: 1

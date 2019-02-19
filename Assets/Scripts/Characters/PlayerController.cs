@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
         }
         isGrounded = tmp;
 
-        if (GameManager.gameState == GameState.Tutorial || GameManager.gameState == GameState.Ingame)
+        if (GameManager.gameState == GameState.Ingame)
         {
             if (playerState == PlayerState.Attack)
             {

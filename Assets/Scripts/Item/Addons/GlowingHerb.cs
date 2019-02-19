@@ -22,7 +22,7 @@ public class GlowingHerb : Addon
         float[] varArray = new float[(int)EnemyDebuffCase.END_POINTER];
         for (int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++) varArray[i] = 0f;
 
-        varArray[(int)EnemyDebuffCase.fire] = 3f;
+        varArray[(int)EnemyDebuffCase.Fire] = 3f;
 
         return varArray;
     }

@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour {
     // Update is called once per frame
     void LateUpdate()
     {
-        if (GameManager.gameState == GameState.Tutorial || (GameManager.gameState == GameState.Ingame && MapManager.tempRoom == MapManager.currentRoom))
+        if (GameManager.gameState == GameState.Ingame)
         {
             FollowPlayer();
             originPos = transform.position;
@@ -166,22 +166,6 @@ public class CameraController : MonoBehaviour {
                 if (position.x + cameraXLimit >= MapManager.currentRoom.transform.position.x + MapManager.currentRoom.roomInGame.roomSize.x - 1)
                     return MapManager.currentRoom.transform.position.x + MapManager.currentRoom.roomInGame.roomSize.x - 1;
                 break;
-            /*case "Up":
-                if (position.y + cameraYLimit >= MapManager.Instance.tetrisYCoord[(int)MapManager.Instance.currentRoom.mapCoord.y] + 23f)
-                    return MapManager.Instance.tetrisYCoord[(int)MapManager.Instance.currentRoom.mapCoord.y] + 23f;
-                break;
-            case "Down":
-                if (position.y - cameraYLimit <= MapManager.Instance.tetrisYCoord[(int)MapManager.Instance.currentRoom.mapCoord.y] + 1f)
-                    return MapManager.Instance.tetrisYCoord[(int)MapManager.Instance.currentRoom.mapCoord.y] + 1f;
-                break;
-            case "Left":
-                if (position.x - cameraXLimit <= Player.tx * 24f + 1)
-                    return Player.tx * 24f + 1;
-                break;
-            case "Right":
-                if (position.x + cameraXLimit >= (Player.tx + 1) * 24f - 1)
-                    return (Player.tx + 1) * 24f - 1;
-                break;*/
         }
         return -1;
     }

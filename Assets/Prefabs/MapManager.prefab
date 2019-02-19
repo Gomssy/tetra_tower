@@ -132,7 +132,7 @@ MonoBehaviour:
   - {fileID: 114453972306455548, guid: f6834170b7152ee4db0dc7e165dcca70, type: 2}
   - {fileID: 114384035641513528, guid: a2dadbc92c7cc7e449233fae6430dee7, type: 2}
   - {fileID: 114704192105535744, guid: a121f45347e4c3d4faf83b4e681c84f0, type: 2}
-  - {fileID: 114792926073732986, guid: 0443c2e9410bbe545bda40dc30fa6a63, type: 2}
+  - {fileID: 114792926073732986, guid: 7b5317162788b8d4daa13ea5c6dd368b, type: 2}
   - {fileID: 114844722971494232, guid: 4643eac2d148bd146be89238dcdfa419, type: 2}
   specialRoomList2:
   - {fileID: 114330503780891850, guid: 7da800d1a4355fd4aa02e3518cd9e1fb, type: 2}
@@ -143,7 +143,7 @@ MonoBehaviour:
   - {fileID: 114453972306455548, guid: f6834170b7152ee4db0dc7e165dcca70, type: 2}
   - {fileID: 114384035641513528, guid: a2dadbc92c7cc7e449233fae6430dee7, type: 2}
   - {fileID: 114704192105535744, guid: a121f45347e4c3d4faf83b4e681c84f0, type: 2}
-  - {fileID: 114792926073732986, guid: 0443c2e9410bbe545bda40dc30fa6a63, type: 2}
+  - {fileID: 114792926073732986, guid: 7b5317162788b8d4daa13ea5c6dd368b, type: 2}
   - {fileID: 114844722971494232, guid: 4643eac2d148bd146be89238dcdfa419, type: 2}
   roomSurfaceSprite1:
   - {fileID: 21300000, guid: 5e6d29c00a95b8140a33c81d93aac0b2, type: 3}

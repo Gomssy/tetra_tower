@@ -22,7 +22,7 @@ public class CoollyPride : Addon
         float[] varArray = new float[(int)EnemyDebuffCase.END_POINTER];
         for (int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++) varArray[i] = 0f;
 
-        if (attackInfo.damage < 4) varArray[(int)EnemyDebuffCase.ice] = 2f;
+        if (attackInfo.damage < 4) varArray[(int)EnemyDebuffCase.Ice] = 2f;
 
         return varArray;
     }

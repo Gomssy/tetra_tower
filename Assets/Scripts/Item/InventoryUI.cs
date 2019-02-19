@@ -37,7 +37,7 @@ public class InventoryUI : MonoBehaviour {
     public int selectedItem = -1;
     string[] qualityString = new string[4] { "습작", "범작", "수작", "걸작" };
 
-	void Start () {
+	void Awake () {
         items = new GameObject[9];
         addons = new GameObject[9];
         infoAddons = new GameObject[4];

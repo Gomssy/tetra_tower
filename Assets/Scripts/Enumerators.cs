@@ -61,7 +61,7 @@ public enum PlayerState { Idle, Walk, Run, GoingUp, GoingDown, Rope, Attack }
 /// <summary>
 /// Enum for game's state.
 /// </summary>
-public enum GameState { MainMenu, Ingame, Tutorial, Tetris, Portal, Inventory, Pause, GameOver }
+public enum GameState { MainMenu, Ingame, Tetris, Portal, Inventory, Pause, GameOver }
 /// <summary>
 /// Enum for room types.
 /// </summary>

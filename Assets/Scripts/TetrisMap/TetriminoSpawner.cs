@@ -101,10 +101,10 @@ public Tetrimino[] tetriminoes;
             MapManager.Instance.UpdateMap(MapManager.currentTetrimino);
             MapManager.Instance.CreateRoom(MapManager.currentTetrimino);
             MapManager.currentRoom.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-            MapManager.Instance.playerIcon.transform.position = MapManager.currentRoom.mapCoord * MapManager.tetrisMapSize + new Vector3(0, 0, -2);
+            //MapManager.Instance.playerIcon.transform.position = MapManager.currentRoom.mapCoord * MapManager.tetrisMapSize + new Vector3(0, 0, -2);
             MapManager.tempRoom = MapManager.currentRoom;
-            MapManager.Instance.playerIcon = Instantiate(MapManager.Instance.playerIcon, MapManager.currentRoom.mapCoord * MapManager.tetrisMapSize + new Vector3(0, 0, -2)
-                , Quaternion.identity, MapManager.Instance.grid);
+            MapManager.Instance.playerIcon = Instantiate(MapManager.Instance.playerIcon, new Vector3(0, 0, 0), Quaternion.identity, MapManager.currentRoom.transform);
+            MapManager.Instance.playerIcon.transform.localPosition = new Vector3(0, 0, 0);
             MakeTetrimino();
         }
     }

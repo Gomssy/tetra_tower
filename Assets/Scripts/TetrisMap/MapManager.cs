@@ -864,6 +864,8 @@ public class MapManager : Singleton<MapManager> {
         else
             room.GetComponent<SpriteRenderer>().sprite = roomSurfaceSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
         currentRoom = newRoom;
+        playerIcon.transform.parent = currentRoom.transform;
+        MapManager.Instance.playerIcon.transform.localPosition = new Vector3(0, 0, 0);
         StartCoroutine(RoomFadeIn(newRoom));
     }
     /// <summary>
@@ -1183,7 +1185,7 @@ public class MapManager : Singleton<MapManager> {
             {
                 PortalControl();
             }
-            playerIcon.transform.position = currentRoom.mapCoord * tetrisMapSize + new Vector3(0, 0, grid.transform.position.z - 2);
+            //playerIcon.transform.position = currentRoom.mapCoord * tetrisMapSize + new Vector3(0, 0, grid.transform.position.z - 2);
             if (!currentRoom.isRoomCleared && (EnemyManager.Instance.IsClear() || (currentRoom.specialRoomType != RoomType.Normal && currentRoom.specialRoomType != RoomType.Boss)))
             {
                 currentRoom.ClearRoom();
