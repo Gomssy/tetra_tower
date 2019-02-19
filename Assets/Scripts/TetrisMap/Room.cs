@@ -88,6 +88,10 @@ public class Room : MonoBehaviour
     /// </summary>
     public bool isRoomCleared;
     /// <summary>
+    /// Check if door is closing or not.
+    /// </summary>
+    public bool isDoorWorking = false;
+    /// <summary>
     /// Check if room is destroyed.
     /// </summary>
     public bool isRoomDestroyed = false;
@@ -215,9 +219,8 @@ public class Room : MonoBehaviour
             }
             if (isPortal)
             {
-                MapManager mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
                 portal = roomInGame.transform.Find("portal spot").gameObject;
-                portal = Instantiate(mapManager.portal, portal.transform.position, Quaternion.identity, roomInGame.transform);
+                portal = Instantiate(MapManager.Instance.portal, portal.transform.position, Quaternion.identity, roomInGame.transform);
             }
         }
     }
@@ -373,7 +376,7 @@ public class Room : MonoBehaviour
             OpenDoor("Right");
             Vector3 fogPosition = fog.transform.position;
             Destroy(fog);
-            fog = Instantiate(GameObject.Find("MapManager").GetComponent<MapManager>().clearedFog, fogPosition, Quaternion.identity, transform);
+            fog = Instantiate(MapManager.Instance.clearedFog, fogPosition, Quaternion.identity, transform);
             fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
             if(specialRoomType != RoomType.Start)
                 CreatePortal();
@@ -391,7 +394,7 @@ public class Room : MonoBehaviour
                             MapManager.portalDistributedHorizontal[x].Add(y);
                             MapManager.portalDistributedVertical[y].Add(x);
                         }
-                portalSurface = Instantiate(GameObject.Find("MapManager").GetComponent<MapManager>().portalSurface, transform.position + new Vector3(12, 12, 0), Quaternion.identity, transform);
+                portalSurface = Instantiate(MapManager.Instance.portalSurface, transform.position + new Vector3(12, 12, 0), Quaternion.identity, transform);
             }
             isRoomCleared = true;
             if (specialRoomType == RoomType.Boss)

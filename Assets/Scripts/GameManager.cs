@@ -1,9 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : Singleton<GameManager> {
 
     /// <summary>
     /// Which state this game is.
@@ -11,25 +10,55 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public static GameState gameState;
 
-    Vector3 warpPosition = new Vector3(2, 1, 0);
+    /// <summary>
+    /// Position where portal would spawn player.
+    /// </summary>
+    Vector3 spawnPosition = new Vector3(2, 1, 0);
 
+    public GameObject minimap;
     public Canvas gameOverCanvas;
     public Canvas inventoryCanvas;
 
-    public void RestartGame()
+    // method
+    // Constructor - protect calling raw constructor
+    protected GameManager() { }
+
+    /// <summary>
+    /// Ends the tutorial and start real game.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator EndTutorial()
     {
-        gameOverCanvas.gameObject.SetActive(false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        yield return new WaitForSeconds(1f);
+        gameState = GameState.Ingame;
+        Destroy(MapManager.currentRoom.gameObject);
+        minimap.SetActive(true);
+        TetriminoSpawner.Instance.MakeInitialTetrimino();
+        GameObject.Find("Player").transform.position = MapManager.currentRoom.roomInGame.transform.Find("portal spot").position + spawnPosition;
+        GameObject.Find("Main Camera").transform.position = GameObject.Find("Player").transform.position + new Vector3(0, 0, -1);
     }
 
+    /// <summary>
+    /// Restarts the game.
+    /// </summary>
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("PlayScene");
+    }
+
+    void Awake()
+    {
+
+    }
 
     // Use this for initialization
     void Start () {
-        gameState = GameState.Ingame;
-        GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>().MakeInitialTetrimino();
-        Vector2 coord = MapManager.currentRoom.transform.position;
-        GameObject.Find("Player").transform.position = MapManager.currentRoom.roomInGame.transform.Find("portal spot").position + warpPosition;
-        GameObject.Find("Main Camera").transform.position = GameObject.Find("Player").transform.position;
+        gameState = GameState.Tutorial;
+        minimap = GameObject.Find("Minimap");
+        minimap.SetActive(false);
+        MapManager.currentRoom = GameObject.Find("Room Tutorial").GetComponent<Room>();
+        GameObject.Find("Player").transform.position = MapManager.currentRoom.roomInGame.transform.Find("player spot").position + spawnPosition;
+        GameObject.Find("Main Camera").transform.position = GameObject.Find("Player").transform.position + new Vector3(0, 0, -1);
     }
 	
 	// Update is called once per frame
@@ -65,10 +94,10 @@ public class GameManager : MonoBehaviour {
             {
                 if (gameState == GameState.Portal && MapManager.currentRoom != MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y])
                 {
-                    GameObject.Find("Player").transform.position = MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portal.transform.position + warpPosition;
-                    GameObject.Find("MapManager").GetComponent<MapManager>().ChangeRoom(MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y]);
+                    GameObject.Find("Player").transform.position = MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portal.transform.position + spawnPosition;
+                    MapManager.Instance.ChangeRoom(MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y]);
                     MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
-                        GameObject.Find("MapManager").GetComponent<MapManager>().portalExist;
+                        MapManager.Instance.portalExist;
                     StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
                 }
             }
@@ -77,9 +106,9 @@ public class GameManager : MonoBehaviour {
                 if(gameState == GameState.Portal)
                 {
                     MapManager.mapGrid[(int)MapManager.currentRoom.mapCoord.x, (int)MapManager.currentRoom.mapCoord.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
-                        GameObject.Find("MapManager").GetComponent<MapManager>().portalExist;
+                        MapManager.Instance.portalExist;
                     MapManager.mapGrid[(int)MapManager.currentRoom.mapCoord.x, (int)MapManager.currentRoom.mapCoord.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
-                        GameObject.Find("MapManager").GetComponent<MapManager>().portalExist;
+                        MapManager.Instance.portalExist;
                     StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Ingame));
                 }
                 else if(gameState == GameState.Inventory)
@@ -92,8 +121,10 @@ public class GameManager : MonoBehaviour {
         if(gameState == GameState.GameOver)
         {
             if(gameOverCanvas.isActiveAndEnabled == false)
+            {
                 Debug.Log("Game Over");
-            gameOverCanvas.gameObject.SetActive(true);
+                gameOverCanvas.gameObject.SetActive(true);
+            }
         }
     }
 }

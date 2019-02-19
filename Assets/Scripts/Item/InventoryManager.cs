@@ -23,7 +23,7 @@ public class InventoryManager : MonoBehaviour {
 
         SetPool();
 
-        ItemInstantiate("Dagger", player.transform.position, 0f);
+        //ItemInstantiate("Dagger", player.transform.position, 0f);
 
         StartCoroutine(TestCoroutine());
     }

@@ -4,10 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Test : MonoBehaviour {
-
-    MapManager mapManager;
-    EnemyManager enemyManager;
-    TetriminoSpawner tetriminoSpawner;
+    
     public static Vector3 tetrisCameraCoord = new Vector3(180, 0, -1);
     public static float tetrisMapSize = 300;
     public Text timer;
@@ -19,11 +16,11 @@ public class Test : MonoBehaviour {
     {
         Destroy(MapManager.currentTetrimino.gameObject);
         Destroy(MapManager.currentGhost.gameObject);
-        tetriminoSpawner.MakeTetrimino();
+        TetriminoSpawner.Instance.MakeTetrimino();
     }
     public void SpawnBossTetrimino()
     {
-        mapManager.spawnBossTetrimino = true;
+        MapManager.Instance.spawnBossTetrimino = true;
     }
     public void UpgradeStage()
     {
@@ -32,15 +29,15 @@ public class Test : MonoBehaviour {
     }
     public void Gold()
     {
-        mapManager.UpgradeRoom(RoomType.Gold);
+        MapManager.Instance.UpgradeRoom(RoomType.Gold);
     }
     public void Amethyst()
     {
-        mapManager.UpgradeRoom(RoomType.Amethyst);
+        MapManager.Instance.UpgradeRoom(RoomType.Amethyst);
     }
     public void BothSide()
     {
-        mapManager.UpgradeRoom(RoomType.BothSide);
+        MapManager.Instance.UpgradeRoom(RoomType.BothSide);
     }
     public void Boss()
     {
@@ -48,7 +45,7 @@ public class Test : MonoBehaviour {
     }
     public void Timer()
     {
-        timer.text = (mapManager.timeToFallTetrimino - mapManager.tetriminoWaitedTime).ToString();
+        timer.text = (MapManager.Instance.timeToFallTetrimino - MapManager.Instance.tetriminoWaitedTime).ToString();
     }
     public void ClearRoom()
     {
@@ -56,16 +53,13 @@ public class Test : MonoBehaviour {
     }
     public void SummonEnemy()
     {
-        enemyManager.SpawnEnemyToMap();
+        EnemyManager.Instance.SpawnEnemyToMap();
     }
 
 
     private void Awake()
     {
         //leftDoor.GetComponent<Animator>().SetInteger("doorPosition", 3);
-        enemyManager = EnemyManager.Instance;
-        mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
-        tetriminoSpawner = GameObject.Find("TetriminoSpawner").GetComponent<TetriminoSpawner>();
     }
     // Use this for initialization
     void Start () {
