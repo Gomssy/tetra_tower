@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour {
+public class InventoryManager : Singleton<InventoryManager> {
 
     public List<Item> itemList = new List<Item>();
     public List<Addon> addonList = new List<Addon>();
@@ -23,8 +23,7 @@ public class InventoryManager : MonoBehaviour {
 
         SetPool();
 
-        //ItemInstantiate("Dagger", player.transform.position, 0f);
-
+        ItemInstantiate("Dagger", player.transform.position, 0f);
         StartCoroutine(TestCoroutine());
     }
     /// <summary>
@@ -227,6 +226,8 @@ public class InventoryManager : MonoBehaviour {
 
         itemList.Add(item);
         ui.SetOnPosition(itemList, addonList);
+
+        Debug.Log(itemList[0].combo[0] + " " + itemList[0].combo[1]);
         return true;
     }
     /// <summary>

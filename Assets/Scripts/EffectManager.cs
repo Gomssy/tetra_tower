@@ -14,7 +14,7 @@ public class EffectManager : Singleton<EffectManager> {
         effectArray = new GameObject[20];
         for (int i = 0; i < effectArray.Length; i++)
         {
-            effectArray[i] = Instantiate(effectPrefab);
+            effectArray[i] = Instantiate(effectPrefab,transform);
             effectArray[i].SetActive(false);
         }
         

@@ -3,26 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMeleeTrack : StateMachineBehaviour {
-	GameObject player;
-	float trackSpeed;
-	float attackRange;
-	Vector3 leftsideAngle = new Vector3(0, 0, 0);
-	Vector3 rightsideAngle = new Vector3(0, 180, 0);
-    Transform pivotTransform;
-    readonly int maxFrame = 10;
-    int frameCounter;
+    float trackSpeed;
+    float attackRange;
+    GameObject player;
+    Transform animatorRoot;
+    Enemy enemy;
 
-	// OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        trackSpeed = animator.GetComponent<Enemy>().trackSpeed;
-        attackRange = animator.GetComponent<Enemy>().attackRange;
+    readonly int maxFrame = 10;
+    int frameCounter = 0;
+
+    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        animatorRoot = animator.transform.parent;
+        enemy = animator.GetComponent<Enemy>();
         player = EnemyManager.Instance.Player;
 
-        pivotTransform = animator.transform.parent;
-        float halfHeight = pivotTransform.gameObject.GetComponent<BoxCollider2D>().size.y / 2.0f;
-        Vector2 rootPosition2D = pivotTransform.position;
-        frameCounter = 0;
-	}
+        trackSpeed = enemy.trackSpeed;
+        attackRange = enemy.attackRange;
+
+        NumeratedDir trackDir = (animatorRoot.position.x - player.transform.position.x > 0) ? NumeratedDir.Left : NumeratedDir.Right;
+        enemy.ChangeDir(trackDir);
+        if (enemy.CliffTest[(enemy.MoveDir + 1) / 2] || animator.GetComponent<Enemy>().PlayerDistance < attackRange)
+        {
+            enemy.ChangeVelocityX(0.0f);
+        }
+        else
+        {
+            enemy.ChangeVelocityX(enemy.MoveDir * trackSpeed);
+        }
+    }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
@@ -31,18 +40,24 @@ public class EnemyMeleeTrack : StateMachineBehaviour {
             animator.SetTrigger("AttackTrigger");
             return;
         }
+        int integerDir = enemy.MoveDir;
+        if (enemy.WallTest[(integerDir + 1) / 2] || enemy.CliffTest[(integerDir + 1) / 2])
+        {
+            enemy.ChangeVelocityX(0.0f);
+        }
+        else
+        {
+            enemy.ChangeVelocityX(enemy.MoveDir * trackSpeed);
+        }
+
         frameCounter += 1;
         if (frameCounter >= maxFrame)
         {
-            pivotTransform.eulerAngles = (player.transform.position.x - pivotTransform.position.x < 0) ? leftsideAngle : rightsideAngle;
+            NumeratedDir trackDir = (animatorRoot.position.x - player.transform.position.x > 0) ? NumeratedDir.Left : NumeratedDir.Right;
+            enemy.ChangeDir(trackDir);
             frameCounter = 0;
         }
-
-        Vector2 currPosition = pivotTransform.position;
-		Vector2 movingDistance = pivotTransform.right * trackSpeed * Time.deltaTime * -1;
-        pivotTransform.gameObject.GetComponent<Rigidbody2D>().MovePosition(currPosition + movingDistance);
-
-	}
+    }
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	//override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

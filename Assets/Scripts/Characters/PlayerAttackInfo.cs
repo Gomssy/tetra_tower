@@ -5,15 +5,18 @@ using UnityEngine;
 public class PlayerAttackInfo {
     public float damage = 0;
     public float knockBackMultiplier = 1f;
-    public int debuffNum = 0;
-    public EnemyDebuffCase[] debuffType = new EnemyDebuffCase[10];
-    public int[] debuffTime = new int[10];
-    public PlayerAttackInfo(float damage, float knockBackMultiplier, int debuffNum, EnemyDebuffCase[] debuffType, int[] debuffTime)
+    public float[] debuffTime = new float[(int)EnemyDebuffCase.END_POINTER];
+    public PlayerAttackInfo(float damage, float knockBackMultiplier, float[] debuffTime)
     {
         this.damage = damage;
         this.knockBackMultiplier = knockBackMultiplier;
-        this.debuffNum = debuffNum;
-        this.debuffType = debuffType;
         this.debuffTime = debuffTime;
     }
+    public PlayerAttackInfo(PlayerAttackInfo origin)
+    {
+        damage = origin.damage;
+        knockBackMultiplier = origin.knockBackMultiplier;
+        debuffTime = origin.debuffTime;
+    }
 }
+

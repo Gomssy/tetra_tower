@@ -3,39 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMeleeIdle : StateMachineBehaviour {
-
-	Vector2 origin;
 	float patrolRange;
 	float patrolSpeed;
 	float noticeRange;
-	Vector3 leftsideAngle = new Vector3(0, 0, 0);
-	Vector3 rightsideAngle = new Vector3(0, 180, 0);
+    Vector2 origin;
     Transform animatorRoot;
-
+    Enemy enemy;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		origin = animator.transform.position;
-        patrolRange = animator.GetComponent<Enemy>().patrolRange;
-        noticeRange = animator.GetComponent<Enemy>().noticeRange;
-        patrolSpeed = animator.GetComponent<Enemy>().patrolSpeed;
         animatorRoot = animator.transform.parent;
+        enemy = animator.GetComponent<Enemy>();
+
+        patrolRange = enemy.patrolRange;
+        noticeRange = enemy.noticeRange;
+        patrolSpeed = enemy.patrolSpeed;
+
+        enemy.ChangeDir(NumeratedDir.Left);
+        enemy.ChangeVelocityX(enemy.MoveDir * patrolSpeed);
     }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		if (animator.GetComponent<Enemy>().PlayerDistance < noticeRange)
+		if (enemy.PlayerDistance < noticeRange)
 		{
 			animator.SetTrigger("TrackTrigger");
 			return;
 		}
-		Vector2 currPosition = animatorRoot.position;
-		Vector2 movingDistance = -1 * animatorRoot.right * patrolSpeed * Time.deltaTime; // go left first
-        animatorRoot.gameObject.GetComponent<Rigidbody2D>().MovePosition(currPosition + movingDistance);
-		if(Mathf.Abs(animatorRoot.position.x - origin.x) > patrolRange)
-		{
-            animatorRoot.eulerAngles = (origin.x < animatorRoot.position.x) ? leftsideAngle : rightsideAngle;
-		}
+        if (!enemy.MovementLock)
+        {
+            float span = animatorRoot.position.x - origin.x;
+            
+            if ((Mathf.Abs(span) > patrolRange && span * enemy.MoveDir > 0) ||
+                enemy.WallTest[(enemy.MoveDir + 1) / 2] ||
+                enemy.CliffTest[(enemy.MoveDir + 1) / 2]
+            )
+            {
+                enemy.ChangeDir(enemy.MoveDir * -1);
+                enemy.ChangeVelocityX(enemy.MoveDir * patrolSpeed);
+            }
+        }
 	}
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state

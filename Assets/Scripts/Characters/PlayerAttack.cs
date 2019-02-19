@@ -14,7 +14,7 @@ public class PlayerAttack : MonoBehaviour {
     public Animator anim;
     public AnimatorOverrideController aoc;
     public AnimationClip[] normalAttack = new AnimationClip[3];
-    public InventoryManager inventoryManager;
+    InventoryManager inventoryManager;
     public LifeStoneManager lifeStoneManager;
 
     float comboEndTime;
@@ -24,6 +24,7 @@ public class PlayerAttack : MonoBehaviour {
     
     void Awake ()
     {
+        inventoryManager = InventoryManager.Instance;
         playerController = GetComponent<PlayerController>();
         anim = GetComponent<Animator>();
         aoc = new AnimatorOverrideController(anim.runtimeAnimatorController);
@@ -132,13 +133,14 @@ public class PlayerAttack : MonoBehaviour {
     void CheckCombo()
     {
         List<Item> itemList = inventoryManager.itemList;
-        foreach(Item item in itemList)
+
+        
+        foreach (Item item in itemList)
         {
             for(int i=0; i< item.skillNum; i++)
             {
                 if(item.combo[i].Equals(comboArray))
                 {
-                    
                     aoc["PlayerAttackAnim"] = item.animation[i];
                     anim.SetTrigger("attack");
                     item.ComboAction(i);
@@ -146,6 +148,7 @@ public class PlayerAttack : MonoBehaviour {
                     if (playerController.playerState != PlayerState.GoingUp && playerController.playerState != PlayerState.GoingDown)
                         GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x,-0.5f,0.5f), GetComponent<Rigidbody2D>().velocity.y);
                     playerController.playerState = PlayerState.Attack;
+                    
                     return;
                 }
             }
@@ -158,7 +161,6 @@ public class PlayerAttack : MonoBehaviour {
             GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x, -0.5f, 0.5f),GetComponent<Rigidbody2D>().velocity.y);
         playerController.playerState = PlayerState.Attack;
         if (!CheckLongerCombo()) comboArray = comboArray[comboArray.Length - 1] + "";
-
     }
 
     bool CheckLongerCombo()

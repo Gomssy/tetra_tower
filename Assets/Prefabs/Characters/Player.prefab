@@ -367,7 +367,7 @@ MonoBehaviour:
   comboTime: 1
   time: {fileID: 0}
   combo: {fileID: 0}
-  comboArray: AB
+  comboArray: 
   StartTime: 0
   anim: {fileID: 95992411616135034}
   aoc: {fileID: 0}
