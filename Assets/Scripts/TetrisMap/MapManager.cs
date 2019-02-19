@@ -7,7 +7,6 @@ public class MapManager : Singleton<MapManager> {
     /*
      * variables
      * */
-    LifeStoneManager lifeStoneManager;
     public GameObject player;
     /// <summary>
     /// Grid showing tiles.
@@ -731,11 +730,11 @@ public class MapManager : Singleton<MapManager> {
             {
                 MoveTetriminoHorizontal(currentTetrimino, new Vector3((int)Input.GetAxisRaw("TetriminoHorizontal"), 0, 0));
             }
-            else if (Input.GetKeyDown(KeyCode.Space) && lifeStoneManager.CountType(LifeStoneType.Gold) >= tetriminoCost)
+            else if (Input.GetKeyDown(KeyCode.Space) && LifeStoneManager.Instance.CountType(LifeStoneType.Gold) >= tetriminoCost)
             {
                 isTetriminoFalling = true;
                 TetriminoMapCoordDown(currentTetrimino);
-                lifeStoneManager.ChangeToNormal(LifeStoneType.Gold, tetriminoCost);
+                LifeStoneManager.Instance.ChangeToNormal(LifeStoneType.Gold, tetriminoCost);
             }
         }
     }
@@ -1155,7 +1154,6 @@ public class MapManager : Singleton<MapManager> {
             roomBackgroundSpritesDistributed[3].Add(roomBackgroundSprite4[i]);
         for (int i = 0; i < roomBackgroundSprite5.Length; i++)
             roomBackgroundSpritesDistributed[4].Add(roomBackgroundSprite5[i]);*/
-        lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
         currentStage = 0;
         player = GameObject.Find("Player");
         grid = GameObject.Find("Grid").transform;

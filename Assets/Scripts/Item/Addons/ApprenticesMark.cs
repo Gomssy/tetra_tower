@@ -9,11 +9,16 @@ public class ApprenticesMark : Addon
 {
     public override void Declare()
     {
-        id = 1; name = "apprentice's mark";
+        id = 1; name = "수습생의 표식";
         quality = ItemQuality.Study;
         type = AddonType.Prop;
         sprite = Resources.Load<Sprite>("Sprites/Addons/apprentice's mark"); ;
-        highlight = Resources.Load<Sprite>("Sprites/Addons/apprentice's mark"); ;
-        sizeInventory = new Vector2(80, 80);
+        highlight = Resources.Load<Sprite>("Sprites/Addons/apprentice's mark_border"); ;
+        sizeInventory = new Vector2(65, 80);
+    }
+
+    public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
+    {
+        return 1.25f;
     }
 }

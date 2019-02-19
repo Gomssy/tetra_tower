@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour {
     {
         enemyManager = EnemyManager.Instance;
         inventoryManager = InventoryManager.Instance;
-        lifeStoneManager = GameObject.Find("UI Canvas").transform.GetChild(0).GetComponent<LifeStoneManager>();
+        lifeStoneManager = LifeStoneManager.Instance;
         animator = GetComponent<Animator>();
 
         WallTest = new bool[] { false, false };

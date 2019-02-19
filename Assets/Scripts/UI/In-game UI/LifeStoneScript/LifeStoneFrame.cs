@@ -102,7 +102,7 @@ public class LifeStoneFrame : MonoBehaviour {
             if (a == 0) break;
             yield return null;
         }
-        StartCoroutine(GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>().VibrateEnumerator(30));
+        StartCoroutine(LifeStoneManager.Instance.VibrateEnumerator(30));
 
     }
 

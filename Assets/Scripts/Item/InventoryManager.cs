@@ -22,8 +22,11 @@ public class InventoryManager : Singleton<InventoryManager> {
         player = GameObject.Find("Player");
 
         SetPool();
-
         ItemInstantiate("Dagger", player.transform.position, 0f);
+        AddonInstantiate("ParchmentPiece", player.transform.position, 0f);
+        AddonInstantiate("Gluttony", player.transform.position, 0f);
+        ItemInstantiate("Bow", player.transform.position, 0f);
+
         StartCoroutine(TestCoroutine());
     }
     /// <summary>
@@ -55,13 +58,17 @@ public class InventoryManager : Singleton<InventoryManager> {
 
 
         addonPool[0].Add("ParchmentPiece");
-        addonPool[0].Add("KnightsStirrup");
         addonPool[0].Add("ApprenticesMark");
 
-        addonPool[1].Add("GlowingHerb");
+        addonPool[1].Add("BlacksmithsBrooch");
         addonPool[1].Add("CoollyPride");
+        addonPool[1].Add("GlowingHerb");
+        addonPool[1].Add("Gluttony");
+        addonPool[1].Add("SmallLens");
 
-        //addonPool[2].Add("");
+        addonPool[2].Add("JanusCoin");
+        addonPool[2].Add("DesignofRagur");
+        addonPool[2].Add("Sandbag");
 
         //addonPool[3].Add("");
 
@@ -85,8 +92,8 @@ public class InventoryManager : Singleton<InventoryManager> {
     }
     IEnumerator TestCoroutine()
     {
-        yield return null;
-
+        yield return new WaitForSeconds(1.5f); ;
+        
     }
 
     IEnumerator PopoutCoroutine(GameObject obj)
@@ -226,8 +233,7 @@ public class InventoryManager : Singleton<InventoryManager> {
 
         itemList.Add(item);
         ui.SetOnPosition(itemList, addonList);
-
-        Debug.Log(itemList[0].combo[0] + " " + itemList[0].combo[1]);
+        
         return true;
     }
     /// <summary>

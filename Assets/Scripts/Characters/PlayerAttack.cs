@@ -7,6 +7,7 @@ public class PlayerAttack : MonoBehaviour {
     public bool cancel;
     public bool playingSkill;
     private bool comboEndDelay = true;
+    public float originComboTime;
     public float comboTime;
     public Text time, combo;
     public string comboArray;
@@ -15,17 +16,20 @@ public class PlayerAttack : MonoBehaviour {
     public AnimatorOverrideController aoc;
     public AnimationClip[] normalAttack = new AnimationClip[3];
     InventoryManager inventoryManager;
-    public LifeStoneManager lifeStoneManager;
+    LifeStoneManager lifeStoneManager;
 
     float comboEndTime;
     bool comboTimeOn;
     PlayerController playerController;
+    AttackProperty attackProperty;
 
     
     void Awake ()
     {
+        lifeStoneManager = LifeStoneManager.Instance;
         inventoryManager = InventoryManager.Instance;
         playerController = GetComponent<PlayerController>();
+        attackProperty = GetComponentInChildren<AttackProperty>();
         anim = GetComponent<Animator>();
         aoc = new AnimatorOverrideController(anim.runtimeAnimatorController);
         anim.runtimeAnimatorController = aoc;
@@ -51,6 +55,7 @@ public class PlayerAttack : MonoBehaviour {
                     if (playerController.playerState == PlayerState.GoingUp || playerController.playerState == PlayerState.GoingDown)
                         playerController.airAttack = false;
                     comboArray += (char)('A' + i);
+                    attackProperty.Init(comboArray);
                     CheckCombo();
                     SetComboText();
                     break;
@@ -116,6 +121,7 @@ public class PlayerAttack : MonoBehaviour {
     IEnumerator SkillEndCoroutine()
     {
         comboEndTime = Time.time + comboTime;
+        comboTime = originComboTime;
         comboTimeOn = true;
         while (Time.time < comboEndTime && comboTimeOn && !playingSkill)
         {

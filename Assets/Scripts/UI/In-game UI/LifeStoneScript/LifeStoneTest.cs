@@ -13,7 +13,7 @@ public class LifeStoneTest : MonoBehaviour {
 
     private void Start()
     {
-        uii = ui.GetComponent<LifeStoneManager>();
+        uii = LifeStoneManager.Instance;
     }
 
     public void push()

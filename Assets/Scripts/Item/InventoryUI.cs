@@ -30,10 +30,12 @@ public class InventoryUI : MonoBehaviour {
     public GameObject[] infoAddonsFrame;
     public GameObject[] comboStringFrame;
     public GameObject[] comboCharPrefab;
+    public GameObject[] comboNameFrame;
     public float pixelBetweenChar;
     GameObject[,] comboChars = new GameObject[3, 8];
     GameObject[] infoAddons;
     public int selectedItem = -1;
+    string[] qualityString = new string[4] { "습작", "범작", "수작", "걸작" };
 
 	void Start () {
         items = new GameObject[9];
@@ -65,6 +67,7 @@ public class InventoryUI : MonoBehaviour {
                 comboChars[i, j].SetActive(false);
             }
             comboStringFrame[i].SetActive(false);
+            comboNameFrame[i].SetActive(false);
         }
         
         infoSpace.transform.Find("Frame").gameObject.SetActive(false);
@@ -100,11 +103,15 @@ public class InventoryUI : MonoBehaviour {
             frameObj.transform.Find("ItemSprite").gameObject.GetComponent<Image>().sprite = itemFrameQuality[(int)itemList[selectedItem].quality];
             frameObj.transform.Find("ItemSprite").Find("Sprite").gameObject.GetComponent<Image>().sprite = itemList[selectedItem].sprite;
             frameObj.transform.Find("ItemSprite").Find("Sprite").gameObject.GetComponent<RectTransform>().sizeDelta = itemList[selectedItem].sizeInventory;
+            frameObj.transform.Find("ItemDescription").gameObject.GetComponent<Text>().text = itemList[selectedItem].itemInfo;
+            frameObj.transform.Find("ItemDescription").Find("ItemQuality").gameObject.GetComponent<Text>().text = qualityString[(int)itemList[selectedItem].quality];
+            frameObj.transform.Find("ItemDescription").Find("ItemName").gameObject.GetComponent<Text>().text = itemList[selectedItem].name;
             for (int i = 0; i < 3; i++)
             {
                 if (i < itemList[selectedItem].skillNum)
                 {
                     comboStringFrame[i].SetActive(true);
+                    comboNameFrame[i].SetActive(true);
                     float tmpx = 0;
                     for (int j = 0; j < 8; j++)
                     {
@@ -115,6 +122,7 @@ public class InventoryUI : MonoBehaviour {
                             comboChars[i, j].GetComponent<RectTransform>().sizeDelta = comboCharPrefab[itemList[selectedItem].combo[i][j] - 'A'].GetComponent<RectTransform>().sizeDelta;
                             comboChars[i, j].GetComponent<RectTransform>().localPosition = new Vector3(tmpx, 0, 0);
                             tmpx = comboChars[i, j].GetComponent<RectTransform>().sizeDelta.x + pixelBetweenChar;
+                            comboNameFrame[i].GetComponent<Text>().text = itemList[selectedItem].comboName[i];
                         }
                         else
                         {
@@ -140,6 +148,11 @@ public class InventoryUI : MonoBehaviour {
                     infoAddons[i].transform.Find("Sprite").gameObject.GetComponent<Image>().sprite = itemList[selectedItem].addons[i].sprite;
                     infoAddons[i].transform.Find("Sprite").gameObject.GetComponent<RectTransform>().sizeDelta = itemList[selectedItem].addons[i].sizeInventory;
                     infoAddons[i].SetActive(true);
+                    infoAddonsFrame[i].transform.Find("Quality").GetComponent<Text>().text = qualityString[(int)itemList[selectedItem].addons[i].quality];
+                    infoAddonsFrame[i].transform.Find("Name").GetComponent<Text>().text = itemList[selectedItem].addons[i].name;
+                    infoAddonsFrame[i].transform.Find("Description").GetComponent<Text>().text = itemList[selectedItem].addons[i].addonDescription;
+
+
                 }
                 else
                 {

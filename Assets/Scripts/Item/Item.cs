@@ -14,6 +14,8 @@ public abstract class Item {
     public Sprite sprite;
     public Sprite highlight;
     public Vector2 sizeInventory;
+    public string itemInfo;
+    public string[] comboName = new string[3];
 
     public bool ComboAction(string currentCombo)
     {
@@ -24,6 +26,16 @@ public abstract class Item {
                 if (i == 0) PlaySkill1();
                 else if (i == 1) PlaySkill2();
                 else if (i == 2) PlaySkill3();
+
+                OtherEffect(currentCombo);
+                for (int j = 0; j < attachable.Length; j++)
+                {
+                    if (attachable[j] && addons[j] != null)
+                    {
+                        addons[j].OtherEffect(currentCombo);
+                    }
+                }
+
                 return true;
             }
         }
@@ -53,6 +65,9 @@ public abstract class Item {
         animation[1] = null;
         animation[2] = null;
         sizeInventory = new Vector2(0, 0);
+        itemInfo = null;
+        comboName = new string[3] { "", "", "" };
+
     }
     protected virtual void PlaySkill1()
     {
@@ -69,11 +84,13 @@ public abstract class Item {
         PlayerAttackInfo originInfo = new PlayerAttackInfo(attackInfo);
         float[] tmpArray;
 
+        //Adder
         attackInfo.damage += DamageAdder(originInfo, enemyInfo, combo);
         attackInfo.knockBackMultiplier += KnockBackAdder(originInfo, enemyInfo, combo);
         tmpArray = DebuffAdder(originInfo, enemyInfo, combo);
         for (int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++)
             attackInfo.debuffTime[i] += tmpArray[i];
+            
 
         for (int j = 0; j < attachable.Length; j++)
         {
@@ -87,6 +104,7 @@ public abstract class Item {
             }
         }
 
+        //Multiplier
         attackInfo.damage *= DamageMultiplier(originInfo, enemyInfo, combo);
         attackInfo.knockBackMultiplier *= KnockBackMultiplier(originInfo, enemyInfo, combo);
         tmpArray = DebuffMultiplier(originInfo, enemyInfo, combo);
@@ -104,35 +122,87 @@ public abstract class Item {
                     attackInfo.debuffTime[i] *= tmpArray[i];
             }
         }
+
+        //FinalAdder
+        attackInfo.damage += DamageFinalAdder(originInfo, enemyInfo, combo);
+        attackInfo.knockBackMultiplier += KnockBackFinalAdder(originInfo, enemyInfo, combo);
+        tmpArray = DebuffFinalAdder(originInfo, enemyInfo, combo);
+        for (int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++)
+            attackInfo.debuffTime[i] += tmpArray[i];
+
+        for (int j = 0; j < attachable.Length; j++)
+        {
+            if (attachable[j] && addons[j] != null)
+            {
+                attackInfo.damage += addons[j].DamageFinalAdder(originInfo, enemyInfo, combo);
+                attackInfo.knockBackMultiplier += addons[j].KnockBackFinalAdder(originInfo, enemyInfo, combo);
+                tmpArray = addons[j].DebuffFinalAdder(originInfo, enemyInfo, combo);
+                for (int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++)
+                    attackInfo.debuffTime[i] += tmpArray[i];
+            }
+        }
+
+        //OtherEffect
+        OtherEffect(attackInfo, enemyInfo, combo);
+        for (int j = 0; j < attachable.Length; j++)
+        {
+            if (attachable[j] && addons[j] != null)
+            {
+                addons[j].OtherEffect(attackInfo, enemyInfo, combo);
+            }
+        }
     }
-    public virtual float DamageAdder(PlayerAttackInfo attackInfo, Enemy enemInfo, string combo)
+    public virtual float DamageAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
         return 0f;
     }
-    public virtual float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemInfo, string combo)
+    public virtual float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
         return 1f;
     }
-    public virtual float[] DebuffAdder(PlayerAttackInfo attackInfo, Enemy enemInfo, string combo)
+    public virtual float DamageFinalAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
+    {
+        return 0f;
+    }
+    public virtual float[] DebuffAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
         float[] varArray = new float[(int)EnemyDebuffCase.END_POINTER];
         for (int i = 0; i< (int)EnemyDebuffCase.END_POINTER; i++) varArray[i] = 0f;
 
         return varArray;
     }
-    public virtual float[] DebuffMultiplier(PlayerAttackInfo attackInfo, Enemy enemInfo, string combo)
+    public virtual float[] DebuffMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
         float[] varArray = new float[(int)EnemyDebuffCase.END_POINTER];
         for (int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++) varArray[i] = 1f;
 
         return varArray;
     }
-    public virtual float KnockBackAdder(PlayerAttackInfo attackInfo, Enemy enemInfo, string combo)
+    public virtual float[] DebuffFinalAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
+    {
+        float[] varArray = new float[(int)EnemyDebuffCase.END_POINTER];
+        for (int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++) varArray[i] = 0f;
+
+        return varArray;
+    }
+    public virtual float KnockBackAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
         return 0f;
     }
-    public virtual float KnockBackMultiplier(PlayerAttackInfo attackInfo, Enemy enemInfo, string combo)
+    public virtual float KnockBackMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
         return 1f;
+    }
+    public virtual float KnockBackFinalAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
+    {
+        return 0f;
+    }
+    public virtual void OtherEffect(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
+    {
+        
+    }
+    public virtual void OtherEffect(string combo)
+    {
+
     }
 }

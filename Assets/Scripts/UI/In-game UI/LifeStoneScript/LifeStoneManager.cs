@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent (typeof(RectTransform))]
-public class LifeStoneManager : MonoBehaviour {
+public class LifeStoneManager : Singleton<LifeStoneManager> {
     /// <summary>
     /// Location of lifeStoneFrame on Canvas
     /// </summary>
@@ -67,13 +66,12 @@ public class LifeStoneManager : MonoBehaviour {
         lifeStoneArray = new int[50, 3];
 		lifeStoneUnit = new GameObject[50, 3];
         for (int i = 0; i < 50; i++) for (int j = 0; j < 3; j++) lifeStoneArray[i, j] = 0;
-		//StartCoroutine("TestEnumerator");
         PushLifeStone(CreateLifeStoneInfo(new Vector2Int(3, 6), 0, 0));
+        StartCoroutine("TestEnumerator");
     }
 	IEnumerator TestEnumerator()
 	{
         yield return null;
-
 
     }
 
@@ -117,6 +115,8 @@ public class LifeStoneManager : MonoBehaviour {
         obj.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * popoutStrength;
         StartCoroutine(PopoutCoroutine(obj));
     }
+
+
 
     /// <summary>
     /// Instantiate Dropped LifeStone
@@ -334,6 +334,7 @@ public class LifeStoneManager : MonoBehaviour {
 						new Vector2Int(xtmp, ytmp), 
 						new Vector2Int(xtmp, lifeStoneRowNum + pj), 
 						new Vector2(frameBorder * lifeStoneSize, frameBorder * lifeStoneSize),
+                        true,
 						vibration);
 					vibration = 0;
 				}
@@ -511,6 +512,57 @@ public class LifeStoneManager : MonoBehaviour {
 			yield return new WaitForSeconds(0.02f);
 		}
 	}
+
+    public void FillLifeStone(int num, LifeStoneType type)
+    {
+        List<Vector2Int> fillCand;
+        List<KeyValuePair<Vector2Int, LifeStoneType>> fillArray = new List<KeyValuePair<Vector2Int, LifeStoneType>>();
+        Vector2Int selectedPos;
+
+        for (int n = 0; n < num; n++)
+        {
+            fillCand = new List<Vector2Int>();
+            for (int j = 0; j < lifeStoneRowNum; j++)
+                for (int i = 0; i < 3; i++)
+                    if (
+                        lifeStoneArray[j, i] == 0 &&
+                        ((i - 1 >= 0 && lifeStoneArray[j, i - 1] > 0) ||
+                        (i + 1 < 3 && lifeStoneArray[j, i + 1] > 0) ||
+                        (j - 1 >= 0 && lifeStoneArray[j - 1, i] > 0) ||
+                        (j + 1 < lifeStoneRowNum && lifeStoneArray[j + 1, i] > 0)
+                        ))
+                        fillCand.Add(new Vector2Int(i, j));
+            if (fillCand.Count == 0) break;
+            selectedPos = fillCand[Random.Range(0, fillCand.Count)];
+
+            fillArray.Add(new KeyValuePair<Vector2Int, LifeStoneType>(selectedPos, type));
+            lifeStoneArray[selectedPos.y, selectedPos.x] = (int)type;
+
+            lifeStoneUnit[selectedPos.y, selectedPos.x] = Instantiate(lifeUnitPrefab, stoneSuper.transform);
+
+            lifeStoneUnit[selectedPos.y, selectedPos.x].SetActive(false);
+        }
+
+        StartCoroutine(FillInPhase(fillArray));
+    }
+
+    IEnumerator FillInPhase(List<KeyValuePair<Vector2Int, LifeStoneType>> fillArray)
+    {
+        for(int i=0; i<fillArray.Count; i++)
+        {
+            lifeStoneUnit[fillArray[i].Key.y, fillArray[i].Key.x].SetActive(true);
+
+            lifeStoneUnit[fillArray[i].Key.y, fillArray[i].Key.x].GetComponent<LifeUnitInFrame>().Init(
+                (int)fillArray[i].Value,
+                lifeStoneSize,
+                new Vector2Int(fillArray[i].Key.x, fillArray[i].Key.y),
+                new Vector2Int(fillArray[i].Key.x, fillArray[i].Key.y),
+                new Vector2(frameBorder * lifeStoneSize, frameBorder * lifeStoneSize),
+                false,
+                0);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 
     /// <summary>
     /// lifestoneframe vibration

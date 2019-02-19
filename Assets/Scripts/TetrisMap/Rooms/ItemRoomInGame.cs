@@ -9,7 +9,7 @@ public class ItemRoomInGame : RoomInGame {
         base.RoomEnter();
         Room room = transform.parent.GetComponent<Room>();
         InventoryManager inventoryManager = InventoryManager.Instance;
-        LifeStoneManager lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
+        LifeStoneManager lifeStoneManager = LifeStoneManager.Instance;
         int probability = Random.Range(0, 100);
         Vector3 itemPosition = transform.Find("item spot").position;
         switch (room.itemRoomType)

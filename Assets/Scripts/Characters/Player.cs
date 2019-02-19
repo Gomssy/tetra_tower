@@ -13,7 +13,7 @@ public class Player : MonoBehaviour {
 	void Start () {
         ttx = (int)(transform.position.x / 24f);
         tty = (int)(transform.position.y-0.9f / 24f);
-        lifeStoneManager = GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>();
+        lifeStoneManager = LifeStoneManager.Instance;
     }
 	
 	// Update is called once per frame
@@ -42,7 +42,7 @@ public class Player : MonoBehaviour {
         }
         ttx = tx;
         tty = ty;
-        if (lifeStoneManager.CountType(LifeStoneType.Normal) + lifeStoneManager.CountType(LifeStoneType.Gold) + lifeStoneManager.CountType(LifeStoneType.Amethyst) == 0)
+        if (lifeStoneManager.CountType() == 0)
             GameManager.gameState = GameState.GameOver;
 	}
 }

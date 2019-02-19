@@ -52,7 +52,7 @@ public class DroppedLifeStone : MonoBehaviour, IPlayerInteraction
     }
     public void Apply()
     {
-        if(GameObject.Find("LifeStoneUI").GetComponent<LifeStoneManager>().PushLifeStone(info))
+        if(LifeStoneManager.Instance.PushLifeStone(info))
             Destroy(gameObject);
     }
     public void HighlightSwitch(bool enabled)
