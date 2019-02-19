@@ -52,6 +52,9 @@ GameObject:
   - component: {fileID: 4805081465108728}
   - component: {fileID: 8195094281641280000}
   - component: {fileID: 3664157344485868250}
+  - component: {fileID: 50190921016066254}
+  - component: {fileID: 66382938630429552}
+  - component: {fileID: 2113883505107628124}
   m_Layer: 10
   m_Name: spike
   m_TagString: Untagged
@@ -283,6 +286,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!50 &50190921016066254
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1600949908462568}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!50 &50578333354922242
 Rigidbody2D:
   serializedVersion: 4
@@ -488,6 +511,26 @@ CompositeCollider2D:
       - {x: 11, y: 0.265625}
       - {x: 11, y: -0.203125}
       - {x: 13, y: -0.203125}
+  m_VertexDistance: 0.0005
+--- !u!66 &66382938630429552
+CompositeCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1600949908462568}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths: []
+  m_CompositePaths:
+    m_Paths: []
   m_VertexDistance: 0.0005
 --- !u!66 &66922505557611044
 CompositeCollider2D:
@@ -955,6 +998,19 @@ TilemapCollider2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1865085175835882}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 1
+  m_Offset: {x: 0, y: 0}
+--- !u!19719996 &2113883505107628124
+TilemapCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1600949908462568}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
