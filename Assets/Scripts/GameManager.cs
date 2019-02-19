@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +10,9 @@ public class GameManager : Singleton<GameManager> {
     /// </summary>
     public static GameState gameState;
 
+    /// <summary>
+    /// Position where portal would spawn player.
+    /// </summary>
     Vector3 spawnPosition = new Vector3(2, 1, 0);
 
     public GameObject minimap;
@@ -21,7 +23,11 @@ public class GameManager : Singleton<GameManager> {
     // Constructor - protect calling raw constructor
     protected GameManager() { }
 
-    public IEnumerator StartGame()
+    /// <summary>
+    /// Ends the tutorial and start real game.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator EndTutorial()
     {
         yield return new WaitForSeconds(1f);
         gameState = GameState.Ingame;
@@ -32,6 +38,9 @@ public class GameManager : Singleton<GameManager> {
         GameObject.Find("Main Camera").transform.position = GameObject.Find("Player").transform.position + new Vector3(0, 0, -1);
     }
 
+    /// <summary>
+    /// Restarts the game.
+    /// </summary>
     public void RestartGame()
     {
         SceneManager.LoadScene("PlayScene");
@@ -39,7 +48,7 @@ public class GameManager : Singleton<GameManager> {
 
     void Awake()
     {
-        //DontDestroyOnLoad(gameObject);
+
     }
 
     // Use this for initialization

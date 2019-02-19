@@ -12,13 +12,14 @@ public class Portal : MonoBehaviour, IPlayerInteraction  {
             StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Portal));
         else if (GameManager.gameState == GameState.Tutorial && !isPortalUsed)
         {
+            StartCoroutine(GameManager.Instance.EndTutorial());
             isPortalUsed = true;
-            StartCoroutine(GameManager.Instance.StartGame());
         }
     }
 
     public void HighlightSwitch(bool enabled)
     {
+
     }
 
     // Use this for initialization
