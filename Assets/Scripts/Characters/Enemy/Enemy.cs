@@ -77,8 +77,16 @@ public class Enemy : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
-        CheckCliff(); CheckWall();
+        bool wallTest = IsTouchingWall();
+        if (wallTest)
+        {
+          //  Debug.Log("Touching wall");
+        }
+        bool cliffTest = IsAdvancingToCliff();
+        if (cliffTest)
+        {
+           // Debug.Log("Advancing to cliff");
+        }
     }
 
     // Movement & Physics
