@@ -216,11 +216,13 @@ public class Room : MonoBehaviour
                         }
                         break;
                 }
+                Debug.Log(portalDistance);
             }
             if (isPortal)
             {
                 portal = roomInGame.transform.Find("portal spot").gameObject;
                 portal = Instantiate(MapManager.Instance.portal, portal.transform.position, Quaternion.identity, roomInGame.transform);
+                Debug.Log("portal");
             }
         }
     }

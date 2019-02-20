@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Portal : MonoBehaviour, IPlayerInteraction  {
-
-    public bool isPortalTutorial = false;
+    
     bool isPortalUsed = false;
 
     public void Apply()
     {
-        if (isPortalTutorial && !isPortalUsed)
+        if (GameManager.Instance.isTutorial && !isPortalUsed)
         {
             StartCoroutine(GameManager.Instance.EndTutorial());
             isPortalUsed = true;
         }
-        else if (GameManager.gameState == GameState.Ingame && !isPortalTutorial)
+        else if (GameManager.gameState == GameState.Ingame && !GameManager.Instance.isTutorial)
             StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Portal));
         
     }

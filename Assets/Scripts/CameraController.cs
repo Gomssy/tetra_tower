@@ -9,8 +9,8 @@ public class CameraController : MonoBehaviour {
     /// Check if scene is changing now.
     /// </summary>
     public static bool isSceneChanging = false;
-    const float cameraXLimit = 4.5f;
-    const float cameraYLimit = 3f;
+    const float cameraXLimit = 7f;
+    const float cameraYLimit = 3.5f;
     public Vector3 tetrisCameraCoord = new Vector3(108, 240, -1);
     public const float tetrisCameraSize = 300f;
     public const float inGameCameraSize = 4.5f;
