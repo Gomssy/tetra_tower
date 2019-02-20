@@ -16,6 +16,7 @@ public class ParchmentPiece : Addon
         highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece_border"); ;
         sizeInventory = new Vector2(70, 77.5f);
         addonDescription = "쓸모없는 애드온";
+        addonInfo = "피해량이 3 미만이면 피해량이 100% 증가합니다.";
     }
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {

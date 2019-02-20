@@ -11,7 +11,7 @@ public class Bow : Item {
 
 	public override void Declare()
     {
-        id = 2; name = "bow";
+        id = 2; name = "활";
         quality = ItemQuality.Study;
         skillNum = 2;
         combo = new string[3] { "BB", "BC", "" };
@@ -22,6 +22,8 @@ public class Bow : Item {
         animation[1] = Resources.Load<AnimationClip>("Animations/bowAttack2");
         animation[2] = null;
         sizeInventory = new Vector2(137.5f, 137.5f);
+        itemInfo = "단순한 나무활. 군더더기 없는 깔끔한 모습이지만 금방이라도 부셔질 듯이 조잡한 것을 보니 싸구려 인듯 하다.";
+        comboName = new string[3] { "쏘기", "위로 쏘기", "" };
 
         player = GameObject.Find("Player");
         arrow = Resources.Load<GameObject>("Prefabs/Projectiles/bow_arrow");

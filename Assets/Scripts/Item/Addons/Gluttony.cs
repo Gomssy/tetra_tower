@@ -17,6 +17,8 @@ public class Gluttony : Addon
         highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         sizeInventory = new Vector2(80, 80);
         lifeStoneManager = LifeStoneManager.Instance;
+        addonDescription = "식욕은 누구에게나 존재한다. - 토미 다라바.";
+        addonInfo = "적을 처치하면 생명석이 1개 회복됩니다.";
     }
     public override void OtherEffect(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {

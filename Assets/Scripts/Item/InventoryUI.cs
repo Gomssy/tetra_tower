@@ -151,6 +151,7 @@ public class InventoryUI : MonoBehaviour {
                     infoAddonsFrame[i].transform.Find("Quality").GetComponent<Text>().text = qualityString[(int)itemList[selectedItem].addons[i].quality];
                     infoAddonsFrame[i].transform.Find("Name").GetComponent<Text>().text = itemList[selectedItem].addons[i].name;
                     infoAddonsFrame[i].transform.Find("Description").GetComponent<Text>().text = itemList[selectedItem].addons[i].addonDescription;
+                    infoAddonsFrame[i].transform.Find("Info").GetComponent<Text>().text = itemList[selectedItem].addons[i].addonInfo;
 
 
                 }
