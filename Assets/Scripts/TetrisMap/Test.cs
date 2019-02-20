@@ -45,7 +45,7 @@ public class Test : MonoBehaviour {
     }
     public void Timer()
     {
-        timer.text = (MapManager.Instance.timeToFallTetrimino - MapManager.Instance.tetriminoWaitedTime).ToString();
+        timer.text = (MapManager.Instance.clock.timeToFallTetrimino - MapManager.Instance.clock.tetriminoWaitedTime).ToString();
     }
     public void ClearRoom()
     {

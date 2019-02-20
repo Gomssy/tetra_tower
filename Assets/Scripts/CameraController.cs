@@ -77,7 +77,7 @@ public class CameraController : MonoBehaviour {
                 GameManager.Instance.minimap.SetActive(true);
                 GameManager.gameState = GameState.Ingame;
                 StartCoroutine(MapManager.Instance.RoomFadeIn(MapManager.currentRoom));
-                grid.transform.position = new Vector3(0, 0, 0);
+                grid.transform.position = Vector3.zero;
                 sizeDestination = inGameCameraSize;
                 while (GetComponent<Camera>().orthographicSize > sizeDestination + 0.01)
                 {

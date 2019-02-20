@@ -397,6 +397,9 @@ public class Room : MonoBehaviour
                 portalSurface = Instantiate(MapManager.Instance.portalSurface, transform.position + new Vector3(12, 12, 0), Quaternion.identity, transform);
             }
             isRoomCleared = true;
+            MapManager.Instance.clock.clockSpeedStack -= 3;
+            if (MapManager.Instance.clock.clockSpeedStack < 0)
+                MapManager.Instance.clock.clockSpeedStack = 0;
             if (specialRoomType == RoomType.Boss)
                 MapManager.currentStage += 1;
         }
