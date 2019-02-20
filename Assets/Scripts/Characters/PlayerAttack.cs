@@ -9,12 +9,12 @@ public class PlayerAttack : MonoBehaviour {
     private bool comboEndDelay = true;
     public float originComboTime;
     public float comboTime;
-    public Text time, combo;
     public string comboArray;
     public float StartTime;
     public Animator anim;
     public AnimatorOverrideController aoc;
     public AnimationClip[] normalAttack = new AnimationClip[3];
+    public ComboUI comboUI;
     InventoryManager inventoryManager;
     LifeStoneManager lifeStoneManager;
 
@@ -65,36 +65,18 @@ public class PlayerAttack : MonoBehaviour {
 
     public void SetComboText()
     {
-        string conString = "";
-        if (comboArray.Equals(""))
-        {
-            combo.text = "";
-            return;
-        }
-        conString += comboArray[0];
-        for (int i = 1; i < comboArray.Length; i++)
-            conString += " " + comboArray[i];
-        combo.text = conString;
+        comboUI.SetCombo(comboArray);
     }
 
     public void SetTimeText(float fullTime, float currentTime)
     {
         if (comboTimeOn)
         {
-            for (int i = 0; i < 20; i++)
-            {
-                if (currentTime / fullTime < (i + 1) * 0.05f)
-                {
-                    string str = "";
-                    for (int j = 0; j < i + 1; j++) str += "-";
-                    time.text = str;
-                    break;
-                }
-            }
+            comboUI.SetTime(currentTime, fullTime);
         }
         else
         {
-            time.text = "";
+            comboUI.SetTime();
         }
     }
     IEnumerator ComboEndDelay()
@@ -116,7 +98,8 @@ public class PlayerAttack : MonoBehaviour {
     IEnumerator ComboTextReset()
     {
         yield return new WaitForSeconds(1.5f);
-        SetComboText();
+        if(comboArray.Equals(""))
+            SetComboText();
     }
     IEnumerator SkillEndCoroutine()
     {
