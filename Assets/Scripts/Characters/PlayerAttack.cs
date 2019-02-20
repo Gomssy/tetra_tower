@@ -97,8 +97,12 @@ public class PlayerAttack : MonoBehaviour {
     }
     IEnumerator ComboTextReset()
     {
-        yield return new WaitForSeconds(1.5f);
-        if(comboArray.Equals(""))
+        for(float timer = 0f; timer < 1.5f; timer += Time.deltaTime)
+        {
+            yield return null;
+            if (playingSkill) break;
+        }
+        if(comboArray.Equals("") && !playingSkill)
             SetComboText();
     }
     IEnumerator SkillEndCoroutine()

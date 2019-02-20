@@ -55,13 +55,15 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
 
 	public GameObject droppedLifeStonePrefab;
 
+    public GameObject lifeStoneUI;
+
     public float frameBorder;
 
     public float popoutStrengthMultiplier;
     public float popoutTime;
 
     void Start () {
-        transform.position = new Vector3(lifeStoneLocation.x, lifeStoneLocation.y, 0);
+        lifeStoneUI.transform.position = new Vector3(lifeStoneLocation.x, lifeStoneLocation.y, 0);
         frameSuper.GetComponent<LifeStoneFrame>().Init(frameSuper.transform, standardImage, lifeStoneRowNum, lifeStoneSize, sprites, frameBorder);
         lifeStoneArray = new int[50, 3];
 		lifeStoneUnit = new GameObject[50, 3];
@@ -588,10 +590,10 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
 		while(vibration > lifeStoneSize * 0.005f)
 		{
 			Vector2 tmpVector = Random.insideUnitCircle;
-			transform.position = new Vector3(lifeStoneLocation.x + tmpVector.x * vibration * 0.3f, lifeStoneLocation.y + tmpVector.y * vibration, 0);
+			lifeStoneUI.transform.position = new Vector3(lifeStoneLocation.x + tmpVector.x * vibration * 0.3f, lifeStoneLocation.y + tmpVector.y * vibration, 0);
 			vibration *= 0.8f;
 			yield return null;
 		}
-		transform.position = new Vector3(lifeStoneLocation.x, lifeStoneLocation.y, 0);
+        lifeStoneUI.transform.position = new Vector3(lifeStoneLocation.x, lifeStoneLocation.y, 0);
 	}		
 }
