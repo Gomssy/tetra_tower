@@ -430,7 +430,21 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
 			}
 		}
 		StartCoroutine(DestroyInPhase(candArray));
+        StartCoroutine(HitRedEffect(num));
 	}
+    IEnumerator HitRedEffect(int damage)
+    {
+        float startTime = Time.time, endTime = startTime + 0.3f;
+        SpriteRenderer sprt = GameObject.Find("Player").GetComponent<SpriteRenderer>();
+        sprt.color = new Color(1, 0, 0);
+        
+        while(Time.time < endTime)
+        {
+            sprt.color = new Color(1, 1 - (endTime - Time.time) / (endTime - startTime), 1 - (endTime - Time.time) / (endTime - startTime));
+            yield return null;
+        }
+        sprt.color = new Color(1, 1, 1);
+    }
 
     /// <summary>
     /// make term among lifestone destroy
