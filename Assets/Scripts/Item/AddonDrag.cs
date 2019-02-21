@@ -18,60 +18,68 @@ public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        transform.SetAsLastSibling();
+        if (eventData.button == PointerEventData.InputButton.Left)
+            transform.SetAsLastSibling();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = Input.mousePosition;
+        if (eventData.button == PointerEventData.InputButton.Left)
+            transform.position = Input.mousePosition;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (CheckBetween(Input.mousePosition, discardBin.position, discardBin.GetComponent<RectTransform>().sizeDelta))
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (num < 9)
-                manager.DiscardAddon(num);
-            else
-                manager.DiscardAddon(ui.selectedItem, (AddonType)(num - 9));
-            manager.SetOnPosition();
-            return;
-        }
-        if (num < 9)
-        {
-            int type = (int)manager.addonList[num].type;
-            if (ui.selectedItem != -1 && manager.itemList[ui.selectedItem].attachable[type])
+            if (CheckBetween(Input.mousePosition, discardBin.position, discardBin.GetComponent<RectTransform>().sizeDelta))
             {
-                if (CheckBetween(Input.mousePosition, ui.infoAddonsFrame[type].transform.position, ui.infoAddonsFrame[type].GetComponent<RectTransform>().sizeDelta))
+                if (num < 9)
+                    manager.DiscardAddon(num);
+                else
+                    manager.DiscardAddon(ui.selectedItem, (AddonType)(num - 9));
+                manager.SetOnPosition();
+                return;
+            }
+            if (num < 9)
+            {
+                int type = (int)manager.addonList[num].type;
+                if (ui.selectedItem != -1 && manager.itemList[ui.selectedItem].attachable[type])
                 {
-                    if (manager.itemList[ui.selectedItem].addons[type] != null) manager.DetachAddon(ui.selectedItem, (AddonType)type);
-                    manager.AttachAddon(ui.selectedItem, num);
+                    if (CheckBetween(Input.mousePosition, ui.infoAddonsFrame[type].transform.position, ui.infoAddonsFrame[type].GetComponent<RectTransform>().sizeDelta))
+                    {
+                        if (manager.itemList[ui.selectedItem].addons[type] != null) manager.DetachAddon(ui.selectedItem, (AddonType)type);
+                        manager.AttachAddon(ui.selectedItem, num);
+                    }
                 }
             }
+            else
+            {
+                if (CheckBetween(Input.mousePosition, addonGroup.position, addonGroup.GetComponent<RectTransform>().sizeDelta))
+                    manager.DetachAddon(ui.selectedItem, (AddonType)(num - 9));
+            }
+            manager.SetOnPosition();
         }
-        else
-        {
-            if (CheckBetween(Input.mousePosition, addonGroup.position, addonGroup.GetComponent<RectTransform>().sizeDelta))
-                manager.DetachAddon(ui.selectedItem, (AddonType)(num - 9));
-        }
-        manager.SetOnPosition();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (num < 9)
+        if (eventData.button == PointerEventData.InputButton.Right)
         {
-            int type = (int)manager.addonList[num].type;
-            if (ui.selectedItem != -1 && manager.itemList[ui.selectedItem].attachable[type])
+            if (num < 9)
             {
-                if (manager.itemList[ui.selectedItem].addons[type] != null)
-                    manager.DetachAddon(ui.selectedItem, (AddonType)type);
-                manager.AttachAddon(ui.selectedItem, num);
+                int type = (int)manager.addonList[num].type;
+                if (ui.selectedItem != -1 && manager.itemList[ui.selectedItem].attachable[type])
+                {
+                    if (manager.itemList[ui.selectedItem].addons[type] != null)
+                        manager.DetachAddon(ui.selectedItem, (AddonType)type);
+                    manager.AttachAddon(ui.selectedItem, num);
+                }
             }
+            else
+                manager.DetachAddon(ui.selectedItem, (AddonType)(num - 9));
+            manager.SetOnPosition();
         }
-        else
-            manager.DetachAddon(ui.selectedItem, (AddonType)(num - 9));
-        manager.SetOnPosition();
     }
     bool CheckBetween(Vector3 mouse, Vector3 center, Vector2 size)
     {
