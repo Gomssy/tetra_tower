@@ -9,7 +9,7 @@ public class ExplosionGloves : Item
 {
     public override void Declare()
     {
-        id = 21; name = "explosion gloves";
+        id = 21; name = "폭탄마의 장갑";
         quality = ItemQuality.Ordinary;
         skillNum = 2;
         combo = new string[3] { "CAC", "CA", "" };
