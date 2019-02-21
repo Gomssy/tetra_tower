@@ -468,6 +468,26 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114574072693989902, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: spikeTileu.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114574072693989902, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: spikeTiled.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114574072693989902, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: spikeTilel.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114574072693989902, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: spikeTiler.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4549734214569802, guid: 3d077a5f727dd1e4780e9265ed26e036, type: 2}
       propertyPath: m_LocalPosition.x
       value: -5.64
@@ -510,6 +530,54 @@ Prefab:
       propertyPath: combo
       value: 
       objectReference: {fileID: 1200867968}
+    - target: {fileID: 114574072693989902, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: spikeTileu.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7f2c5cb43ad7207499b22fb5e0acd41a,
+        type: 2}
+    - target: {fileID: 114574072693989902, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: spikeTiled.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: f411e29431b787c4ab84b5ff59ca5e6e,
+        type: 2}
+    - target: {fileID: 114574072693989902, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: spikeTilel.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 85440e0dd81e48840947ce485614bab6,
+        type: 2}
+    - target: {fileID: 114574072693989902, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: spikeTiler.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7dbb7c55a3417f54fbd38fafb369478e,
+        type: 2}
+    - target: {fileID: 114574072693989902, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: spikeTiled.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 034d5fb04a013124cb432284fdc8c423,
+        type: 2}
+    - target: {fileID: 114574072693989902, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: spikeTileu.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: f9cdf78c8a087c94a9279cc07fc03a25,
+        type: 2}
+    - target: {fileID: 114574072693989902, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: spikeTilel.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: f6a8681f94ddcf24eac96d8e4a5c82f6,
+        type: 2}
+    - target: {fileID: 114574072693989902, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: spikeTiler.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 69359808565f98f4297a6efb8da5c4da,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d077a5f727dd1e4780e9265ed26e036, type: 2}
   m_IsPrefabAsset: 0
