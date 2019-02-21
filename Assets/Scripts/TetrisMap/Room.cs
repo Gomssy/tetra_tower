@@ -216,13 +216,11 @@ public class Room : MonoBehaviour
                         }
                         break;
                 }
-                Debug.Log(portalDistance);
             }
             if (isPortal)
             {
                 portal = roomInGame.transform.Find("portal spot").gameObject;
                 portal = Instantiate(MapManager.Instance.portal, portal.transform.position, Quaternion.identity, roomInGame.transform);
-                Debug.Log("portal");
             }
         }
     }
@@ -380,8 +378,7 @@ public class Room : MonoBehaviour
             Destroy(fog);
             fog = Instantiate(MapManager.Instance.clearedFog, fogPosition, Quaternion.identity, transform);
             fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-            if(specialRoomType != RoomType.Start)
-                CreatePortal();
+            CreatePortal();
             if (isPortal == true)
             {
                 for (int x = 0; x < MapManager.width; x++)

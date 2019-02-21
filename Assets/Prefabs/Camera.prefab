@@ -130,7 +130,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 16385
+    m_Bits: 16384
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 910459159fe73e343b1b34c98ec8c431, type: 2}
   m_TargetDisplay: 0
@@ -170,7 +170,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 16385
+    m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -207,7 +207,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ef4279cf32e10f4dbc71e2206514212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapManager: {fileID: 0}
   player: {fileID: 0}
   tetrisCameraCoord: {x: 108, y: 240, z: -1}
   originPos: {x: 0, y: 0, z: 0}

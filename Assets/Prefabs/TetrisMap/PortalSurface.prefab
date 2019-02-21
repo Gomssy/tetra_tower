@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4131413436280266}
   - component: {fileID: 212754017166168550}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: PortalSurface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -562706067
-  m_SortingLayer: 11
+  m_SortingLayer: 16
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 31d41144371533545b72f857de9c3f96, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

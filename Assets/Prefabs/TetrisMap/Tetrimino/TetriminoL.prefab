@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4540519855280918}
   - component: {fileID: 212792642510107936}
   - component: {fileID: 114077791275824818}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Room4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 4480540641426352}
   - component: {fileID: 212924378997013916}
   - component: {fileID: 114346591663730294}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Room1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 4890462092246654}
   - component: {fileID: 212873652807541368}
   - component: {fileID: 114135637264954520}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Room2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 4544835616051996}
   - component: {fileID: 212148613173218532}
   - component: {fileID: 114317610525364840}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Room3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,12 @@ MonoBehaviour:
   inGameDoorLeft: {fileID: 0}
   inGameDoorRight: {fileID: 0}
   roomInGame: {fileID: 0}
+  portal: {fileID: 0}
+  portalSurface: {fileID: 0}
   isRoomCleared: 0
+  isDoorWorking: 0
+  isRoomDestroyed: 0
+  isPortal: 0
 --- !u!114 &114135637264954520
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -219,7 +224,12 @@ MonoBehaviour:
   inGameDoorLeft: {fileID: 0}
   inGameDoorRight: {fileID: 0}
   roomInGame: {fileID: 0}
+  portal: {fileID: 0}
+  portalSurface: {fileID: 0}
   isRoomCleared: 0
+  isDoorWorking: 0
+  isRoomDestroyed: 0
+  isPortal: 0
 --- !u!114 &114317610525364840
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -247,7 +257,12 @@ MonoBehaviour:
   inGameDoorLeft: {fileID: 0}
   inGameDoorRight: {fileID: 0}
   roomInGame: {fileID: 0}
+  portal: {fileID: 0}
+  portalSurface: {fileID: 0}
   isRoomCleared: 0
+  isDoorWorking: 0
+  isRoomDestroyed: 0
+  isPortal: 0
 --- !u!114 &114346591663730294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -275,7 +290,12 @@ MonoBehaviour:
   inGameDoorLeft: {fileID: 0}
   inGameDoorRight: {fileID: 0}
   roomInGame: {fileID: 0}
+  portal: {fileID: 0}
+  portalSurface: {fileID: 0}
   isRoomCleared: 0
+  isDoorWorking: 0
+  isRoomDestroyed: 0
+  isPortal: 0
 --- !u!114 &114580369929242780
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -334,7 +354,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1129468395
-  m_SortingLayer: 9
+  m_SortingLayer: 15
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: eb608082843dfe247954bc3ccbbe4b2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -380,7 +400,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1129468395
-  m_SortingLayer: 9
+  m_SortingLayer: 15
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: eb608082843dfe247954bc3ccbbe4b2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -426,7 +446,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1129468395
-  m_SortingLayer: 9
+  m_SortingLayer: 15
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: eb608082843dfe247954bc3ccbbe4b2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -472,7 +492,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1129468395
-  m_SortingLayer: 9
+  m_SortingLayer: 15
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: eb608082843dfe247954bc3ccbbe4b2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

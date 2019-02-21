@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 4542814694995438}
   - component: {fileID: 212270150863498442}
   - component: {fileID: 114595913466936836}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Room Tutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 212614559332931474}
   - component: {fileID: 61099121824742384}
   - component: {fileID: 114519665164863532}
-  m_Layer: 17
+  m_Layer: 12
   m_Name: Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -542,7 +542,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5ed2c384310eb6408bb42c91b195e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPortalTutorial: 0
 --- !u!114 &114595913466936836
 MonoBehaviour:
   m_ObjectHideFlags: 1

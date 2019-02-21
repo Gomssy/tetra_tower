@@ -24,13 +24,13 @@ TagManager:
   - Rope
   - Spike
   - Platform
-  - OuterWall
+  - Portal
   - Item
   - Tetris
   - PlayerAttack
   - EnemyCollider
   - EnemyTrigger
-  - Portal
+  - 
   - 
   - 
   - 
