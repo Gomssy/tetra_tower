@@ -126,9 +126,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76972544344a33b4a970e7e902757457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToFallTetrimino: 10
+  initialTimeToFallTetrimino: 40
+  timeToFallTetrimino: 40
   tetriminoWaitedTime: 0
   tetriminoCreatedTime: 0
+  clockSpeedStack: 0
 --- !u!222 &222306734366933398
 CanvasRenderer:
   m_ObjectHideFlags: 1

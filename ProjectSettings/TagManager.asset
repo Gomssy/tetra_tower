@@ -54,11 +54,6 @@ TagManager:
   - name: Background
     uniqueID: 2317547663
     locked: 0
-  - name: ItemHighlight
-    uniqueID: 996861525
-    locked: 0
-  - name: Item
-    uniqueID: 2145601713
   - name: Wall
     uniqueID: 3278214247
     locked: 0
@@ -82,6 +77,9 @@ TagManager:
     locked: 0
   - name: HPBar
     uniqueID: 338107509
+    locked: 0
+  - name: Item
+    uniqueID: 2145601713
     locked: 0
   - name: Effect
     uniqueID: 2841314395
