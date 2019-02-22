@@ -205,6 +205,7 @@ public class Enemy : MonoBehaviour {
                 break;
             }
         }
+        animator.SetTrigger("TrackTrigger");
     }
 
     public void GetDamaged(float damage)
