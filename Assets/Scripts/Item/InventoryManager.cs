@@ -16,6 +16,7 @@ public class InventoryManager : Singleton<InventoryManager> {
 
     private void Start()
     {
+        ui.gameObject.GetComponent<Canvas>().enabled = true;
         ui.gameObject.SetActive(false);
 
         player = GameObject.Find("Player");
