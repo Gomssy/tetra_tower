@@ -62,6 +62,8 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
     public float popoutStrengthMultiplier;
     public float popoutTime;
 
+    bool stoneCut;
+
     void Start () {
         lifeStoneUI.transform.position = new Vector3(lifeStoneLocation.x, lifeStoneLocation.y, 0);
         frameSuper.GetComponent<LifeStoneFrame>().Init(frameSuper.transform, standardImage, lifeStoneRowNum, lifeStoneSize, sprites, frameBorder);
@@ -318,20 +320,26 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
 
 		for (int pj = 0; pj < pSize.y; pj++)
 		{
-            if (selectedRow + pj >= lifeStoneRowNum)
+            if (cutRow == pSize.y && selectedRow + pj >= lifeStoneRowNum)
             {
                 cutRow = pj;
-                break;
+                //break;
             }
 			for (int pi = 0; pi < pSize.x; pi++)
 				if (pFill[pj * pSize.x + pi] != ' ')
 				{
 					int xtmp = selectedCol + pi, ytmp = selectedRow + pj;
-					lifeStoneArray[ytmp, xtmp] = pFill[pj * pSize.x + pi] - 'A' + 1;
-					lifeStoneUnit[ytmp, xtmp] = Instantiate(lifeUnitPrefab, stoneSuper.transform);
+                    GameObject tmpObj;
+                    tmpObj = Instantiate(lifeUnitPrefab, stoneSuper.transform);
 
-					lifeStoneUnit[ytmp, xtmp].GetComponent<LifeUnitInFrame>().Init(
-						lifeStoneArray[ytmp, xtmp], 
+                    if (pj < cutRow)
+                    {
+                        lifeStoneArray[ytmp, xtmp] = pFill[pj * pSize.x + pi] - 'A' + 1;
+                        lifeStoneUnit[ytmp, xtmp] = tmpObj;
+                    }
+                    
+                    tmpObj.GetComponent<LifeUnitInFrame>().Init(
+                        pFill[pj * pSize.x + pi] - 'A' + 1, 
 						lifeStoneSize, 
 						new Vector2Int(xtmp, ytmp), 
 						new Vector2Int(xtmp, lifeStoneRowNum + pj), 
@@ -341,37 +349,53 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
 					vibration = 0;
 				}
 		}
+        
+        stoneCut = false;
         if (cutRow < pSize.y)
         {
-            char[] chFill = pFill.ToCharArray();
-            for (int i = 0; i < pSize.x; i++)
-            {
-                Queue<Vector2Int> queue = new Queue<Vector2Int>();
-                char[] newFill = new char[pSize.x * (pSize.y - cutRow)];
-                for (int t = 0; t < pSize.x * (pSize.y - cutRow); t++) newFill[t] = ' ';
-                if (chFill[cutRow * pSize.x + i] != ' ')
-                {
-                    queue.Enqueue(new Vector2Int(i, cutRow));
-                    while (queue.Count > 0)
-                    {
-                        Vector2Int vtmp = queue.Dequeue();
-                        newFill[(vtmp.y - cutRow) * pSize.x + vtmp.x] = chFill[vtmp.y * pSize.x + vtmp.x];
-                        chFill[vtmp.y * pSize.x + vtmp.x] = ' ';
-                        if (vtmp.x + 1 < pSize.x && chFill[ vtmp.y      * pSize.x + (vtmp.x + 1)] != ' ') queue.Enqueue(new Vector2Int(vtmp.x + 1, vtmp.y    ));
-                        if (vtmp.x - 1 >= 0      && chFill[ vtmp.y      * pSize.x + (vtmp.x - 1)] != ' ') queue.Enqueue(new Vector2Int(vtmp.x - 1, vtmp.y    ));
-                        if (vtmp.y + 1 < pSize.y && chFill[(vtmp.y + 1) * pSize.x +  vtmp.x     ] != ' ') queue.Enqueue(new Vector2Int(vtmp.x    , vtmp.y + 1));
-                        if (vtmp.y - 1 >= cutRow && chFill[(vtmp.y - 1) * pSize.x +  vtmp.x     ] != ' ') queue.Enqueue(new Vector2Int(vtmp.x    , vtmp.y - 1));
-                    }
-                    InstantiateDroppedLifeStone(CreateLifeStoneInfo(
-                        new LifeStoneInfo(new Vector2Int(pSize.x, pSize.y - cutRow), new string(newFill))),
-                        GameObject.Find("Player").transform.position + new Vector3(droppedLifeStonePrefab.GetComponent<DroppedLifeStone>().unitSprite.GetComponent<SpriteRenderer>().bounds.size.x * i,0,0),
-                        1f);
-                }
-            }
+            StartCoroutine(CutCoroutine(cutRow, pSize, pFill));
         }
         return true;
 	}
     
+    public void StoneCutStart()
+    {
+        stoneCut = true;
+    }
+
+    IEnumerator CutCoroutine(int cutRow, Vector2Int pSize, string pFill)
+    {
+        while (!stoneCut)
+        {
+            yield return null;
+        }
+
+        char[] chFill = pFill.ToCharArray();
+        for (int i = 0; i < pSize.x; i++)
+        {
+            Queue<Vector2Int> queue = new Queue<Vector2Int>();
+            char[] newFill = new char[pSize.x * (pSize.y - cutRow)];
+            for (int t = 0; t < pSize.x * (pSize.y - cutRow); t++) newFill[t] = ' ';
+            if (chFill[cutRow * pSize.x + i] != ' ')
+            {
+                queue.Enqueue(new Vector2Int(i, cutRow));
+                while (queue.Count > 0)
+                {
+                    Vector2Int vtmp = queue.Dequeue();
+                    newFill[(vtmp.y - cutRow) * pSize.x + vtmp.x] = chFill[vtmp.y * pSize.x + vtmp.x];
+                    chFill[vtmp.y * pSize.x + vtmp.x] = ' ';
+                    if (vtmp.x + 1 < pSize.x && chFill[vtmp.y * pSize.x + (vtmp.x + 1)] != ' ') queue.Enqueue(new Vector2Int(vtmp.x + 1, vtmp.y));
+                    if (vtmp.x - 1 >= 0 && chFill[vtmp.y * pSize.x + (vtmp.x - 1)] != ' ') queue.Enqueue(new Vector2Int(vtmp.x - 1, vtmp.y));
+                    if (vtmp.y + 1 < pSize.y && chFill[(vtmp.y + 1) * pSize.x + vtmp.x] != ' ') queue.Enqueue(new Vector2Int(vtmp.x, vtmp.y + 1));
+                    if (vtmp.y - 1 >= cutRow && chFill[(vtmp.y - 1) * pSize.x + vtmp.x] != ' ') queue.Enqueue(new Vector2Int(vtmp.x, vtmp.y - 1));
+                }
+                InstantiateDroppedLifeStone(CreateLifeStoneInfo(
+                    new LifeStoneInfo(new Vector2Int(pSize.x, pSize.y - cutRow), new string(newFill))),
+                    GameObject.Find("Player").transform.position + new Vector3(droppedLifeStonePrefab.GetComponent<DroppedLifeStone>().unitSprite.GetComponent<SpriteRenderer>().bounds.size.x * i, 0, 0),
+                    1f);
+            }
+        }
+    }
 
     /// <summary>
     /// count lifestoneunit in lifestoneframe by type
