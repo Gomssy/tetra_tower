@@ -91,7 +91,8 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
 
     public void InstantiatePotion(Vector3 pos, float popoutStrength)
     {
-        PopoutGenerator(Instantiate(goldPotionPrefab, pos, Quaternion.identity), popoutStrength);
+        PopoutGenerator(Instantiate(goldPotionPrefab, pos, Quaternion.identity,MapManager.currentRoom.roomInGame.transform), popoutStrength);
+
     }
 
     IEnumerator PopoutCoroutine(GameObject obj)
