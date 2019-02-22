@@ -270,6 +270,12 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 223008133952041092, guid: 7c6db9a9ca4150a438bd5114c58a37cf,
     type: 2}
   m_PrefabInternal: {fileID: 1337079440}
+--- !u!114 &176479829 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114905380279556738, guid: 7c6db9a9ca4150a438bd5114c58a37cf,
+    type: 2}
+  m_PrefabInternal: {fileID: 1337079440}
+  m_Script: {fileID: 11500000, guid: ed26045beb617f3498e0f3730175181b, type: 3}
 --- !u!1001 &179350392
 Prefab:
   m_ObjectHideFlags: 0
@@ -1259,6 +1265,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 114939219159237616, guid: 62a83d11a7addc342ad436145784e698,
+        type: 2}
+      propertyPath: ui
+      value: 
+      objectReference: {fileID: 176479829}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62a83d11a7addc342ad436145784e698, type: 2}
   m_IsPrefabAsset: 0
