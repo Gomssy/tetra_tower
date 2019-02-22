@@ -10,7 +10,7 @@ public class TetriminoSpawner : Singleton<TetriminoSpawner> {
     /// <summary>
     /// All tetriminoes.
     /// </summary>
-public Tetrimino[] tetriminoes;
+    public Tetrimino[] tetriminoes;
     /// <summary>
     /// All ghosts.
     /// </summary>
@@ -70,8 +70,8 @@ public Tetrimino[] tetriminoes;
             {
                 MapManager.Instance.UpgradeRoom(MapManager.Instance.roomsWaiting.Dequeue());
             }
-            MapManager.Instance.tetriminoCreatedTime = Time.time;
-            StartCoroutine(MapManager.Instance.CountTetriminoWaitingTime());
+            MapManager.Instance.clock.tetriminoCreatedTime = Time.time;
+            Timer.timer = StartCoroutine(GameObject.Find("Clock").GetComponent<Timer>().CountTetriminoWaitingTime());
         }
     }
     /// <summary>
@@ -101,10 +101,9 @@ public Tetrimino[] tetriminoes;
             MapManager.Instance.UpdateMap(MapManager.currentTetrimino);
             MapManager.Instance.CreateRoom(MapManager.currentTetrimino);
             MapManager.currentRoom.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-            //MapManager.Instance.playerIcon.transform.position = MapManager.currentRoom.mapCoord * MapManager.tetrisMapSize + new Vector3(0, 0, -2);
             MapManager.tempRoom = MapManager.currentRoom;
-            MapManager.Instance.playerIcon = Instantiate(MapManager.Instance.playerIcon, new Vector3(0, 0, 0), Quaternion.identity, MapManager.currentRoom.transform);
-            MapManager.Instance.playerIcon.transform.localPosition = new Vector3(0, 0, 0);
+            MapManager.Instance.playerIcon = Instantiate(MapManager.Instance.playerIcon, Vector3.zero, Quaternion.identity, MapManager.currentRoom.transform);
+            MapManager.Instance.playerIcon.transform.localPosition = Vector3.zero;
             MakeTetrimino();
         }
     }
@@ -173,10 +172,7 @@ public Tetrimino[] tetriminoes;
         }
         return count;
     }
-
-    /*
-     * Test
-     * */
+    
     private void Awake()
     {
 

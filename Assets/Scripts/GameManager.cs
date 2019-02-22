@@ -10,6 +10,8 @@ public class GameManager : Singleton<GameManager> {
     /// </summary>
     public static GameState gameState;
 
+    public bool isTutorial = false;
+
     /// <summary>
     /// Position where portal would spawn player.
     /// </summary>
@@ -30,7 +32,7 @@ public class GameManager : Singleton<GameManager> {
     public IEnumerator EndTutorial()
     {
         yield return new WaitForSeconds(1f);
-        gameState = GameState.Ingame;
+        isTutorial = false;
         Destroy(MapManager.currentRoom.gameObject);
         minimap.SetActive(true);
         TetriminoSpawner.Instance.MakeInitialTetrimino();
@@ -52,14 +54,13 @@ public class GameManager : Singleton<GameManager> {
         minimap = GameObject.Find("Minimap");
         minimap.SetActive(false);
         MapManager.currentRoom = GameObject.Find("Room Tutorial").GetComponent<Room>();
-        MapManager.currentRoom.roomInGame.transform.Find("Portal").GetComponent<Portal>().isPortalTutorial = true;
         GameObject.Find("Player").transform.position = MapManager.currentRoom.roomInGame.transform.Find("player spot").position + spawnPosition;
         GameObject.Find("Main Camera").transform.position = GameObject.Find("Player").transform.position + new Vector3(0, 0, -1);
+        isTutorial = true;
     }
 
     // Use this for initialization
     void Start () {
-
 
     }
 	
@@ -68,7 +69,7 @@ public class GameManager : Singleton<GameManager> {
     {
         if(CameraController.isSceneChanging != true)
         {
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (Input.GetKeyDown(KeyCode.Tab) && !isTutorial)
             {
                 if (gameState == GameState.Ingame)
                 {

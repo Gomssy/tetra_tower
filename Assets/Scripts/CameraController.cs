@@ -9,8 +9,8 @@ public class CameraController : MonoBehaviour {
     /// Check if scene is changing now.
     /// </summary>
     public static bool isSceneChanging = false;
-    const float cameraXLimit = 4.5f;
-    const float cameraYLimit = 3f;
+    const float cameraXLimit = 7f;
+    const float cameraYLimit = 3.5f;
     public Vector3 tetrisCameraCoord = new Vector3(108, 240, -1);
     public const float tetrisCameraSize = 300f;
     public const float inGameCameraSize = 4.5f;
@@ -76,8 +76,9 @@ public class CameraController : MonoBehaviour {
             {
                 GameManager.Instance.minimap.SetActive(true);
                 GameManager.gameState = GameState.Ingame;
+                GetComponent<Camera>().cullingMask = ~0;
                 StartCoroutine(MapManager.Instance.RoomFadeIn(MapManager.currentRoom));
-                grid.transform.position = new Vector3(0, 0, 0);
+                grid.transform.position = Vector3.zero;
                 sizeDestination = inGameCameraSize;
                 while (GetComponent<Camera>().orthographicSize > sizeDestination + 0.01)
                 {
@@ -98,6 +99,7 @@ public class CameraController : MonoBehaviour {
                     MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
                         MapManager.Instance.portalSelected;
                 }
+                GetComponent<Camera>().cullingMask = 1 << LayerMask.NameToLayer("Tetris");
                 StartCoroutine(MapManager.Instance.RoomFadeOut(MapManager.currentRoom));
                 grid.transform.position = new Vector3(0, 0, 2);
                 sizeDestination = tetrisCameraSize;

@@ -53,12 +53,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  clock: {fileID: 0}
   grid: {fileID: 0}
   initialFallSpeed: -0.1
   gravity: 0.98
-  timeToFallTetrimino: 100
-  tetriminoWaitedTime: 0
-  tetriminoCreatedTime: 0
   collapseTime: 10
   spawnBossTetrimino: 0
   tetriminoCost: 1
@@ -102,39 +100,7 @@ MonoBehaviour:
   - {fileID: 114244835555513196, guid: 478354a3449548a44ba40d516d1cc3cd, type: 2}
   - {fileID: 114294378205009276, guid: 5d9d617a37ddce4448c92cca0946ab18, type: 2}
   - {fileID: 114410341130824760, guid: bfa57985877d23b46929238f077b40df, type: 2}
-  normalRoomList2:
-  - {fileID: 114200477176800928, guid: 3c35322ac2c308d49aadf20738b69c8b, type: 2}
-  - {fileID: 114820825671342974, guid: 7fd2833846bb116479bd74d2a5b75487, type: 2}
-  - {fileID: 114673504408448506, guid: 8a277fab4c930814a89f83d11e915f3b, type: 2}
-  - {fileID: 114776106650425756, guid: 5712fafd2b645fe488586143d15320c3, type: 2}
-  - {fileID: 114337127841446828, guid: e755ae028f96c11478d088a2fbc15284, type: 2}
-  - {fileID: 114145055468461478, guid: b2aea3753aeb72e48877392a65019c75, type: 2}
-  - {fileID: 114061297044879110, guid: 1b7e15c651b43934ba83bf5af546dac8, type: 2}
-  - {fileID: 114190598076306748, guid: bcdfbba992e4b5c40a05376093119de1, type: 2}
-  - {fileID: 114515385106832640, guid: 342cab59f70a5b342a805799c5ae6207, type: 2}
-  - {fileID: 114645493085120532, guid: 1c41b406c1de80c4e93930331d2fa697, type: 2}
-  - {fileID: 114105590284639290, guid: f0254b56972e32745aef8a6fd6e5f500, type: 2}
-  - {fileID: 114319615447125502, guid: 6ed897f0c1013fc4883f7bf0db7b4e1a, type: 2}
-  - {fileID: 114135910784019782, guid: a3477b8af02171c478e610b1347cfa30, type: 2}
-  - {fileID: 114664979535281706, guid: a02cf80bd4dc5bf4eb59b598c282b924, type: 2}
-  - {fileID: 114394237129396656, guid: bc907848815150142844bfc2c5587c9f, type: 2}
-  - {fileID: 114783615617319682, guid: 0c232948c60d71447838601bcd333755, type: 2}
-  - {fileID: 114220597105054464, guid: c77255b74b15422448c3752f223cf177, type: 2}
-  - {fileID: 114244835555513196, guid: 478354a3449548a44ba40d516d1cc3cd, type: 2}
-  - {fileID: 114294378205009276, guid: 5d9d617a37ddce4448c92cca0946ab18, type: 2}
-  - {fileID: 114410341130824760, guid: bfa57985877d23b46929238f077b40df, type: 2}
   specialRoomList1:
-  - {fileID: 114330503780891850, guid: 7da800d1a4355fd4aa02e3518cd9e1fb, type: 2}
-  - {fileID: 114788631920660382, guid: 2514de8c1d17b734592b5fe2cdc74560, type: 2}
-  - {fileID: 114276487283992380, guid: 8e573eb3b8b071c47a4ee92adf1a9644, type: 2}
-  - {fileID: 114356134236679564, guid: ea5defee5777b0044b3d684971c1dc40, type: 2}
-  - {fileID: 114533677780758920, guid: fe17cba28f910e54faf7b866f86bfd3e, type: 2}
-  - {fileID: 114453972306455548, guid: f6834170b7152ee4db0dc7e165dcca70, type: 2}
-  - {fileID: 114384035641513528, guid: a2dadbc92c7cc7e449233fae6430dee7, type: 2}
-  - {fileID: 114704192105535744, guid: a121f45347e4c3d4faf83b4e681c84f0, type: 2}
-  - {fileID: 114792926073732986, guid: 7b5317162788b8d4daa13ea5c6dd368b, type: 2}
-  - {fileID: 114844722971494232, guid: 4643eac2d148bd146be89238dcdfa419, type: 2}
-  specialRoomList2:
   - {fileID: 114330503780891850, guid: 7da800d1a4355fd4aa02e3518cd9e1fb, type: 2}
   - {fileID: 114788631920660382, guid: 2514de8c1d17b734592b5fe2cdc74560, type: 2}
   - {fileID: 114276487283992380, guid: 8e573eb3b8b071c47a4ee92adf1a9644, type: 2}
@@ -155,22 +121,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2d4a5ffd54cb0b643a0a0151351080b0, type: 3}
   - {fileID: 21300000, guid: 53d3da01722c1354ab7f0a0e5a6d3ba1, type: 3}
   - {fileID: 21300000, guid: 8044a9fe8c979f141a047ee76dc5a4b3, type: 3}
-  roomSurfaceSprite2:
-  - {fileID: 21300000, guid: 990a04fc86d19064abd85a9264ea1784, type: 3}
-  - {fileID: 21300000, guid: c7a48bb0766c8ee49b3bfb18aa2d66df, type: 3}
-  - {fileID: 21300000, guid: a72bd325e8d5ca24b8106b397c9f1573, type: 3}
-  - {fileID: 21300000, guid: fc754c89a867b4246947989e15e48c06, type: 3}
-  - {fileID: 21300000, guid: 24f88ef988d60104c83eb4499b3a973c, type: 3}
-  - {fileID: 21300000, guid: 7772e0a91f88bfa4cbb8239262b5f2a2, type: 3}
-  - {fileID: 21300000, guid: 103ce1f49cac64044ba4f89b2c8b44c6, type: 3}
-  - {fileID: 21300000, guid: 11a6aa89a6f22a1498c4854c839c66e2, type: 3}
-  - {fileID: 21300000, guid: b335c0d893e3c6847a861fd71c0348cd, type: 3}
   roomBackgroundSprite1:
-  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
-  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
-  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
-  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
-  roomBackgroundSprite2:
   - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
   - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
   - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}

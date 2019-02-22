@@ -9,6 +9,10 @@ public class MapManager : Singleton<MapManager> {
      * */
     public GameObject player;
     /// <summary>
+    /// The clock indicates time of tetrimino.
+    /// </summary>
+    public Timer clock;
+    /// <summary>
     /// Grid showing tiles.
     /// </summary>
     public Transform grid;
@@ -19,7 +23,7 @@ public class MapManager : Singleton<MapManager> {
     /// <summary>
     /// Tetris map's coordinates.
     /// </summary>
-    public static Vector3 tetrisMapCoord = new Vector3(0, 0, 0);
+    public static Vector3 tetrisMapCoord = Vector3.zero;
     /// <summary>
     /// Tetrimino falling speed.
     /// </summary>
@@ -32,18 +36,6 @@ public class MapManager : Singleton<MapManager> {
     /// Tetrimino falling gravity.
     /// </summary>
     public float gravity = 0.98f;
-    /// <summary>
-    /// Time tetrimino would wait until it falls.
-    /// </summary>
-    public float timeToFallTetrimino;
-    /// <summary>
-    /// Time tetris waits to fall.
-    /// </summary>
-    public float tetriminoWaitedTime;
-    /// <summary>
-    /// Time tetris has created.
-    /// </summary>
-    public float tetriminoCreatedTime;
     /// <summary>
     /// Time Tetrimino has fallen.
     /// </summary>
@@ -185,14 +177,14 @@ public class MapManager : Singleton<MapManager> {
     public static Vector2 portalDestination;
 
     public RoomInGame[] normalRoomList1;
-    public RoomInGame[] normalRoomList2;
-    /*public RoomInGame[] normalRoomList3;
+    /*public RoomInGame[] normalRoomList2;
+    public RoomInGame[] normalRoomList3;
     public RoomInGame[] normalRoomList4;
     public RoomInGame[] normalRoomList5;*/
     
     public RoomInGame[] specialRoomList1;
-    public RoomInGame[] specialRoomList2;
-    /*public RoomInGame[] specialRoomList3;
+    /*public RoomInGame[] specialRoomList2;
+    public RoomInGame[] specialRoomList3;
     public RoomInGame[] specialRoomList4;
     public RoomInGame[] specialRoomList5;*/
 
@@ -210,16 +202,16 @@ public class MapManager : Singleton<MapManager> {
     public List<Sprite>[] roomSurfaceSpritesDistributed = new List<Sprite>[5];
 
     public Sprite[] roomSurfaceSprite1;
-    public Sprite[] roomSurfaceSprite2;
-    /*public Sprite[] roomSurfaceSprite3;
+    /*public Sprite[] roomSurfaceSprite2;
+    public Sprite[] roomSurfaceSprite3;
     public Sprite[] roomSurfaceSprite4;
     public Sprite[] roomSurfaceSprite5;*/
 
     public List<Sprite>[] roomBackgroundSpritesDistributed = new List<Sprite>[5];
 
     public Sprite[] roomBackgroundSprite1;
-    public Sprite[] roomBackgroundSprite2;
-    /*public Sprite[] roomBackgroundSprite3;
+    /*public Sprite[] roomBackgroundSprite2;
+    public Sprite[] roomBackgroundSprite3;
     public Sprite[] roomBackgroundSprite4;
     public Sprite[] roomBackgroundSprite5;*/
 
@@ -543,23 +535,6 @@ public class MapManager : Singleton<MapManager> {
         }
     }
     /// <summary>
-    /// Display how much time is it remain to fall current tetrimino.
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerator CountTetriminoWaitingTime()
-    {
-        while (!isTetriminoFalling)
-        {
-            while (GameManager.gameState == GameState.Portal)
-            {
-                tetriminoCreatedTime += Time.deltaTime;
-                yield return null;
-            }
-            yield return new WaitForSeconds(0.1f);
-            tetriminoWaitedTime = Time.time - tetriminoCreatedTime;
-        }
-    }
-    /// <summary>
     /// Move tetrimino horizontally.
     /// </summary>
     /// <param name="te"></param>
@@ -663,11 +638,13 @@ public class MapManager : Singleton<MapManager> {
     {
         te.transform.position = new Vector3(te.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)te.mapCoord.y], te.mapCoord.z * tetrisMapSize);
         fallSpeed = initialFallSpeed;
-        tetriminoWaitedTime = 0;
+        StopCoroutine(Timer.timer);
         UpdateMap(te);
         CreateRoom(te);
         DeleteFullRows();
         Destroy(currentGhost.gameObject);
+        if(clock.clockSpeedStack < 12)
+            clock.clockSpeedStack += 1;
         StartCoroutine(MakeNextTetrimino());
     }
     /// <summary>
@@ -715,7 +692,7 @@ public class MapManager : Singleton<MapManager> {
     /// <param name="te">Tetrimino you want to move.</param>
     public void TetriminoControl(Tetrimino te)
     {
-        if (tetriminoWaitedTime > timeToFallTetrimino)
+        if (clock.tetriminoWaitedTime > clock.timeToFallTetrimino)
         {
             isTetriminoFalling = true;
             TetriminoMapCoordDown(currentTetrimino);
@@ -852,6 +829,7 @@ public class MapManager : Singleton<MapManager> {
     /// <returns></returns>
     public IEnumerator MakeNextTetrimino()
     {
+        StartCoroutine(GameObject.Find("Clock").GetComponent<Timer>().ResetClock());
         yield return new WaitForSeconds(1f);
         TetriminoSpawner.Instance.MakeTetrimino();
     }
@@ -865,7 +843,7 @@ public class MapManager : Singleton<MapManager> {
             room.GetComponent<SpriteRenderer>().sprite = roomSurfaceSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
         currentRoom = newRoom;
         playerIcon.transform.parent = currentRoom.transform;
-        MapManager.Instance.playerIcon.transform.localPosition = new Vector3(0, 0, 0);
+        MapManager.Instance.playerIcon.transform.localPosition = Vector3.zero;
         StartCoroutine(RoomFadeIn(newRoom));
     }
     /// <summary>
@@ -1040,10 +1018,10 @@ public class MapManager : Singleton<MapManager> {
                     for (int i = 0; i < normalRoomList1.Length; i++)
                         if (normalRoomList1[i].leftDoorInfo[leftDoor] == true && normalRoomList1[i].rightDoorInfo[rightDoor] == true && normalRoomList1[i].concept[concept] == true)
                             normalRoomsDistributed[0, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList1[i]);
-                    for (int i = 0; i < normalRoomList2.Length; i++)
+                    /*for (int i = 0; i < normalRoomList2.Length; i++)
                         if (normalRoomList2[i].leftDoorInfo[leftDoor] == true && normalRoomList2[i].rightDoorInfo[rightDoor] == true && normalRoomList2[i].concept[concept] == true)
                             normalRoomsDistributed[1, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList2[i]);
-                    /*for (int i = 0; i < normalRoomList3.Length; i++)
+                    for (int i = 0; i < normalRoomList3.Length; i++)
                         if (normalRoomList3[i].leftDoorInfo[leftDoor] == true && normalRoomList3[i].rightDoorInfo[rightDoor] == true && normalRoomList3[i].concept[concept] == true)
                             normalRoomsDistributed[2, concept, 2 - leftDoor, 2 - rightDoor].Add(normalRoomList1[i]);
                     for (int i = 0; i < normalRoomList4.Length; i++)
@@ -1073,7 +1051,7 @@ public class MapManager : Singleton<MapManager> {
                             else if (specialRoomList1[i].name.Contains("Boss"))
                                 specialRoomsDistributed[0, concept, (int)RoomType.Boss, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList1[i]);
                         }
-                    for (int i = 0; i < specialRoomList2.Length; i++)
+                    /*for (int i = 0; i < specialRoomList2.Length; i++)
                         if (specialRoomList2[i].leftDoorInfo[leftDoor] == true && specialRoomList2[i].rightDoorInfo[rightDoor] == true && specialRoomList2[i].concept[concept] == true)
                         {
                             if (specialRoomList2[i].name.Contains("Start"))
@@ -1089,7 +1067,7 @@ public class MapManager : Singleton<MapManager> {
                             else if (specialRoomList2[i].name.Contains("Boss"))
                                 specialRoomsDistributed[0, concept, (int)RoomType.Boss, 2 - leftDoor, 2 - rightDoor].Add(specialRoomList2[i]);
                         }
-                    /*for (int i = 0; i < SpecialRoomList3.Length; i++)
+                    for (int i = 0; i < SpecialRoomList3.Length; i++)
                         if (SpecialRoomList3[i].leftDoorInfo[leftDoor] == true && SpecialRoomList3[i].rightDoorInfo[rightDoor] == true && SpecialRoomList3[i].concept[concept] == true)
                         {
                             if (SpecialRoomList3[i].name.Contains("Start"))
@@ -1141,16 +1119,16 @@ public class MapManager : Singleton<MapManager> {
         for (RoomSpriteType spriteType = 0; (int)spriteType < 9; spriteType++)
         {
             roomSurfaceSpritesDistributed[0].Add(roomSurfaceSprite1[(int)spriteType]);
-            roomSurfaceSpritesDistributed[1].Add(roomSurfaceSprite2[(int)spriteType]);
-            /*roomSurfaceSpritesDistributed[2].Add(roomSurfaceSprite3[(int)spriteType]);
+            /*roomSurfaceSpritesDistributed[1].Add(roomSurfaceSprite2[(int)spriteType]);
+            roomSurfaceSpritesDistributed[2].Add(roomSurfaceSprite3[(int)spriteType]);
             roomSurfaceSpritesDistributed[3].Add(roomSurfaceSprite4[(int)spriteType]);
             roomSurfaceSpritesDistributed[4].Add(roomSurfaceSprite5[(int)spriteType]);*/
         }
         for(int i = 0; i < roomBackgroundSprite1.Length; i++)
             roomBackgroundSpritesDistributed[0].Add(roomBackgroundSprite1[i]);
-        for (int i = 0; i < roomBackgroundSprite2.Length; i++)
+        /*for (int i = 0; i < roomBackgroundSprite2.Length; i++)
             roomBackgroundSpritesDistributed[1].Add(roomBackgroundSprite2[i]);
-        /*for (int i = 0; i < roomBackgroundSprite3.Length; i++)
+        for (int i = 0; i < roomBackgroundSprite3.Length; i++)
             roomBackgroundSpritesDistributed[2].Add(roomBackgroundSprite3[i]);
         for (int i = 0; i < roomBackgroundSprite4.Length; i++)
             roomBackgroundSpritesDistributed[3].Add(roomBackgroundSprite4[i]);
@@ -1158,6 +1136,7 @@ public class MapManager : Singleton<MapManager> {
             roomBackgroundSpritesDistributed[4].Add(roomBackgroundSprite5[i]);*/
         currentStage = 0;
         player = GameObject.Find("Player");
+        clock = GameObject.Find("Clock").GetComponent<Timer>();
         grid = GameObject.Find("Grid").transform;
     }
 
@@ -1182,14 +1161,9 @@ public class MapManager : Singleton<MapManager> {
                 }
             }
             if(GameManager.gameState == GameState.Portal)
-            {
                 PortalControl();
-            }
-            //playerIcon.transform.position = currentRoom.mapCoord * tetrisMapSize + new Vector3(0, 0, grid.transform.position.z - 2);
             if (!currentRoom.isRoomCleared && (EnemyManager.Instance.IsClear() || (currentRoom.specialRoomType != RoomType.Normal && currentRoom.specialRoomType != RoomType.Boss)))
-            {
                 currentRoom.ClearRoom();
-            }
         }
     }
 }

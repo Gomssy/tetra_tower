@@ -24,13 +24,13 @@ TagManager:
   - Rope
   - Spike
   - Platform
-  - OuterWall
+  - Portal
   - Item
   - Tetris
   - PlayerAttack
   - EnemyCollider
   - EnemyTrigger
-  - Portal
+  - 
   - 
   - 
   - 
@@ -51,12 +51,14 @@ TagManager:
   - name: UI
     uniqueID: 4254909397
     locked: 0
+  - name: Background
+    uniqueID: 2317547663
+    locked: 0
   - name: ItemHighlight
     uniqueID: 996861525
     locked: 0
   - name: Item
     uniqueID: 2145601713
-    locked: 0
   - name: Wall
     uniqueID: 3278214247
     locked: 0

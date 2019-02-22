@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4261523127650414}
   - component: {fileID: 212749840812274522}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: TetrisMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
