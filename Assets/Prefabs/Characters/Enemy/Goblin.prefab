@@ -157,7 +157,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1636491341446076}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.862, y: 1.405, z: 0}
+  m_LocalPosition: {x: -6.88, y: 1.405, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4015301101001556}
@@ -247,7 +247,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.1784066, y: -0.042574346}
+  m_Offset: {x: -0.19763207, y: -0.09784776}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -258,7 +258,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.38642097, y: 0.71485126}
+  m_Size: {x: 0.7324786, y: 0.8926865}
   m_EdgeRadius: 0
 --- !u!95 &95413729269184064
 Animator:
@@ -289,18 +289,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d73d07fdab522c4aa045e1cb6a92e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterID: 117
-  maxHealth: 10
-  weight: 10
-  patrolRange: 2
+  monsterID: 101
+  maxHealth: 15
+  weight: 15
+  patrolRange: 3
   noticeRange: 2
-  attackRange: 1
-  patrolSpeed: 1.5
+  attackRange: 1.2
+  patrolSpeed: 1
   trackSpeed: 2.5
   knockbackPercentage:
-  - 0.75
   - 0.5
-  - 0.25
 --- !u!114 &114173716467154830
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -324,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 908a1b16b9926f747807d321c5ecc8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
+  damage: 4
 --- !u!114 &114851997656688694
 MonoBehaviour:
   m_ObjectHideFlags: 1
