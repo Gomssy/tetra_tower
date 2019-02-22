@@ -361,6 +361,9 @@ MonoBehaviour:
   vanishLayer:
     serializedVersion: 2
     m_Bits: 0
+  stopLayer:
+    serializedVersion: 2
+    m_Bits: 0
   attackCombo: 
 --- !u!114 &114574072693989902
 MonoBehaviour:
@@ -399,8 +402,6 @@ MonoBehaviour:
   playingSkill: 0
   originComboTime: 1
   comboTime: 1
-  time: {fileID: 0}
-  combo: {fileID: 0}
   comboArray: 
   StartTime: 0
   anim: {fileID: 95992411616135034}
@@ -409,6 +410,7 @@ MonoBehaviour:
   - {fileID: 7400000, guid: b1bf5cd583e214e448b83335f6c2d7a6, type: 2}
   - {fileID: 7400000, guid: b7ca0c87c2a73cb4e939b4d06abd4217, type: 2}
   - {fileID: 7400000, guid: 9133e696bcae7294c86f6702b20b4ae7, type: 2}
+  comboUI: {fileID: 0}
 --- !u!114 &114906702720267008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -455,7 +457,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2078941185
-  m_SortingLayer: 6
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 92d166e0c2a85a14facee45f5a5a8444, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -9,7 +9,7 @@ public class Morgenstern : Item
 {
     public override void Declare()
     {
-        id = 16; name = "Baculus";
+        id = 16; name = "모닝스타";
         quality = ItemQuality.Superior;
         skillNum = 2;
         combo = new string[3] { "BBCAA", "BBB", "" };

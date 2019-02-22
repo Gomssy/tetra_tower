@@ -51,6 +51,12 @@ TagManager:
   - name: UI
     uniqueID: 4254909397
     locked: 0
+  - name: ItemHighlight
+    uniqueID: 996861525
+    locked: 0
+  - name: Item
+    uniqueID: 2145601713
+    locked: 0
   - name: Wall
     uniqueID: 3278214247
     locked: 0
@@ -68,12 +74,6 @@ TagManager:
     locked: 0
   - name: Spike
     uniqueID: 3612720217
-    locked: 0
-  - name: ItemHighlight
-    uniqueID: 996861525
-    locked: 0
-  - name: Item
-    uniqueID: 2145601713
     locked: 0
   - name: Door
     uniqueID: 343148499

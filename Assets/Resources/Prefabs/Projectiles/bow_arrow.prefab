@@ -114,7 +114,10 @@ MonoBehaviour:
     m_Bits: 65536
   vanishLayer:
     serializedVersion: 2
-    m_Bits: 65792
+    m_Bits: 65536
+  stopLayer:
+    serializedVersion: 2
+    m_Bits: 256
   attackCombo: 
 --- !u!114 &114988624070961888
 MonoBehaviour:

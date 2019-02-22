@@ -69,6 +69,7 @@ MonoBehaviour:
   vibrationVariable: 0.1
   droppedLifeStonePrefab: {fileID: 1149595688849768, guid: 8255a117a93935941b32b4aed9b299a0,
     type: 2}
+  lifeStoneUI: {fileID: 0}
   frameBorder: 0.2
   popoutStrengthMultiplier: 9
   popoutTime: 0.1

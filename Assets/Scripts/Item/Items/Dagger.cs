@@ -9,7 +9,7 @@ public class Dagger : Item
 {
     public override void Declare()
     {
-        id = 1; name = "dagger";
+        id = 1; name = "단검(Sweet Sword)";
         quality = ItemQuality.Study;
         skillNum = 2;
         combo = new string[3] { "A", "AA", "" };

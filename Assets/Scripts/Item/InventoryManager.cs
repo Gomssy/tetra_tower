@@ -145,6 +145,11 @@ public class InventoryManager : Singleton<InventoryManager> {
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init((Item)System.Activator.CreateInstance(System.Type.GetType(str)), pos);
+
+        for (int i = 0; i < 4; i++)
+            if (itemPool[i].Contains(str))
+                itemPool[i].Remove(str);
+
         tmpItem.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         PopoutGenerator(tmpItem, popoutStrength);
     }
@@ -183,6 +188,11 @@ public class InventoryManager : Singleton<InventoryManager> {
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init((Addon)System.Activator.CreateInstance(System.Type.GetType(str)), pos);
+
+        for (int i = 0; i < 4; i++)
+            if (addonPool[i].Contains(str))
+                addonPool[i].Remove(str);
+
         tmpItem.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         PopoutGenerator(tmpItem, popoutStrength);
     }
