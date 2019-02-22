@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 public class playerOnSpike : MonoBehaviour {
-    public TileBase[] spikeTile;
+    public TileBase[] spikeTileu;
+    public TileBase[] spikeTiled;
+    public TileBase[] spikeTilel;
+    public TileBase[] spikeTiler;
     public Rigidbody2D rb;
     public int SpikeLayer = 10; //10 is for spike layer
     public float spikeDamage = 5f;
@@ -32,28 +35,39 @@ public class playerOnSpike : MonoBehaviour {
             if (colTile != null)
             {
                 EnemyAttackInfo attack = new EnemyAttackInfo(spikeDamage, 0f, 0, null, null); //넉백은 따로 구현
-                GetComponent<PlayerAttack>().TakeDamage(attack); 
-                 
+                GetComponent<PlayerAttack>().TakeDamage(attack);
+
                 //방향에 따른 넉백 구현
-                if (colTile == spikeTile[0]) //spike up tile
-                {
-                   // print("uuch!");
-                    rb.velocity = new Vector2(rb.velocity.x, spikeKnockBacky);
+                foreach (TileBase tile in spikeTileu) {
+                    if (colTile == tile) //spike up tile
+                    {
+                        // print("uuch!");
+                        rb.velocity = new Vector2(rb.velocity.x, spikeKnockBacky);
+                    }
                 }
-                else if (colTile == spikeTile[1]) //spike down tile
+                foreach (TileBase tile in spikeTiled)
                 {
-                   // print("duch!");
-                    rb.velocity = new Vector2(rb.velocity.x, -spikeKnockBacky);
+                    if (colTile == tile) //spike down tile
+                    {
+                        // print("duch!");
+                        rb.velocity = new Vector2(rb.velocity.x, -spikeKnockBacky);
+                    }
                 }
-                if (colTile == spikeTile[2]) //spike l tile
+                foreach (TileBase tile in spikeTilel)
                 {
-                   // print("luch!");
-                    rb.velocity = new Vector2( -spikeKnockBackx, rb.velocity.y);
+                    if (colTile == tile) //spike l tile
+                    {
+                        // print("luch!");
+                        rb.velocity = new Vector2(-spikeKnockBackx, rb.velocity.y);
+                    }
                 }
-                else if (colTile == spikeTile[3]) //spike r tile
+                foreach (TileBase tile in spikeTiler)
                 {
-                   // print("ruch!");
-                    rb.velocity = new Vector2( spikeKnockBackx, rb.velocity.y);
+                    if (colTile == tile) //spike r tile
+                    {
+                        // print("ruch!");
+                        rb.velocity = new Vector2(spikeKnockBackx, rb.velocity.y);
+                    }
                 }
             }
         }
