@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public int num;
     InventoryUI ui;
     InventoryManager manager;
     Transform addonGroup, discardBin;
+    bool pointerOn;
+
     void Start()
     {
+        pointerOn = false;
         ui = GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>();
         manager = InventoryManager.Instance;
         addonGroup = ui.gameObject.transform.Find("AddonGroup");
@@ -18,6 +21,7 @@ public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
+        pointerOn = false;
         if (eventData.button == PointerEventData.InputButton.Left)
             transform.SetAsLastSibling();
     }
@@ -81,8 +85,40 @@ public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             manager.SetOnPosition();
         }
     }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        pointerOn = true;
+        StartCoroutine(AddonInfoReveal());
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        pointerOn = false;
+    }
+
+    IEnumerator AddonInfoReveal()
+    {
+        if (num < 9)
+        {
+            for (float timer = 0; timer < 0.5f; timer += Time.deltaTime)
+            {
+                yield return null;
+                if (!pointerOn) yield break;
+            }
+            ui.SetAddonInfo(num);
+            while (pointerOn)
+            {
+                yield return null;
+            }
+            ui.SetAddonInfo();
+        }
+    }
+
     bool CheckBetween(Vector3 mouse, Vector3 center, Vector2 size)
     {
         return Mathf.Abs(mouse.x - center.x) <= size.x / 2f && Mathf.Abs(mouse.y - center.y) <= size.y / 2f;
     }
+
+
 }

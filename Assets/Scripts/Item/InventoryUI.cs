@@ -32,12 +32,18 @@ public class InventoryUI : MonoBehaviour {
     public GameObject[] comboCharPrefab;
     public GameObject[] comboNameFrame;
     public float pixelBetweenChar;
+    public GameObject addonInfoPrefab;
     GameObject[,] comboChars = new GameObject[3, 8];
     GameObject[] infoAddons;
+    GameObject addonInfo;
     public int selectedItem = -1;
     string[] qualityString = new string[4] { "습작", "범작", "수작", "걸작" };
 
+    InventoryManager inventoryManager;
+
 	void Awake () {
+        inventoryManager = InventoryManager.Instance;
+
         items = new GameObject[9];
         addons = new GameObject[9];
         infoAddons = new GameObject[4];
@@ -71,7 +77,38 @@ public class InventoryUI : MonoBehaviour {
         }
         
         infoSpace.transform.Find("Frame").gameObject.SetActive(false);
+
+        addonInfo = Instantiate(addonInfoPrefab, transform);
+        addonInfo.SetActive(false);
     }
+
+
+    public void SetAddonInfo()
+    {
+        addonInfo.SetActive(false);
+    }
+
+    public void SetAddonInfo(int addonNum)
+    {
+        if (addons[addonNum].activeSelf)
+        {
+            addonInfo.SetActive(true);
+            addonInfo.transform.position = addonCell[addonNum].transform.position + new Vector3(0, 200, 0);
+            addonInfo.transform.position += new Vector3(-addonInfo.transform.position.x + Mathf.Min(addonInfo.transform.position.x, 1650), 0, 0);
+
+            Addon currentAddon = inventoryManager.addonList[addonNum];
+            GameObject tmpObj = addonInfo.transform.Find("AddonPrefab").gameObject;
+            tmpObj.GetComponent<Image>().sprite = addonFrameQuality[(int)currentAddon.type * 4 + (int)currentAddon.quality];
+            tmpObj.transform.Find("Sprite").gameObject.GetComponent<Image>().sprite = currentAddon.sprite;
+            tmpObj.transform.Find("Sprite").gameObject.GetComponent<RectTransform>().sizeDelta = currentAddon.sizeInventory;
+            tmpObj.SetActive(true);
+            addonInfo.transform.Find("Quality").GetComponent<Text>().text = qualityString[(int)currentAddon.quality];
+            addonInfo.transform.Find("Name").GetComponent<Text>().text = currentAddon.name;
+            addonInfo.transform.Find("Description").GetComponent<Text>().text = currentAddon.addonDescription;
+            addonInfo.transform.Find("Info").GetComponent<Text>().text = currentAddon.addonInfo;
+        }
+    }
+
     public void SetOnPosition(List<Item> itemList, List<Addon> addonList)
     {
         for(int i=0; i<itemList.Count; i++)
