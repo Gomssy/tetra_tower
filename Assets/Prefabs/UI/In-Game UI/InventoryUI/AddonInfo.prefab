@@ -72,7 +72,6 @@ GameObject:
   - component: {fileID: 224196055372618916}
   - component: {fileID: 222335990524814540}
   - component: {fileID: 114900435719581162}
-  - component: {fileID: 114583230027247736}
   m_Layer: 5
   m_Name: AddonPrefab
   m_TagString: Untagged
@@ -257,18 +256,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
---- !u!114 &114583230027247736
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1379401480617648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a124b15eafc6d1847979588fabbb0756, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  num: 0
 --- !u!114 &114896825415534854
 MonoBehaviour:
   m_ObjectHideFlags: 1

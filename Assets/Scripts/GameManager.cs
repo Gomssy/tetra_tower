@@ -90,6 +90,7 @@ public class GameManager : Singleton<GameManager> {
                 else if(gameState == GameState.Inventory)
                 {
                     inventoryCanvas.gameObject.SetActive(false);
+                    InventoryManager.Instance.SetOnPosition();
                     gameState = GameState.Ingame;
                 }
             }

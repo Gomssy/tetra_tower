@@ -111,6 +111,7 @@ public class InventoryUI : MonoBehaviour {
 
     public void SetOnPosition(List<Item> itemList, List<Addon> addonList)
     {
+        SetAddonInfo();
         for(int i=0; i<itemList.Count; i++)
         {
             items[i].transform.position = itemCell[i].transform.position;
