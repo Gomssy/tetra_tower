@@ -65,7 +65,19 @@ public class PlayerAttack : MonoBehaviour {
 
     public void SetComboText()
     {
-        comboUI.SetCombo(comboArray);
+        bool comboFail = true;
+        List<Item> itemList = inventoryManager.itemList;
+
+        foreach (Item item in itemList)
+            for (int i = 0; i < item.skillNum; i++)
+                if (comboArray.Equals(item.combo[i]))
+                    comboFail = false;
+
+        if (CheckLongerCombo()) comboFail = false;
+
+        if (comboArray.Length == 1) comboFail = false;
+
+        comboUI.SetCombo(comboArray, comboFail);
     }
 
     public void SetTimeText(float fullTime, float currentTime)
@@ -153,7 +165,7 @@ public class PlayerAttack : MonoBehaviour {
         if (playerController.playerState != PlayerState.GoingUp && playerController.playerState != PlayerState.GoingDown)
             GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x, -0.5f, 0.5f),GetComponent<Rigidbody2D>().velocity.y);
         playerController.playerState = PlayerState.Attack;
-        if (!CheckLongerCombo()) comboArray = comboArray[comboArray.Length - 1] + "";
+        
     }
 
     bool CheckLongerCombo()

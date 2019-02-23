@@ -104,6 +104,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0f9aa2df06e79a64d8981a956eb12226, type: 3}
   - {fileID: 21300000, guid: 8a73c5ced4d09b74f89078836b9bd890, type: 3}
   - {fileID: 21300000, guid: eff9d90dcca182243875912722e0cec7, type: 3}
+  comboCancel:
+  - {fileID: 21300000, guid: a5e78d356e3459c4082372d961927dcd, type: 3}
+  - {fileID: 21300000, guid: c33e296b4b0bd4e429fa80b48b2d49c3, type: 3}
+  - {fileID: 21300000, guid: 642e96523b3ac3a439c7ee479bfa7038, type: 3}
   charSpaceR: 0.4
 --- !u!222 &222456733401175092
 CanvasRenderer:
