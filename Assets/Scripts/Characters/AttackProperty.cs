@@ -52,7 +52,10 @@ public class AttackProperty : MonoBehaviour {
                     tmpBounds = col.bounds;
 
             if (!tmpBounds.Equals(new Bounds()))
+            {
                 effectManager.StartEffect(0, tmpBounds, collision.bounds);
+                effectManager.StartNumber(attackCombo[attackCombo.Length - 1] - 'A', tmpBounds, collision.bounds, curAttack.damage);
+            }
 
         }
         if (projectileType == 1 && (vanishLayer == (vanishLayer | 1 << collision.gameObject.layer)))

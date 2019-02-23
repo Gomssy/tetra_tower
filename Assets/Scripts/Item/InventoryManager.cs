@@ -133,7 +133,6 @@ public class InventoryManager : Singleton<InventoryManager> {
         if(itemPool[(int)quality].Count > 0)
         {
             ItemInstantiate(itemPool[(int)quality][0], pos, popoutStrength);
-            itemPool[(int)quality].RemoveAt(0);
         }
     }
     /// <summary>
@@ -176,7 +175,6 @@ public class InventoryManager : Singleton<InventoryManager> {
         if (addonPool[(int)quality].Count > 0)
         {
             AddonInstantiate(addonPool[(int)quality][0], pos, popoutStrength);
-            addonPool[(int)quality].RemoveAt(0);
         }
     }
     /// <summary>
