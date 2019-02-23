@@ -2,6 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class ItemSpawnInfo
+{
+    ItemType itemType;
+    int amount;
+    bool isGold;
+    public ItemSpawnInfo(ItemType _itemType, int _amount)
+    {
+        itemType = _itemType;
+        amount = _amount;
+        isGold = false;
+    }
+    public ItemSpawnInfo(ItemType _itemType, int _amount, bool _isGold)
+    {
+        itemType = _itemType;
+        amount = _amount;
+        isGold = _isGold;
+    }
+}
+
 public class RoomInGame : MonoBehaviour {
 
     /*
