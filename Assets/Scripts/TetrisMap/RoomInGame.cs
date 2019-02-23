@@ -4,21 +4,39 @@ using UnityEngine;
 
 public class ItemSpawnInfo
 {
-    ItemType itemType;
-    int amount;
-    bool isGold;
-    public ItemSpawnInfo(ItemType _itemType, int _amount)
-    {
-        itemType = _itemType;
-        amount = _amount;
-        isGold = false;
-    }
-    public ItemSpawnInfo(ItemType _itemType, int _amount, bool _isGold)
-    {
-        itemType = _itemType;
-        amount = _amount;
-        isGold = _isGold;
-    }
+	public float probability;
+	public ItemSpawnType[] itemType;
+	public ItemQuality[] itemQuality;
+	public int[] amount;
+	public ItemSpawnInfo(float _probability, ItemSpawnType[] _itemType, ItemQuality[] _itemQuality, int[] _amount)
+	{
+		probability = _probability;
+		itemType = new ItemSpawnType[4];
+		itemQuality = new ItemQuality[4];
+		amount = new int[4];
+		for (int i = 0; i < _itemType.Length; i++)
+		{
+			itemType[i] = _itemType[i];
+			itemQuality[i] = _itemQuality[i];
+			amount[i] = _amount[i];
+		}
+	}
+}
+
+public class RoomItemInfo
+{
+	public List<ItemSpawnInfo> itemSpawnInfo = new List<ItemSpawnInfo>();
+	public RoomItemInfo()
+	{
+
+	}
+	public RoomItemInfo(ItemSpawnInfo[] _itemSpawnInfo)
+	{
+		for (int i = 0; i < _itemSpawnInfo.Length; i++)
+		{
+			itemSpawnInfo.Add(_itemSpawnInfo[i]);
+		}
+	}
 }
 
 public class RoomInGame : MonoBehaviour {

@@ -988,7 +988,73 @@ public class MapManager : Singleton<MapManager> {
         Tetrimino.rotationInformation[5].horizontalLength = new int[4] { 3, 2, 3, 2 };  //S
         Tetrimino.rotationInformation[6].horizontalLength = new int[4] { 3, 2, 3, 2 };  //Z
         Tetrimino.rotationInformation[7].horizontalLength = new int[4] { 1, 1, 1, 1 };  //Boss
-        for (int i = 0; i < tetrisYCoord.Length; i++)
+		ItemRoomInGame.itemRoomInformation[0] = new RoomItemInfo(
+			new ItemSpawnInfo[8]
+			{
+				new ItemSpawnInfo(12.5f, new ItemSpawnType[2] { ItemSpawnType.Item, ItemSpawnType.GoldPotion },
+					new ItemQuality[2] { ItemQuality.Ordinary, ItemQuality.None }, new int[2] { 1, 2 }),
+				new ItemSpawnInfo(12.5f, new ItemSpawnType[2] { ItemSpawnType.Addon, ItemSpawnType.GoldPotion },
+					new ItemQuality[2] { ItemQuality.Ordinary, ItemQuality.None }, new int[2] { 1, 2 }),
+				new ItemSpawnInfo(12.5f, new ItemSpawnType[2] { ItemSpawnType.Item, ItemSpawnType.LifeStone },
+					new ItemQuality[2] { ItemQuality.Ordinary, ItemQuality.Gold }, new int[2] { 1, 1 }),
+				new ItemSpawnInfo(12.5f, new ItemSpawnType[2] { ItemSpawnType.Addon, ItemSpawnType.LifeStone },
+					new ItemQuality[2] { ItemQuality.Ordinary, ItemQuality.Gold }, new int[2] { 1, 1 }),
+				new ItemSpawnInfo(17, new ItemSpawnType[2] { ItemSpawnType.Item, ItemSpawnType.Addon },
+					new ItemQuality[2] { ItemQuality.Ordinary, ItemQuality.Ordinary }, new int[2] { 1, 1 }),
+				new ItemSpawnInfo(25, new ItemSpawnType[2] { ItemSpawnType.Item, ItemSpawnType.Addon },
+					new ItemQuality[2] { ItemQuality.Ordinary, ItemQuality.Study }, new int[2] { 1, 1 }),
+				new ItemSpawnInfo(4, new ItemSpawnType[1] { ItemSpawnType.Item },
+					new ItemQuality[1] { ItemQuality.Superior }, new int[1] { 1 }),
+				new ItemSpawnInfo(4, new ItemSpawnType[1] { ItemSpawnType.Addon },
+					new ItemQuality[1] { ItemQuality.Superior }, new int[1] { 1 })
+			});
+		ItemRoomInGame.itemRoomInformation[1] = new RoomItemInfo(
+			new ItemSpawnInfo[7]
+			{
+				new ItemSpawnInfo(10, new ItemSpawnType[2] { ItemSpawnType.Item, ItemSpawnType.GoldPotion },
+					new ItemQuality[2] { ItemQuality.Superior, ItemQuality.None }, new int[2] { 1, 3 }),
+				new ItemSpawnInfo(10, new ItemSpawnType[2] { ItemSpawnType.Addon, ItemSpawnType.GoldPotion },
+					new ItemQuality[2] { ItemQuality.Superior, ItemQuality.None }, new int[2] { 1, 3 }),
+				new ItemSpawnInfo(20, new ItemSpawnType[3] { ItemSpawnType.Addon, ItemSpawnType.Addon, ItemSpawnType.Addon },
+					new ItemQuality[3] { ItemQuality.Superior, ItemQuality.Ordinary, ItemQuality.Study }, new int[3] { 1, 1, 1 }),
+				new ItemSpawnInfo(20, new ItemSpawnType[2] { ItemSpawnType.Item, ItemSpawnType.Addon },
+					new ItemQuality[2] { ItemQuality.Superior, ItemQuality.Study }, new int[2] { 1, 2 }),
+				new ItemSpawnInfo(20, new ItemSpawnType[3] { ItemSpawnType.Item, ItemSpawnType.Addon, ItemSpawnType.LifeStone },
+					new ItemQuality[3] { ItemQuality.Superior, ItemQuality.Ordinary, ItemQuality.None }, new int[3] { 1, 1, 3 }),
+				new ItemSpawnInfo(10, new ItemSpawnType[2] { ItemSpawnType.Item, ItemSpawnType.LifeStone },
+					new ItemQuality[2] { ItemQuality.Superior, ItemQuality.None }, new int[2] { 1, 3 }),
+				new ItemSpawnInfo(10, new ItemSpawnType[2] { ItemSpawnType.Addon, ItemSpawnType.LifeStone },
+					new ItemQuality[2] { ItemQuality.Superior, ItemQuality.None }, new int[2] { 1, 3 })
+			});
+		ItemRoomInGame.itemRoomInformation[2] = new RoomItemInfo(
+			new ItemSpawnInfo[4]
+			{
+				new ItemSpawnInfo(33.5f, new ItemSpawnType[4] { ItemSpawnType.Item, ItemSpawnType.Addon, ItemSpawnType.Item, ItemSpawnType.GoldPotion },
+					new ItemQuality[4] { ItemQuality.Superior, ItemQuality.Superior, ItemQuality.Ordinary, ItemQuality.None }, new int[4] { 1, 1, 1, 1 }),
+				new ItemSpawnInfo(33.5f, new ItemSpawnType[4] { ItemSpawnType.Item, ItemSpawnType.Addon, ItemSpawnType.Addon, ItemSpawnType.GoldPotion },
+					new ItemQuality[4] { ItemQuality.Superior, ItemQuality.Superior, ItemQuality.Ordinary, ItemQuality.None }, new int[4] { 1, 1, 1, 1 }),
+				new ItemSpawnInfo(16.5f, new ItemSpawnType[1] { ItemSpawnType.Item },
+					new ItemQuality[1] { ItemQuality.Masterpiece }, new int[1] { 1 }),
+				new ItemSpawnInfo(16.5f, new ItemSpawnType[1] { ItemSpawnType.Addon },
+					new ItemQuality[1] { ItemQuality.Masterpiece }, new int[1] { 1 })
+			});
+		ItemRoomInGame.itemRoomInformation[3] = new RoomItemInfo(
+			new ItemSpawnInfo[2]
+			{
+				new ItemSpawnInfo(50, new ItemSpawnType[2] { ItemSpawnType.Item, ItemSpawnType.GoldPotion },
+					new ItemQuality[2] { ItemQuality.Masterpiece, ItemQuality.None }, new int[2] { 1, 2 }),
+				new ItemSpawnInfo(50, new ItemSpawnType[2] { ItemSpawnType.Addon, ItemSpawnType.GoldPotion },
+					new ItemQuality[2] { ItemQuality.Masterpiece, ItemQuality.None }, new int[2] { 1, 2 })
+			});
+		ItemRoomInGame.itemRoomInformation[4] = new RoomItemInfo(
+			new ItemSpawnInfo[2]
+			{
+				new ItemSpawnInfo(50, new ItemSpawnType[3] { ItemSpawnType.Item, ItemSpawnType.LifeStoneFrame, ItemSpawnType.LifeStone },
+					new ItemQuality[3] { ItemQuality.Masterpiece, ItemQuality.None, ItemQuality.Gold }, new int[3] { 1, 1, 1 }),
+				new ItemSpawnInfo(50, new ItemSpawnType[3] { ItemSpawnType.Addon, ItemSpawnType.LifeStoneFrame, ItemSpawnType.LifeStone },
+					new ItemQuality[3] { ItemQuality.Masterpiece, ItemQuality.None, ItemQuality.Gold }, new int[3] { 1, 1, 1 })
+			});
+		for (int i = 0; i < tetrisYCoord.Length; i++)
             tetrisYCoord[i] = i * tetrisMapSize;
         for (int i = 0; i < isRowDeleting.Length; i++)
             isRowDeleting[i] = false;

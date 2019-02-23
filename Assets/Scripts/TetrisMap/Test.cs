@@ -26,8 +26,12 @@ public class Test : MonoBehaviour {
     {
         if(MapManager.currentStage < 5)
             MapManager.currentStage += 1;
-    }
-    public void Gold()
+	}
+	public void Item()
+	{
+		MapManager.Instance.UpgradeRoom(RoomType.Item);
+	}
+	public void Gold()
     {
         MapManager.Instance.UpgradeRoom(RoomType.Gold);
     }

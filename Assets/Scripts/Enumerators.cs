@@ -30,7 +30,9 @@ public enum ItemQuality
     Study,
     Ordinary,
     Superior,
-    Masterpiece
+    Masterpiece,
+	Gold,
+	None
 }
 
 public enum AddonType
@@ -48,12 +50,17 @@ public enum LifeStoneType
     Amethyst=3
 }
 
+public enum ItemSpawnType
+{
+	LifeStone, GoldPotion, Item, Addon, LifeStoneFrame
+}
+
 public enum ItemType
 {
     None, OneStone, TwoStone, ThreeStone, FourStone,
     FiveStone, GoldPotion, AmethystPotion, StudyItem, OrdinaryItem,
     SuperiorItem, MasterPieceItem, StudyAdd, OrdinaryAdd, SuperiorAdd,
-    MasterpieceAdd
+    MasterpieceAdd, LifeStoneFrame
 }
 
 public enum PlayerState { Idle, Walk, Run, GoingUp, GoingDown, Rope, Attack }
