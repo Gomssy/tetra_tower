@@ -54,6 +54,7 @@ MonoBehaviour:
   dropTableData: {fileID: 4900000, guid: 6216895c658a2af40890a4446cc10a8c, type: 3}
   enemyPrefab:
   - {fileID: 1636491341446076, guid: a164c147037e89448820f7387c724c42, type: 2}
-  - {fileID: 1388688497843904, guid: f51d4f26735f0d347be22ac86c0b3a62, type: 2}
+  - {fileID: 1146867442367080, guid: 4b4051d2d46be8d47b320cffbddc44bb, type: 2}
+  - {fileID: 1362081092076430, guid: fb338610cf9d2c540806e154b9d64f48, type: 2}
   EnemySpawnCount: 0
   EnemyDeadCount: 0

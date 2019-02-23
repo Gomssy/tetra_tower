@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 4349524824414564}
   - component: {fileID: 114446678123945506}
   m_Layer: 0
-  m_Name: Tutorial_Scarecrow1
+  m_Name: NotDyingScarecrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -630,7 +630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d27745292051704a87740def5391766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 1620262780563784, guid: 829529367b2848840b52987edc8162c9,
+  enemyPrefab: {fileID: 1146867442367080, guid: 4b4051d2d46be8d47b320cffbddc44bb,
     type: 2}
 --- !u!114 &114519665164863532
 MonoBehaviour:

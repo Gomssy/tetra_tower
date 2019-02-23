@@ -174,59 +174,60 @@ public class Enemy : MonoBehaviour {
     public void GetDamaged(PlayerAttackInfo attack)
     {
         string objectName = gameObject.transform.parent.name;
-        if (objectName == "Scarecrow(Clone)" || objectName =="Tutorial_Scarecrow1(Clone)")
-        {
-            float prevHealth = currHealth;
-            currHealth -= attack.damage;
+        float prevHealth = currHealth;
+        currHealth -= attack.damage;
 
+        if (objectName == "NotDyingScarecrow(Clone)")
+        {
             if (currHealth <= 0)
             {
                 prevHealth = maxHealth;
                 currHealth = maxHealth;
                 return;
             }
-
-            if(currHealth<prevHealth)
+            if (currHealth < prevHealth)
                 animator.SetTrigger("DamagedTrigger");
         }
-
         else
         {
-            float prevHealth = currHealth;
-            currHealth -= attack.damage;
             if (currHealth <= 0)
             {
                 Invisible = true;
                 animator.SetTrigger("DeadTrigger");
                 return;
             }
-
-            DebuffApply(attack.debuffTime);
-
-            float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
-            float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
-
-            if (MovementLock) // 넉백이 진행 중
+            if (objectName == "DyingScarecrow(Clone)")
             {
-                StopCoroutine("Knockback");
-            }
-            StartCoroutine(Knockback(knockbackDist, knockbackTime));
-
-            float currHealthPercentage = currHealth / maxHealth;
-            float prevHealthPercentage = prevHealth / maxHealth;
-
-            foreach (float percentage in knockbackPercentage)
-            {
-                if (currHealthPercentage > percentage) { break; }
-                if (prevHealthPercentage > percentage)
-                {
+                if (currHealth < prevHealth)
                     animator.SetTrigger("DamagedTrigger");
-                    break;
-                }
             }
-            animator.SetTrigger("TrackTrigger");
+            else
+            {
+                DebuffApply(attack.debuffTime);
+
+                float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
+                float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
+                if (MovementLock) // 넉백이 진행 중
+                {
+                    StopCoroutine("Knockback");
+                }
+                StartCoroutine(Knockback(knockbackDist, knockbackTime));
+                float currHealthPercentage = currHealth / maxHealth;
+                float prevHealthPercentage = prevHealth / maxHealth;
+                foreach (float percentage in knockbackPercentage)
+                {
+                    if (currHealthPercentage > percentage) { break; }
+                    if (prevHealthPercentage > percentage)
+                    {
+                        animator.SetTrigger("DamagedTrigger");
+                        break;
+                    }
+                }
+                animator.SetTrigger("TrackTrigger");
+            }
         }
     }
+    
 
     public void GetDamaged(float damage)
     {
