@@ -123,9 +123,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8044a9fe8c979f141a047ee76dc5a4b3, type: 3}
   roomBackgroundSprite1:
   - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
+  - {fileID: 21300000, guid: 7d94542039acd6a4b932cf9219b71799, type: 3}
   - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
-  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
-  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
+  - {fileID: 21300000, guid: 7d94542039acd6a4b932cf9219b71799, type: 3}
 --- !u!114 &114476419532778440
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -325,9 +325,11 @@ MonoBehaviour:
   allPlatformTiles:
   - {fileID: 11400000, guid: c25a20f570a6e474bb000881122106f7, type: 2}
   - {fileID: 11400000, guid: 60035ce64a779ae4a9eeaaafe33f87e1, type: 2}
+  - {fileID: 11400000, guid: 7906a96d103925441b49f86f01c3d598, type: 2}
   - {fileID: 11400000, guid: 9e0a3a715e976bb489ec8bedeeb2ab32, type: 2}
   - {fileID: 11400000, guid: 3d63c558a17627b4c8a6eff233ae9aff, type: 2}
   - {fileID: 11400000, guid: 0aa25d9458a285146be0f80438fbcac8, type: 2}
+  - {fileID: 11400000, guid: f8b56dbf06889ba4d8678ff5675e7170, type: 2}
   - {fileID: 11400000, guid: 8e289c63850dcb34a94a8cc69a245ed7, type: 2}
   allRopeTiles:
   - {fileID: 11400000, guid: 7fcb9c110fd1807479e950e97e3a09e4, type: 2}

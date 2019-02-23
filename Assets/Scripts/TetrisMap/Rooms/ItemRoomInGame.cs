@@ -16,12 +16,17 @@ public class ItemRoomInGame : RoomInGame {
 		int j = 0;
 		foreach (Transform child in transform.Find("item spot"))
 			itemPosition[j++] = child.transform.position;
-		int itemRoomType = room.itemRoomType;
-		foreach(ItemSpawnInfo child in itemRoomInformation[itemRoomType - 1].itemSpawnInfo)
+		int itemRoomIndex = room.itemRoomType;
+		if (itemRoomIndex > 5)
+			itemRoomIndex = 5;
+		for(int index = 0; index < itemRoomInformation[itemRoomIndex - 1].itemSpawnInfo.Count; index++)
 		{
+			ItemSpawnInfo child = itemRoomInformation[itemRoomIndex - 1].itemSpawnInfo[index];
 			probability -= child.probability;
-			if(probability <= 0)
+			Debug.Log(probability);
+			if (probability <= 0)
 			{
+				Debug.Log("Item Spawn");
 				int itemCount = 0;
 				for(int i = 0; i < child.itemType.Length; i++)
 				{
@@ -45,7 +50,7 @@ public class ItemRoomInGame : RoomInGame {
 						}
 					else if (child.itemType[i] == ItemSpawnType.LifeStone)
 					{
-						if(room.itemRoomType <= 4)
+						if(room.itemRoomType < 4)
 							for (int _amount = 0; _amount < child.amount[i]; _amount++)
 							{
 								if(child.itemQuality[i] == ItemQuality.Gold)
@@ -62,11 +67,14 @@ public class ItemRoomInGame : RoomInGame {
 						else
 						{
 							Debug.Log("type" + child.itemType[i] + " quality" + child.itemQuality[i] + " amount" + child.amount[i]);
-							lifeStoneManager.InstantiateDroppedLifeStone(3 * room.itemRoomType - 4, 1, 0, itemPosition[itemCount++], 1);
+							lifeStoneManager.InstantiateDroppedLifeStone(3 * (room.itemRoomType - 4), 1, 0, itemPosition[itemCount++], 1);
 						}
 					}
 					else if (child.itemType[i] == ItemSpawnType.LifeStoneFrame)
+					{
+						Debug.Log("type" + child.itemType[i] + " quality" + child.itemQuality[i] + " amount" + child.amount[i]);
 						lifeStoneManager.ExpandRow(room.itemRoomType - 4);
+					}
 				}
 				return;
 			}
@@ -77,120 +85,5 @@ public class ItemRoomInGame : RoomInGame {
     {
         base.RoomEnter();
 		SpawnItem();
-
-        /*switch (room.itemRoomType)
-        {
-            case 1:
-                if (probability < 25)
-                {
-                    if (probability % 2 == 0)
-                        inventoryManager.ItemInstantiate(ItemQuality.Ordinary, itemPosition[0], 1);
-                    else
-                        inventoryManager.AddonInstantiate(ItemQuality.Ordinary, itemPosition[0], 1);
-                    lifeStoneManager.InstantiatePotion(itemPosition[1], 1);
-                    lifeStoneManager.InstantiatePotion(itemPosition[2], 1);
-                }
-                else if (25 <= probability && probability < 50)
-                {
-                    if (probability % 2 == 0)
-                        inventoryManager.ItemInstantiate(ItemQuality.Ordinary, itemPosition[0], 1);
-                    else
-                        inventoryManager.AddonInstantiate(ItemQuality.Ordinary, itemPosition[0], 1);
-                    lifeStoneManager.InstantiateDroppedLifeStone(4, 1, 0, itemPosition[1], 1);
-                }
-                else if (50 <= probability && probability < 67)
-                {
-                    inventoryManager.ItemInstantiate(ItemQuality.Ordinary, itemPosition[0], 1);
-                    inventoryManager.AddonInstantiate(ItemQuality.Ordinary, itemPosition[1], 1);
-                }
-                else if (67 <= probability && probability < 92)
-                {
-                    inventoryManager.ItemInstantiate(ItemQuality.Ordinary, itemPosition[0], 1);
-                    inventoryManager.AddonInstantiate(ItemQuality.Study, itemPosition[1], 1);
-                }
-                else
-                {
-                    if (probability % 2 == 0)
-                        inventoryManager.ItemInstantiate(ItemQuality.Superior, itemPosition[0], 1);
-                    else
-                        inventoryManager.AddonInstantiate(ItemQuality.Superior, itemPosition[0], 1);
-                }
-                break;
-            case 2:
-                if (probability % 5 == 0)
-                {
-                    if (probability % 2 == 0)
-                        inventoryManager.ItemInstantiate(ItemQuality.Superior, itemPosition[0], 1);
-                    else
-                        inventoryManager.AddonInstantiate(ItemQuality.Superior, itemPosition[0], 1);
-                    lifeStoneManager.InstantiatePotion(itemPosition[1], 1);
-                    lifeStoneManager.InstantiatePotion(itemPosition[2], 1);
-                    lifeStoneManager.InstantiatePotion(itemPosition[3], 1);
-                }
-                else if (probability % 5 == 1)
-                {
-                    inventoryManager.AddonInstantiate(ItemQuality.Superior, itemPosition[0], 1);
-                    inventoryManager.AddonInstantiate(ItemQuality.Ordinary, itemPosition[1], 1);
-                    inventoryManager.AddonInstantiate(ItemQuality.Study, itemPosition[2], 1);
-                }
-                else if (probability % 5 == 2)
-                {
-                    inventoryManager.ItemInstantiate(ItemQuality.Superior, itemPosition[0], 1);
-                    inventoryManager.AddonInstantiate(ItemQuality.Study, itemPosition[1], 1);
-                    inventoryManager.AddonInstantiate(ItemQuality.Study, itemPosition[2], 1);
-                }
-                else if (probability % 5 == 3)
-                {
-                    inventoryManager.ItemInstantiate(ItemQuality.Superior, itemPosition[0], 1);
-                    inventoryManager.AddonInstantiate(ItemQuality.Ordinary, itemPosition[1], 1);
-                    lifeStoneManager.InstantiateDroppedLifeStone(3, 0, 0, itemPosition[2], 1);
-                }
-                else if (probability % 5 == 4)
-                {
-                    if (probability % 2 == 0)
-                        inventoryManager.ItemInstantiate(ItemQuality.Superior, itemPosition[0], 1);
-                    else
-                        inventoryManager.AddonInstantiate(ItemQuality.Superior, itemPosition[0], 1);
-                    lifeStoneManager.InstantiateDroppedLifeStone(3, 0, 0, itemPosition[1], 1);
-                    lifeStoneManager.InstantiateDroppedLifeStone(3, 0, 0, itemPosition[2], 1);
-                    lifeStoneManager.InstantiateDroppedLifeStone(3, 0, 0, itemPosition[3], 1);
-                }
-                break;
-            case 3:
-                if (probability < 67)
-                {
-                    if (probability % 2 == 0)
-                        inventoryManager.ItemInstantiate(ItemQuality.Ordinary, itemPosition[0], 1);
-                    else
-                        inventoryManager.AddonInstantiate(ItemQuality.Ordinary, itemPosition[0], 1);
-                    inventoryManager.ItemInstantiate(ItemQuality.Superior, itemPosition[1], 1);
-                    inventoryManager.AddonInstantiate(ItemQuality.Superior, itemPosition[2], 1);
-                    lifeStoneManager.InstantiatePotion(itemPosition[3], 1);
-                }
-                else
-                {
-                    if (probability % 2 == 0)
-                        inventoryManager.ItemInstantiate(ItemQuality.Masterpiece, itemPosition[0], 1);
-                    else
-                        inventoryManager.AddonInstantiate(ItemQuality.Masterpiece, itemPosition[0], 1);
-                }
-                break;
-            case 4:
-                if (probability % 2 == 0)
-                    inventoryManager.ItemInstantiate(ItemQuality.Masterpiece, itemPosition[0], 1);
-                else
-                    inventoryManager.AddonInstantiate(ItemQuality.Masterpiece, itemPosition[0], 1);
-                lifeStoneManager.InstantiatePotion(itemPosition[1], 1);
-                lifeStoneManager.InstantiatePotion(itemPosition[2], 1);
-                break;
-            default:
-                if (probability % 2 == 0)
-                    inventoryManager.ItemInstantiate(ItemQuality.Masterpiece, itemPosition[0], 1);
-                else
-                    inventoryManager.AddonInstantiate(ItemQuality.Masterpiece, itemPosition[0], 1);
-                lifeStoneManager.InstantiateDroppedLifeStone(3 * room.itemRoomType - 4, 0, 0, itemPosition[1], 1);
-                lifeStoneManager.ExpandRow(room.itemRoomType - 4);
-                break;
-        }*/
     }
 }

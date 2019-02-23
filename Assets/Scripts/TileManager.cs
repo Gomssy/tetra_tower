@@ -105,9 +105,9 @@ public class TileManager : MonoBehaviour {
     public char CheckPlatformTile(RoomInGame roomInGame, Vector2Int originPos)
     {
         bool left = false, right = false;
-        if(roomInGame.platformTileInfo[originPos.x + 1, originPos.y])
+        if(roomInGame.platformTileInfo[originPos.x + 1, originPos.y] || roomInGame.wallTileInfo[originPos.x + 1, originPos.y])
             right = true;
-        if (roomInGame.platformTileInfo[originPos.x - 1, originPos.y])
+        if (roomInGame.platformTileInfo[originPos.x - 1, originPos.y] || roomInGame.wallTileInfo[originPos.x - 1, originPos.y])
             left = true;
         if (left && right)
             return 'c';
@@ -116,7 +116,7 @@ public class TileManager : MonoBehaviour {
         else if(right)
             return 'l';
         else
-            return 'c';
+            return 'o';
     }
     public char CheckRopeTile(RoomInGame roomInGame, Vector2Int originPos)
     {

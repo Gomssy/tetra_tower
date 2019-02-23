@@ -11,8 +11,8 @@ public class ItemSpawnInfo
 	public ItemSpawnInfo(float _probability, ItemSpawnType[] _itemType, ItemQuality[] _itemQuality, int[] _amount)
 	{
 		probability = _probability;
-		itemType = new ItemSpawnType[4];
-		itemQuality = new ItemQuality[4];
+		itemType = new ItemSpawnType[_itemType.Length];
+		itemQuality = new ItemQuality[_itemQuality.Length];
 		amount = new int[4];
 		for (int i = 0; i < _itemType.Length; i++)
 		{
@@ -26,16 +26,10 @@ public class ItemSpawnInfo
 public class RoomItemInfo
 {
 	public List<ItemSpawnInfo> itemSpawnInfo = new List<ItemSpawnInfo>();
-	public RoomItemInfo()
-	{
-
-	}
 	public RoomItemInfo(ItemSpawnInfo[] _itemSpawnInfo)
 	{
 		for (int i = 0; i < _itemSpawnInfo.Length; i++)
-		{
 			itemSpawnInfo.Add(_itemSpawnInfo[i]);
-		}
 	}
 }
 
