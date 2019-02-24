@@ -207,8 +207,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterID: 103
-  maxHealth: 11
-  weight: 6
+  maxHealth: 15
+  weight: 15
   patrolRange: 0
   noticeRange: 10
   attackRange: 10

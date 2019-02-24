@@ -44,7 +44,7 @@ public class EnemyArrow : MonoBehaviour {
             Destroy(gameObject);
         }
         
-        if (stopLayer.Equals(stopLayer | 1 << collision.gameObject.layer))
+        if (stopLayer == (stopLayer | 1 << collision.gameObject.layer))
         {
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             GetComponent<Collider2D>().enabled = false;
