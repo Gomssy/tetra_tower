@@ -9,6 +9,7 @@ public abstract class Enemy : MonoBehaviour {
 
     // debuff
     readonly float[] immunity_time = new float[(int)EnemyDebuffCase.END_POINTER] { 0.0f, 3.0f, 6.0f, 6.0f, 6.0f };
+    [SerializeField]
     DebuffState[] debuffState;
     float fireDuration = 0.0f;
     protected abstract IEnumerator OnIce(float duration);
@@ -36,8 +37,8 @@ public abstract class Enemy : MonoBehaviour {
     // for movement
     protected Animator animator;
     protected float stunnedAnimLength;
+    public bool MovementLock;
     public bool Invisible { get; protected set; }
-    public bool MovementLock { get; protected set; }
     public bool KnockbackLock { get; protected set; }
     public float PlayerDistance { get; protected set; }
     protected abstract IEnumerator Knockback(float knockbackDist, float knockbackTime);
@@ -45,7 +46,11 @@ public abstract class Enemy : MonoBehaviour {
     // drop item
     private int[] dropTable;
 
-// method
+    // for bumping attack
+    public bool bumped = false;
+    public bool bumpable = true;
+
+    // method
     // Standard method
     protected virtual void Awake()
     {

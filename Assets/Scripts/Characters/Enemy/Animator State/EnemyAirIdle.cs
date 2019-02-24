@@ -9,6 +9,7 @@ public class EnemyAirIdle : StateMachineBehaviour {
     Vector2 origin;
     Transform animatorRoot;
     EnemyAir enemy;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         origin = animator.transform.position;
@@ -24,6 +25,7 @@ public class EnemyAirIdle : StateMachineBehaviour {
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         if (enemy.PlayerDistance < noticeRange)
         {
+            animator.ResetTrigger("IdleTrigger");
             animator.SetTrigger("TrackTrigger");
             return;
         }

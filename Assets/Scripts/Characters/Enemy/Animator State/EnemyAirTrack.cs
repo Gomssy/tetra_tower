@@ -4,25 +4,39 @@ using UnityEngine;
 
 public class EnemyAirTrack : StateMachineBehaviour {
     float trackSpeed;
+    float trackRange;
+    float angle;
     GameObject player;
     Transform animatorRoot;
     EnemyAir enemy;
     Vector2 direction;
+
+    int maxFrame = 10;
+    int frameCount;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         animatorRoot = animator.transform.parent;
         enemy = animator.GetComponent<EnemyAir>();
         player = EnemyManager.Instance.Player;
         trackSpeed = enemy.trackSpeed;
+        frameCount = 0;
 
         SetDirection();
     }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        if (enemy.PlayerDistance > enemy.noticeRange)
+        {
+            animator.ResetTrigger("TrackTrigger");
+            animator.SetTrigger("IdleTrigger");
+            enemy.ChangeVelocityXY_noOption(Vector2.zero);
+            return;
+        }
+
         SetDirection();
 
-        Vector2 vel = direction * trackSpeed;
+        Vector2 vel = direction.normalized * trackSpeed;
         enemy.ChangeVelocityXY_noOption(vel);
 	}
 
@@ -44,7 +58,7 @@ public class EnemyAirTrack : StateMachineBehaviour {
     private void SetDirection()
     {
         direction = player.transform.position - animatorRoot.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         enemy.ChangeAngleZ_noOption(angle - 90.0f);
     }
 }

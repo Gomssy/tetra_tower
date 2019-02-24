@@ -323,6 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 4
+  damageOnce: 1
 --- !u!114 &114851997656688694
 MonoBehaviour:
   m_ObjectHideFlags: 1
