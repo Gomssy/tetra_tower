@@ -2,11 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemRoomInGame : RoomInGame {
-	
-	public static RoomItemInfo[] itemRoomInformation = new RoomItemInfo[5];
+public class ItemRoomItemInfo
+{
+    public float probability;
+    public ItemSpawnType[] itemType;
+    public ItemQuality[] itemQuality;
+    public int[] amount;
+    public ItemRoomItemInfo(float _probability, ItemSpawnType[] _itemType, ItemQuality[] _itemQuality, int[] _amount)
+    {
+        probability = _probability;
+        itemType = new ItemSpawnType[_itemType.Length];
+        itemQuality = new ItemQuality[_itemQuality.Length];
+        amount = new int[_amount.Length];
+        for (int i = 0; i < _itemType.Length; i++)
+        {
+            itemType[i] = _itemType[i];
+            itemQuality[i] = _itemQuality[i];
+            amount[i] = _amount[i];
+        }
+    }
+}
 
-	public void SpawnItem()
+public class ItemRoomInGame : RoomInGame {
+
+    public static RoomItemInfo<ItemRoomItemInfo>[] itemRoomInformation = new RoomItemInfo<ItemRoomItemInfo>[5];
+
+    public void SpawnItem()
 	{
 		Room room = transform.parent.GetComponent<Room>();
 		InventoryManager inventoryManager = InventoryManager.Instance;
@@ -21,7 +42,7 @@ public class ItemRoomInGame : RoomInGame {
 			itemRoomIndex = 5;
 		for(int index = 0; index < itemRoomInformation[itemRoomIndex - 1].itemSpawnInfo.Count; index++)
 		{
-			ItemSpawnInfo child = itemRoomInformation[itemRoomIndex - 1].itemSpawnInfo[index];
+			ItemRoomItemInfo child = itemRoomInformation[itemRoomIndex - 1].itemSpawnInfo[index];
 			probability -= child.probability;
 			Debug.Log(probability);
 			if (probability <= 0)
@@ -85,5 +106,11 @@ public class ItemRoomInGame : RoomInGame {
     {
         base.RoomEnter();
 		SpawnItem();
+    }
+
+    public override void RoomClear()
+    {
+        base.RoomClear();
+
     }
 }

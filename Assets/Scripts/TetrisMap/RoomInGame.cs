@@ -2,31 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemSpawnInfo
+public class RoomItemInfo<T>
 {
-	public float probability;
-	public ItemSpawnType[] itemType;
-	public ItemQuality[] itemQuality;
-	public int[] amount;
-	public ItemSpawnInfo(float _probability, ItemSpawnType[] _itemType, ItemQuality[] _itemQuality, int[] _amount)
-	{
-		probability = _probability;
-		itemType = new ItemSpawnType[_itemType.Length];
-		itemQuality = new ItemQuality[_itemQuality.Length];
-		amount = new int[4];
-		for (int i = 0; i < _itemType.Length; i++)
-		{
-			itemType[i] = _itemType[i];
-			itemQuality[i] = _itemQuality[i];
-			amount[i] = _amount[i];
-		}
-	}
-}
+	public List<T> itemSpawnInfo = new List<T>();
+    public RoomItemInfo()
+    {
 
-public class RoomItemInfo
-{
-	public List<ItemSpawnInfo> itemSpawnInfo = new List<ItemSpawnInfo>();
-	public RoomItemInfo(ItemSpawnInfo[] _itemSpawnInfo)
+    }
+    public RoomItemInfo(T[] _itemSpawnInfo)
 	{
 		for (int i = 0; i < _itemSpawnInfo.Length; i++)
 			itemSpawnInfo.Add(_itemSpawnInfo[i]);
@@ -60,6 +43,11 @@ public class RoomInGame : MonoBehaviour {
     /// This function is called when player enters the room.
     /// </summary>
     public virtual void RoomEnter()
+    {
+
+    }
+
+    public virtual void RoomClear()
     {
 
     }

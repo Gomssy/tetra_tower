@@ -9,4 +9,10 @@ public class NormalRoomInGame : RoomInGame {
         base.RoomEnter();
         EnemyManager.Instance.SpawnEnemyToMap();
     }
+
+    public override void RoomClear()
+    {
+        base.RoomClear();
+
+    }
 }

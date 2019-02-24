@@ -221,6 +221,19 @@ public class Room : MonoBehaviour
             {
                 portal = roomInGame.transform.Find("portal spot").gameObject;
                 portal = Instantiate(MapManager.Instance.portal, portal.transform.position, Quaternion.identity, roomInGame.transform);
+                for (int x = 0; x < MapManager.width; x++)
+                    MapManager.portalDistributedHorizontal[x].Clear();
+                for (int y = 0; y <= MapManager.realHeight; y++)
+                    MapManager.portalDistributedVertical[y].Clear();
+                for (int x = 0; x < MapManager.width; x++)
+                    for (int y = 0; y <= MapManager.realHeight; y++)
+                        if (MapManager.mapGrid[x, y] != null && MapManager.mapGrid[x, y].isPortal == true)
+                        {
+                            MapManager.portalGrid[x, y] = true;
+                            MapManager.portalDistributedHorizontal[x].Add(y);
+                            MapManager.portalDistributedVertical[y].Add(x);
+                        }
+                portalSurface = Instantiate(MapManager.Instance.portalSurface, transform.position + new Vector3(12, 12, 0), Quaternion.identity, transform);
             }
         }
     }
@@ -366,7 +379,7 @@ public class Room : MonoBehaviour
     /// Clear the cleared room.
     /// Open all the doors and change fog to cleared fog.
     /// </summary>
-    public void ClearRoom()
+    public void FinishRoom()
     {
         if(isRoomCleared != true)
         {
@@ -375,32 +388,14 @@ public class Room : MonoBehaviour
             OpenDoor("Left");
             OpenDoor("Right");
             Vector3 fogPosition = fog.transform.position;
-            Destroy(fog);
             fog = Instantiate(MapManager.Instance.clearedFog, fogPosition, Quaternion.identity, transform);
             fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
             CreatePortal();
-            if (isPortal == true)
-            {
-                for (int x = 0; x < MapManager.width; x++)
-                    MapManager.portalDistributedHorizontal[x].Clear();
-                for (int y = 0; y <= MapManager.realHeight; y++)
-                    MapManager.portalDistributedVertical[y].Clear();
-                for (int x = 0; x < MapManager.width; x++)
-                    for (int y = 0; y <= MapManager.realHeight; y++)
-                        if (MapManager.mapGrid[x, y] != null && MapManager.mapGrid[x, y].isPortal == true)
-                        {
-                            MapManager.portalGrid[x, y] = true;
-                            MapManager.portalDistributedHorizontal[x].Add(y);
-                            MapManager.portalDistributedVertical[y].Add(x);
-                        }
-                portalSurface = Instantiate(MapManager.Instance.portalSurface, transform.position + new Vector3(12, 12, 0), Quaternion.identity, transform);
-            }
             isRoomCleared = true;
             MapManager.Instance.clock.clockSpeedStack -= 3;
             if (MapManager.Instance.clock.clockSpeedStack < 0)
                 MapManager.Instance.clock.clockSpeedStack = 0;
-            if (specialRoomType == RoomType.Boss)
-                MapManager.currentStage += 1;
+            roomInGame.RoomClear();
         }
         //Need to make extra works.
     }
