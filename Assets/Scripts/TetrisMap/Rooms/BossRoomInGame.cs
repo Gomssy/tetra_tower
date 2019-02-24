@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class BossRoomInGame : RoomInGame {
 
+	IEnumerator[] phases;
+
     public override void RoomEnter()
     {
         base.RoomEnter();
-
-        //보스 만들어지면 구현할 것
+		
+		// 보스 소개
     }
+
+	
 }
