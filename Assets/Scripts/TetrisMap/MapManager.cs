@@ -215,6 +215,17 @@ public class MapManager : Singleton<MapManager> {
     public Sprite[] roomBackgroundSprite4;
     public Sprite[] roomBackgroundSprite5;*/
 
+    /// <summary>
+    /// Data of which item to spawn in item room.
+    /// </summary>
+    [SerializeField]
+    private TextAsset itemRoomItemSpawnData;
+    /// <summary>
+    /// Data of which item to spawn in gold room.
+    /// </summary>
+    [SerializeField]
+    private TextAsset GoldRoomItemSpawnData;
+
     /*
      * functions
      * */
@@ -988,7 +999,7 @@ public class MapManager : Singleton<MapManager> {
         Tetrimino.rotationInformation[5].horizontalLength = new int[4] { 3, 2, 3, 2 };  //S
         Tetrimino.rotationInformation[6].horizontalLength = new int[4] { 3, 2, 3, 2 };  //Z
         Tetrimino.rotationInformation[7].horizontalLength = new int[4] { 1, 1, 1, 1 };  //Boss
-		ItemRoomInGame.itemRoomInformation[0] = new RoomItemInfo<ItemRoomItemInfo>(
+		/*ItemRoomInGame.itemRoomInformation[0] = new RoomItemInfo<ItemRoomItemInfo>(
 			new ItemRoomItemInfo[8]
 			{
 				new ItemRoomItemInfo(12.5f, new ItemSpawnType[2] { ItemSpawnType.Item, ItemSpawnType.GoldPotion },
@@ -1053,7 +1064,8 @@ public class MapManager : Singleton<MapManager> {
 					new ItemQuality[3] { ItemQuality.Masterpiece, ItemQuality.None, ItemQuality.Gold }, new int[3] { 1, 1, 1 }),
 				new ItemRoomItemInfo(50, new ItemSpawnType[3] { ItemSpawnType.Addon, ItemSpawnType.LifeStoneFrame, ItemSpawnType.LifeStone },
 					new ItemQuality[3] { ItemQuality.Masterpiece, ItemQuality.None, ItemQuality.Gold }, new int[3] { 1, 1, 1 })
-			});
+			});*/
+        ItemRoomInGame.LoadItemRoomData(itemRoomItemSpawnData);
 		for (int i = 0; i < tetrisYCoord.Length; i++)
             tetrisYCoord[i] = i * tetrisMapSize;
         for (int i = 0; i < isRowDeleting.Length; i++)

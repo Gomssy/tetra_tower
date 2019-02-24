@@ -24,7 +24,7 @@ public class GoldRoomItemInfo
 
 public class GoldRoomInGame : RoomInGame {
 
-    public static RoomItemInfo<GoldRoomItemInfo>[] goldRoomInformation = new RoomItemInfo<GoldRoomItemInfo>()[];
+    public static RoomItemInfo<GoldRoomItemInfo>[] goldRoomInformation = new RoomItemInfo<GoldRoomItemInfo>[5];
 
     public override void RoomEnter()
     {

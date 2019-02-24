@@ -9,10 +9,9 @@ public class RoomItemInfo<T>
     {
 
     }
-    public RoomItemInfo(T[] _itemSpawnInfo)
+    public void AddItemInfo(T _itemSpawnInfo)
 	{
-		for (int i = 0; i < _itemSpawnInfo.Length; i++)
-			itemSpawnInfo.Add(_itemSpawnInfo[i]);
+        itemSpawnInfo.Add(_itemSpawnInfo);
 	}
 }
 

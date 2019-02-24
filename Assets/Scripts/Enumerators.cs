@@ -59,7 +59,7 @@ public enum ItemType
 {
     None, OneStone, TwoStone, ThreeStone, FourStone,
     FiveStone, GoldPotion, AmethystPotion, StudyItem, OrdinaryItem,
-    SuperiorItem, MasterPieceItem, StudyAdd, OrdinaryAdd, SuperiorAdd,
+    SuperiorItem, MasterpieceItem, StudyAdd, OrdinaryAdd, SuperiorAdd,
     MasterpieceAdd, LifeStoneFrame
 }
 

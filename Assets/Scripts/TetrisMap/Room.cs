@@ -388,6 +388,7 @@ public class Room : MonoBehaviour
             OpenDoor("Left");
             OpenDoor("Right");
             Vector3 fogPosition = fog.transform.position;
+            Destroy(fog.gameObject);
             fog = Instantiate(MapManager.Instance.clearedFog, fogPosition, Quaternion.identity, transform);
             fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
             CreatePortal();

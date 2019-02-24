@@ -126,6 +126,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7d94542039acd6a4b932cf9219b71799, type: 3}
   - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
   - {fileID: 21300000, guid: 7d94542039acd6a4b932cf9219b71799, type: 3}
+  itemRoomItemSpawnData: {fileID: 4900000, guid: 50da557f52db710419c3374a903b3d22,
+    type: 3}
+  GoldRoomItemSpawnData: {fileID: 4900000, guid: a89c82f77571a09438810f11ef1978e0,
+    type: 3}
 --- !u!114 &114476419532778440
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,0 +1,13 @@
+stage,type,quality,price
+1,LifeStone,None,4,LifeStone,None,10,Item,Study,4,Addon,Study,3,Item,Ordinary,10,Addon,Ordinary,10
+2,LifeStone,None,4,LifeStone,None,10,Item,Study,4,Item,Ordinary,10,Item,Ordinary,10,Addon,Ordinary,10
+3,LifeStone,None,4,LifeStone,None,10,Item,Ordinary,10,Addon,Ordinary,10,Addon,Ordinary,10,Item,Superior,10
+3,LifeStone,None,4,LifeStone,None,10,Item,Ordinary,10,Addon,Ordinary,10,Addon,Ordinary,10,Addon,Superior,22
+4,LifeStone,None,4,LifeStone,None,10,Item,Ordinary,10,Addon,Ordinary,10,Addon,Superior,22,Item,MasterPiece,50
+4,LifeStone,None,4,LifeStone,None,10,Item,Ordinary,10,Addon,Ordinary,10,Item,Superior,22,Item,MasterPiece,50
+4,LifeStone,None,4,LifeStone,None,10,Item,Ordinary,10,Addon,Ordinary,10,Addon,Superior,22,Addon,MasterPiece,50
+4,LifeStone,None,4,LifeStone,None,10,Item,Ordinary,10,Addon,Ordinary,10,Item,Superior,22,Addon,MasterPiece,50
+5,LifeStone,None,4,LifeStone,None,10,Item,Ordinary,10,Addon,Ordinary,10,Addon,Superior,22,Item,MasterPiece,50
+5,LifeStone,None,4,LifeStone,None,10,Item,Ordinary,10,Addon,Ordinary,10,Item,Superior,22,Item,MasterPiece,50
+5,LifeStone,None,4,LifeStone,None,10,Item,Ordinary,10,Addon,Ordinary,10,Addon,Superior,22,Addon,MasterPiece,50
+5,LifeStone,None,4,LifeStone,None,10,Item,Ordinary,10,Addon,Ordinary,10,Item,Superior,22,Addon,MasterPiece,50

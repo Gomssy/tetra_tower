@@ -53,7 +53,7 @@ public class Test : MonoBehaviour {
     }
     public void ClearRoom()
     {
-        MapManager.currentRoom.ClearRoom();
+        MapManager.currentRoom.FinishRoom();
     }
     public void SummonEnemy()
     {

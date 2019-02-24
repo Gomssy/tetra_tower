@@ -27,6 +27,33 @@ public class ItemRoomInGame : RoomInGame {
 
     public static RoomItemInfo<ItemRoomItemInfo>[] itemRoomInformation = new RoomItemInfo<ItemRoomItemInfo>[5];
 
+    public static void LoadItemRoomData(TextAsset dataFile)
+    {
+        for (int i = 0; i < itemRoomInformation.Length; i++)
+            itemRoomInformation[i] = new RoomItemInfo<ItemRoomItemInfo>();
+        string[] linesFromText = dataFile.text.Split('\n');
+        string[] cellValue = null;
+        int stageIndex = 0;
+        int probabilityIndex = 1;
+        int skipDistance = 2;
+        for (int i = 1; i < linesFromText.Length; i++)
+        {
+            cellValue = linesFromText[i].Split(',');
+            int itemCase = (cellValue.Length - skipDistance) / 3;
+            float probability = float.Parse(cellValue[probabilityIndex]);
+            ItemSpawnType[] itemType = new ItemSpawnType[itemCase];
+            ItemQuality[] itemQuality = new ItemQuality[itemCase];
+            int[] itemAmount = new int[itemCase];
+            for(int j = 0; j < itemCase; j++)
+            {
+                itemType[j] = (ItemSpawnType)System.Enum.Parse(typeof(ItemSpawnType), cellValue[skipDistance + j * 3]);
+                itemQuality[j] = (ItemQuality)System.Enum.Parse(typeof(ItemQuality), cellValue[skipDistance + j * 3 + 1]);
+                itemAmount[j] = int.Parse(cellValue[skipDistance + j * 3 + 2]);
+            }
+            itemRoomInformation[int.Parse(cellValue[stageIndex]) - 1].
+                AddItemInfo(new ItemRoomItemInfo(probability, itemType, itemQuality, itemAmount));
+        }
+    }
     public void SpawnItem()
 	{
 		Room room = transform.parent.GetComponent<Room>();
