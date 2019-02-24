@@ -1020,7 +1020,7 @@ public class MapManager : Singleton<MapManager> {
 				new ItemSpawnInfo(20, new ItemSpawnType[2] { ItemSpawnType.Item, ItemSpawnType.Addon },
 					new ItemQuality[2] { ItemQuality.Superior, ItemQuality.Study }, new int[2] { 1, 2 }),
 				new ItemSpawnInfo(20, new ItemSpawnType[3] { ItemSpawnType.Item, ItemSpawnType.Addon, ItemSpawnType.LifeStone },
-					new ItemQuality[3] { ItemQuality.Superior, ItemQuality.Ordinary, ItemQuality.None }, new int[3] { 1, 1, 3 }),
+					new ItemQuality[3] { ItemQuality.Superior, ItemQuality.Ordinary, ItemQuality.None }, new int[3] { 1, 1, 1 }),
 				new ItemSpawnInfo(10, new ItemSpawnType[2] { ItemSpawnType.Item, ItemSpawnType.LifeStone },
 					new ItemQuality[2] { ItemQuality.Superior, ItemQuality.None }, new int[2] { 1, 3 }),
 				new ItemSpawnInfo(10, new ItemSpawnType[2] { ItemSpawnType.Addon, ItemSpawnType.LifeStone },
