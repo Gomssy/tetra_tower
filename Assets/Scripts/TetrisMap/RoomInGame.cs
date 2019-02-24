@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoomItemInfo<T>
 {
-	public List<T> itemSpawnInfo = new List<T>();
+    public List<T> itemSpawnInfo = new List<T>();
     public RoomItemInfo()
     {
 
@@ -45,7 +45,9 @@ public class RoomInGame : MonoBehaviour {
     {
 
     }
-
+    /// <summary>
+    /// This function is called when player clears the room.
+    /// </summary>
     public virtual void RoomClear()
     {
 

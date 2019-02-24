@@ -25,8 +25,16 @@ public class ItemRoomItemInfo
 
 public class ItemRoomInGame : RoomInGame {
 
+    /// <summary>
+    /// The information of item room's item spawn data.
+    /// Each index means item stage.
+    /// </summary>
     public static RoomItemInfo<ItemRoomItemInfo>[] itemRoomInformation = new RoomItemInfo<ItemRoomItemInfo>[5];
 
+    /// <summary>
+    /// Loads data from item room's item spawn data.
+    /// </summary>
+    /// <param name="dataFile">The data file of item room..</param>
     public static void LoadItemRoomData(TextAsset dataFile)
     {
         for (int i = 0; i < itemRoomInformation.Length; i++)
@@ -50,10 +58,12 @@ public class ItemRoomInGame : RoomInGame {
                 itemQuality[j] = (ItemQuality)System.Enum.Parse(typeof(ItemQuality), cellValue[skipDistance + j * 3 + 1]);
                 itemAmount[j] = int.Parse(cellValue[skipDistance + j * 3 + 2]);
             }
-            itemRoomInformation[int.Parse(cellValue[stageIndex]) - 1].
-                AddItemInfo(new ItemRoomItemInfo(probability, itemType, itemQuality, itemAmount));
+            itemRoomInformation[int.Parse(cellValue[stageIndex]) - 1].AddItemInfo(new ItemRoomItemInfo(probability, itemType, itemQuality, itemAmount));
         }
     }
+    /// <summary>
+    /// Spawn items according to the probability and item stage of this room.
+    /// </summary>
     public void SpawnItem()
 	{
 		Room room = transform.parent.GetComponent<Room>();
@@ -69,58 +79,58 @@ public class ItemRoomInGame : RoomInGame {
 			itemRoomIndex = 5;
 		for(int index = 0; index < itemRoomInformation[itemRoomIndex - 1].itemSpawnInfo.Count; index++)
 		{
-			ItemRoomItemInfo child = itemRoomInformation[itemRoomIndex - 1].itemSpawnInfo[index];
-			probability -= child.probability;
+			ItemRoomItemInfo itemInfo = itemRoomInformation[itemRoomIndex - 1].itemSpawnInfo[index];
+			probability -= itemInfo.probability;
 			Debug.Log(probability);
 			if (probability <= 0)
 			{
 				Debug.Log("Item Spawn");
 				int itemCount = 0;
-				for(int i = 0; i < child.itemType.Length; i++)
+				for(int i = 0; i < itemInfo.itemType.Length; i++)
 				{
-					if (child.itemType[i] == ItemSpawnType.Item) 
-						for(int _amount = 0; _amount < child.amount[i]; _amount++)
+					if (itemInfo.itemType[i] == ItemSpawnType.Item) 
+						for(int _amount = 0; _amount < itemInfo.amount[i]; _amount++)
 						{
-							Debug.Log("type" + child.itemType[i] + " quality" + child.itemQuality[i] + " amount" + child.amount[i]);
-							inventoryManager.ItemInstantiate(child.itemQuality[i], itemPosition[itemCount++], 1);
+							Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
+							inventoryManager.ItemInstantiate(itemInfo.itemQuality[i], itemPosition[itemCount++], 1);
 						}
-					else if (child.itemType[i] == ItemSpawnType.Addon)
-						for (int _amount = 0; _amount < child.amount[i]; _amount++)
+					else if (itemInfo.itemType[i] == ItemSpawnType.Addon)
+						for (int _amount = 0; _amount < itemInfo.amount[i]; _amount++)
 						{
-							Debug.Log("type" + child.itemType[i] + " quality" + child.itemQuality[i] + " amount" + child.amount[i]);
-							inventoryManager.AddonInstantiate(child.itemQuality[i], itemPosition[itemCount++], 1);
+							Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
+							inventoryManager.AddonInstantiate(itemInfo.itemQuality[i], itemPosition[itemCount++], 1);
 						}
-					else if (child.itemType[i] == ItemSpawnType.GoldPotion)
-						for (int _amount = 0; _amount < child.amount[i]; _amount++)
+					else if (itemInfo.itemType[i] == ItemSpawnType.GoldPotion)
+						for (int _amount = 0; _amount < itemInfo.amount[i]; _amount++)
 						{
-							Debug.Log("type" + child.itemType[i] + " quality" + child.itemQuality[i] + " amount" + child.amount[i]);
+							Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
 							lifeStoneManager.InstantiatePotion(itemPosition[itemCount++], 1);
 						}
-					else if (child.itemType[i] == ItemSpawnType.LifeStone)
+					else if (itemInfo.itemType[i] == ItemSpawnType.LifeStone)
 					{
 						if(room.itemRoomType < 4)
-							for (int _amount = 0; _amount < child.amount[i]; _amount++)
+							for (int _amount = 0; _amount < itemInfo.amount[i]; _amount++)
 							{
-								if(child.itemQuality[i] == ItemQuality.Gold)
+								if(itemInfo.itemQuality[i] == ItemQuality.Gold)
 								{
-									Debug.Log("type" + child.itemType[i] + " quality" + child.itemQuality[i] + " amount" + child.amount[i]);
+									Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
 									lifeStoneManager.InstantiateDroppedLifeStone(4, 1, 0, itemPosition[itemCount++], 1);
 								}
 								else
 								{
-									Debug.Log("type" + child.itemType[i] + " quality" + child.itemQuality[i] + " amount" + child.amount[i]);
+									Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
 									lifeStoneManager.InstantiateDroppedLifeStone(3, 0, 0, itemPosition[itemCount++], 1);
 								}
 							}
 						else
 						{
-							Debug.Log("type" + child.itemType[i] + " quality" + child.itemQuality[i] + " amount" + child.amount[i]);
+							Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
 							lifeStoneManager.InstantiateDroppedLifeStone(3 * (room.itemRoomType - 4), 1, 0, itemPosition[itemCount++], 1);
 						}
 					}
-					else if (child.itemType[i] == ItemSpawnType.LifeStoneFrame)
+					else if (itemInfo.itemType[i] == ItemSpawnType.LifeStoneFrame)
 					{
-						Debug.Log("type" + child.itemType[i] + " quality" + child.itemQuality[i] + " amount" + child.amount[i]);
+						Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
 						lifeStoneManager.ExpandRow(room.itemRoomType - 4);
 					}
 				}
