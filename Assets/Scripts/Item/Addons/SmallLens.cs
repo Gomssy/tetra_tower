@@ -12,13 +12,14 @@ public class SmallLens : Addon
         id = 18; name = "소형 렌즈";
         quality = ItemQuality.Ordinary;
         type = AddonType.Component;
-        sprite = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
-        highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
-        sizeInventory = new Vector2(80, 80);
+        sprite = Resources.Load<Sprite>("Sprites/Addons/small lens");
+        highlight = Resources.Load<Sprite>("Sprites/Addons/small lens_border");
+        sizeInventory = new Vector2(72.5f, 77.5f);
     }
 
     public override void OtherEffect(string combo)
     {
+        Debug.Log("fuck");
         GameObject.Find("Player").GetComponent<PlayerAttack>().comboTime *= 1.75f;
     }
 }

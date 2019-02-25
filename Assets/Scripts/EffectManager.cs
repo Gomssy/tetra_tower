@@ -57,14 +57,18 @@ public class EffectManager : Singleton<EffectManager> {
     /// <returns></returns>
     public bool StartNumber(int type, Bounds bound1, Bounds bound2, float damage)
     {
-        Color[] typeColor = new Color[4] { new Color(1,0,0), new Color(0,0,1), new Color(0,1,0), new Color(1,0,1)};
+        return StartNumber(type, GenerateRandomPosition(bound1, bound2), damage);
+    }
+    public bool StartNumber(int type, Vector3 pos, float damage)
+    {
+        Color[] typeColor = new Color[4] { new Color(1, 0, 0), new Color(0, 0, 1), new Color(0, 1, 0), new Color(1, 0, 1) };
         foreach (GameObject obj in numberArray)
         {
             if (!obj.activeSelf)
             {
                 obj.GetComponent<Text>().text = ((int)Mathf.Round(damage)).ToString();
                 obj.GetComponent<Text>().color = typeColor[type];
-                obj.transform.position = GenerateRandomPosition(bound1, bound2);
+                obj.transform.position = pos;
                 obj.SetActive(true);
                 StartCoroutine(NumberFadeOut(obj));
                 return true;

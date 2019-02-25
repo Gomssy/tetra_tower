@@ -12,8 +12,8 @@ public class Sandbag : Addon
         id = 29; name = "모래 주머니";
         quality = ItemQuality.Superior;
         type = AddonType.Prop;
-        sprite = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
-        highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
+        sprite = Resources.Load<Sprite>("Sprites/Addons/sandbag"); ;
+        highlight = Resources.Load<Sprite>("Sprites/Addons/sandbag_border"); ;
         sizeInventory = new Vector2(80, 80);
     }
     public override void OtherEffect(string combo)
