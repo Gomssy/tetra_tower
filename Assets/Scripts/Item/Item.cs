@@ -16,6 +16,8 @@ public abstract class Item {
     public Vector2 sizeInventory;
     public string itemInfo;
     public string[] comboName = new string[3];
+    public float[] comboCool = new float[3];
+    public float[] comboCurrentCool = new float[3];
 
     public bool ComboAction(string currentCombo)
     {
@@ -23,6 +25,10 @@ public abstract class Item {
         {
             if (combo[i].Equals(currentCombo))
             {
+                if (comboCurrentCool[i] < comboCool[i]) return false;
+
+                comboCurrentCool[i] = 0;
+
                 if (i == 0) PlaySkill1();
                 else if (i == 1) PlaySkill2();
                 else if (i == 2) PlaySkill3();
@@ -37,6 +43,11 @@ public abstract class Item {
                     }
                 }
 
+                foreach (Item item in InventoryManager.Instance.itemList)
+                {
+                    item.GlobalOtherEffect(currentCombo);
+                }
+
                 return true;
             }
         }
@@ -44,10 +55,30 @@ public abstract class Item {
     }
     public bool ComboAction(int currenSkill)
     {
+
         return ComboAction(combo[currenSkill]);
     }
+
+    public bool IsCool(string currentCombo)
+    {
+        for (int i = 0; i < skillNum; i++)
+        {
+            if (combo[i].Equals(currentCombo))
+            {
+                return comboCurrentCool[i] >= comboCool[i];
+            }
+        }
+        return false;
+    }
+    public bool IsCool(int currenSkill)
+    {
+        return IsCool(combo[currenSkill]);
+    }
+
     public Item()
     {
+        comboCool = new float[3] { 0, 0, 0 };
+        comboCurrentCool = new float[3] { 0, 0, 0 };
         Declare();
     }
     public virtual void Declare()
@@ -119,6 +150,11 @@ public abstract class Item {
                 for (int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++)
                     attackInfo.debuffTime[i] *= tmpArray[i];
             }
+        }
+
+        foreach (Item item in InventoryManager.Instance.itemList)
+        {
+            attackInfo.knockBackMultiplier *=  item.GlobalKnockBackMultiplier(originInfo, enemyInfo, combo);
         }
 
         //FinalAdder
@@ -200,6 +236,18 @@ public abstract class Item {
         
     }
     public virtual void OtherEffect(string combo)
+    {
+
+    }
+    public virtual float GlobalFireDamageMultiplier()
+    {
+        return 1f;
+    }
+    public virtual float GlobalKnockBackMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
+    {
+        return 1f;
+    }
+    public virtual void GlobalOtherEffect(string combo)
     {
 
     }
