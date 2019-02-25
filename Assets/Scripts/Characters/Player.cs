@@ -28,14 +28,14 @@ public class Player : MonoBehaviour {
     void Start () {
         displayText = Instantiate(displayText, GameManager.Instance.textCanvas.transform);
         ttx = (int)(transform.position.x / 24f);
-        tty = (int)(transform.position.y-0.9f / 24f);
+        tty = (int)(transform.position.y - 0.8f / 24f);
         lifeStoneManager = LifeStoneManager.Instance;
     }
 	
 	// Update is called once per frame
 	void Update () {
         tx = (int)(transform.position.x / 24f);
-        ty = (int)((transform.position.y-0.9f) / 24f);
+        ty = (int)((transform.position.y - 0.8f) / 24f);
         if ((ttx != tx || tty != ty) && MapManager.isRoomFalling != true)
         {
             MapManager.tempRoom = MapManager.mapGrid[tx, ty];
@@ -53,6 +53,7 @@ public class Player : MonoBehaviour {
             }
             else if (ty > tty)
             {
+                transform.position += new Vector3(0, 0.5f, 0);
                 MapManager.currentRoom.CloseDoor("Up", true);
             }
         }

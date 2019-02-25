@@ -364,6 +364,9 @@ public class Room : MonoBehaviour
             }
         }
     }
+
+    
+
     /// <summary>
     /// Clear the cleared room.
     /// Open all the doors and change fog to cleared fog.

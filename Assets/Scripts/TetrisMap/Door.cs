@@ -35,7 +35,7 @@ public class Door : MonoBehaviour {
                     enteredPosition = 2;
                     break;
                 case 1:
-                    if (collision.transform.position.x < GetComponent<PolygonCollider2D>().transform.position.x + 0.6f)
+                    if (collision.transform.position.x < GetComponent<PolygonCollider2D>().transform.position.x)
                         return;
                     enteredPosition = 3;
                     break;
