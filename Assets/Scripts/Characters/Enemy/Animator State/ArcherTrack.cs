@@ -23,7 +23,7 @@ public class ArcherTrack : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         enemy_arrow = Resources.Load<GameObject>("Prefabs/Projectiles/enemy_arrow");
-        waitBetweenShots = 0.1f;
+        waitBetweenShots = 1f;
         shotCounter = waitBetweenShots;
 
         animatorRoot = animator.transform.parent;
@@ -53,15 +53,10 @@ public class ArcherTrack : StateMachineBehaviour
         if (animator.GetComponent<Enemy>().PlayerDistance < attackRange && shotCounter < 0)
         {
             animator.SetTrigger("AttackTrigger");
-          
-                Vector2 direction = enemy.transform.GetChild(0).position - player.transform.position;
-                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            GameManager.Instance.StartCoroutine(WaitforShot());
 
-                Instantiate(enemy_arrow, enemy.transform.GetChild(0).position, rotation);
-
-            shotCounter = waitBetweenShots;
             return;
+
         }
         int integerDir = enemy.MoveDir;
         if (enemy.WallTest[(integerDir + 1) / 2] || enemy.CliffTest[(integerDir + 1) / 2])
@@ -81,6 +76,19 @@ public class ArcherTrack : StateMachineBehaviour
             frameCounter = 0;
         }
     }
+
+    IEnumerator WaitforShot()
+    {
+        yield return new WaitForSeconds(0.75f);
+        Vector2 direction = enemy.transform.GetChild(0).position - player.transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        Instantiate(enemy_arrow, enemy.transform.GetChild(0).position, rotation);
+
+        shotCounter = waitBetweenShots;
+    }
+
+ 
 
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
