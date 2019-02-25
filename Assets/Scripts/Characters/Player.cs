@@ -88,7 +88,7 @@ public class Player : MonoBehaviour {
         {
             obj.SetActive(true);
             obj.transform.localPosition = Vector3.zero;
-            obj.GetComponent<Rigidbody2D>().velocity = Random.insideUnitCircle.normalized * 6f;
+            obj.GetComponent<Rigidbody2D>().velocity = Random.insideUnitCircle.normalized * Random.Range(3f,7f);
         }
         yield return new WaitForSeconds(3f);
         GameManager.gameState = GameState.GameOver;
