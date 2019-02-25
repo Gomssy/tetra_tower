@@ -480,9 +480,36 @@ CompositeCollider2D:
   m_EdgeRadius: 0
   m_ColliderPaths:
   - m_Collider: {fileID: 2113883506198219690}
-    m_ColliderPaths: []
+    m_ColliderPaths:
+    - - X: 10625000
+        Y: 143124992
+      - X: 10000000
+        Y: 140624992
+      - X: 10000000
+        Y: 138281248
+      - X: 30000000
+        Y: 138281248
+      - X: 30000000
+        Y: 140624992
+      - X: 29375000
+        Y: 143124992
+      - X: 20625000
+        Y: 143124992
+      - X: 20000000
+        Y: 140624992
+      - X: 19375000
+        Y: 143124992
   m_CompositePaths:
-    m_Paths: []
+    m_Paths:
+    - - {x: 3, y: 14.062499}
+      - {x: 2.9375, y: 14.312499}
+      - {x: 2.0625, y: 14.312499}
+      - {x: 2, y: 14.062499}
+      - {x: 1.9375, y: 14.312499}
+      - {x: 1.0625, y: 14.312499}
+      - {x: 1, y: 14.062499}
+      - {x: 1, y: 13.828125}
+      - {x: 3, y: 13.828125}
   m_VertexDistance: 0.0005
 --- !u!66 &66126908559386904
 CompositeCollider2D:
@@ -1180,7 +1207,7 @@ TilemapRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0.5, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -1660,8 +1687,8 @@ Tilemap:
   m_Tiles:
   - first: {x: 1, y: 14, z: 0}
     second:
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1669,8 +1696,8 @@ Tilemap:
       m_ColliderType: 1
   - first: {x: 2, y: 14, z: 0}
     second:
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1678,15 +1705,15 @@ Tilemap:
       m_ColliderType: 1
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 2
-    m_Data: {fileID: 11400000, guid: 7f2c5cb43ad7207499b22fb5e0acd41a, type: 2}
   - m_RefCount: 0
     m_Data: {fileID: 0}
+  - m_RefCount: 2
+    m_Data: {fileID: 11400000, guid: faca42f78d4fa7e4cb168ca7d28c9199, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 2
-    m_Data: {fileID: 21300000, guid: 7ee765cc5330a444db118a031abd5b9e, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
+  - m_RefCount: 2
+    m_Data: {fileID: 21300000, guid: 1cf0fa6989016be47b8d1be7215a7bb8, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 2
     m_Data:

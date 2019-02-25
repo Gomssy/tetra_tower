@@ -36,10 +36,10 @@ public class TetriminoSpawner : Singleton<TetriminoSpawner> {
         {
             int randomPosition = Random.Range(0, MapManager.width);
             int randomTetrimino;
-            if (MapManager.Instance.spawnBossTetrimino)
+            if (MapManager.Instance.clearedRoomCount >= MapManager.Instance.stageClearCondition[MapManager.currentStage])
             {
                 randomTetrimino = 7;
-                MapManager.Instance.spawnBossTetrimino = false;
+                MapManager.Instance.clearedRoomCount = 0;
             }
             else
                 randomTetrimino = TetriminoRandomizer();

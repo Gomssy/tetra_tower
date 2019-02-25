@@ -11,7 +11,8 @@ public class Test : MonoBehaviour {
     public GameObject testUI;
     public GameObject lifeStoneTestUI;
     bool isTestUiActive = true;
-
+    public Text clearedRoom;
+    
     public void ChangeTetrimino()
     {
         Destroy(MapManager.currentTetrimino.gameObject);
@@ -20,7 +21,7 @@ public class Test : MonoBehaviour {
     }
     public void SpawnBossTetrimino()
     {
-        MapManager.Instance.spawnBossTetrimino = true;
+        MapManager.Instance.clearedRoomCount = MapManager.Instance.stageClearCondition[MapManager.currentStage];
     }
     public void UpgradeStage()
     {
@@ -59,6 +60,10 @@ public class Test : MonoBehaviour {
     {
         EnemyManager.Instance.SpawnEnemyToMap_forTest();
     }
+    public void ClearedRoom()
+    {
+        clearedRoom.text = MapManager.Instance.clearedRoomCount.ToString();
+    }
 
 
     private void Awake()
@@ -93,5 +98,6 @@ public class Test : MonoBehaviour {
         }
         if (!MapManager.isTetriminoFalling)
             Timer();
+        ClearedRoom();
     }
 }

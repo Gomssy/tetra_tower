@@ -13,6 +13,6 @@ public class NormalRoomInGame : RoomInGame {
     public override void RoomClear()
     {
         base.RoomClear();
-
+        MapManager.Instance.clearedRoomCount++;
     }
 }

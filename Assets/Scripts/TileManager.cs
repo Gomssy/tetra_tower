@@ -136,14 +136,15 @@ public class TileManager : MonoBehaviour {
     }
     public char CheckSpikeTile(RoomInGame roomInGame, Vector2Int originPos)
     {
-        if (roomInGame.wallTileInfo[originPos.x + 1, originPos.y])
-            return 'l';
-        else if (roomInGame.wallTileInfo[originPos.x - 1, originPos.y])
-            return 'r';
-        else if (roomInGame.wallTileInfo[originPos.x, originPos.y + 1])
-            return 'd';
-        else
+        Tilemap spikeTileMap = roomInGame.transform.Find("spike").GetComponent<Tilemap>();
+        if (spikeTileMap.GetTile(new Vector3Int(originPos.x, originPos.y, 0)).name.Equals("spikeu"))
             return 'u';
+        else if (spikeTileMap.GetTile(new Vector3Int(originPos.x, originPos.y, 0)).name.Equals("spiked"))
+            return 'd';
+        else if (spikeTileMap.GetTile(new Vector3Int(originPos.x, originPos.y, 0)).name.Equals("spikel"))
+            return 'l';
+        else
+            return 'r';
     }
     /// <summary>
     /// Check if it is out of the room or not.

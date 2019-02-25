@@ -82,10 +82,6 @@ public class MapManager : Singleton<MapManager> {
     /// </summary>
     private Press[] presses = new Press[realHeight];
     /// <summary>
-    /// Choose to make a boss tetrimino or not.
-    /// </summary>
-    public bool spawnBossTetrimino = false;
-    /// <summary>
     /// Queue that saves rooms waiting for upgrade tetrimino.
     /// </summary>
     public Queue<RoomType> roomsWaiting = new Queue<RoomType>();
@@ -110,6 +106,14 @@ public class MapManager : Singleton<MapManager> {
     /// Current stage of game.
     /// </summary>
     public static int currentStage;
+    /// <summary>
+    /// Count cleared rooms of current stage.
+    /// </summary>
+    public int clearedRoomCount;
+    /// <summary>
+    /// The stage clear condition.
+    /// </summary>
+    public int[] stageClearCondition = new int[5] { 10, 10, 10, 10, 10 };
     /// <summary>
     /// Gold need to control tetrimino.
     /// </summary>
@@ -644,9 +648,10 @@ public class MapManager : Singleton<MapManager> {
         CreateRoom(te);
         DeleteFullRows();
         Destroy(currentGhost.gameObject);
-        if(clock.clockSpeedStack < 12)
+        if(clock.clockSpeedStack < 18)
             clock.clockSpeedStack += 1;
-        StartCoroutine(MakeNextTetrimino());
+        if (te.tetriminoType != TetriminoType.Boss)
+            StartCoroutine(MakeNextTetrimino());
     }
     /// <summary>
     /// Get tetrimino's position down.

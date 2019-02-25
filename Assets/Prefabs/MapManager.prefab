@@ -57,14 +57,13 @@ MonoBehaviour:
   initialFallSpeed: -0.1
   gravity: 0.98
   collapseTime: 10
-  spawnBossTetrimino: 0
+  clearedRoomCount: 0
+  stageClearCondition: 0a0000000a0000000a0000000a0000000a000000
   tetriminoCost: 1
   fog: {fileID: 1100171732424598, guid: b8ab69a93ba618c47b27cc04eb431b3f, type: 2}
   clearedFog: {fileID: 1767033925555920, guid: df8687fe46befb34eaf9d4d63938d946, type: 2}
   portal: {fileID: 1285471223282336, guid: 93ba58b5e24488741a018d983b59c580, type: 2}
   press: {fileID: 114990664041074520, guid: 8e750fd197a05d84c9fb8557eb95c666, type: 2}
-  leftDoor: {fileID: 1309596820948456, guid: 80ed5bfe62ba3034592296b6e27526bc, type: 2}
-  rightDoor: {fileID: 1614071394812404, guid: ac9e1e28c8413e54f939bc255268fabd, type: 2}
   inGameDoorUp: {fileID: 1011110161276626, guid: 30d1850ce96755d4ea7675c706899cfb,
     type: 2}
   inGameDoorDown: {fileID: 1488439045129830, guid: 98de1e842c22aa048bde2ae464f9c601,
@@ -99,6 +98,12 @@ MonoBehaviour:
   - {fileID: 114244835555513196, guid: 478354a3449548a44ba40d516d1cc3cd, type: 2}
   - {fileID: 114294378205009276, guid: 5d9d617a37ddce4448c92cca0946ab18, type: 2}
   - {fileID: 114410341130824760, guid: bfa57985877d23b46929238f077b40df, type: 2}
+  - {fileID: 114410341130824760, guid: bfa57985877d23b46929238f077b40df, type: 2}
+  - {fileID: 114546668803764404, guid: 6b6c92d6e866a894b81c6d9b98f8c4aa, type: 2}
+  - {fileID: 114838560965976026, guid: da6e94048cb88f4449375f3e5ab9b6ae, type: 2}
+  - {fileID: 114250106650677324, guid: 530e72844aa405942a7f99d26c7da727, type: 2}
+  - {fileID: 114475536472279828, guid: 12fa736e7364cfc4993adcabbd273c10, type: 2}
+  - {fileID: 114633610401043244, guid: 07a14b0ab56e0d441ace33941b2165e8, type: 2}
   specialRoomList1:
   - {fileID: 114330503780891850, guid: 7da800d1a4355fd4aa02e3518cd9e1fb, type: 2}
   - {fileID: 114788631920660382, guid: 2514de8c1d17b734592b5fe2cdc74560, type: 2}

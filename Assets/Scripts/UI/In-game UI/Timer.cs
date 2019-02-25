@@ -38,6 +38,7 @@ public class Timer : MonoBehaviour {
     /// Each stack would decrease time to fall tetrimino 3 seconds.
     /// </summary>
     public int clockSpeedStack = 0;
+    int clockPenalty = 2;
 
     /// <summary>
     /// Resets the clock.
@@ -54,7 +55,7 @@ public class Timer : MonoBehaviour {
                 clockHand.transform.eulerAngles = new Vector3(0, 0, previousZRotation - previousZRotation * (Time.time - startTime) / (endTime - startTime));
         }
         clockHand.transform.eulerAngles = Vector3.zero;
-        timeToFallTetrimino = initialTimeToFallTetrimino - 3 * clockSpeedStack;
+        timeToFallTetrimino = initialTimeToFallTetrimino - clockPenalty * clockSpeedStack;
         clockFrame.GetComponent<Image>().color = new Color(1, 1 - (float)20 * clockSpeedStack / 256, 1 - (float)20 * clockSpeedStack / 256);
         tetriminoWaitedTime = 0;
     }

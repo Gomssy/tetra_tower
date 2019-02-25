@@ -96,5 +96,6 @@ public class BossRoomInGame : RoomInGame {
     {
         base.RoomClear();
         MapManager.currentStage += 1;
+        StartCoroutine(MapManager.Instance.MakeNextTetrimino());
     }
 }

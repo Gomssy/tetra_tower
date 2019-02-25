@@ -468,9 +468,81 @@ CompositeCollider2D:
   m_EdgeRadius: 0
   m_ColliderPaths:
   - m_Collider: {fileID: 2113883505394685654}
-    m_ColliderPaths: []
+    m_ColliderPaths:
+    - - X: 70000000
+        Y: 169218752
+      - X: 70625000
+        Y: 166875008
+      - X: 79375000
+        Y: 166875008
+      - X: 80000000
+        Y: 169218752
+      - X: 80625000
+        Y: 166875008
+      - X: 89375000
+        Y: 166875008
+      - X: 90000000
+        Y: 169218752
+      - X: 90000000
+        Y: 171718752
+      - X: 60000000
+        Y: 171718752
+      - X: 60000000
+        Y: 169218752
+      - X: 60625000
+        Y: 166875008
+      - X: 69375000
+        Y: 166875008
+    - - X: 160000000
+        Y: 169218752
+      - X: 160624992
+        Y: 166875008
+      - X: 169375008
+        Y: 166875008
+      - X: 170000000
+        Y: 169218752
+      - X: 170624992
+        Y: 166875008
+      - X: 179375008
+        Y: 166875008
+      - X: 180000000
+        Y: 169218752
+      - X: 180000000
+        Y: 171718752
+      - X: 150000000
+        Y: 171718752
+      - X: 150000000
+        Y: 169218752
+      - X: 150624992
+        Y: 166875008
+      - X: 159375008
+        Y: 166875008
   m_CompositePaths:
-    m_Paths: []
+    m_Paths:
+    - - {x: 7, y: 16.921875}
+      - {x: 7.0625, y: 16.687502}
+      - {x: 7.9375, y: 16.687502}
+      - {x: 8, y: 16.921875}
+      - {x: 8.0625, y: 16.687502}
+      - {x: 8.9375, y: 16.687502}
+      - {x: 9, y: 16.921875}
+      - {x: 9, y: 17.171875}
+      - {x: 6, y: 17.171875}
+      - {x: 6, y: 16.921875}
+      - {x: 6.0625, y: 16.687502}
+      - {x: 6.9375, y: 16.687502}
+    - - {x: 16, y: 16.921875}
+      - {x: 16.0625, y: 16.687502}
+      - {x: 16.937502, y: 16.687502}
+      - {x: 17, y: 16.921875}
+      - {x: 17.0625, y: 16.687502}
+      - {x: 17.937502, y: 16.687502}
+      - {x: 18, y: 16.921875}
+      - {x: 18, y: 17.171875}
+      - {x: 15, y: 17.171875}
+      - {x: 15, y: 16.921875}
+      - {x: 15.062499, y: 16.687502}
+      - {x: 15.937501, y: 16.687502}
   m_VertexDistance: 0.0005
 --- !u!66 &66575228221949484
 CompositeCollider2D:
@@ -990,7 +1062,7 @@ TilemapRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0.5, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -1145,12 +1217,12 @@ Tilemap:
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 6
-    m_Data: {fileID: 11400000, guid: 7f2c5cb43ad7207499b22fb5e0acd41a, type: 2}
+    m_Data: {fileID: 11400000, guid: 0278fb79c70975e47a7a1ae5ab779cc2, type: 2}
   - m_RefCount: 0
     m_Data: {fileID: 0}
   m_TileSpriteArray:
   - m_RefCount: 6
-    m_Data: {fileID: 21300000, guid: 7ee765cc5330a444db118a031abd5b9e, type: 3}
+    m_Data: {fileID: 21300000, guid: e90594de7f760a34394f0a786a779ad9, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
   m_TileMatrixArray:

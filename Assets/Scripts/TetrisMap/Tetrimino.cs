@@ -25,10 +25,6 @@ public class Tetrimino : MonoBehaviour {
     /// </summary>
     public bool isBossTetrimino = false;
     /// <summary>
-    /// Enum for tetriminno types.
-    /// </summary>
-    public enum TetriminoType { I, O, T, J, L, S, Z, Boss };
-    /// <summary>
     /// Tetrimino types.
     /// </summary>
     public TetriminoType tetriminoType;
