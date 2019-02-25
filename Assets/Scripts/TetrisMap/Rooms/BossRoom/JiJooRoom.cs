@@ -13,8 +13,10 @@ public class JiJooRoom : BossRoomInGame {
     protected override void Start ()
     {
         base.Start();
-        transitionAction[0] += Phase0Transition;
-        transitionAction[1] += Phase1Transition;
+        phaseAction[0] += Phase1;
+        phaseAction[1] += Phase2;
+        transitionAction[0] += Phase1Transition;
+        transitionAction[1] += Phase2Transition;
     }
 	
 	// Update is called once per frame
@@ -23,11 +25,11 @@ public class JiJooRoom : BossRoomInGame {
         base.Update();
     }
 
-    protected void Phase0Transition()
+    protected void Phase1Transition()
     {
         
     }
-    protected void Phase1Transition()
+    protected void Phase2Transition()
     {
         
     }

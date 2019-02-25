@@ -30,19 +30,20 @@ public class BossRoomInGame : RoomInGame {
         }
     }
     public bool isTransitionFinished;
-    // phaseAction 전(isTransitionFinished == false 일때) 매 프레임 호출됨; Update 대응
-    public Action[] transitionAction;
+    // phaseUpdate 전(isTransitionFinished == false 일때) 매 프레임 호출됨; Update 대응
+    public Action[] transitionUpdate;
     // 진행중인 phase coroutine에서 매 프레임 호출됨; Update 대용
-    public Action[] phaseAction;
+    public Action[] phaseUpdate;
     // 현재 진행중인 phase coroutine
     private IEnumerator phaseCoroutine;
 
-    protected bool attackStart;
+    protected bool attackStart = false;
+    protected bool attackTrigger = false;
 
     protected virtual void Awake()
     {
-        transitionAction = new Action[totalPhase];
-        phaseAction = new Action[totalPhase];
+        transitionUpdate = new Action[totalPhase];
+        phaseUpdate = new Action[totalPhase];
     }
 
     // Use this for initialization
@@ -54,10 +55,10 @@ public class BossRoomInGame : RoomInGame {
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (attackStart)
+        if (!attackStart && attackTrigger)
         {
             StartCoroutine(BeforeBossFight());
-            attackStart = false;
+            attackStart = true;
         }
     }
 
@@ -75,12 +76,12 @@ public class BossRoomInGame : RoomInGame {
         isTransitionFinished = false;
         while (!isTransitionFinished)
         {
-            transitionAction[phase]();
+            transitionUpdate[phase]();
             yield return null;
         }
         while (CurPhase == phase)
         {
-            phaseAction[phase]();
+            phaseUpdate[phase]();
             yield return null;
         }
     }
