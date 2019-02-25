@@ -61,11 +61,11 @@ public class LifeUnitInFrame : MonoBehaviour {
 		float fadeTime = 0.3f;
 		while (alpha <= 1f)
 		{
-			GetComponent<Image>().color = new Color(255, 255, 255, alpha);
+			GetComponent<Image>().color = new Color(1, 1, 1, alpha);
 			alpha += 1f / fadeTime * Time.deltaTime;
 			yield return null;
 		}
-		GetComponent<Image>().color = new Color(255, 255, 255, 1f);
+		GetComponent<Image>().color = new Color(1, 1, 1, 1f);
 		
 	}
 	IEnumerator FallEnumerator()
@@ -84,6 +84,24 @@ public class LifeUnitInFrame : MonoBehaviour {
 
         if (vibration != 0)
 			StartCoroutine(LifeStoneManager.Instance.VibrateEnumerator(vibration));
+
+        if (pos.y >= LifeStoneManager.Instance.lifeStoneRowNum)
+            StartCoroutine(FadeOutEnumerator());
+
 	}
-	
+    IEnumerator FadeOutEnumerator()
+    {
+        float alpha = 1f;
+        float fadeTime = 0.3f;
+        while (alpha >= 0f)
+        {
+            GetComponent<Image>().color = new Color(1, 1, 1, alpha);
+            alpha -= 1f / fadeTime * Time.deltaTime;
+            yield return null;
+        }
+        GetComponent<Image>().color = new Color(1, 1, 1, 0f);
+
+        LifeStoneManager.Instance.StoneCutStart();
+        Destroy(gameObject);
+    }
 }

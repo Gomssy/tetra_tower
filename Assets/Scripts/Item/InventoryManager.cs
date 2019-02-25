@@ -20,11 +20,6 @@ public class InventoryManager : Singleton<InventoryManager> {
     {
         player = GameManager.Instance.player;
         SetPool();
-        ItemInstantiate("Dagger", player.transform.position, 0f);
-        AddonInstantiate("ParchmentPiece", player.transform.position, 0f);
-        AddonInstantiate("Gluttony", player.transform.position, 0f);
-        ItemInstantiate("Bow", player.transform.position, 0f);
-
         StartCoroutine(TestCoroutine());
     }
     /// <summary>
@@ -40,17 +35,10 @@ public class InventoryManager : Singleton<InventoryManager> {
 
         itemPool[0].Add("Bow");
         itemPool[0].Add("Dagger");
+        
+        //itemPool[1].Add("ExplosionGloves");
 
-        itemPool[1].Add("Baculus");
-        itemPool[1].Add("BambooSpear");
-        itemPool[1].Add("ChainSickle");
-        itemPool[1].Add("ExplosionGloves");
-        itemPool[1].Add("Festo");
-        itemPool[1].Add("FrostShield");
-
-        itemPool[2].Add("Ksanife");
-        itemPool[2].Add("MeteorSword");
-        itemPool[2].Add("Morgenstern");
+        //itemPool[2].Add("Ksanife");
 
         //itemPool[3].Add("");
 
@@ -90,8 +78,30 @@ public class InventoryManager : Singleton<InventoryManager> {
     }
     IEnumerator TestCoroutine()
     {
-        yield return new WaitForSeconds(1.5f); ;
-        
+        ItemInstantiate(ItemQuality.Study, player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
+        ItemInstantiate(ItemQuality.Study, player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
+        AddonInstantiate(ItemQuality.Study, player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
+        AddonInstantiate(ItemQuality.Study, player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
+        AddonInstantiate(ItemQuality.Ordinary, player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
+        AddonInstantiate(ItemQuality.Ordinary, player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
+        AddonInstantiate(ItemQuality.Ordinary, player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
+        AddonInstantiate(ItemQuality.Ordinary, player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
+        AddonInstantiate(ItemQuality.Ordinary, player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
+        AddonInstantiate(ItemQuality.Superior, player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
+        AddonInstantiate(ItemQuality.Superior, player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
+        AddonInstantiate(ItemQuality.Superior, player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
     }
 
     IEnumerator PopoutCoroutine(GameObject obj)
@@ -131,6 +141,14 @@ public class InventoryManager : Singleton<InventoryManager> {
         if(itemPool[(int)quality].Count > 0)
         {
             return ItemInstantiate(itemPool[(int)quality][0], pos, popoutStrength);
+        }
+        else if (addonPool[(int)quality].Count > 0)
+        {
+            return AddonInstantiate(quality, pos, popoutStrength);
+        }
+        else if(quality != ItemQuality.Study)
+        {
+            return ItemInstantiate(quality - 1, pos, popoutStrength);
         }
         return null;
     }
@@ -193,8 +211,15 @@ public class InventoryManager : Singleton<InventoryManager> {
     {
         if (addonPool[(int)quality].Count > 0)
         {
-            GameObject tmpItem = AddonInstantiate(addonPool[(int)quality][0], pos, popoutStrength);
-            return tmpItem;
+            return AddonInstantiate(addonPool[(int)quality][0], pos, popoutStrength);
+        }
+        else if (itemPool[(int)quality].Count > 0)
+        {
+            return ItemInstantiate(quality, pos, popoutStrength);
+        }
+        else if (quality != ItemQuality.Study)
+        {
+            return AddonInstantiate(quality - 1, pos, popoutStrength);
         }
         return null;
     }

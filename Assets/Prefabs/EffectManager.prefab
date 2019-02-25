@@ -53,3 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectPrefab: {fileID: 1383143382242174, guid: 157414a270281184c8a674facfeadfdc,
     type: 2}
+  numberPrefab: {fileID: 1166884881890714, guid: b6f24b3e481cfd84bae3488e627b28be,
+    type: 2}
+  numberCanvasPrefab: {fileID: 1312675998778534, guid: 8729c9b5e4968d747a9e080c137fe850,
+    type: 2}

@@ -11,6 +11,7 @@ public class ComboUI : MonoBehaviour {
     public GameObject charPrefab;
 
     public Sprite[] normalCombo = new Sprite[3];
+    public Sprite[] comboCancel = new Sprite[3];
 
     public float charSpaceR;
 
@@ -41,10 +42,11 @@ public class ComboUI : MonoBehaviour {
 
     }
 	
-    public void SetCombo(string combo)
+    public void SetCombo(string combo, bool comboFail)
     {
         for(int i=0; i<8; i++)
         {
+
             if(combo.Length <= i && currentCombo.Length <= i)
             {
                 break;
@@ -55,7 +57,8 @@ public class ComboUI : MonoBehaviour {
             }
             else
             {
-                Sprite currentSprite = normalCombo[combo[i] - 'A'];
+                Sprite currentSprite = i == combo.Length - 1 && comboFail? comboCancel[combo[i] - 'A']:normalCombo[combo[i] - 'A'];
+
                 charObj[i].SetActive(true);
                 charObj[i].GetComponent<Image>().sprite = currentSprite;
                 charObj[i].GetComponent<RectTransform>().sizeDelta = new Vector2(

@@ -58,6 +58,7 @@ public class InventoryUI : MonoBehaviour {
         for (int i = 0; i < 4; i++)
         {
             infoAddonsFrame[i].GetComponent<Image>().sprite = infoAddonType[i];
+            infoAddonsFrame[i].transform.position = infoAddonSpace[i].transform.position;
             infoAddonsFrame[i].SetActive(false);
             infoAddons[i] = Instantiate(addonPrefab, infoAddonsFrame[i].transform.Find("AddonCell").position, Quaternion.identity, transform);
             infoAddons[i].GetComponent<AddonDrag>().num = 9 + i;
@@ -115,6 +116,7 @@ public class InventoryUI : MonoBehaviour {
 
     public void SetOnPosition(List<Item> itemList, List<Addon> addonList)
     {
+        SetAddonInfo();
         for(int i=0; i<itemList.Count; i++)
         {
             items[i].transform.position = itemCell[i].transform.position;
@@ -162,7 +164,7 @@ public class InventoryUI : MonoBehaviour {
                             comboChars[i, j].GetComponent<Image>().sprite = comboCharPrefab[itemList[selectedItem].combo[i][j] - 'A'].GetComponent<Image>().sprite;
                             comboChars[i, j].GetComponent<RectTransform>().sizeDelta = comboCharPrefab[itemList[selectedItem].combo[i][j] - 'A'].GetComponent<RectTransform>().sizeDelta;
                             comboChars[i, j].GetComponent<RectTransform>().localPosition = new Vector3(tmpx, 0, 0);
-                            tmpx = comboChars[i, j].GetComponent<RectTransform>().sizeDelta.x + pixelBetweenChar;
+                            tmpx += comboChars[i, j].GetComponent<RectTransform>().sizeDelta.x + pixelBetweenChar;
                             comboNameFrame[i].GetComponent<Text>().text = itemList[selectedItem].comboName[i];
                         }
                         else

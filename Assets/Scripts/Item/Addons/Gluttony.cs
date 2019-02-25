@@ -13,8 +13,8 @@ public class Gluttony : Addon
         id = 17; name = "식탐";
         quality = ItemQuality.Ordinary;
         type = AddonType.Theory;
-        sprite = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
-        highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
+        sprite = Resources.Load<Sprite>("Sprites/Addons/gluttony"); ;
+        highlight = Resources.Load<Sprite>("Sprites/Addons/gluttony_border"); ;
         sizeInventory = new Vector2(80, 80);
         lifeStoneManager = LifeStoneManager.Instance;
         addonDescription = "식욕은 누구에게나 존재한다. - 토미 다라바.";

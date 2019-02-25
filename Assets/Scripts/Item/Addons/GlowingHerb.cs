@@ -12,9 +12,9 @@ public class GlowingHerb : Addon
         id = 14; name = "이글거리는 약초";
         quality = ItemQuality.Ordinary;
         type = AddonType.Matter;
-        sprite = Resources.Load<Sprite>("Sprites/Addons/Glowing Herb"); ;
-        highlight = Resources.Load<Sprite>("Sprites/Addons/Glowing Herb"); ;
-        sizeInventory = new Vector2(80, 80);
+        sprite = Resources.Load<Sprite>("Sprites/Addons/glowing herb"); ;
+        highlight = Resources.Load<Sprite>("Sprites/Addons/glowing herb_border"); ;
+        sizeInventory = new Vector2(77.5f, 75);
         addonDescription = "활활 타오르며 매콤한 맛이 날 것 같지만 평범하게 쓰다. - 하부 료진";
         addonInfo = "타격시 적을 3초간 화상 상태로 만듭니다.";
     }

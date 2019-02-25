@@ -12,9 +12,9 @@ public class DesignofRagur : Addon
         id = 26; name = "라거의 문양";
         quality = ItemQuality.Superior;
         type = AddonType.Prop;
-        sprite = Resources.Load<Sprite>("Sprites/Addons/Glowing Herb"); ;
-        highlight = Resources.Load<Sprite>("Sprites/Addons/Glowing Herb"); ;
-        sizeInventory = new Vector2(80, 80);
+        sprite = Resources.Load<Sprite>("Sprites/Addons/design of ragur");
+        highlight = Resources.Load<Sprite>("Sprites/Addons/design of ragur_border");
+        sizeInventory = new Vector2(70, 80);
     }
 
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)

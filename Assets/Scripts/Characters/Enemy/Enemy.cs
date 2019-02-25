@@ -179,6 +179,8 @@ public class Enemy : MonoBehaviour {
         {
             Invisible = true;
             animator.SetTrigger("DeadTrigger");
+            StopCoroutine("OnFire");
+            GetComponent<SpriteRenderer>().color = Color.white;
             return;
         }
 
@@ -205,6 +207,7 @@ public class Enemy : MonoBehaviour {
                 break;
             }
         }
+        animator.SetTrigger("TrackTrigger");
     }
 
     public void GetDamaged(float damage)
@@ -269,21 +272,29 @@ public class Enemy : MonoBehaviour {
     {
         fireDuration = duration;
         float dotGap = 1.0f;
-        while(true)
+         
+        while (true)
         {
-            yield return new WaitForSeconds(dotGap);
+            for(float timer = 0; timer < dotGap; timer += Time.deltaTime)
+            {
+                GetComponent<SpriteRenderer>().color = new Color(1f, 0.5f + 0.5f * timer / dotGap, 0.5f + 0.5f * timer / dotGap);
+                yield return null;
+            }
             fireDuration -= dotGap;
             if (fireDuration < 0.0f) {
                 fireDuration = 0.0f;
                 break;
             }
-            GetDamaged(lifeStoneManager.lifeStoneRowNum * 3);
+            GetDamaged(lifeStoneManager.lifeStoneRowNum * 0.3f);
+            EffectManager.Instance.StartNumber(0, gameObject.transform.parent.position, lifeStoneManager.lifeStoneRowNum * 0.3f);
         }
         debuffState[(int)EnemyDebuffCase.Fire] = DebuffState.Off;
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     IEnumerator OnIce(float duration)
     {
+        GetComponent<SpriteRenderer>().color = new Color(0.5f,0.5f,1f);
         ChangeVelocityX_lock(0.0f, new bool[] { });
         KnockbackLock = true;
         animator.SetTrigger("StunnedTrigger");
@@ -326,6 +337,7 @@ public class Enemy : MonoBehaviour {
         {
             case EnemyDebuffCase.Ice:
                 StopCoroutine("OnIce");
+                GetComponent<SpriteRenderer>().color = Color.white;
                 KnockbackLock = false;
                 animator.speed = 1.0f;
                 animator.SetTrigger("DisableStunTrigger");

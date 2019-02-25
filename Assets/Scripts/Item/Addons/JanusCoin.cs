@@ -12,9 +12,9 @@ public class JanusCoin : Addon
         id = 24; name = "야누스의 동전";
         quality = ItemQuality.Superior;
         type = AddonType.Prop;
-        sprite = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
-        highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
-        sizeInventory = new Vector2(80, 80);
+        sprite = Resources.Load<Sprite>("Sprites/Addons/janus coin");
+        highlight = Resources.Load<Sprite>("Sprites/Addons/janus coin_border");
+        sizeInventory = new Vector2(75, 80);
     }
     public override float DamageFinalAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {

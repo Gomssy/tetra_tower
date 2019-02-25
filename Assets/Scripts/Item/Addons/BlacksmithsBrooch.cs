@@ -12,9 +12,9 @@ public class BlacksmithsBrooch : Addon
         id = 9; name = "대장장이의 브롯치";
         quality = ItemQuality.Ordinary;
         type = AddonType.Prop;
-        sprite = Resources.Load<Sprite>("Sprites/Addons/Coolly Pride"); ;
-        highlight = Resources.Load<Sprite>("Sprites/Addons/Coolly Pride"); ;
-        sizeInventory = new Vector2(80, 80);
+        sprite = Resources.Load<Sprite>("Sprites/Addons/blacksmith's brooch");
+        highlight = Resources.Load<Sprite>("Sprites/Addons/blacksmith's brooch_border");
+        sizeInventory = new Vector2(65, 80);
     }
 
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)

@@ -70,6 +70,7 @@ public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
+            ui.SetAddonInfo();
             if (num < 9)
             {
                 int type = (int)manager.addonList[num].type;
@@ -82,7 +83,6 @@ public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             }
             else
                 manager.DetachAddon(ui.selectedItem, (AddonType)(num - 9));
-            manager.SetOnPosition();
         }
     }
 
