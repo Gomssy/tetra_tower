@@ -11,7 +11,6 @@ public class Test : MonoBehaviour {
     public GameObject testUI;
     public GameObject lifeStoneTestUI;
     bool isTestUiActive = true;
-    public Text clearedRoom;
     
     public void ChangeTetrimino()
     {
@@ -60,15 +59,11 @@ public class Test : MonoBehaviour {
     {
         EnemyManager.Instance.SpawnEnemyToMap_forTest();
     }
-    public void ClearedRoom()
-    {
-        clearedRoom.text = MapManager.Instance.clearedRoomCount.ToString();
-    }
 
 
     private void Awake()
     {
-        //leftDoor.GetComponent<Animator>().SetInteger("doorPosition", 3);
+
     }
     // Use this for initialization
     void Start () {
@@ -98,6 +93,5 @@ public class Test : MonoBehaviour {
         }
         if (!MapManager.isTetriminoFalling)
             Timer();
-        ClearedRoom();
     }
 }

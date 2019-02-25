@@ -57,6 +57,8 @@ public class DroppedLifeStone : DroppedObject, IPlayerInteraction
         else if (LifeStoneManager.Instance.PushLifeStone(info))
         {
             LifeStoneManager.Instance.ChangeToNormal(LifeStoneType.Gold, price);
+            if (priceTag)
+                Destroy(priceTag.gameObject);
             Destroy(gameObject);
         }
     }

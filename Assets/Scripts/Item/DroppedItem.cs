@@ -53,11 +53,15 @@ public class DroppedItem : DroppedObject, IPlayerInteraction
         else if (!itemAddon && inventoryManager.PushItem(item))
         {
             LifeStoneManager.Instance.ChangeToNormal(LifeStoneType.Gold, price);
+            if(priceTag)
+                Destroy(priceTag.gameObject);
             Destroy(gameObject);
         }
         else if (itemAddon && inventoryManager.PushAddon(addon))
         {
             LifeStoneManager.Instance.ChangeToNormal(LifeStoneType.Gold, price);
+            if (priceTag)
+                Destroy(priceTag.gameObject);
             Destroy(gameObject);
         }
     }

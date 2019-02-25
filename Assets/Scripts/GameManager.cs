@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager> {
 
@@ -23,6 +24,7 @@ public class GameManager : Singleton<GameManager> {
     public Canvas inventoryCanvas;
     public Canvas textCanvas;
     public Timer clock;
+    public Text leftRoomCount;
 
     // method
     // Constructor - protect calling raw constructor
@@ -51,6 +53,11 @@ public class GameManager : Singleton<GameManager> {
         SceneManager.LoadScene("PlayScene");
     }
 
+    public void CountLeftRoom()
+    {
+        leftRoomCount.text = "Left Room : " + (MapManager.Instance.stageClearCondition[MapManager.currentStage] - MapManager.Instance.clearedRoomCount).ToString();
+    }
+
     void Awake()
     {
         inventoryCanvas = Instantiate(inventoryCanvas);
@@ -67,6 +74,7 @@ public class GameManager : Singleton<GameManager> {
         player.transform.position = MapManager.currentRoom.roomInGame.transform.Find("player spot").position + spawnPosition;
         Camera.main.transform.position = player.transform.position + new Vector3(0, 0, -1);
         clock = GameObject.Find("Clock").GetComponent<Timer>();
+        leftRoomCount = GameObject.Find("LeftRoom").GetComponent<Text>();
         isTutorial = true;
     }
 
@@ -136,11 +144,12 @@ public class GameManager : Singleton<GameManager> {
         }
         if(gameState == GameState.GameOver)
         {
-            if(gameOverCanvas.isActiveAndEnabled == false)
+            if (gameOverCanvas.isActiveAndEnabled == false)
             {
                 Debug.Log("Game Over");
                 gameOverCanvas.gameObject.SetActive(true);
             }
         }
+        CountLeftRoom();
     }
 }

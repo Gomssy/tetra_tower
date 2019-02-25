@@ -61,3 +61,5 @@ MonoBehaviour:
   textCanvas: {fileID: 223566371550133596, guid: 51286afce3c9c8a4bae74feddf8b13af,
     type: 2}
   clock: {fileID: 0}
+  leftRoomCount: {fileID: 114265606795912022, guid: 7a2325fd567a39f4695487b1c08e4ee9,
+    type: 2}
