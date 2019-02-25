@@ -66,6 +66,24 @@ public class EnemyManager : Singleton<EnemyManager>
         }
     }
 
+    // Spawn Enemy to Map
+    public void SpawnEnemyToMap_forTest()
+    {
+        EnemySpawnCount = EnemyDeadCount = 0;
+        Transform enemySpots = GameObject.Find("Grid").transform.GetChild(0).GetChild(0).Find("enemy spot");
+        foreach (Transform enemySpot in enemySpots)
+        {
+            if (!enemySpot.gameObject.activeSelf) continue;
+            GameObject enemy = enemySpot.gameObject.GetComponent<enemySpot>().enemyPrefab;
+            foreach (Transform location in enemySpot)
+            {
+                GameObject clone = PickFromPool(enemy);
+                clone.transform.position = location.position;
+                clone.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
+            }
+        }
+    }
+
     public bool IsClear()
     {
         return (EnemyDeadCount == EnemySpawnCount);

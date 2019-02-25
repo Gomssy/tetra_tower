@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTutorial: 0
+  player: {fileID: 0}
   minimap: {fileID: 0}
   gameOverCanvas: {fileID: 223237664237935382, guid: 692aad2449e06054799ea4706578fb23,
     type: 2}
@@ -59,3 +60,4 @@ MonoBehaviour:
     type: 2}
   textCanvas: {fileID: 223566371550133596, guid: 51286afce3c9c8a4bae74feddf8b13af,
     type: 2}
+  clock: {fileID: 0}

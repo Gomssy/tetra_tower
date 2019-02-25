@@ -2,48 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMeleeIdle : StateMachineBehaviour {
-	float patrolRange;
-	float patrolSpeed;
-	float noticeRange;
-    Vector2 origin;
+public class EnemyAirTrack : StateMachineBehaviour {
+    float trackSpeed;
+    float trackRange;
+    float angle;
+    GameObject player;
     Transform animatorRoot;
-    EnemyGround enemy;
+    EnemyAir enemy;
+    Vector2 direction;
 
+    int maxFrame = 10;
+    int frameCount;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		origin = animator.transform.position;
         animatorRoot = animator.transform.parent;
-        enemy = animator.GetComponent<EnemyGround>();
+        enemy = animator.GetComponent<EnemyAir>();
+        player = EnemyManager.Instance.Player;
+        trackSpeed = enemy.trackSpeed;
+        frameCount = 0;
 
-        patrolRange = enemy.patrolRange;
-        noticeRange = enemy.noticeRange;
-        patrolSpeed = enemy.patrolSpeed;
-
-        enemy.ChangeDir_noOption(NumeratedDir.Left);
-        enemy.ChangeVelocityX_noOption(enemy.MoveDir * patrolSpeed);
+        SetDirection();
     }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        if (enemy.PlayerDistance < noticeRange)
-		{
-			animator.SetTrigger("TrackTrigger");
-			return;
-		}
-        if (!enemy.MovementLock)
+        if (enemy.PlayerDistance > enemy.noticeRange)
         {
-            float span = animatorRoot.position.x - origin.x;
-            
-            if ((Mathf.Abs(span) > patrolRange && span * enemy.MoveDir > 0) ||
-                enemy.WallTest[(enemy.MoveDir + 1) / 2] ||
-                enemy.CliffTest[(enemy.MoveDir + 1) / 2]
-            )
-            {
-                enemy.ChangeDir_noOption(enemy.MoveDir * -1);
-                enemy.ChangeVelocityX_noOption(enemy.MoveDir * patrolSpeed);
-            }
+            animator.ResetTrigger("TrackTrigger");
+            animator.SetTrigger("IdleTrigger");
+            enemy.ChangeVelocityXY_noOption(Vector2.zero);
+            return;
         }
+
+        SetDirection();
+
+        Vector2 vel = direction.normalized * trackSpeed;
+        enemy.ChangeVelocityXY_noOption(vel);
 	}
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
@@ -60,4 +54,11 @@ public class EnemyMeleeIdle : StateMachineBehaviour {
 	//override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 	//
 	//}
+
+    private void SetDirection()
+    {
+        direction = player.transform.position - animatorRoot.position;
+        angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        enemy.ChangeAngleZ_noOption(angle - 90.0f);
+    }
 }
