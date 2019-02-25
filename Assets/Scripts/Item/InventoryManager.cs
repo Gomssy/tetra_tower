@@ -22,10 +22,10 @@ public class InventoryManager : Singleton<InventoryManager> {
         player = GameObject.Find("Player");
 
         SetPool();
-        ItemInstantiate("Dagger", player.transform.position, 0f);
+        /*ItemInstantiate("Dagger", player.transform.position, 0f);
         AddonInstantiate("ParchmentPiece", player.transform.position, 0f);
         AddonInstantiate("Gluttony", player.transform.position, 0f);
-        ItemInstantiate("Bow", player.transform.position, 0f);
+        ItemInstantiate("Bow", player.transform.position, 0f);*/
 
         StartCoroutine(TestCoroutine());
     }
@@ -133,7 +133,6 @@ public class InventoryManager : Singleton<InventoryManager> {
         if(itemPool[(int)quality].Count > 0)
         {
             ItemInstantiate(itemPool[(int)quality][0], pos, popoutStrength);
-            itemPool[(int)quality].RemoveAt(0);
         }
     }
     /// <summary>
@@ -141,7 +140,7 @@ public class InventoryManager : Singleton<InventoryManager> {
     /// </summary>
     /// <param name="str"></param>
     /// <param name="pos"></param>
-    public void ItemInstantiate(string str, Vector3 pos, float popoutStrength)
+    public GameObject ItemInstantiate(string str, Vector3 pos, float popoutStrength)
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init((Item)System.Activator.CreateInstance(System.Type.GetType(str)), pos);
@@ -152,18 +151,36 @@ public class InventoryManager : Singleton<InventoryManager> {
 
         tmpItem.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         PopoutGenerator(tmpItem, popoutStrength);
+        return tmpItem;
     }
     /// <summary>
     /// Instantiate item by Item Instance on pos
     /// </summary>
     /// <param name="item"></param>
     /// <param name="pos"></param>
-    public void ItemInstantiate(Item item, Vector3 pos, float popoutStrength)
+    public GameObject ItemInstantiate(Item item, Vector3 pos, float popoutStrength)
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init(item, pos);
         tmpItem.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         PopoutGenerator(tmpItem, popoutStrength);
+        return tmpItem;
+    }
+    /// <summary>
+    /// Instantiate random item by quality and assign price.
+    /// </summary>
+    /// <param name="quality"></param>
+    /// <param name="pos"></param>
+    /// <param name="price"></param>
+    /// <param name="popoutStrength">0:no popout, 1:normal popout</param>
+    public void ItemInstantiate(ItemQuality quality, Vector3 pos, int price, float popoutStrength)
+    {
+        if (itemPool[(int)quality].Count > 0)
+        {
+            GameObject tmpItem = ItemInstantiate(itemPool[(int)quality][0], pos, popoutStrength);
+            tmpItem.GetComponent<DroppedItem>().price = price;
+            
+        }
     }
 
     /// <summary>
@@ -176,7 +193,6 @@ public class InventoryManager : Singleton<InventoryManager> {
         if (addonPool[(int)quality].Count > 0)
         {
             AddonInstantiate(addonPool[(int)quality][0], pos, popoutStrength);
-            addonPool[(int)quality].RemoveAt(0);
         }
     }
     /// <summary>
@@ -184,7 +200,7 @@ public class InventoryManager : Singleton<InventoryManager> {
     /// </summary>
     /// <param name="str"></param>
     /// <param name="pos"></param>
-    public void AddonInstantiate(string str, Vector3 pos, float popoutStrength)
+    public GameObject AddonInstantiate(string str, Vector3 pos, float popoutStrength)
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init((Addon)System.Activator.CreateInstance(System.Type.GetType(str)), pos);
@@ -195,18 +211,36 @@ public class InventoryManager : Singleton<InventoryManager> {
 
         tmpItem.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         PopoutGenerator(tmpItem, popoutStrength);
+        return tmpItem;
     }
     /// <summary>
     /// Instantiate addon by Addon Instance on pos
     /// </summary>
     /// <param name="item"></param>
     /// <param name="pos"></param>
-    public void AddonInstantiate(Addon addon, Vector3 pos, float popoutStrength)
+    public GameObject AddonInstantiate(Addon addon, Vector3 pos, float popoutStrength)
     {
         GameObject tmpItem = Instantiate(droppedPrefab);
         tmpItem.GetComponent<DroppedItem>().Init(addon, pos);
         tmpItem.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         PopoutGenerator(tmpItem, popoutStrength);
+        return tmpItem;
+    }
+    /// <summary>
+    /// Instantiate random addon by quality and assign price.
+    /// </summary>
+    /// <param name="addon">The addon.</param>
+    /// <param name="pos">The position.</param>
+    /// <param name="price">The price.</param>
+    /// <param name="popoutStrength">The popout strength.</param>
+    /// <returns></returns>
+    public void AddonInstantiate(ItemQuality quality, Vector3 pos, int price, float popoutStrength)
+    {
+        if (addonPool[(int)quality].Count > 0)
+        {
+            GameObject tmpItem = AddonInstantiate(addonPool[(int)quality][0], pos, popoutStrength);
+            tmpItem.GetComponent<DroppedItem>().price = price;
+        }
     }
 
     /// <summary>

@@ -153,6 +153,14 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
         tmpObj.GetComponent<DroppedLifeStone>().Init(info, pos);
         PopoutGenerator(tmpObj, popoutStrength);
     }
+    public void InstantiateDroppedLifeStone(Vector2Int size, float goldPer, int ameNum, Vector3 pos, int price, float popoutStrength)
+    {
+        GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
+        tmpObj.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
+        tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(size, goldPer, ameNum), pos);
+        PopoutGenerator(tmpObj, popoutStrength);
+        tmpObj.GetComponent<DroppedLifeStone>().price = price;
+    }
 
     /// <summary>
     /// Randomize LifeStone by size, num, gold probablity, number of ametyst 

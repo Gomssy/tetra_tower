@@ -13,6 +13,7 @@ public class DroppedItem : MonoBehaviour, IPlayerInteraction
     Rigidbody2D rb2D;
     BoxCollider2D bc2D;
     SpriteRenderer sprt;
+    public int price = 0;
     public void Init(Item _item, Vector3 pos)
     {
         inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
@@ -28,9 +29,6 @@ public class DroppedItem : MonoBehaviour, IPlayerInteraction
         highlight.SetActive(false);
         bc2D.size = sprt.size;
         transform.localScale = new Vector3((item.sizeInventory.x * itemSizeMultiplier) / sprt.size.x, (item.sizeInventory.y * itemSizeMultiplier) / sprt.size.y, 1);
-
-
-        
     }
     public void Init(Addon _addon, Vector3 pos)
     {
@@ -50,12 +48,19 @@ public class DroppedItem : MonoBehaviour, IPlayerInteraction
     }
     public void Apply()
     {
-        if (!itemAddon && inventoryManager.PushItem(item))
+        if(LifeStoneManager.Instance.CountType(LifeStoneType.Gold) < price)
         {
+            Debug.Log("Not enough gold");
+            return;
+        }
+        else if (!itemAddon && inventoryManager.PushItem(item))
+        {
+            LifeStoneManager.Instance.ChangeToNormal(LifeStoneType.Gold, price);
             Destroy(gameObject);
         }
         else if (itemAddon && inventoryManager.PushAddon(addon))
         {
+            LifeStoneManager.Instance.ChangeToNormal(LifeStoneType.Gold, price);
             Destroy(gameObject);
         }
     }

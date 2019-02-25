@@ -19,6 +19,7 @@ public class DroppedLifeStone : MonoBehaviour, IPlayerInteraction
     /// highlightSprite Objects
     /// </summary>
     GameObject[] highObj;
+    public int price = 0;
 
     public void Init(LifeStoneInfo _info, Vector3 pos)
     {
@@ -52,8 +53,16 @@ public class DroppedLifeStone : MonoBehaviour, IPlayerInteraction
     }
     public void Apply()
     {
-        if(LifeStoneManager.Instance.PushLifeStone(info))
+        if (LifeStoneManager.Instance.CountType(LifeStoneType.Gold) < price)
+        {
+            Debug.Log("Not enough gold");
+            return;
+        }
+        else if (LifeStoneManager.Instance.PushLifeStone(info))
+        {
+            LifeStoneManager.Instance.ChangeToNormal(LifeStoneType.Gold, price);
             Destroy(gameObject);
+        }
     }
     public void HighlightSwitch(bool enabled)
     {

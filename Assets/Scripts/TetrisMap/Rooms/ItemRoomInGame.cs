@@ -74,10 +74,8 @@ public class ItemRoomInGame : RoomInGame {
 		int j = 0;
 		foreach (Transform child in transform.Find("item spot"))
 			itemPosition[j++] = child.transform.position;
-		int itemRoomIndex = room.itemRoomType;
-		if (itemRoomIndex > 5)
-			itemRoomIndex = 5;
-		for(int index = 0; index < itemRoomInformation[itemRoomIndex - 1].itemSpawnInfo.Count; index++)
+        int itemRoomIndex = room.itemRoomType > 5 ? 5 : room.itemRoomType;
+        for (int index = 0; index < itemRoomInformation[itemRoomIndex - 1].itemSpawnInfo.Count; index++)
 		{
 			ItemRoomItemInfo itemInfo = itemRoomInformation[itemRoomIndex - 1].itemSpawnInfo[index];
 			probability -= itemInfo.probability;
@@ -92,19 +90,19 @@ public class ItemRoomInGame : RoomInGame {
 						for(int _amount = 0; _amount < itemInfo.amount[i]; _amount++)
 						{
 							Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
-							inventoryManager.ItemInstantiate(itemInfo.itemQuality[i], itemPosition[itemCount++], 1);
+							inventoryManager.ItemInstantiate(itemInfo.itemQuality[i], itemPosition[itemCount++], 0);
 						}
 					else if (itemInfo.itemType[i] == ItemSpawnType.Addon)
 						for (int _amount = 0; _amount < itemInfo.amount[i]; _amount++)
 						{
 							Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
-							inventoryManager.AddonInstantiate(itemInfo.itemQuality[i], itemPosition[itemCount++], 1);
+							inventoryManager.AddonInstantiate(itemInfo.itemQuality[i], itemPosition[itemCount++], 0);
 						}
 					else if (itemInfo.itemType[i] == ItemSpawnType.GoldPotion)
 						for (int _amount = 0; _amount < itemInfo.amount[i]; _amount++)
 						{
 							Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
-							lifeStoneManager.InstantiatePotion(itemPosition[itemCount++], 1);
+							lifeStoneManager.InstantiatePotion(itemPosition[itemCount++], 0);
 						}
 					else if (itemInfo.itemType[i] == ItemSpawnType.LifeStone)
 					{
@@ -114,18 +112,18 @@ public class ItemRoomInGame : RoomInGame {
 								if(itemInfo.itemQuality[i] == ItemQuality.Gold)
 								{
 									Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
-									lifeStoneManager.InstantiateDroppedLifeStone(4, 1, 0, itemPosition[itemCount++], 1);
+                                    lifeStoneManager.InstantiateDroppedLifeStone(new Vector2Int(3, 2), 4, 1, 0, itemPosition[itemCount++], 0);
 								}
 								else
 								{
 									Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
-									lifeStoneManager.InstantiateDroppedLifeStone(3, 0, 0, itemPosition[itemCount++], 1);
+                                    lifeStoneManager.InstantiateDroppedLifeStone(new Vector2Int(3, 2), 0, 0, itemPosition[itemCount++], 0);
 								}
 							}
 						else
 						{
 							Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " amount" + itemInfo.amount[i]);
-							lifeStoneManager.InstantiateDroppedLifeStone(3 * (room.itemRoomType - 4), 1, 0, itemPosition[itemCount++], 1);
+                            lifeStoneManager.InstantiateDroppedLifeStone(new Vector2Int(3, room.itemRoomType - 4), 1, 0, itemPosition[itemCount++], 0);
 						}
 					}
 					else if (itemInfo.itemType[i] == ItemSpawnType.LifeStoneFrame)
