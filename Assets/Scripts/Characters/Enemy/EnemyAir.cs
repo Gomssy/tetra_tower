@@ -59,6 +59,7 @@ public class EnemyAir : Enemy {
 
     protected override IEnumerator OnIce(float duration)
     {
+        GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 1f);
         ChangeVelocityXY(Vector2.zero, new bool[] { });
         KnockbackLock = true;
         animator.SetTrigger("StunnedTrigger");

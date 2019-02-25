@@ -19,7 +19,7 @@ public abstract class Item {
 
     public bool ComboAction(string currentCombo)
     {
-        for(int i=0; i<skillNum; i++)
+        for (int i=0; i<skillNum; i++)
         {
             if (combo[i].Equals(currentCombo))
             {
@@ -27,6 +27,7 @@ public abstract class Item {
                 else if (i == 1) PlaySkill2();
                 else if (i == 2) PlaySkill3();
 
+                
                 OtherEffect(currentCombo);
                 for (int j = 0; j < attachable.Length; j++)
                 {
@@ -43,10 +44,7 @@ public abstract class Item {
     }
     public bool ComboAction(int currenSkill)
     {
-        if (currenSkill == 0) PlaySkill1();
-        else if (currenSkill == 1) PlaySkill2();
-        else if (currenSkill == 2) PlaySkill3();
-        return true;
+        return ComboAction(combo[currenSkill]);
     }
     public Item()
     {

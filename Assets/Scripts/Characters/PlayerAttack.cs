@@ -102,6 +102,7 @@ public class PlayerAttack : MonoBehaviour {
         if (CheckLongerCombo()) StartCoroutine(SkillEndCoroutine());
         else
         {
+            comboTime = originComboTime;
             comboArray = "";
             StartCoroutine(ComboEndDelay());
             StartCoroutine(ComboTextReset());
