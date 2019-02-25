@@ -29,7 +29,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.41666666
+        time: 0.46666667
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -61,11 +61,11 @@ AnimationClip:
       value: {fileID: 21300000, guid: 37e5cfde8d3541845a184c4d6ab25e21, type: 3}
     - time: 0.16666667
       value: {fileID: 21300000, guid: 2806c6904b006114bad1fb3f64d64c14, type: 3}
-    - time: 0.41666666
+    - time: 0.46666667
       value: {fileID: 21300000, guid: 6234b3bf70d0272478b444abdd572f09, type: 3}
-    - time: 0.6
+    - time: 0.5833333
       value: {fileID: 21300000, guid: f7d12f4a971df594c8d297610a3f9e57, type: 3}
-    - time: 0.6666667
+    - time: 1.25
       value: {fileID: 21300000, guid: b2382ef0803ec1c4c811783916c7aa49, type: 3}
     attribute: m_Sprite
     path: 
@@ -104,7 +104,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.68333334
+    m_StopTime: 1.2666667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -133,7 +133,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.41666666
+        time: 0.46666667
         value: 1
         inSlope: Infinity
         outSlope: Infinity
@@ -163,7 +163,7 @@ AnimationClip:
   m_GenerateMotionCurves: 0
   m_Events:
   - time: 0
-    functionName: ChangeVelocityX
+    functionName: ChangeVelocityX_noOption
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

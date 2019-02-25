@@ -7,7 +7,7 @@ public class EnemyMeleeTrack : StateMachineBehaviour {
     float attackRange;
     GameObject player;
     Transform animatorRoot;
-    Enemy enemy;
+    EnemyGround enemy;
 
     readonly int maxFrame = 10;
     int frameCounter = 0;
@@ -15,21 +15,21 @@ public class EnemyMeleeTrack : StateMachineBehaviour {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         animatorRoot = animator.transform.parent;
-        enemy = animator.GetComponent<Enemy>();
+        enemy = animator.GetComponent<EnemyGround>();
         player = EnemyManager.Instance.Player;
 
         trackSpeed = enemy.trackSpeed;
         attackRange = enemy.attackRange;
 
         NumeratedDir trackDir = (animatorRoot.position.x - player.transform.position.x > 0) ? NumeratedDir.Left : NumeratedDir.Right;
-        enemy.ChangeDir(trackDir);
+        enemy.ChangeDir_noOption(trackDir);
         if (enemy.CliffTest[(enemy.MoveDir + 1) / 2] || animator.GetComponent<Enemy>().PlayerDistance < attackRange)
         {
-            enemy.ChangeVelocityX(0.0f);
+            enemy.ChangeVelocityX_noOption(0.0f);
         }
         else
         {
-            enemy.ChangeVelocityX(enemy.MoveDir * trackSpeed);
+            enemy.ChangeVelocityX_noOption(enemy.MoveDir * trackSpeed);
         }
     }
 
@@ -43,18 +43,18 @@ public class EnemyMeleeTrack : StateMachineBehaviour {
         int integerDir = enemy.MoveDir;
         if (enemy.WallTest[(integerDir + 1) / 2] || enemy.CliffTest[(integerDir + 1) / 2])
         {
-            enemy.ChangeVelocityX(0.0f);
+            enemy.ChangeVelocityX_noOption(0.0f);
         }
         else
         {
-            enemy.ChangeVelocityX(enemy.MoveDir * trackSpeed);
+            enemy.ChangeVelocityX_noOption(enemy.MoveDir * trackSpeed);
         }
 
         frameCounter += 1;
         if (frameCounter >= maxFrame)
         {
             NumeratedDir trackDir = (animatorRoot.position.x - player.transform.position.x > 0) ? NumeratedDir.Left : NumeratedDir.Right;
-            enemy.ChangeDir(trackDir);
+            enemy.ChangeDir_noOption(trackDir);
             frameCounter = 0;
         }
     }

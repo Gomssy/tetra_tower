@@ -57,7 +57,7 @@ public class Test : MonoBehaviour {
     }
     public void SummonEnemy()
     {
-        EnemyManager.Instance.SpawnEnemyToMap();
+        EnemyManager.Instance.SpawnEnemyToMap_forTest();
     }
 
 

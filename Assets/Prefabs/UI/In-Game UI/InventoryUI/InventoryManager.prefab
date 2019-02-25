@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 674793b622d7c184882dfeb8784bbf92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ui: {fileID: 0}
   droppedPrefab: {fileID: 1610049888013262, guid: ee63f05b79e18ce4bad2c226aa70a28e,
     type: 2}
   popoutStrengthMultiplier: 9
