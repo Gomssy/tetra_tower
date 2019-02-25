@@ -90,8 +90,11 @@ public class GoldRoomInGame : RoomInGame {
                 else
                     itemGoods[i] = lifeStoneManager.InstantiateDroppedLifeStone(new Vector2Int(3, 2), 0, 0, itemPosition[itemCount++], itemInfo.price[i], 0);
             }
-            itemGoods[i].GetComponent<DroppedObject>().priceTag.transform.position = itemGoods[i].transform.position + new Vector3(0, 1, 0);
-            itemGoods[i].GetComponent<DroppedObject>().priceTag.text = itemInfo.price[i].ToString();
+            if(itemGoods[i] != null)
+            {
+                itemGoods[i].GetComponent<DroppedObject>().priceTag.transform.position = itemGoods[i].transform.position + new Vector3(0, 1, 0);
+                itemGoods[i].GetComponent<DroppedObject>().priceTag.text = itemInfo.price[i].ToString();
+            }
         }
     }
 

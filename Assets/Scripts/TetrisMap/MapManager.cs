@@ -131,14 +131,6 @@ public class MapManager : Singleton<MapManager> {
     /// </summary>
     public Press press;
     /// <summary>
-    /// Left door in tetris.
-    /// </summary>
-    public GameObject leftDoor;
-    /// <summary>
-    /// Right door in tetris.
-    /// </summary>
-    public GameObject rightDoor;
-    /// <summary>
     /// Up door in ingame.
     /// </summary>
     public GameObject inGameDoorUp;
@@ -773,7 +765,7 @@ public class MapManager : Singleton<MapManager> {
                 room.roomInGame = Instantiate(specialRoomsDistributed[room.stage, room.roomConcept, (int)room.specialRoomType, left, right]
                     [Random.Range(0, specialRoomsDistributed[room.stage, room.roomConcept, (int)room.specialRoomType, left, right].Count)], 
                     room.transform.position + new Vector3(0, 0, 2), Quaternion.identity, room.transform);
-            room.CreateDoors(leftDoor, rightDoor, inGameDoorUp, inGameDoorDown, inGameDoorLeft, inGameDoorRight);
+            room.CreateDoors(inGameDoorUp, inGameDoorDown, inGameDoorLeft, inGameDoorRight);
             room.fog = Instantiate(fog, room.transform.position + new Vector3(12, 12, 2), Quaternion.identity, room.transform);
             if (room.mapCoord.y > 0 && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1] != null && mapGrid[(int)room.mapCoord.x, (int)room.mapCoord.y - 1].isRoomCleared == true)
                 room.OpenDoor("Down");
@@ -868,13 +860,9 @@ public class MapManager : Singleton<MapManager> {
             if(i == 6)
                 room.isDoorWorking = false;
             yield return new WaitForSeconds(0.01f);
-            room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
-            room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             alpha -= 0.05f;
         }
-        room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-        room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
     }
     /// <summary>
@@ -888,13 +876,9 @@ public class MapManager : Singleton<MapManager> {
         for(int i = 0; i < 20; i++)
         {
             yield return new WaitForSeconds(0.01f);
-            room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
-            room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
             alpha += 0.05f;
         }
-        room.leftTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-        room.rightTetrisDoor.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
     }
     /// <summary>

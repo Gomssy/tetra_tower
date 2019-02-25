@@ -48,14 +48,6 @@ public class Room : MonoBehaviour
     /// </summary>
     public GameObject fog;
     /// <summary>
-    /// Left door of the room.
-    /// </summary>
-    public GameObject leftTetrisDoor;
-    /// <summary>
-    /// Right door of the room.
-    /// </summary>
-    public GameObject rightTetrisDoor;
-    /// <summary>
     /// Up door of the room.
     /// </summary>
     public GameObject inGameDoorUp;
@@ -120,13 +112,10 @@ public class Room : MonoBehaviour
     /// <summary>
     /// Create doors.
     /// </summary>
-    public void CreateDoors(GameObject _leftTetrisDoor, GameObject _rightTetrisDoor, GameObject _inGameDoorUp, GameObject _inGameDoorDown, GameObject _inGameDoorLeft, GameObject _inGameDoorRight)
+    public void CreateDoors(GameObject _inGameDoorUp, GameObject _inGameDoorDown, GameObject _inGameDoorLeft, GameObject _inGameDoorRight)
     {
         float standardSize = MapManager.tetrisMapSize / 24;
         Tilemap wallTileMap = roomInGame.transform.Find("wall").GetComponent<Tilemap>();
-        leftTetrisDoor = Instantiate(_leftTetrisDoor, transform.position + new Vector3(standardSize, doorLocations[leftDoorLocation], 0), Quaternion.identity, transform);
-        rightTetrisDoor = Instantiate(_rightTetrisDoor, transform.position + new Vector3(standardSize * 23, doorLocations[rightDoorLocation], 0), Quaternion.identity, transform);
-
         inGameDoorUp = Instantiate(_inGameDoorUp, transform.position + new Vector3(standardSize * 11, standardSize * 23, 2), Quaternion.identity, transform);
         inGameDoorDown = Instantiate(_inGameDoorDown, transform.position + new Vector3(standardSize * 11, 0, 2), Quaternion.identity, transform);
         inGameDoorLeft = Instantiate(_inGameDoorLeft, transform.position + new Vector3(0, doorLocations[leftDoorLocation], 2), Quaternion.identity, transform);

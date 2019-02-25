@@ -480,81 +480,9 @@ CompositeCollider2D:
   m_EdgeRadius: 0
   m_ColliderPaths:
   - m_Collider: {fileID: 2113883505235840134}
-    m_ColliderPaths:
-    - - X: 150000000
-        Y: 173437504
-      - X: 130000000
-        Y: 173437504
-      - X: 130000000
-        Y: 170000000
-      - X: 150000000
-        Y: 170000000
-    - - X: 130000000
-        Y: 163437504
-      - X: 120000000
-        Y: 163437504
-      - X: 120000000
-        Y: 160000000
-      - X: 130000000
-        Y: 160000000
-    - - X: 160000000
-        Y: 163437504
-      - X: 150000000
-        Y: 163437504
-      - X: 150000000
-        Y: 160000000
-      - X: 160000000
-        Y: 160000000
-    - - X: 130000000
-        Y: 153437504
-      - X: 120000000
-        Y: 153437504
-      - X: 120000000
-        Y: 150000000
-      - X: 130000000
-        Y: 150000000
-    - - X: 160000000
-        Y: 153437504
-      - X: 150000000
-        Y: 153437504
-      - X: 150000000
-        Y: 150000000
-      - X: 160000000
-        Y: 150000000
-    - - X: 150000000
-        Y: 143437504
-      - X: 130000000
-        Y: 143437504
-      - X: 130000000
-        Y: 140000000
-      - X: 150000000
-        Y: 140000000
+    m_ColliderPaths: []
   m_CompositePaths:
-    m_Paths:
-    - - {x: 15, y: 17.34375}
-      - {x: 13, y: 17.34375}
-      - {x: 13, y: 17}
-      - {x: 15, y: 17}
-    - - {x: 13, y: 16.34375}
-      - {x: 12, y: 16.34375}
-      - {x: 12, y: 16}
-      - {x: 13, y: 16}
-    - - {x: 16, y: 16.34375}
-      - {x: 15, y: 16.34375}
-      - {x: 15, y: 16}
-      - {x: 16, y: 16}
-    - - {x: 13, y: 15.343751}
-      - {x: 12, y: 15.343751}
-      - {x: 12, y: 15}
-      - {x: 13, y: 15}
-    - - {x: 16, y: 15.343751}
-      - {x: 15, y: 15.343751}
-      - {x: 15, y: 15}
-      - {x: 16, y: 15}
-    - - {x: 15, y: 14.343751}
-      - {x: 13, y: 14.343751}
-      - {x: 13, y: 14}
-      - {x: 15, y: 14}
+    m_Paths: []
   m_VertexDistance: 0.0005
 --- !u!66 &66737421748299182
 CompositeCollider2D:
@@ -747,14 +675,6 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 2113883506439899962}
     m_ColliderPaths:
-    - - X: 130000000
-        Y: 240000000
-      - X: 110000000
-        Y: 240000000
-      - X: 110000000
-        Y: 238281248
-      - X: 130000000
-        Y: 238281248
     - - X: 90000000
         Y: 210000000
       - X: 80000000
@@ -813,10 +733,6 @@ CompositeCollider2D:
         Y: 0
   m_CompositePaths:
     m_Paths:
-    - - {x: 13, y: 24}
-      - {x: 11, y: 24}
-      - {x: 11, y: 23.828125}
-      - {x: 13, y: 23.828125}
     - - {x: 9, y: 21}
       - {x: 8, y: 21}
       - {x: 8, y: 20.640625}
@@ -1069,7 +985,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -166131649
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -1111,7 +1027,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -677697159
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0.5, y: 0, z: 0}
@@ -1153,7 +1069,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1016753049
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -1195,7 +1111,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -682247079
-  m_SortingLayer: 8
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -1215,7 +1131,7 @@ Tilemap:
   - first: {x: 21, y: 10, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1224,7 +1140,7 @@ Tilemap:
   - first: {x: 21, y: 11, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1233,7 +1149,7 @@ Tilemap:
   - first: {x: 8, y: 12, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1242,7 +1158,7 @@ Tilemap:
   - first: {x: 21, y: 12, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1251,7 +1167,7 @@ Tilemap:
   - first: {x: 8, y: 13, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1260,7 +1176,7 @@ Tilemap:
   - first: {x: 21, y: 13, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1269,7 +1185,7 @@ Tilemap:
   - first: {x: 8, y: 14, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1278,7 +1194,7 @@ Tilemap:
   - first: {x: 21, y: 14, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1287,7 +1203,7 @@ Tilemap:
   - first: {x: 8, y: 15, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1296,7 +1212,7 @@ Tilemap:
   - first: {x: 21, y: 15, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1305,7 +1221,7 @@ Tilemap:
   - first: {x: 8, y: 16, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1314,7 +1230,7 @@ Tilemap:
   - first: {x: 21, y: 16, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1323,7 +1239,7 @@ Tilemap:
   - first: {x: 8, y: 17, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1332,7 +1248,7 @@ Tilemap:
   - first: {x: 8, y: 18, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1341,7 +1257,7 @@ Tilemap:
   - first: {x: 8, y: 19, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1350,7 +1266,7 @@ Tilemap:
   - first: {x: 8, y: 20, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -1367,10 +1283,10 @@ Tilemap:
   m_TileSpriteArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
+  - m_RefCount: 16
+    m_Data: {fileID: 21300000, guid: 1c9498957ccbd8d4088e7ebb6c8c9bb7, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 16
-    m_Data: {fileID: 21300000, guid: 57dcdd6fd2364b24ea278d98c99953f8, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 16
     m_Data:

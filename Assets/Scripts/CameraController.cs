@@ -75,10 +75,10 @@ public class CameraController : MonoBehaviour {
             {
                 GameManager.Instance.minimap.SetActive(true);
                 GameManager.gameState = GameState.Ingame;
-                GetComponent<Camera>().cullingMask = ~0;
                 StartCoroutine(MapManager.Instance.RoomFadeIn(MapManager.currentRoom));
                 grid.transform.position = Vector3.zero;
                 sizeDestination = inGameCameraSize;
+                GetComponent<Camera>().cullingMask = ~0;
                 while (GetComponent<Camera>().orthographicSize > sizeDestination + 0.01)
                 {
                     yield return null;
@@ -98,7 +98,6 @@ public class CameraController : MonoBehaviour {
                     MapManager.mapGrid[(int)MapManager.portalDestination.x, (int)MapManager.portalDestination.y].portalSurface.GetComponent<SpriteRenderer>().sprite =
                         MapManager.Instance.portalSelected;
                 }
-                GetComponent<Camera>().cullingMask = 1 << LayerMask.NameToLayer("Tetris");
                 StartCoroutine(MapManager.Instance.RoomFadeOut(MapManager.currentRoom));
                 grid.transform.position = new Vector3(0, 0, 2);
                 sizeDestination = tetrisCameraSize;
@@ -109,6 +108,7 @@ public class CameraController : MonoBehaviour {
                     transform.position = new Vector3(coord.x, coord.y, -1);
                     GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, sizeDestination, Mathf.Sqrt(Time.deltaTime));
                 }
+                GetComponent<Camera>().cullingMask = 1 << LayerMask.NameToLayer("Tetris") | 1 << LayerMask.NameToLayer("PortalSurface");
                 transform.position = tetrisCameraCoord;
             }
             GetComponent<Camera>().orthographicSize = sizeDestination;

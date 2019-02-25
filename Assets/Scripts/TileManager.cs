@@ -129,8 +129,10 @@ public class TileManager : MonoBehaviour {
             return 'c';
         else if (up)
             return 'd';
-        else
+        else if (down)
             return 'u';
+        else
+            return 'o';
     }
     public char CheckSpikeTile(RoomInGame roomInGame, Vector2Int originPos)
     {
