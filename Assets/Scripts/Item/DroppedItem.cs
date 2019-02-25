@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class DroppedItem : MonoBehaviour, IPlayerInteraction
+public class DroppedItem : DroppedObject, IPlayerInteraction
 {
     InventoryManager inventoryManager;
     public bool itemAddon; //false: item true: addon
@@ -13,7 +14,6 @@ public class DroppedItem : MonoBehaviour, IPlayerInteraction
     Rigidbody2D rb2D;
     BoxCollider2D bc2D;
     SpriteRenderer sprt;
-    public int price = 0;
     public void Init(Item _item, Vector3 pos)
     {
         inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();

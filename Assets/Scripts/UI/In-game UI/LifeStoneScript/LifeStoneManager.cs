@@ -87,9 +87,19 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
         frameSuper.GetComponent<LifeStoneFrame>().AddRow(lifeStoneRowNum);
     }
 
-    public void InstantiatePotion(Vector3 pos, float popoutStrength)
+    public GameObject InstantiatePotion(Vector3 pos, float popoutStrength)
     {
-        PopoutGenerator(Instantiate(goldPotionPrefab, pos, Quaternion.identity), popoutStrength);
+        GameObject tmpPotion = Instantiate(goldPotionPrefab, pos, Quaternion.identity);
+        PopoutGenerator(tmpPotion, popoutStrength);
+        return tmpPotion;
+    }
+    public GameObject InstantiatePotion(Vector3 pos, int _price, float popoutStrength)
+    {
+        GameObject tmpPotion = Instantiate(goldPotionPrefab, pos, Quaternion.identity);
+        PopoutGenerator(tmpPotion, popoutStrength);
+        tmpPotion.GetComponent<DroppedObject>().price = _price;
+        tmpPotion.GetComponent<DroppedObject>().priceTag = Instantiate(InventoryManager.Instance.price, new Vector3(0, 0, 0), Quaternion.identity, InventoryManager.Instance.priceCanvas.transform);
+        return tmpPotion;
     }
 
     IEnumerator PopoutCoroutine(GameObject obj)
@@ -125,41 +135,47 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
     /// </summary>
     /// <param name="info"></param>
     /// <param name="pos"></param>
-    public void InstantiateDroppedLifeStone(Vector2Int size, int num, float goldPer, int ameNum, Vector3 pos, float popoutStrength)
+    public GameObject InstantiateDroppedLifeStone(Vector2Int size, int num, float goldPer, int ameNum, Vector3 pos, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
         tmpObj.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(size, num, goldPer, ameNum), pos);
         PopoutGenerator(tmpObj, popoutStrength);
+        return tmpObj;
     }
-    public void InstantiateDroppedLifeStone(Vector2Int size, float goldPer, int ameNum, Vector3 pos, float popoutStrength)
+    public GameObject InstantiateDroppedLifeStone(Vector2Int size, float goldPer, int ameNum, Vector3 pos, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
         tmpObj.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(size, goldPer, ameNum), pos);
         PopoutGenerator(tmpObj, popoutStrength);
+        return tmpObj;
     }
-    public void InstantiateDroppedLifeStone(int num, float goldPer, int ameNum, Vector3 pos, float popoutStrength)
+    public GameObject InstantiateDroppedLifeStone(int num, float goldPer, int ameNum, Vector3 pos, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
         tmpObj.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(num, goldPer, ameNum), pos);
         PopoutGenerator(tmpObj, popoutStrength);
+        return tmpObj;
     }
-    public void InstantiateDroppedLifeStone(LifeStoneInfo info, Vector3 pos, float popoutStrength)
+    public GameObject InstantiateDroppedLifeStone(LifeStoneInfo info, Vector3 pos, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
         tmpObj.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         tmpObj.GetComponent<DroppedLifeStone>().Init(info, pos);
         PopoutGenerator(tmpObj, popoutStrength);
+        return tmpObj;
     }
-    public void InstantiateDroppedLifeStone(Vector2Int size, float goldPer, int ameNum, Vector3 pos, int price, float popoutStrength)
+    public GameObject InstantiateDroppedLifeStone(Vector2Int size, float goldPer, int ameNum, Vector3 pos, int _price, float popoutStrength)
     {
         GameObject tmpObj = Instantiate(droppedLifeStonePrefab);
         tmpObj.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
         tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(size, goldPer, ameNum), pos);
         PopoutGenerator(tmpObj, popoutStrength);
-        tmpObj.GetComponent<DroppedLifeStone>().price = price;
+        tmpObj.GetComponent<DroppedObject>().price = _price;
+        tmpObj.GetComponent<DroppedObject>().priceTag = Instantiate(InventoryManager.Instance.price, new Vector3(0, 0, 0), Quaternion.identity, InventoryManager.Instance.priceCanvas.transform);
+        return tmpObj;
     }
 
     /// <summary>

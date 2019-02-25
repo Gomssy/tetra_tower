@@ -17,7 +17,6 @@ public class EffectManager : Singleton<EffectManager> {
             effectArray[i] = Instantiate(effectPrefab,transform);
             effectArray[i].SetActive(false);
         }
-        
     }
 
     public bool StartEffect(int type, Bounds bound1, Bounds bound2)

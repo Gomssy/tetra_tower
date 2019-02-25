@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryManager : Singleton<InventoryManager> {
 
@@ -12,12 +13,15 @@ public class InventoryManager : Singleton<InventoryManager> {
     public GameObject droppedPrefab;
     public float popoutStrengthMultiplier;
     public float popoutTime;
+    public GameObject priceCanvas;
+    public Text price;
     GameObject player;
 
     private void Start()
     {
         ui = GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>();
         GameObject.Find("InventoryCanvas").SetActive(false);
+        priceCanvas = Instantiate(priceCanvas);
 
         player = GameObject.Find("Player");
 
@@ -128,12 +132,13 @@ public class InventoryManager : Singleton<InventoryManager> {
     /// <param name="quality"></param>
     /// <param name="pos"></param>
     /// <param name="popoutStrength">0:no popout, 1:normal popout</param>
-    public void ItemInstantiate(ItemQuality quality, Vector3 pos, float popoutStrength)
+    public GameObject ItemInstantiate(ItemQuality quality, Vector3 pos, float popoutStrength)
     {
         if(itemPool[(int)quality].Count > 0)
         {
-            ItemInstantiate(itemPool[(int)quality][0], pos, popoutStrength);
+            return ItemInstantiate(itemPool[(int)quality][0], pos, popoutStrength);
         }
+        return null;
     }
     /// <summary>
     /// Instantiate item by name on pos, also Instantiate Item class 
@@ -173,14 +178,16 @@ public class InventoryManager : Singleton<InventoryManager> {
     /// <param name="pos"></param>
     /// <param name="price"></param>
     /// <param name="popoutStrength">0:no popout, 1:normal popout</param>
-    public void ItemInstantiate(ItemQuality quality, Vector3 pos, int price, float popoutStrength)
+    public GameObject ItemInstantiate(ItemQuality quality, Vector3 pos, int _price, float popoutStrength)
     {
         if (itemPool[(int)quality].Count > 0)
         {
             GameObject tmpItem = ItemInstantiate(itemPool[(int)quality][0], pos, popoutStrength);
-            tmpItem.GetComponent<DroppedItem>().price = price;
-            
+            tmpItem.GetComponent<DroppedObject>().price = _price;
+            tmpItem.GetComponent<DroppedObject>().priceTag = Instantiate(price, new Vector3(0, 0, 0), Quaternion.identity, priceCanvas.transform);
+            return tmpItem;
         }
+        return null;
     }
 
     /// <summary>
@@ -188,12 +195,14 @@ public class InventoryManager : Singleton<InventoryManager> {
     /// </summary>
     /// <param name="quality"></param>
     /// <param name="pos"></param>
-    public void AddonInstantiate(ItemQuality quality, Vector3 pos, float popoutStrength)
+    public GameObject AddonInstantiate(ItemQuality quality, Vector3 pos, float popoutStrength)
     {
         if (addonPool[(int)quality].Count > 0)
         {
-            AddonInstantiate(addonPool[(int)quality][0], pos, popoutStrength);
+            GameObject tmpItem = AddonInstantiate(addonPool[(int)quality][0], pos, popoutStrength);
+            return tmpItem;
         }
+        return null;
     }
     /// <summary>
     /// Instantiate addon by name on pos, also Instantiate Addon class 
@@ -234,13 +243,16 @@ public class InventoryManager : Singleton<InventoryManager> {
     /// <param name="price">The price.</param>
     /// <param name="popoutStrength">The popout strength.</param>
     /// <returns></returns>
-    public void AddonInstantiate(ItemQuality quality, Vector3 pos, int price, float popoutStrength)
+    public GameObject AddonInstantiate(ItemQuality quality, Vector3 pos, int _price, float popoutStrength)
     {
         if (addonPool[(int)quality].Count > 0)
         {
             GameObject tmpItem = AddonInstantiate(addonPool[(int)quality][0], pos, popoutStrength);
-            tmpItem.GetComponent<DroppedItem>().price = price;
+            tmpItem.GetComponent<DroppedObject>().price = _price;
+            tmpItem.GetComponent<DroppedObject>().priceTag = Instantiate(price, new Vector3(0, 0, 0), Quaternion.identity, priceCanvas.transform);
+            return tmpItem;
         }
+        return null;
     }
 
     /// <summary>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class GoldRoomItemInfo
 {
     public ItemSpawnType[] itemType;
@@ -79,38 +78,20 @@ public class GoldRoomInGame : RoomInGame {
         for (int i = 0; i < itemInfo.itemType.Length; i++)
         {
             if (itemInfo.itemType[i] == ItemSpawnType.Item)
-            {
-                Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " price" + itemInfo.price[i]);
-                inventoryManager.ItemInstantiate(itemInfo.itemQuality[i], itemPosition[itemCount++], itemInfo.price[i], 0);
-                Debug.Log("done");
-            }
+                itemGoods[i] = inventoryManager.ItemInstantiate(itemInfo.itemQuality[i], itemPosition[itemCount++], itemInfo.price[i], 0);
             else if (itemInfo.itemType[i] == ItemSpawnType.Addon)
-            {
-                Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " price" + itemInfo.price[i]);
-                inventoryManager.AddonInstantiate(itemInfo.itemQuality[i], itemPosition[itemCount++], itemInfo.price[i], 0);
-                Debug.Log("done");
-            }
+                itemGoods[i] = inventoryManager.AddonInstantiate(itemInfo.itemQuality[i], itemPosition[itemCount++], itemInfo.price[i], 0);
             else if (itemInfo.itemType[i] == ItemSpawnType.GoldPotion)
-            {
-                Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " price" + itemInfo.price[i]);
-                lifeStoneManager.InstantiatePotion(itemPosition[itemCount++], 0);
-                Debug.Log("done");
-            }
+                itemGoods[i] = lifeStoneManager.InstantiatePotion(itemPosition[itemCount++], itemInfo.price[i], 0);
             else if (itemInfo.itemType[i] == ItemSpawnType.LifeStone)
             {
                 if (itemInfo.itemQuality[i] == ItemQuality.Gold)
-                {
-                    Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " price" + itemInfo.price[i]);
-                    lifeStoneManager.InstantiateDroppedLifeStone(new Vector2Int(3, 2), 1, 0, itemPosition[itemCount++], itemInfo.price[i], 0);
-                    Debug.Log("done");
-                }
+                    itemGoods[i] = lifeStoneManager.InstantiateDroppedLifeStone(new Vector2Int(3, 2), 1, 0, itemPosition[itemCount++], itemInfo.price[i], 0);
                 else
-                {
-                    Debug.Log("type" + itemInfo.itemType[i] + " quality" + itemInfo.itemQuality[i] + " price" + itemInfo.price[i]);
-                    lifeStoneManager.InstantiateDroppedLifeStone(new Vector2Int(3, 2), 0, 0, itemPosition[itemCount++], itemInfo.price[i], 0);
-                    Debug.Log("done");
-                }
+                    itemGoods[i] = lifeStoneManager.InstantiateDroppedLifeStone(new Vector2Int(3, 2), 0, 0, itemPosition[itemCount++], itemInfo.price[i], 0);
             }
+            itemGoods[i].GetComponent<DroppedObject>().priceTag.transform.position = itemGoods[i].transform.position + new Vector3(0, 1, 0);
+            itemGoods[i].GetComponent<DroppedObject>().priceTag.text = itemInfo.price[i].ToString();
         }
     }
 

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class DroppedLifeStone : MonoBehaviour, IPlayerInteraction
+public class DroppedLifeStone : DroppedObject, IPlayerInteraction
 {
     LifeStoneInfo info;
     public Sprite[] sprites;
@@ -19,8 +20,6 @@ public class DroppedLifeStone : MonoBehaviour, IPlayerInteraction
     /// highlightSprite Objects
     /// </summary>
     GameObject[] highObj;
-    public int price = 0;
-
     public void Init(LifeStoneInfo _info, Vector3 pos)
     {
         info = _info;

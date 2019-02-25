@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class DroppedPotion : MonoBehaviour, IPlayerInteraction {
+public class DroppedPotion : DroppedObject, IPlayerInteraction{
 
     public GameObject highlight;
 
