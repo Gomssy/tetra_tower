@@ -42,7 +42,6 @@ public class InventoryUI : MonoBehaviour {
     InventoryManager inventoryManager;
 
 	void Awake () {
-        inventoryManager = InventoryManager.Instance;
 
         items = new GameObject[9];
         addons = new GameObject[9];
@@ -80,6 +79,11 @@ public class InventoryUI : MonoBehaviour {
 
         addonInfo = Instantiate(addonInfoPrefab, transform);
         addonInfo.SetActive(false);
+    }
+
+    private void Start()
+    {
+        inventoryManager = InventoryManager.Instance;
     }
 
 

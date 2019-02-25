@@ -70,8 +70,8 @@ public class TetriminoSpawner : Singleton<TetriminoSpawner> {
             {
                 MapManager.Instance.UpgradeRoom(MapManager.Instance.roomsWaiting.Dequeue());
             }
-            MapManager.Instance.clock.tetriminoCreatedTime = Time.time;
-            Timer.timer = StartCoroutine(GameObject.Find("Clock").GetComponent<Timer>().CountTetriminoWaitingTime());
+            GameManager.Instance.clock.tetriminoCreatedTime = Time.time;
+            Timer.timer = StartCoroutine(GameManager.Instance.clock.CountTetriminoWaitingTime());
         }
     }
     /// <summary>

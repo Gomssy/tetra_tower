@@ -18,7 +18,7 @@ public class Sandbag : Addon
     }
     public override void OtherEffect(string combo)
     {
-        GameObject.Find("Player").GetComponent<PlayerAttack>().comboTime *= 0.5f;
+        GameManager.Instance.player.GetComponent<PlayerAttack>().comboTime *= 0.5f;
     }
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {

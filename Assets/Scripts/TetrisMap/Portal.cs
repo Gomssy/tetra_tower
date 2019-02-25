@@ -14,7 +14,7 @@ public class Portal : MonoBehaviour, IPlayerInteraction  {
             isPortalUsed = true;
         }
         else if (!GameManager.Instance.isTutorial && GameManager.gameState == GameState.Ingame)
-            StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().ChangeScene(GameState.Portal));
+            StartCoroutine(Camera.main.GetComponent<CameraController>().ChangeScene(GameState.Portal));
     }
 
     public void HighlightSwitch(bool enabled)

@@ -14,7 +14,7 @@ public class AddonDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     void Start()
     {
         pointerOn = false;
-        ui = GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>();
+        ui = InventoryManager.Instance.ui;
         manager = InventoryManager.Instance;
         addonGroup = ui.gameObject.transform.Find("AddonGroup");
         discardBin = ui.gameObject.transform.Find("DiscardBin");

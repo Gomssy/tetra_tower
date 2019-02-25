@@ -9,6 +9,8 @@ public class DroppedPotion : DroppedObject, IPlayerInteraction{
 
     public void Apply()
     {
+        if (LifeStoneManager.Instance.CountType(LifeStoneType.Gold) < price)
+            StartCoroutine(GameManager.Instance.player.GetComponent<Player>().DisplayText("Not enough gold"));
         LifeStoneManager.Instance.ChangeFromNormal(LifeStoneType.Gold, 3);
         Destroy(gameObject);
     }

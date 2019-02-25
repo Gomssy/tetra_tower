@@ -49,10 +49,7 @@ public class DroppedItem : DroppedObject, IPlayerInteraction
     public void Apply()
     {
         if(LifeStoneManager.Instance.CountType(LifeStoneType.Gold) < price)
-        {
-            Debug.Log("Not enough gold");
-            return;
-        }
+            StartCoroutine(GameManager.Instance.player.GetComponent<Player>().DisplayText("Not enough gold"));
         else if (!itemAddon && inventoryManager.PushItem(item))
         {
             LifeStoneManager.Instance.ChangeToNormal(LifeStoneType.Gold, price);

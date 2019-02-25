@@ -19,7 +19,7 @@ public class FeatherofRheA : Addon
 
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
-        if (!GameObject.Find("Player").GetComponent<PlayerController>().IsGrounded())
+        if (!GameManager.Instance.player.GetComponent<PlayerController>().IsGrounded())
             return 1.75f;
         else
             return 1f;

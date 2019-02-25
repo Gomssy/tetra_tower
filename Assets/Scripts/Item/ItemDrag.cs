@@ -11,7 +11,7 @@ public class ItemDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     Transform discardBin;
     void Start()
     {
-        ui = GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>();
+        ui = InventoryManager.Instance.ui;
         manager = InventoryManager.Instance;
         discardBin = ui.gameObject.transform.Find("DiscardBin");
     }

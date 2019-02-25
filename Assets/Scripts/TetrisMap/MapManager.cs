@@ -7,7 +7,6 @@ public class MapManager : Singleton<MapManager> {
     /*
      * variables
      * */
-    public GameObject player;
     /// <summary>
     /// The clock indicates time of tetrimino.
     /// </summary>
@@ -460,7 +459,7 @@ public class MapManager : Singleton<MapManager> {
             }
         }
         isRoomFalling = true;
-        Vector3 previousPlayerRelativePosition = player.transform.position - currentRoom.transform.position;
+        Vector3 previousPlayerRelativePosition = GameManager.Instance.player.transform.position - currentRoom.transform.position;
         while (tetrisYCoord[top + 1] > bottom * tetrisMapSize)
         {
             while (GameManager.gameState == GameState.Portal)
@@ -482,20 +481,19 @@ public class MapManager : Singleton<MapManager> {
             }
             SetRoomsYCoord();
             if(currentRoom.mapCoord.y >= bottom)
-                player.transform.position += new Vector3(0, - yFallSpeed, 0);
-            previousPlayerRelativePosition = player.transform.position - currentRoom.transform.position;
+                GameManager.Instance.player.transform.position += new Vector3(0, - yFallSpeed, 0);
+            previousPlayerRelativePosition = GameManager.Instance.player.transform.position - currentRoom.transform.position;
         }
         if (shakeCamera)
         {
-            Camera camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-            StartCoroutine(camera.GetComponent<CameraController>().CameraShake(5 * (top - bottom + 1) / CameraController.tetrisCameraSize));
+            StartCoroutine(Camera.main.GetComponent<CameraController>().CameraShake(5 * (top - bottom + 1) / CameraController.tetrisCameraSize));
         }
         for (int i = 0; i < height; i++)
         {
             tetrisYCoord[i] = i * tetrisMapSize;
         }
         DecreaseRowsAbove(top, bottom);
-        player.transform.position = currentRoom.transform.position + previousPlayerRelativePosition;
+        GameManager.Instance.player.transform.position = currentRoom.transform.position + previousPlayerRelativePosition;
         isRoomFalling = false;
         for (int i = 0; i < width; i++)
         {
@@ -675,7 +673,7 @@ public class MapManager : Singleton<MapManager> {
             fallSpeed += gravity * fallTime * fallTime;
             te.transform.position += new Vector3(0, -fallSpeed, 0);
         }
-        StartCoroutine(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().CameraShake(20 / CameraController.tetrisCameraSize));
+        StartCoroutine(Camera.main.GetComponent<CameraController>().CameraShake(20 / CameraController.tetrisCameraSize));
         EndTetrimino(te);
     }
     /// <summary>
@@ -840,7 +838,7 @@ public class MapManager : Singleton<MapManager> {
     /// <returns></returns>
     public IEnumerator MakeNextTetrimino()
     {
-        StartCoroutine(GameObject.Find("Clock").GetComponent<Timer>().ResetClock());
+        StartCoroutine(GameManager.Instance.clock.GetComponent<Timer>().ResetClock());
         yield return new WaitForSeconds(1f);
         TetriminoSpawner.Instance.MakeTetrimino();
     }
@@ -1148,14 +1146,12 @@ public class MapManager : Singleton<MapManager> {
         for (int i = 0; i < roomBackgroundSprite5.Length; i++)
             roomBackgroundSpritesDistributed[4].Add(roomBackgroundSprite5[i]);*/
         currentStage = 0;
-        player = GameObject.Find("Player");
-        clock = GameObject.Find("Clock").GetComponent<Timer>();
         grid = GameObject.Find("Grid").transform;
     }
 
     // Use this for initialization
     void Start () {
-
+        clock = GameManager.Instance.clock;
     }
 
     // Update is called once per frame

@@ -20,13 +20,12 @@ public class CameraController : MonoBehaviour {
 
     private void Awake()
     {
-        player = GameObject.Find("Player");
     }
 
     // Use this for initialization
     void Start()
     {
-
+        player = GameManager.Instance.player;
     }
 
     // Update is called once per frame
@@ -69,7 +68,7 @@ public class CameraController : MonoBehaviour {
     {
         if(isSceneChanging != true)
         {
-            GameObject grid = GameObject.Find("Grid");
+            GameObject grid = MapManager.Instance.grid.gameObject;
             float sizeDestination = 0;
             isSceneChanging = true;
             if (gameState == GameState.Ingame)

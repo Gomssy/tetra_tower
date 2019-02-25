@@ -1,6 +1,7 @@
-﻿  using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
     LifeStoneManager lifeStoneManager;
@@ -8,9 +9,24 @@ public class Player : MonoBehaviour {
     public static float X = 0.7f, Y = 1.6f;
     public int ttx;
     public int tty;
+    public Text displayText;
+    
+    public IEnumerator DisplayText(string _text)
+    {
+        displayText.text = _text;
+        for (int i = 255; i >= 0; i -= 10)
+        {
+            yield return null;
+            displayText.transform.position = transform.position + new Vector3(0, 2, 0);
+            Debug.Log(i);
+            displayText.color = new Color(displayText.color.r, displayText.color.g, displayText.color.b, (float)i /255);
+        }
+        displayText.text = "";
+    }
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
+        displayText = Instantiate(displayText, GameManager.Instance.textCanvas.transform);
         ttx = (int)(transform.position.x / 24f);
         tty = (int)(transform.position.y-0.9f / 24f);
         lifeStoneManager = LifeStoneManager.Instance;

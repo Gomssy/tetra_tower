@@ -393,9 +393,9 @@ public class Room : MonoBehaviour
             fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
             CreatePortal();
             isRoomCleared = true;
-            MapManager.Instance.clock.clockSpeedStack -= 3;
-            if (MapManager.Instance.clock.clockSpeedStack < 0)
-                MapManager.Instance.clock.clockSpeedStack = 0;
+            GameManager.Instance.clock.clockSpeedStack -= 3;
+            if (GameManager.Instance.clock.clockSpeedStack < 0)
+                GameManager.Instance.clock.clockSpeedStack = 0;
             roomInGame.RoomClear();
         }
         //Need to make extra works.

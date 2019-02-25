@@ -49,7 +49,7 @@ public class Test : MonoBehaviour {
     }
     public void Timer()
     {
-        timer.text = (MapManager.Instance.clock.timeToFallTetrimino - MapManager.Instance.clock.tetriminoWaitedTime).ToString();
+        timer.text = (GameManager.Instance.clock.timeToFallTetrimino - GameManager.Instance.clock.tetriminoWaitedTime).ToString();
     }
     public void ClearRoom()
     {

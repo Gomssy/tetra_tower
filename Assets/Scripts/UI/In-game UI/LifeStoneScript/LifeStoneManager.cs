@@ -98,7 +98,7 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
         GameObject tmpPotion = Instantiate(goldPotionPrefab, pos, Quaternion.identity);
         PopoutGenerator(tmpPotion, popoutStrength);
         tmpPotion.GetComponent<DroppedObject>().price = _price;
-        tmpPotion.GetComponent<DroppedObject>().priceTag = Instantiate(InventoryManager.Instance.price, new Vector3(0, 0, 0), Quaternion.identity, InventoryManager.Instance.priceCanvas.transform);
+        tmpPotion.GetComponent<DroppedObject>().priceTag = Instantiate(InventoryManager.Instance.price, new Vector3(0, 0, 0), Quaternion.identity, GameManager.Instance.textCanvas.transform);
         return tmpPotion;
     }
 
@@ -174,7 +174,7 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
         tmpObj.GetComponent<DroppedLifeStone>().Init(CreateLifeStoneInfo(size, goldPer, ameNum), pos);
         PopoutGenerator(tmpObj, popoutStrength);
         tmpObj.GetComponent<DroppedObject>().price = _price;
-        tmpObj.GetComponent<DroppedObject>().priceTag = Instantiate(InventoryManager.Instance.price, new Vector3(0, 0, 0), Quaternion.identity, InventoryManager.Instance.priceCanvas.transform);
+        tmpObj.GetComponent<DroppedObject>().priceTag = Instantiate(InventoryManager.Instance.price, new Vector3(0, 0, 0), Quaternion.identity, GameManager.Instance.textCanvas.transform);
         return tmpObj;
     }
 
@@ -388,7 +388,7 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
                     }
                     InstantiateDroppedLifeStone(CreateLifeStoneInfo(
                         new LifeStoneInfo(new Vector2Int(pSize.x, pSize.y - cutRow), new string(newFill))),
-                        GameObject.Find("Player").transform.position + new Vector3(droppedLifeStonePrefab.GetComponent<DroppedLifeStone>().unitSprite.GetComponent<SpriteRenderer>().bounds.size.x * i,0,0),
+                        GameManager.Instance.player.transform.position + new Vector3(droppedLifeStonePrefab.GetComponent<DroppedLifeStone>().unitSprite.GetComponent<SpriteRenderer>().bounds.size.x * i,0,0),
                         1f);
                 }
             }
@@ -461,7 +461,7 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
     IEnumerator HitRedEffect(int damage)
     {
         float startTime = Time.time, endTime = startTime + 0.3f;
-        SpriteRenderer sprt = GameObject.Find("Player").GetComponent<SpriteRenderer>();
+        SpriteRenderer sprt = GameManager.Instance.player.GetComponent<SpriteRenderer>();
         sprt.color = new Color(1, 0, 0);
         
         while(Time.time < endTime)

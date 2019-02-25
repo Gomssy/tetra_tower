@@ -7,29 +7,23 @@ public class InventoryManager : Singleton<InventoryManager> {
 
     public List<Item> itemList = new List<Item>();
     public List<Addon> addonList = new List<Addon>();
-    InventoryUI ui;
+    public InventoryUI ui;
     public List<string>[] itemPool = new List<string>[4];
     public List<string>[] addonPool = new List<string>[4];
     public GameObject droppedPrefab;
     public float popoutStrengthMultiplier;
     public float popoutTime;
-    public GameObject priceCanvas;
     public Text price;
     GameObject player;
 
     private void Start()
     {
-        ui = GameObject.Find("InventoryCanvas").GetComponent<InventoryUI>();
-        GameObject.Find("InventoryCanvas").SetActive(false);
-        priceCanvas = Instantiate(priceCanvas);
-
-        player = GameObject.Find("Player");
-
+        player = GameManager.Instance.player;
         SetPool();
-        /*ItemInstantiate("Dagger", player.transform.position, 0f);
+        ItemInstantiate("Dagger", player.transform.position, 0f);
         AddonInstantiate("ParchmentPiece", player.transform.position, 0f);
         AddonInstantiate("Gluttony", player.transform.position, 0f);
-        ItemInstantiate("Bow", player.transform.position, 0f);*/
+        ItemInstantiate("Bow", player.transform.position, 0f);
 
         StartCoroutine(TestCoroutine());
     }
@@ -184,7 +178,7 @@ public class InventoryManager : Singleton<InventoryManager> {
         {
             GameObject tmpItem = ItemInstantiate(itemPool[(int)quality][0], pos, popoutStrength);
             tmpItem.GetComponent<DroppedObject>().price = _price;
-            tmpItem.GetComponent<DroppedObject>().priceTag = Instantiate(price, new Vector3(0, 0, 0), Quaternion.identity, priceCanvas.transform);
+            tmpItem.GetComponent<DroppedObject>().priceTag = Instantiate(price, new Vector3(0, 0, 0), Quaternion.identity, GameManager.Instance.textCanvas.transform);
             return tmpItem;
         }
         return null;
@@ -249,7 +243,7 @@ public class InventoryManager : Singleton<InventoryManager> {
         {
             GameObject tmpItem = AddonInstantiate(addonPool[(int)quality][0], pos, popoutStrength);
             tmpItem.GetComponent<DroppedObject>().price = _price;
-            tmpItem.GetComponent<DroppedObject>().priceTag = Instantiate(price, new Vector3(0, 0, 0), Quaternion.identity, priceCanvas.transform);
+            tmpItem.GetComponent<DroppedObject>().priceTag = Instantiate(price, new Vector3(0, 0, 0), Quaternion.identity, GameManager.Instance.textCanvas.transform);
             return tmpItem;
         }
         return null;
@@ -375,5 +369,4 @@ public class InventoryManager : Singleton<InventoryManager> {
         }
         ui.SetOnPosition(itemList, addonList);
     }
-    
 }

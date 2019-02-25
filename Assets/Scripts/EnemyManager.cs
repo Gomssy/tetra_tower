@@ -41,9 +41,12 @@ public class EnemyManager : Singleton<EnemyManager>
     // Awake
     private void Awake()
     {
-        Player = GameObject.Find("Player");
         LoadDropTable(dropTableData);
         CreateEnemyPool();
+    }
+    private void Start()
+    {
+        Player = GameManager.Instance.player;
     }
 
     // Spawn Enemy to Map

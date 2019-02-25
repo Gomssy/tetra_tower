@@ -218,7 +218,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114561382838090706, guid: f6ef1c586e7764c41ba8349325635589,
+          type: 2}
         m_MethodName: RestartGame
         m_Mode: 1
         m_Arguments:

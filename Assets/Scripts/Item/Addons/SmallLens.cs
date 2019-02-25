@@ -19,6 +19,6 @@ public class SmallLens : Addon
 
     public override void OtherEffect(string combo)
     {
-        GameObject.Find("Player").GetComponent<PlayerAttack>().comboTime *= 1.75f;
+        GameManager.Instance.player.GetComponent<PlayerAttack>().comboTime *= 1.75f;
     }
 }
