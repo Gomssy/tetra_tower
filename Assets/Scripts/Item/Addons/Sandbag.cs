@@ -15,6 +15,8 @@ public class Sandbag : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         sizeInventory = new Vector2(80, 80);
+        addonDescription = "하루 25분! 의 투자로 최고의 효율을 자랑합니다!";
+        addonInfo = "스킬 시전 후 콤보 연계 시간이 50 % 감소합니다.피해량이 100 % 증가합니다.";
     }
     public override void OtherEffect(string combo)
     {

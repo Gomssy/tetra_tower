@@ -15,6 +15,9 @@ public class FeatherofRheA : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/Glowing Herb"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/Glowing Herb"); ;
         sizeInventory = new Vector2(80, 80);
+        addonDescription = "라거 섬에서 쉽게 볼 수 있었던 자유의 상징. 하지만 이제는 흩날리지 않는다.";
+        addonInfo = "체공 중에 피해량이 75% 증가합니다.";
+            
     }
 
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
