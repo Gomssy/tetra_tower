@@ -261,14 +261,38 @@ public class PlayerController : MonoBehaviour
 
     bool GetItemRay()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position , Vector2.down, rayDistance, itemLayer);
-
-        if (hit.collider != null)
+        RaycastHit2D hit= Physics2D.Raycast(transform.position, Vector2.down, rayDistance, portalLayer); ;
+        RaycastHit2D[] hits;
+        hits = Physics2D.BoxCastAll(transform.position, new Vector2(Player.X, boxHeight), 0, Vector2.down, Player.Y / 2f, itemLayer);
+        if (hits.Length > 0) //if no object was found there is no minimum
         {
-            IPlayerInteraction temp = hit.collider.GetComponent<IPlayerInteraction>();
+            float min = hits[0].distance; //lets assume that the minimum is at the 0th place
+            int minIndex = 0; //store the index of the minimum because thats hoow we can find our object
+
+            for (int i = 1; i < hits.Length; ++i)// iterate from the 1st element to the last.(Note that we ignore the 0th element)
+
+            {
+
+                if (hits[i].transform != gameObject.transform && hits[i].distance < min) //if we found smaller distance and its not the player we got a new minimum
+
+                {
+
+                    min = hits[i].distance; //refresh the minimum distance value
+
+                    minIndex = i; //refresh the distance
+
+                }
+
+            }
+
+            IPlayerInteraction temp = hits[minIndex].collider.GetComponent<IPlayerInteraction>();
+
             if (lastDropItem != null) lastDropItem.HighlightSwitch(false);
+
             if (temp != null) temp.HighlightSwitch(true);
+
             lastDropItem = temp;
+
         }
         else
         {
@@ -283,7 +307,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        return hit.collider != null;
+        return hit.collider != null || hits.Length>0;
     }
     bool IsInRope()   // Is player in rope?
     {
