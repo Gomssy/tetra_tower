@@ -15,7 +15,7 @@ public class CoollyPride : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/Coolly Pride"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/Coolly Pride"); ;
         sizeInventory = new Vector2(80, 80);
-        addonDescription = "꺼지지 않을 것 처럼 타올랐지만, 이제는 완전히 식어버린 차숀의 긍지.";
+        addonDescription = "꺼지지 않을 것처럼 타올랐지만, 이제는 완전히 식어버린 료의 긍지.";
         addonInfo = "기본 피해량이 4 미만이면 적을 2초간 빙결시킵니다.";
     }
 

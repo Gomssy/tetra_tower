@@ -15,6 +15,8 @@ public class BlacksmithsBrooch : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/Coolly Pride"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/Coolly Pride"); ;
         sizeInventory = new Vector2(80, 80);
+        addonDescription = "주인을 닮아 까맣고, 둔탁하고 굳세고 영롱해요!";
+        addonInfo = "피해량이 55% 증가합니다.";
     }
 
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)

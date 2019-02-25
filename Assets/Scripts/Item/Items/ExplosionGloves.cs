@@ -20,5 +20,8 @@ public class ExplosionGloves : Item
         animation[1] = Resources.Load<AnimationClip>("Animations/explosionGlovesAttack2");
         animation[2] = null;
         sizeInventory = new Vector2(90, 160);
+
+        itemInfo = "보기보다 강력한 폭발을 일으킨다. 폭발을 일으킬 때마다 장갑이 떨리는게 느껴진다.";
+        comboName = new string[3] { "설치", "폭파", "" };
     }
 }

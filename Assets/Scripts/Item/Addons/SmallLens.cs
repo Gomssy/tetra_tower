@@ -15,6 +15,8 @@ public class SmallLens : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/parchment piece"); ;
         sizeInventory = new Vector2(80, 80);
+        addonDescription = "이게 보기보다 쓸모 있더라구요";
+        addonInfo = "스킬 시전 후 콤보 연계 시간이 75% 증가합니다.";
     }
 
     public override void OtherEffect(string combo)

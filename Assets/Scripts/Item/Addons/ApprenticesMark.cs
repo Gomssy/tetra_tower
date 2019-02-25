@@ -15,6 +15,8 @@ public class ApprenticesMark : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/apprentice's mark"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/apprentice's mark_border"); ;
         sizeInventory = new Vector2(65, 80);
+        addonDescription = "이 표식이 검게 될 쯤에야 정식 제자로 인정 받는다고";
+        addonInfo = "피해량이 25% 증가합니다.";            
     }
 
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
