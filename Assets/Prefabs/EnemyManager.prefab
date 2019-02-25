@@ -57,5 +57,6 @@ MonoBehaviour:
   - {fileID: 1146867442367080, guid: 4b4051d2d46be8d47b320cffbddc44bb, type: 2}
   - {fileID: 1362081092076430, guid: fb338610cf9d2c540806e154b9d64f48, type: 2}
   - {fileID: 1038441420714538, guid: 00231b2b95c4e464083ff598536b1e00, type: 2}
+  - {fileID: 1896221696921858, guid: 6051c7354232afa45bf71a1032a49418, type: 2}
   EnemySpawnCount: 0
   EnemyDeadCount: 0
