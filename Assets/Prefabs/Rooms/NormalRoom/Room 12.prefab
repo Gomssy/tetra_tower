@@ -854,7 +854,7 @@ MonoBehaviour:
   roomSize: {x: 24, y: 24}
   leftDoorInfo: 010101
   rightDoorInfo: 010101
-  concept: 01010001
+  concept: 00010001
 --- !u!114 &114650033964154756
 MonoBehaviour:
   m_ObjectHideFlags: 1

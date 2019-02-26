@@ -703,8 +703,6 @@ public class MapManager : Singleton<MapManager> {
             isTetriminoFalling = true;
             TetriminoMapCoordDown(currentTetrimino);
         }
-        if(GameManager.gameState == GameState.Tetris)
-        {
             if (Input.GetButtonDown("TetriminoVertical"))
             {
                 TetriminoRotate(currentTetrimino, (int)Input.GetAxisRaw("TetriminoVertical"));
@@ -713,7 +711,9 @@ public class MapManager : Singleton<MapManager> {
             {
                 MoveTetriminoHorizontal(currentTetrimino, new Vector3((int)Input.GetAxisRaw("TetriminoHorizontal"), 0, 0));
             }
-            else if (Input.GetKeyDown(KeyCode.Space) && LifeStoneManager.Instance.CountType(LifeStoneType.Gold) >= tetriminoCost)
+        if(GameManager.gameState == GameState.Tetris)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) && LifeStoneManager.Instance.CountType(LifeStoneType.Gold) >= tetriminoCost)
             {
                 isTetriminoFalling = true;
                 TetriminoMapCoordDown(currentTetrimino);
