@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class EnemyAirTrack : StateMachineBehaviour {
     float trackSpeed;
-    float trackRange;
     float angle;
     GameObject player;
     Transform animatorRoot;
     EnemyAir enemy;
     Vector2 direction;
+    private readonly float interpolateCoeff = 0.05f;
 
     int maxFrame = 10;
     int frameCount;
@@ -17,10 +17,10 @@ public class EnemyAirTrack : StateMachineBehaviour {
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         animatorRoot = animator.transform.parent;
         enemy = animator.GetComponent<EnemyAir>();
-        player = EnemyManager.Instance.Player;
+        player = GameManager.Instance.player;
         trackSpeed = enemy.trackSpeed;
         frameCount = 0;
-
+        direction = Vector2.up;
         SetDirection();
     }
 
@@ -57,7 +57,8 @@ public class EnemyAirTrack : StateMachineBehaviour {
 
     private void SetDirection()
     {
-        direction = player.transform.position - animatorRoot.position;
+        Vector2 directionToPlayer = (player.transform.position - animatorRoot.position).normalized;
+        direction = (directionToPlayer * interpolateCoeff + direction * (1 - interpolateCoeff)).normalized;
         angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         enemy.ChangeAngleZ_noOption(angle - 90.0f);
     }
