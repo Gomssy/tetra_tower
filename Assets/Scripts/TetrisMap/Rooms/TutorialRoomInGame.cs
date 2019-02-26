@@ -8,7 +8,7 @@ public class TutorialRoomInGame : RoomInGame {
 
 	// Use this for initialization
 	void Start () {
-
+        EnemyManager.Instance.SpawnEnemyToMap();
     }
 	
 	// Update is called once per frame
