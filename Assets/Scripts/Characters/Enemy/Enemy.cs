@@ -90,14 +90,6 @@ public abstract class Enemy : MonoBehaviour {
         string objectName = gameObject.transform.parent.name;
         float prevHealth = currHealth;
         currHealth -= attack.damage;
-        if (currHealth <= 0)
-        {
-            Invisible = true;
-            animator.SetTrigger("DeadTrigger");
-            StopCoroutine("OnFire");
-            GetComponent<SpriteRenderer>().color = Color.white;
-            return;
-        }
 
         if (objectName == "NotDyingScarecrow(Clone)")
         {
@@ -117,6 +109,8 @@ public abstract class Enemy : MonoBehaviour {
             {
                 Invisible = true;
                 animator.SetTrigger("DeadTrigger");
+                StopCoroutine("OnFire");
+                GetComponent<SpriteRenderer>().color = Color.white;
                 return;
             }
             if (objectName == "DyingScarecrow(Clone)")
