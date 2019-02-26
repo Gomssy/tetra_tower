@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1562977808542142}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 881.1023, y: 401.53445, z: 22.914007}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -58,4 +58,4 @@ MonoBehaviour:
   popoutTime: 0.1
   price: {fileID: 114275555228777956, guid: 4ec53eab8ea50de4ea5b9ff658d83ca0, type: 2}
   woodSign: {fileID: 1484813200104594, guid: bea3b6164d7328b47a8d3598ac875cb3, type: 2}
-  coolUI: {fileID: 1160080494873608, guid: 6ae07b01931768f4f8924c0ab07ce9f7, type: 2}
+  coolUI: {fileID: 0}

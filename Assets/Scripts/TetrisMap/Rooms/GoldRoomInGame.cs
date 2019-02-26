@@ -92,8 +92,10 @@ public class GoldRoomInGame : RoomInGame {
             }
             if(itemGoods[i] != null)
             {
-                itemGoods[i].GetComponent<DroppedObject>().priceTag.transform.position = itemGoods[i].transform.position + new Vector3(0, 1, 0);
+                itemGoods[i].GetComponent<DroppedObject>().priceSign
+                    = Instantiate(InventoryManager.Instance.woodSign, itemGoods[i].transform.position + new Vector3(0.5f, 0, 0), Quaternion.identity, MapManager.currentRoom.transform);
                 itemGoods[i].GetComponent<DroppedObject>().priceTag.text = itemInfo.price[i].ToString();
+                itemGoods[i].GetComponent<DroppedObject>().priceTag.transform.position = itemGoods[i].GetComponent<DroppedObject>().priceSign.transform.position + new Vector3(0, 0.65f, 0);
             }
         }
     }

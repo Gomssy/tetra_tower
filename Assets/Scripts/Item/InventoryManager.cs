@@ -192,7 +192,6 @@ public class InventoryManager : Singleton<InventoryManager> {
             GameObject tmpItem = ItemInstantiate(itemPool[(int)quality][0], pos, popoutStrength);
             tmpItem.GetComponent<DroppedObject>().price = _price;
             tmpItem.GetComponent<DroppedObject>().priceTag = Instantiate(price, new Vector3(0, 0, 0), Quaternion.identity, GameManager.Instance.textCanvas.transform);
-            Instantiate(woodSign, tmpItem.transform.position + new Vector3(0.5f, 0, 0), Quaternion.identity, MapManager.currentRoom.transform);
             return tmpItem;
         }
         return null;
@@ -265,7 +264,6 @@ public class InventoryManager : Singleton<InventoryManager> {
             GameObject tmpItem = AddonInstantiate(addonPool[(int)quality][0], pos, popoutStrength);
             tmpItem.GetComponent<DroppedObject>().price = _price;
             tmpItem.GetComponent<DroppedObject>().priceTag = Instantiate(price, new Vector3(0, 0, 0), Quaternion.identity, GameManager.Instance.textCanvas.transform);
-            Instantiate(woodSign, tmpItem.transform.position + new Vector3(0.5f, 0, 0), Quaternion.identity, MapManager.currentRoom.transform);
             return tmpItem;
         }
         return null;

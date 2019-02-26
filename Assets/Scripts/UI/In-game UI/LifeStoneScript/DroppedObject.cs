@@ -7,4 +7,5 @@ public class DroppedObject : MonoBehaviour
 {
     public int price = 0;
     public Text priceTag;
+    public GameObject priceSign;
 }

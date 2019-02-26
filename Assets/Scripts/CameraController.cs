@@ -14,6 +14,10 @@ public class CameraController : MonoBehaviour {
     public Vector3 tetrisCameraCoord = new Vector3(108, 240, -1);
     public const float tetrisCameraSize = 300f;
     public const float inGameCameraSize = 4.5f;
+    Vector3 inGameClockCoord = new Vector3(-120, 460, 0);
+    Vector3 tetrisClockCoord = new Vector3(-645, 950, 0);
+    Vector3 inGameLeftRoomCoord = new Vector3(-120, 380, 0);
+    Vector3 tetrisLeftRoomCoord = new Vector3(-645, 875, 0);
 
     public Vector3 originPos;
     
@@ -74,6 +78,8 @@ public class CameraController : MonoBehaviour {
             if (gameState == GameState.Ingame)
             {
                 GameManager.Instance.minimap.SetActive(true);
+                MapManager.Instance.clock.GetComponent<RectTransform>().Translate(inGameClockCoord - tetrisClockCoord);
+                GameManager.Instance.leftRoomCount.rectTransform.Translate(inGameLeftRoomCoord - tetrisLeftRoomCoord);
                 GameManager.gameState = GameState.Ingame;
                 StartCoroutine(MapManager.Instance.RoomFadeIn(MapManager.currentRoom));
                 grid.transform.position = Vector3.zero;
@@ -89,6 +95,8 @@ public class CameraController : MonoBehaviour {
             else if (gameState == GameState.Tetris || gameState == GameState.Portal)
             {
                 GameManager.Instance.minimap.SetActive(false);
+                MapManager.Instance.clock.GetComponent<RectTransform>().Translate(tetrisClockCoord - inGameClockCoord);
+                GameManager.Instance.leftRoomCount.rectTransform.Translate(tetrisLeftRoomCoord - inGameLeftRoomCoord);
                 if (gameState == GameState.Tetris)
                     GameManager.gameState = GameState.Tetris;
                 else if(gameState == GameState.Portal)
