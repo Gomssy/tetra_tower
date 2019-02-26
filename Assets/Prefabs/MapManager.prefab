@@ -52,7 +52,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9719103beb138e041b0a7ec9e24aefb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   clock: {fileID: 0}
   grid: {fileID: 0}
   initialFallSpeed: -0.1

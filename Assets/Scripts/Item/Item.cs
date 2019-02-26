@@ -29,7 +29,6 @@ public abstract class Item {
                 if (comboCurrentCool[i] < comboCool[i]) return false;
 
                 comboCurrentCool[i] = 0;
-                if (comboCool[i] > 0) InventoryManager.Instance.coolUI.GetComponent<CoolUI>().InitCool(this, i);
 
                 if (i == 0) PlaySkill1();
                 else if (i == 1) PlaySkill2();

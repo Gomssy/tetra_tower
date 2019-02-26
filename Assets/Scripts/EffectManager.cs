@@ -34,11 +34,15 @@ public class EffectManager : Singleton<EffectManager> {
 
     public bool StartEffect(int type, Bounds bound1, Bounds bound2)
     {
+        return StartEffect(type, GenerateRandomPosition(bound1, bound2));
+    }
+    public bool StartEffect(int type, Vector3 pos)
+    {
         foreach (GameObject obj in effectArray)
         {
-            if(!obj.activeSelf)
+            if (!obj.activeSelf)
             {
-                obj.transform.position = GenerateRandomPosition(bound1, bound2);
+                obj.transform.position = pos;
                 obj.SetActive(true);
                 obj.GetComponent<Animator>().SetTrigger("start");
                 return true;

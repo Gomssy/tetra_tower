@@ -7,10 +7,13 @@ using UnityEngine;
 /// </summary>
 public class ShockStick : Item {
 
+    GameObject player;
+    bool hit;
+
     public override void Declare()
     {
         id = 52; name = "감전 봉";
-        quality = ItemQuality.Masterpiece;
+        quality = ItemQuality.Superior;
         skillNum = 2;
         combo = new string[3] { "ABA", "CBABB", "" };
         attachable = new bool[4] { false, false, true, true };
@@ -22,5 +25,52 @@ public class ShockStick : Item {
         sizeInventory = new Vector2(140f, 140f);
         itemInfo = "몸이 타는 것 같은 수준으로 아프다. 명령을 내릴 때 효과적일 것 같다.";
         comboName = new string[3] { "충전", "방전", "" };
+
+        comboCool = new float[3] { 0, 5, 0 };
+        comboCurrentCool = new float[3] { 0, 0, 0 };
+
+        coolSprite[1] = Resources.Load<Sprite>("Sprites/Cools/shock stick_cool2");
+
+        player = GameManager.Instance.player;
+        hit = false;
+    }
+
+    protected override void PlaySkill1()
+    {
+        hit = true;
+    }
+
+    public override void OtherEffect(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
+    {
+        if(combo.Equals(this.combo[0]) && hit)
+        {
+            hit = false;
+            comboCurrentCool[1]++;
+        }
+    }
+
+    protected override void PlaySkill2()
+    {
+        GameManager.Instance.StartCoroutine(Emit());
+    }
+
+    IEnumerator Emit()
+    {
+        yield return new WaitForSeconds(0.75f);
+        Enemy[] enemyArray = MapManager.currentRoom.GetComponentsInChildren<Enemy>();
+
+        foreach (Enemy enemy in enemyArray)
+        {
+            if(Vector3.Distance(enemy.gameObject.transform.position,player.transform.position) <= 6f)
+            {
+                PlayerAttackInfo attack = new PlayerAttackInfo(20f, 0f, new float[(int)EnemyDebuffCase.END_POINTER] { 0, 0, 2, 0, 0 });
+                AttackCalculation(attack, enemy, combo[1]);
+                enemy.GetDamaged(attack);
+                EffectManager.Instance.StartEffect(0, enemy.gameObject.transform.position);
+                EffectManager.Instance.StartNumber(1, enemy.gameObject.transform.position, attack.damage);
+            }
+        }
+
+
     }
 }
