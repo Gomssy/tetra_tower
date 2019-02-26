@@ -18,6 +18,8 @@ public class Pointer : MonoBehaviour {
 
         width = can.GetComponent<RectTransform>().sizeDelta.x / 2;
         height = can.GetComponent<RectTransform>().sizeDelta.y / 2;
+        cam = Camera.main;
+        can = InventoryManager.Instance.ui.GetComponent<Canvas>();
 
     }
 	

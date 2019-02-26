@@ -57,4 +57,5 @@ MonoBehaviour:
   popoutStrengthMultiplier: 9
   popoutTime: 0.1
   price: {fileID: 114275555228777956, guid: 4ec53eab8ea50de4ea5b9ff658d83ca0, type: 2}
-  coolUI: {fileID: 0}
+  woodSign: {fileID: 1484813200104594, guid: bea3b6164d7328b47a8d3598ac875cb3, type: 2}
+  coolUI: {fileID: 1160080494873608, guid: 6ae07b01931768f4f8924c0ab07ce9f7, type: 2}

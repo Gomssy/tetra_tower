@@ -177,6 +177,7 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
         PopoutGenerator(tmpObj, popoutStrength);
         tmpObj.GetComponent<DroppedObject>().price = _price;
         tmpObj.GetComponent<DroppedObject>().priceTag = Instantiate(InventoryManager.Instance.price, new Vector3(0, 0, 0), Quaternion.identity, GameManager.Instance.textCanvas.transform);
+        Instantiate(InventoryManager.Instance.woodSign, tmpObj.transform.position + new Vector3(0.5f, 0, 0), Quaternion.identity, MapManager.currentRoom.transform);
         return tmpObj;
     }
 

@@ -108,7 +108,7 @@ public class CameraController : MonoBehaviour {
                     transform.position = new Vector3(coord.x, coord.y, -1);
                     GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, sizeDestination, Mathf.Sqrt(Time.deltaTime));
                 }
-                GetComponent<Camera>().cullingMask = 1 << LayerMask.NameToLayer("Tetris") | 1 << LayerMask.NameToLayer("PortalSurface");
+                GetComponent<Camera>().cullingMask = 1 << LayerMask.NameToLayer("Tetris") | 1 << LayerMask.NameToLayer("Portal");
                 transform.position = tetrisCameraCoord;
             }
             GetComponent<Camera>().orthographicSize = sizeDestination;
