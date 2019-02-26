@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 224174390332342308}
   - component: {fileID: 222391154653508470}
   - component: {fileID: 114803669402421014}
+  - component: {fileID: 225190357821637096}
   m_Layer: 5
   m_Name: Minimap
   m_TagString: Untagged
@@ -76,6 +77,17 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -100, y: 150}
-  m_SizeDelta: {x: 150, y: 300}
+  m_AnchoredPosition: {x: -120, y: 180}
+  m_SizeDelta: {x: 170, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &225190357821637096
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1161003025175732}
+  m_Enabled: 1
+  m_Alpha: 0.8
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
