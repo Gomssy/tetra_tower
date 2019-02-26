@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 4370838883948786}
   - component: {fileID: 61019308264186112}
   - component: {fileID: 114106922099255344}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,6 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ce0adb34b612484eb45a52b7a457aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debuffState: 
   monsterID: 42
   maxHealth: 10
   weight: 10
@@ -273,6 +274,8 @@ MonoBehaviour:
   knockbackPercentage:
   - 0.5
   MovementLock: 0
+  bumped: 0
+  bumpable: 1
 --- !u!212 &212993065858080250
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -980,8 +980,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomSize: {x: 24, y: 24}
-  leftDoorInfo: 010100
-  rightDoorInfo: 010001
+  leftDoorInfo: 010001
+  rightDoorInfo: 010100
   concept: 01010001
 --- !u!114 &114897362139898488
 MonoBehaviour:
