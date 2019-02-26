@@ -22,7 +22,6 @@ public class Player : MonoBehaviour {
         {
             yield return null;
             displayText.transform.position = transform.position + new Vector3(0, 2, 0);
-            Debug.Log(i);
             displayText.color = new Color(displayText.color.r, displayText.color.g, displayText.color.b, (float)i /255);
         }
         displayText.text = "";

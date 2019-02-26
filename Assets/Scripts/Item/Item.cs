@@ -18,6 +18,7 @@ public abstract class Item {
     public string[] comboName = new string[3];
     public float[] comboCool = new float[3];
     public float[] comboCurrentCool = new float[3];
+    public Sprite[] coolSprite = new Sprite[3];
 
     public bool ComboAction(string currentCombo)
     {
@@ -28,6 +29,7 @@ public abstract class Item {
                 if (comboCurrentCool[i] < comboCool[i]) return false;
 
                 comboCurrentCool[i] = 0;
+                if (comboCool[i] > 0) InventoryManager.Instance.coolUI.GetComponent<CoolUI>().InitCool(this, i);
 
                 if (i == 0) PlaySkill1();
                 else if (i == 1) PlaySkill2();
@@ -79,6 +81,7 @@ public abstract class Item {
     {
         comboCool = new float[3] { 0, 0, 0 };
         comboCurrentCool = new float[3] { 0, 0, 0 };
+        coolSprite = new Sprite[3];
         Declare();
     }
     public virtual void Declare()

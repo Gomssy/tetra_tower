@@ -16,6 +16,8 @@ public class InventoryManager : Singleton<InventoryManager> {
     public Text price;
     GameObject player;
 
+    public GameObject coolUI;
+
     private void Start()
     {
         player = GameManager.Instance.player;

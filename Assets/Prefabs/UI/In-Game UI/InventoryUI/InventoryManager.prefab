@@ -57,3 +57,4 @@ MonoBehaviour:
   popoutStrengthMultiplier: 9
   popoutTime: 0.1
   price: {fileID: 114275555228777956, guid: 4ec53eab8ea50de4ea5b9ff658d83ca0, type: 2}
+  coolUI: {fileID: 0}

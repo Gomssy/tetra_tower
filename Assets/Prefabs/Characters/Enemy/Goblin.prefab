@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 4140258981397796}
   - component: {fileID: 61362187134790794}
   - component: {fileID: 114468655689627186}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,6 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a11d071a77ab21c48882c6c6e4db8f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debuffState: 
   monsterID: 101
   maxHealth: 15
   weight: 15
@@ -298,6 +299,9 @@ MonoBehaviour:
   trackSpeed: 2.5
   knockbackPercentage:
   - 0.5
+  MovementLock: 0
+  bumped: 0
+  bumpable: 1
   attackRange: 1.2
 --- !u!114 &114173716467154830
 MonoBehaviour:
@@ -323,7 +327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 4
-  damageOnce: 1
+  isBumpAttack: 0
 --- !u!114 &114851997656688694
 MonoBehaviour:
   m_ObjectHideFlags: 1
