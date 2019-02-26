@@ -175,8 +175,6 @@ public class TileManager : MonoBehaviour {
         CheckAllTiles(roomInGame);
         for(int y = 0; y < 24; y++)
         {
-            /*if (y % 3 == 0)
-                yield return null;*/
             for(int x = 0; x < 24; x++)
             {
                 if (roomInGame.wallTileInfo[x, y])
@@ -185,26 +183,34 @@ public class TileManager : MonoBehaviour {
                     CheckWallQuarterTile(roomInGame, new Vector2Int(x, y), new Vector2Int(1, 1)).ToString() +
                     CheckWallQuarterTile(roomInGame, new Vector2Int(x, y), new Vector2Int(-1, -1)).ToString() +
                     CheckWallQuarterTile(roomInGame, new Vector2Int(x, y), new Vector2Int(1, -1)).ToString();
-                    if(wallTilesDistributed[stage, concept].ContainsKey(tileName))
+                    if (wallTilesDistributed[stage, concept].ContainsKey(tileName))
                         wallTileMap.SetTile(new Vector3Int(x, y, 0), wallTilesDistributed[stage, concept][tileName]);
+                    else
+                        Debug.Log(stage + concept + tileName + " tile is missing!");
                 }
                 if (roomInGame.platformTileInfo[x, y] && y != 0 && y != 23)
                 {
                     string tileName = CheckPlatformTile(roomInGame, new Vector2Int(x, y)).ToString();
                     if (platformTilesDistributed[stage, concept].ContainsKey(tileName))
                         platformTileMap.SetTile(new Vector3Int(x, y, 0), platformTilesDistributed[stage, concept][tileName]);
+                    else
+                        Debug.Log(stage + concept + tileName + " tile is missing!");
                 }
                 if (roomInGame.ropeTileInfo[x, y])
                 {
                     string tileName = CheckRopeTile(roomInGame, new Vector2Int(x, y)).ToString();
                     if (ropeTilesDistributed[stage, concept].ContainsKey(tileName))
                         ropeTileMap.SetTile(new Vector3Int(x, y, 0), ropeTilesDistributed[stage, concept][tileName]);
+                    else
+                        Debug.Log(stage + concept + tileName + " tile is missing!");
                 }
                 if (roomInGame.spikeTileInfo[x, y])
                 {
                     string tileName = CheckSpikeTile(roomInGame, new Vector2Int(x, y)).ToString();
                     if (spikeTilesDistributed[stage, concept].ContainsKey(tileName))
                         spikeTileMap.SetTile(new Vector3Int(x, y, 0), spikeTilesDistributed[stage, concept][tileName]);
+                    else
+                        Debug.Log(stage + concept + tileName + " tile is missing!");
                 }
             }
         }

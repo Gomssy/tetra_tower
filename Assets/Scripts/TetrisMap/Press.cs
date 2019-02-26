@@ -27,6 +27,10 @@ public class Press : MonoBehaviour
     /// Number of presses created simultaneously with this press.
     /// </summary>
     public int simultaneouslyCreatedPressNumber;
+    /// <summary>
+    /// Head of the press.
+    /// </summary>
+    public GameObject pressHead;
     
 
     private void OnTriggerEnter2D(Collider2D collision)
