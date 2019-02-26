@@ -384,16 +384,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spikeTileu:
   - {fileID: 11400000, guid: 7f2c5cb43ad7207499b22fb5e0acd41a, type: 2}
-  - {fileID: 11400000, guid: f9cdf78c8a087c94a9279cc07fc03a25, type: 2}
+  - {fileID: 11400000, guid: 034d5fb04a013124cb432284fdc8c423, type: 2}
+  - {fileID: 11400000, guid: b04f069b23d388c479316677877ada01, type: 2}
   spikeTiled:
   - {fileID: 11400000, guid: f411e29431b787c4ab84b5ff59ca5e6e, type: 2}
-  - {fileID: 11400000, guid: 034d5fb04a013124cb432284fdc8c423, type: 2}
+  - {fileID: 11400000, guid: f9cdf78c8a087c94a9279cc07fc03a25, type: 2}
+  - {fileID: 11400000, guid: 0fcafe8b08fc8f145a66200e7900e90c, type: 2}
   spikeTilel:
   - {fileID: 11400000, guid: 85440e0dd81e48840947ce485614bab6, type: 2}
   - {fileID: 11400000, guid: f6a8681f94ddcf24eac96d8e4a5c82f6, type: 2}
+  - {fileID: 11400000, guid: 8cf5b74a1e8e7fa48a0097c7074d1e54, type: 2}
   spikeTiler:
   - {fileID: 11400000, guid: 7dbb7c55a3417f54fbd38fafb369478e, type: 2}
   - {fileID: 11400000, guid: 69359808565f98f4297a6efb8da5c4da, type: 2}
+  - {fileID: 11400000, guid: fb1826948ae16104784f105d8b716810, type: 2}
   rb: {fileID: 0}
   SpikeLayer: 10
   spikeDamage: 5
@@ -474,7 +478,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2078941185
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 92d166e0c2a85a14facee45f5a5a8444, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

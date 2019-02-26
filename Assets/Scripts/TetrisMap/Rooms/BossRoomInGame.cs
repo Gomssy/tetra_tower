@@ -30,19 +30,20 @@ public class BossRoomInGame : RoomInGame {
         }
     }
     public bool isTransitionFinished;
-    // phaseAction 전(isTransitionFinished == false 일때) 매 프레임 호출됨; Update 대응
-    public Action[] transitionAction;
+    // phaseUpdate 전 매 프레임 호출됨; Update 대용
+    public Action[] transitionUpdate;
     // 진행중인 phase coroutine에서 매 프레임 호출됨; Update 대용
-    public Action[] phaseAction;
+    public Action[] phaseUpdate;
     // 현재 진행중인 phase coroutine
     private IEnumerator phaseCoroutine;
 
-    protected bool attackStart;
+    protected bool attackStart = false;
+    protected bool attackTrigger = false;
 
     protected virtual void Awake()
     {
-        transitionAction = new Action[totalPhase];
-        phaseAction = new Action[totalPhase];
+        transitionUpdate = new Action[totalPhase];
+        phaseUpdate = new Action[totalPhase];
     }
 
     // Use this for initialization
@@ -54,10 +55,11 @@ public class BossRoomInGame : RoomInGame {
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (attackStart)
+        Debug.Log(CurPhase);
+        if (!attackStart && attackTrigger)
         {
             StartCoroutine(BeforeBossFight());
-            attackStart = false;
+            attackStart = true;
         }
     }
 
@@ -73,14 +75,17 @@ public class BossRoomInGame : RoomInGame {
     IEnumerator Phase(int phase)
     {
         isTransitionFinished = false;
+        Debug.Log(transitionUpdate[phase].GetInvocationList().GetLength(0));
         while (!isTransitionFinished)
         {
-            transitionAction[phase]();
+            if (transitionUpdate[phase] != null)
+                transitionUpdate[phase]();
             yield return null;
         }
         while (CurPhase == phase)
         {
-            phaseAction[phase]();
+            if (phaseUpdate[phase] != null)
+                phaseUpdate[phase]();
             yield return null;
         }
     }
@@ -88,7 +93,8 @@ public class BossRoomInGame : RoomInGame {
     public override void RoomEnter()
     {
         base.RoomEnter();
-
+        //EnemyManager.Instance.SpawnEnemyToMap();
+        attackTrigger = true;
         //보스 만들어지면 구현할 것
     }
 

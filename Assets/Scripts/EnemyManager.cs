@@ -14,7 +14,7 @@ public class EnemyManager : Singleton<EnemyManager>
     public static readonly float dropObjStrength = 1f;
 
     // hold player for animation
-    public GameObject Player { get; private set; }
+    //public GameObject Player { get; private set; }    // Use GameManager.Instance.player instead
 
     // data of drop item
     [SerializeField]
@@ -46,7 +46,7 @@ public class EnemyManager : Singleton<EnemyManager>
     }
     private void Start()
     {
-        Player = GameManager.Instance.player;
+        
     }
 
     // Spawn Enemy to Map

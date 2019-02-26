@@ -28,7 +28,7 @@ public class ArcherTrack : StateMachineBehaviour
 
         animatorRoot = animator.transform.parent;
         enemy = animator.GetComponent<EnemyGround>();
-        player = EnemyManager.Instance.Player;
+        player = GameManager.Instance.player;
 
 
         trackSpeed = enemy.trackSpeed;

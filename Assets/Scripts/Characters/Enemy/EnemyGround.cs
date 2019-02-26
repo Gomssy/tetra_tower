@@ -102,7 +102,7 @@ public class EnemyGround : Enemy {
     {
         MovementLock = true;
         bool[] lockArray = new bool[] { false, KnockbackLock };
-        int knockbackDir = (enemyManager.Player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
+        int knockbackDir = (GameManager.Instance.player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
         float knockbackVelocity = knockbackDir * knockbackDist / knockbackTime;
         ChangeDir(knockbackDir * -1, new bool[] { MovementLock, KnockbackLock });
         ChangeVelocityX(knockbackVelocity, lockArray);

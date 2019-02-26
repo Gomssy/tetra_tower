@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour {
     // debuff
     readonly float[] immunity_time = new float[(int)EnemyDebuffCase.END_POINTER] { 0.0f, 3.0f, 6.0f, 6.0f, 6.0f };
     [SerializeField]
-    DebuffState[] debuffState;
+    protected DebuffState[] debuffState;
     float fireDuration = 0.0f;
     protected virtual IEnumerator OnIce(float duration) { yield return 0; }
     protected virtual IEnumerator OnStun(float duration) { yield return 0; }
@@ -74,12 +74,12 @@ public class Enemy : MonoBehaviour {
         currHealth = maxHealth;
         Invisible = MovementLock = KnockbackLock = false;
         if (enemyManager.DropTableByID.ContainsKey(monsterID)) { dropTable = enemyManager.DropTableByID[monsterID]; }
-        PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
+        PlayerDistance = Vector2.Distance(GameManager.Instance.player.transform.position, transform.parent.position);
     }
 
     protected virtual void FixedUpdate()
     {
-        PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
+        PlayerDistance = Vector2.Distance(GameManager.Instance.player.transform.position, transform.parent.position);
     }
 
     // When damaged
