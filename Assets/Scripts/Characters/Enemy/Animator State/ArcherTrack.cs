@@ -79,8 +79,11 @@ public class ArcherTrack : StateMachineBehaviour
 
     IEnumerator WaitforShot()
     {
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.25f);
         Vector2 direction = enemy.transform.GetChild(0).position - player.transform.position;
+
+        yield return new WaitForSeconds(0.5f);
+       
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         Instantiate(enemy_arrow, enemy.transform.GetChild(0).position, rotation);
