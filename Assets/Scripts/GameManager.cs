@@ -55,7 +55,7 @@ public class GameManager : Singleton<GameManager> {
 
     public void CountLeftRoom()
     {
-        leftRoomCount.text = "Left Room : " + (MapManager.Instance.stageClearCondition[MapManager.currentStage] - MapManager.Instance.clearedRoomCount).ToString();
+        leftRoomCount.text = "x" + (MapManager.Instance.stageClearCondition[MapManager.currentStage] - MapManager.Instance.clearedRoomCount).ToString();
     }
 
     void Awake()
