@@ -15,6 +15,7 @@ public class JanusCoin : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/janus coin");
         highlight = Resources.Load<Sprite>("Sprites/Addons/janus coin_border");
         sizeInventory = new Vector2(75, 80);
+        addonInfo = "타격시 50% 확률로 2의 피해를 입거나 적의 현재 체력의 25%에 해당하는 추가 피해를 입힌다.";
     }
     public override float DamageFinalAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {

@@ -38,6 +38,7 @@ public class InventoryUI : MonoBehaviour {
     GameObject addonInfo;
     public int selectedItem = -1;
     string[] qualityString = new string[4] { "습작", "범작", "수작", "걸작" };
+    string[] typeString = new string[4] { "소품", "물질", "부품", "이론" };
 
     InventoryManager inventoryManager;
 
@@ -109,7 +110,7 @@ public class InventoryUI : MonoBehaviour {
             tmpObj.SetActive(true);
             addonInfo.transform.Find("Quality").GetComponent<Text>().text = qualityString[(int)currentAddon.quality];
             addonInfo.transform.Find("Name").GetComponent<Text>().text = currentAddon.name;
-            addonInfo.transform.Find("Description").GetComponent<Text>().text = currentAddon.addonDescription;
+            addonInfo.transform.Find("Description").GetComponent<Text>().text = typeString[(int)currentAddon.type];
             addonInfo.transform.Find("Info").GetComponent<Text>().text = currentAddon.addonInfo;
         }
     }
@@ -196,7 +197,7 @@ public class InventoryUI : MonoBehaviour {
                     infoAddons[i].SetActive(true);
                     infoAddonsFrame[i].transform.Find("Quality").GetComponent<Text>().text = qualityString[(int)itemList[selectedItem].addons[i].quality];
                     infoAddonsFrame[i].transform.Find("Name").GetComponent<Text>().text = itemList[selectedItem].addons[i].name;
-                    infoAddonsFrame[i].transform.Find("Description").GetComponent<Text>().text = itemList[selectedItem].addons[i].addonDescription;
+                    infoAddonsFrame[i].transform.Find("Description").GetComponent<Text>().text = typeString[(int)itemList[selectedItem].addons[i].type];
                     infoAddonsFrame[i].transform.Find("Info").GetComponent<Text>().text = itemList[selectedItem].addons[i].addonInfo;
 
 

@@ -21,7 +21,7 @@ public class FeatherFan : Item
         animation[1] = null;
         animation[2] = null;
         sizeInventory = new Vector2(140f, 140f);
-        itemInfo = "";
+        itemInfo = "적을 밀어내는 거리가 900% 증가한다.";
         comboName = new string[3] { "", "", "" };
     }
 

@@ -15,6 +15,7 @@ public class SmallLens : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/small lens");
         highlight = Resources.Load<Sprite>("Sprites/Addons/small lens_border");
         sizeInventory = new Vector2(72.5f, 77.5f);
+        addonInfo = "직후의 연계 시간이 75% 증가한다.";
     }
 
     public override void OtherEffect(string combo)

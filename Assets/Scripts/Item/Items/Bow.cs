@@ -22,7 +22,7 @@ public class Bow : Item {
         animation[1] = Resources.Load<AnimationClip>("Animations/bowAttack2");
         animation[2] = null;
         sizeInventory = new Vector2(137.5f, 137.5f);
-        itemInfo = "단순한 나무활. 군더더기 없는 깔끔한 모습이지만 금방이라도 부셔질 듯이 조잡한 것을 보니 싸구려 인듯 하다.";
+        itemInfo = "무난한 원거리 무기. 화살을 쏜 후 경직시간을 조심해야 한다.";
         comboName = new string[3] { "쏘기", "위로 쏘기", "" };
 
         player = GameManager.Instance.player;

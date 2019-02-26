@@ -21,7 +21,7 @@ public class OilCask : Item
         animation[1] = null;
         animation[2] = null;
         sizeInventory = new Vector2(105f, 127.5f);
-        itemInfo = "";
+        itemInfo = "화염 피해가 100% 증가한다.";
         comboName = new string[3] { "", "", "" };
     }
 

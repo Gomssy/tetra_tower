@@ -15,6 +15,7 @@ public class BlacksmithsBrooch : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/blacksmith's brooch");
         highlight = Resources.Load<Sprite>("Sprites/Addons/blacksmith's brooch_border");
         sizeInventory = new Vector2(65, 80);
+        addonInfo = "피해량이 55% 증가한다.";
     }
 
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)

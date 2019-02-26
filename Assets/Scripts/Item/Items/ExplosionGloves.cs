@@ -24,7 +24,7 @@ public class ExplosionGloves : Item
         animation[1] = Resources.Load<AnimationClip>("Animations/explosionGlovesAttack2");
         animation[2] = null;
         sizeInventory = new Vector2(115f, 117.5f);
-        itemInfo = "보기보다 강력한 폭발을 일으킨다. 폭발을 일으킬때마다 장갑이 떨리는게 느껴진다.";
+        itemInfo = "벽에 표식을 그린 후, 신호를 보내 폭파시켜 큰 피해를 준다.";
         comboName = new string[3] { "설치", "폭파", "" };
         markPrefab = Resources.Load<GameObject>("Prefabs/Projectiles/ExplosionMark");
         InitMark();

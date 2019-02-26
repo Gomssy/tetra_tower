@@ -15,8 +15,7 @@ public class GlowingHerb : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/glowing herb"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/glowing herb_border"); ;
         sizeInventory = new Vector2(77.5f, 75);
-        addonDescription = "활활 타오르며 매콤한 맛이 날 것 같지만 평범하게 쓰다. - 하부 료진";
-        addonInfo = "타격시 적을 3초간 화상 상태로 만듭니다.";
+        addonInfo = "적을 2초간 불태운다.";
     }
 
     public override float[] DebuffAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
@@ -24,7 +23,7 @@ public class GlowingHerb : Addon
         float[] varArray = new float[(int)EnemyDebuffCase.END_POINTER];
         for (int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++) varArray[i] = 0f;
 
-        varArray[(int)EnemyDebuffCase.Fire] = 3f;
+        varArray[(int)EnemyDebuffCase.Fire] = 2f;
 
         return varArray;
     }

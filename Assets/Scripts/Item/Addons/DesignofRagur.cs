@@ -15,15 +15,16 @@ public class DesignofRagur : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/design of ragur");
         highlight = Resources.Load<Sprite>("Sprites/Addons/design of ragur_border");
         sizeInventory = new Vector2(70, 80);
+        addonInfo = "콤보에 포함된 B의 개수만큼 피해량이 50% 증가한다.";
     }
 
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
         int aNum = 0;
         for (int i = 0; i < combo.Length; i++)
-            if (combo[i] == 'A')
+            if (combo[i] == 'B')
                 aNum++;
 
-        return 1f + aNum * 0.4f;
+        return 1f + aNum * 0.5f;
     }
 }
