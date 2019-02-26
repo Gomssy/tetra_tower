@@ -61,7 +61,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1734061800721222
 GameObject:
   m_ObjectHideFlags: 1
@@ -300,8 +300,6 @@ MonoBehaviour:
   knockbackPercentage:
   - 0.5
   MovementLock: 0
-  bumped: 0
-  bumpable: 1
   attackRange: 1.2
 --- !u!114 &114173716467154830
 MonoBehaviour:
@@ -378,7 +376,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2078941185
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 71335108d30aa0e4a90179a09895440e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -70,12 +70,12 @@ public class Enemy : MonoBehaviour {
         currHealth = maxHealth;
         Invisible = MovementLock = KnockbackLock = false;
         if (enemyManager.DropTableByID.ContainsKey(monsterID)) { dropTable = enemyManager.DropTableByID[monsterID]; }
-        PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
+        PlayerDistance = Vector2.Distance(GameManager.Instance.player.transform.position, transform.parent.position);
     }
 
     protected virtual void FixedUpdate()
     {
-        PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
+        PlayerDistance = Vector2.Distance(GameManager.Instance.player.transform.position, transform.parent.position);
     }
 
     // When damaged

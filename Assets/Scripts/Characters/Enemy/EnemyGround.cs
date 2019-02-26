@@ -8,8 +8,8 @@ public class EnemyGround : Enemy {
     public float attackRange;
 
     public int MoveDir { get; private set; }
-    public bool[] WallTest { get; private set; }
-    public bool[] CliffTest { get; private set; }
+    public bool[] WallTest;
+    public bool[] CliffTest;
 
     protected override void Awake()
     {
@@ -38,7 +38,6 @@ public class EnemyGround : Enemy {
     // - Check whether enemy is near to cliff
     private void CheckCliff()
     {
-        Vector2 velocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
         Vector2 colliderSize = transform.parent.GetComponent<BoxCollider2D>().size;
 
         foreach (int Dir in Enum.GetValues(typeof(NumeratedDir)))
@@ -46,8 +45,7 @@ public class EnemyGround : Enemy {
             Vector2 origin = (Vector2)transform.parent.position + Dir * new Vector2(colliderSize.x / 2.0f, 0);
             Vector2 direction = Vector2.down;
             float distance = colliderSize.y / 4.0f;
-            int layerMask = LayerMask.NameToLayer("platform");
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, enemyManager.layerMaskPlatform);
 
             CliffTest[(Dir + 1) / 2] = (hit.collider == null);
         }
@@ -60,11 +58,10 @@ public class EnemyGround : Enemy {
 
         foreach (int Dir in Enum.GetValues(typeof(NumeratedDir)))
         {
-            Vector2 origin = (Vector2)transform.parent.position + new Vector2(Dir * colliderSize.x / 2.0f, colliderSize.y);
+            Vector2 origin = (Vector2)transform.parent.position + new Vector2(Dir * colliderSize.x / 2.0f, colliderSize.y / 2.0f);
             Vector2 direction = Vector2.right * Dir;
-            float distance = 0.5f;
-            LayerMask layerMask = LayerMask.GetMask("Wall", "OuterWall");
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
+            float distance = 0.2f;
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, enemyManager.layerMaskWall);
 
             WallTest[(Dir + 1) / 2] = (hit.collider != null);
         }

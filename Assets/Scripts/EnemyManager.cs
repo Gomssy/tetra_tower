@@ -33,6 +33,9 @@ public class EnemyManager : Singleton<EnemyManager>
     private uint EnemySpawnCount;
     public uint EnemyDeadCount;
 
+    // wall or platform
+    public LayerMask layerMaskWall;
+    public LayerMask layerMaskPlatform;
 
     // method
     // Constructor - protect calling raw constructor
