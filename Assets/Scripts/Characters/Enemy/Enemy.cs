@@ -90,6 +90,14 @@ public abstract class Enemy : MonoBehaviour {
         string objectName = gameObject.transform.parent.name;
         float prevHealth = currHealth;
         currHealth -= attack.damage;
+        if (currHealth <= 0)
+        {
+            Invisible = true;
+            animator.SetTrigger("DeadTrigger");
+            StopCoroutine("OnFire");
+            GetComponent<SpriteRenderer>().color = Color.white;
+            return;
+        }
 
         if (objectName == "NotDyingScarecrow(Clone)")
         {
@@ -154,6 +162,8 @@ public abstract class Enemy : MonoBehaviour {
         {
             Invisible = true;
             animator.SetTrigger("DeadTrigger");
+            StopCoroutine("OnFire");
+            GetComponent<SpriteRenderer>().color = Color.white;
             return;
         }
 
@@ -222,17 +232,32 @@ public abstract class Enemy : MonoBehaviour {
     {
         fireDuration = duration;
         float dotGap = 1.0f;
-        while(true)
+        float damageMultiplier = 1f;
+
+        while (true)
         {
             yield return new WaitForSeconds(dotGap);
+            for (float timer = 0; timer < dotGap; timer += Time.deltaTime)
+            {
+                GetComponent<SpriteRenderer>().color = new Color(1f, 0.5f + 0.5f * timer / dotGap, 0.5f + 0.5f * timer / dotGap);
+                yield return null;
+            }
             fireDuration -= dotGap;
-            if (fireDuration < 0.0f) {
+            if (fireDuration < 0.0f)
+            {
                 fireDuration = 0.0f;
                 break;
             }
-            GetDamaged(lifeStoneManager.lifeStoneRowNum * 0.3f);
+
+            damageMultiplier = 1f;
+            foreach (Item item in inventoryManager.itemList)
+                damageMultiplier *= item.GlobalFireDamageMultiplier();
+
+            GetDamaged(lifeStoneManager.lifeStoneRowNum * 0.3f * damageMultiplier);
+            EffectManager.Instance.StartNumber(0, gameObject.transform.parent.position, lifeStoneManager.lifeStoneRowNum * 0.3f);
         }
         debuffState[(int)EnemyDebuffCase.Fire] = DebuffState.Off;
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     IEnumerator ImmuneTimer(EnemyDebuffCase Case, float duration)
@@ -248,6 +273,7 @@ public abstract class Enemy : MonoBehaviour {
         switch (Case)
         {
             case EnemyDebuffCase.Ice:
+                GetComponent<SpriteRenderer>().color = Color.white;
                 StopCoroutine("OnIce");
                 KnockbackLock = false;
                 animator.speed = 1.0f;

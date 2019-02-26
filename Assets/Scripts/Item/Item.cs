@@ -16,17 +16,26 @@ public abstract class Item {
     public Vector2 sizeInventory;
     public string itemInfo;
     public string[] comboName = new string[3];
+    public float[] comboCool = new float[3];
+    public float[] comboCurrentCool = new float[3];
+    public Sprite[] coolSprite = new Sprite[3];
 
     public bool ComboAction(string currentCombo)
     {
-        for(int i=0; i<skillNum; i++)
+        for (int i=0; i<skillNum; i++)
         {
             if (combo[i].Equals(currentCombo))
             {
+                if (comboCurrentCool[i] < comboCool[i]) return false;
+
+                comboCurrentCool[i] = 0;
+                if (comboCool[i] > 0) InventoryManager.Instance.coolUI.GetComponent<CoolUI>().InitCool(this, i);
+
                 if (i == 0) PlaySkill1();
                 else if (i == 1) PlaySkill2();
                 else if (i == 2) PlaySkill3();
 
+                
                 OtherEffect(currentCombo);
                 for (int j = 0; j < attachable.Length; j++)
                 {
@@ -36,6 +45,11 @@ public abstract class Item {
                     }
                 }
 
+                foreach (Item item in InventoryManager.Instance.itemList)
+                {
+                    item.GlobalOtherEffect(currentCombo);
+                }
+
                 return true;
             }
         }
@@ -43,13 +57,31 @@ public abstract class Item {
     }
     public bool ComboAction(int currenSkill)
     {
-        if (currenSkill == 0) PlaySkill1();
-        else if (currenSkill == 1) PlaySkill2();
-        else if (currenSkill == 2) PlaySkill3();
-        return true;
+
+        return ComboAction(combo[currenSkill]);
     }
+
+    public bool IsCool(string currentCombo)
+    {
+        for (int i = 0; i < skillNum; i++)
+        {
+            if (combo[i].Equals(currentCombo))
+            {
+                return comboCurrentCool[i] >= comboCool[i];
+            }
+        }
+        return false;
+    }
+    public bool IsCool(int currenSkill)
+    {
+        return IsCool(combo[currenSkill]);
+    }
+
     public Item()
     {
+        comboCool = new float[3] { 0, 0, 0 };
+        comboCurrentCool = new float[3] { 0, 0, 0 };
+        coolSprite = new Sprite[3];
         Declare();
     }
     public virtual void Declare()
@@ -121,6 +153,11 @@ public abstract class Item {
                 for (int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++)
                     attackInfo.debuffTime[i] *= tmpArray[i];
             }
+        }
+
+        foreach (Item item in InventoryManager.Instance.itemList)
+        {
+            attackInfo.knockBackMultiplier *=  item.GlobalKnockBackMultiplier(originInfo, enemyInfo, combo);
         }
 
         //FinalAdder
@@ -202,6 +239,18 @@ public abstract class Item {
         
     }
     public virtual void OtherEffect(string combo)
+    {
+
+    }
+    public virtual float GlobalFireDamageMultiplier()
+    {
+        return 1f;
+    }
+    public virtual float GlobalKnockBackMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
+    {
+        return 1f;
+    }
+    public virtual void GlobalOtherEffect(string combo)
     {
 
     }

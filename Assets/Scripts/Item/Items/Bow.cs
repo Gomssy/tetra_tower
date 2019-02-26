@@ -36,7 +36,7 @@ public class Bow : Item {
     IEnumerator Shoot1()
     {
         yield return new WaitForSeconds(0.3f);
-        GameObject tmpObj = Object.Instantiate(arrow, player.transform.position, Quaternion.identity);
+        GameObject tmpObj = Object.Instantiate(arrow, player.transform.position - new Vector3(0.7f * Mathf.Sign(player.transform.localScale.x), 0), Quaternion.identity);
         tmpObj.transform.localScale = new Vector3(Mathf.Sign(player.transform.localScale.x), 1, 1);
         tmpObj.GetComponent<Rigidbody2D>().velocity = new Vector2(-15f * Mathf.Sign(player.transform.localScale.x), 0f);
         tmpObj.GetComponent<AttackProperty>().Init(combo[0]);
@@ -48,7 +48,7 @@ public class Bow : Item {
     IEnumerator Shoot2()
     {
         yield return new WaitForSeconds(0.3f);
-        GameObject tmpObj = Object.Instantiate(arrow, player.transform.position, Quaternion.Euler(0, 0, -90f));
+        GameObject tmpObj = Object.Instantiate(arrow, player.transform.position - new Vector3(0.5f * Mathf.Sign(player.transform.localScale.x), -0.8f), Quaternion.Euler(0, 0, -90f));
         tmpObj.GetComponent<Rigidbody2D>().velocity = new Vector2(0f,15f);
         tmpObj.GetComponent<AttackProperty>().Init(combo[1]);
     }

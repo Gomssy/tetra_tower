@@ -30,8 +30,8 @@ TagManager:
   - PlayerAttack
   - EnemyCollider
   - EnemyTrigger
-  - 
-  - 
+  - EnemyAttack
+  - Player
   - 
   - 
   - 

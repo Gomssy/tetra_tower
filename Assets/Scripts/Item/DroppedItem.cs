@@ -14,9 +14,17 @@ public class DroppedItem : DroppedObject, IPlayerInteraction
     Rigidbody2D rb2D;
     BoxCollider2D bc2D;
     SpriteRenderer sprt;
+    Color[] qualityColor = new Color[4]
+    {
+        new Color(102 / 255f, 65 / 255f, 48 / 255f),
+        new Color( 15 / 255f,  2 / 255f,  8 / 255f),
+        new Color(  3 / 255f, 93 / 255f, 65 / 255f),
+        new Color(173 / 255f, 26 / 255f, 38 / 255f), 
+    };
+
     public void Init(Item _item, Vector3 pos)
     {
-        inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        inventoryManager = InventoryManager.Instance;
         item = _item;
         itemAddon = false;
         rb2D = GetComponent<Rigidbody2D>();
@@ -26,6 +34,7 @@ public class DroppedItem : DroppedObject, IPlayerInteraction
         transform.position = pos;
         sprt.sprite = item.sprite;
         highlight.GetComponent<SpriteRenderer>().sprite = item.highlight;
+        highlight.GetComponent<SpriteRenderer>().color = qualityColor[(int)item.quality];
         highlight.SetActive(false);
         bc2D.size = sprt.size;
         transform.localScale = new Vector3((item.sizeInventory.x * itemSizeMultiplier) / sprt.size.x, (item.sizeInventory.y * itemSizeMultiplier) / sprt.size.y, 1);
@@ -42,6 +51,7 @@ public class DroppedItem : DroppedObject, IPlayerInteraction
         transform.position = pos;
         sprt.sprite = addon.sprite;
         highlight.GetComponent<SpriteRenderer>().sprite = addon.highlight;
+        highlight.GetComponent<SpriteRenderer>().color = qualityColor[(int)addon.quality];
         highlight.SetActive(false);
         bc2D.size = sprt.size;
         transform.localScale = new Vector3((addon.sizeInventory.x * itemSizeMultiplier) / sprt.size.x, (addon.sizeInventory.y * itemSizeMultiplier) / sprt.size.y, 1);

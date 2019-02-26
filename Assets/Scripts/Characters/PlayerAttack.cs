@@ -102,6 +102,7 @@ public class PlayerAttack : MonoBehaviour {
         if (CheckLongerCombo()) StartCoroutine(SkillEndCoroutine());
         else
         {
+            comboTime = originComboTime;
             comboArray = "";
             StartCoroutine(ComboEndDelay());
             StartCoroutine(ComboTextReset());
@@ -146,15 +147,18 @@ public class PlayerAttack : MonoBehaviour {
             {
                 if(item.combo[i].Equals(comboArray))
                 {
-                    aoc["PlayerAttackAnim"] = item.animation[i];
-                    anim.SetTrigger("attack");
-                    item.ComboAction(i);
-                    playingSkill = true;
-                    if (playerController.playerState != PlayerState.GoingUp && playerController.playerState != PlayerState.GoingDown)
-                        GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x,-0.5f,0.5f), GetComponent<Rigidbody2D>().velocity.y);
-                    playerController.playerState = PlayerState.Attack;
-                    
-                    return;
+                    if (item.ComboAction(i))
+                    {
+                        aoc["PlayerAttackAnim"] = item.animation[i];
+                        anim.SetTrigger("attack");
+
+                        playingSkill = true;
+                        if (playerController.playerState != PlayerState.GoingUp && playerController.playerState != PlayerState.GoingDown)
+                            GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(GetComponent<Rigidbody2D>().velocity.x, -0.5f, 0.5f), GetComponent<Rigidbody2D>().velocity.y);
+                        playerController.playerState = PlayerState.Attack;
+
+                        return;
+                    }
                 }
             }
         }

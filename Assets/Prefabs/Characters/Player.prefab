@@ -28,7 +28,7 @@ GameObject:
   - component: {fileID: 114880704145925944}
   - component: {fileID: 114574072693989902}
   - component: {fileID: 82529156342294766}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -432,6 +432,8 @@ MonoBehaviour:
   ttx: 8
   tty: 0
   displayText: {fileID: 114495744039531298, guid: 457100d9937aef244b98ef4f67a0f218,
+    type: 2}
+  particlePrefab: {fileID: 1120403562358508, guid: e4d08affb61a63840a9cb9412fbe7b38,
     type: 2}
 --- !u!212 &212187280661781960
 SpriteRenderer:
