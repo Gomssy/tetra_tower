@@ -124,7 +124,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1038441420714538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.115, y: 1.126, z: -0.107421875}
+  m_LocalPosition: {x: 2.8, y: 0.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4187502796395836}
@@ -151,7 +151,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &61559445092742440
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -230,9 +230,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 493db5529c03fce44a56a2211507667e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 1
-  height: 0.3
-  yOffset: 1
+  width: 0.4
+  height: 0.1
+  yOffset: 1.06
   barPrefab: {fileID: 1489501648010076, guid: bd708b07601179842bbd803b54afda40, type: 2}
   bor: {fileID: 21300000, guid: f978754916ff69444aa0bd613b44f2c5, type: 3}
   red: {fileID: 21300000, guid: 014c5204ddcb6e54e86aadaa34227552, type: 3}
@@ -269,7 +269,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2078941185
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b06f02155bf405c4f8ccf24fbcaf8f51, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
