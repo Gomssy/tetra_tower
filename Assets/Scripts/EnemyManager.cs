@@ -56,6 +56,7 @@ public class EnemyManager : Singleton<EnemyManager>
         Transform enemySpots = MapManager.currentRoom.roomInGame.transform.Find("enemy spot");
         foreach(Transform enemySpot in enemySpots)
         {
+            if (!enemySpot.gameObject.activeSelf) { continue; }
             GameObject enemy = enemySpot.gameObject.GetComponent<enemySpot>().enemyPrefab;
             foreach(Transform location in enemySpot)
             {

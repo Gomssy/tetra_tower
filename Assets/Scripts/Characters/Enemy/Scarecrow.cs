@@ -15,7 +15,6 @@ public class Scarecrow : Enemy {
         {
             if (neverDie)
             {
-                prevHealth = maxHealth;
                 currHealth = maxHealth;
             }
             else

@@ -23,7 +23,10 @@ public class ArcherIdle : StateMachineBehaviour
         patrolSpeed = enemy.patrolSpeed;
 
         enemy.ChangeDir_noOption(NumeratedDir.Left);
-        enemy.ChangeVelocityX_noOption(enemy.MoveDir * patrolSpeed);
+        if (patrolRange > 0)
+        {
+            enemy.ChangeVelocityX_noOption(enemy.MoveDir * patrolSpeed);
+        }
     }   
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and O  nStateExit callbacks
@@ -34,7 +37,7 @@ public class ArcherIdle : StateMachineBehaviour
             animator.SetTrigger("TrackTrigger");
             return;
         }
-        if (!enemy.MovementLock)
+        if (!enemy.MovementLock && patrolRange > 0)
         {
             float span = animatorRoot.position.x - origin.x;
 
