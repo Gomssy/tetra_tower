@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public abstract class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour {
 
     // data
 
@@ -12,8 +12,8 @@ public abstract class Enemy : MonoBehaviour {
     [SerializeField]
     DebuffState[] debuffState;
     float fireDuration = 0.0f;
-    protected abstract IEnumerator OnIce(float duration);
-    protected abstract IEnumerator OnStun(float duration);
+    protected virtual IEnumerator OnIce(float duration) { yield return 0; }
+    protected virtual IEnumerator OnStun(float duration) { yield return 0; }
     // protected abstract IEnumerator OnBlind(float duration);
     // protected abstract IEnumerator OnCharm(float duration);
 
@@ -41,7 +41,7 @@ public abstract class Enemy : MonoBehaviour {
     public bool Invisible { get; protected set; }
     public bool KnockbackLock { get; protected set; }
     public float PlayerDistance { get; protected set; }
-    protected abstract IEnumerator Knockback(float knockbackDist, float knockbackTime);
+    protected virtual IEnumerator Knockback(float knockbackDist, float knockbackTime) { yield return 0; }
 
     // drop item
     private int[] dropTable;
@@ -73,7 +73,7 @@ public abstract class Enemy : MonoBehaviour {
     { 
         currHealth = maxHealth;
         Invisible = MovementLock = KnockbackLock = false;
-        dropTable = enemyManager.DropTableByID[monsterID];
+        if (enemyManager.DropTableByID.ContainsKey(monsterID)) { dropTable = enemyManager.DropTableByID[monsterID]; }
         PlayerDistance = Vector2.Distance(enemyManager.Player.transform.position, transform.parent.position);
     }
 
@@ -85,71 +85,50 @@ public abstract class Enemy : MonoBehaviour {
     // When damaged
 
     // - Calculate value & Arrange information
-    public void GetDamaged(PlayerAttackInfo attack)
+    public virtual void GetDamaged(PlayerAttackInfo attack)
     {
-        string objectName = gameObject.transform.parent.name;
+        if (Invisible) { return; }
         float prevHealth = currHealth;
         currHealth -= attack.damage;
 
-        if (objectName == "NotDyingScarecrow(Clone)")
+        if (currHealth <= 0)
         {
-            if (currHealth <= 0)
+            Invisible = true;
+            animator.SetTrigger("DeadTrigger");
+            StopCoroutine("OnFire");
+            GetComponent<SpriteRenderer>().color = Color.white;
+            return;
+        }
+        
+        DebuffApply(attack.debuffTime);
+
+        float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
+        float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
+
+        if (MovementLock) // 넉백이 진행 중
+        {
+            StopCoroutine("Knockback");
+        }
+        StartCoroutine(Knockback(knockbackDist, knockbackTime));
+
+        float currHealthPercentage = currHealth / maxHealth;
+        float prevHealthPercentage = prevHealth / maxHealth;
+
+        foreach (float percentage in knockbackPercentage)
+        {
+            if (currHealthPercentage > percentage) { break; }
+            if (prevHealthPercentage > percentage)
             {
-                prevHealth = maxHealth;
-                currHealth = maxHealth;
-                return;
-            }
-            if (currHealth < prevHealth)
                 animator.SetTrigger("DamagedTrigger");
-        }
-
-        else
-        {
-            if (currHealth <= 0)
-            {
-                Invisible = true;
-                animator.SetTrigger("DeadTrigger");
-                StopCoroutine("OnFire");
-                GetComponent<SpriteRenderer>().color = Color.white;
-                return;
-            }
-            if (objectName == "DyingScarecrow(Clone)")
-            {
-                if (currHealth < prevHealth)
-                    animator.SetTrigger("DamagedTrigger");
-            }
-            else
-            {
-                DebuffApply(attack.debuffTime);
-
-                float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
-                float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
-
-                if (MovementLock) // 넉백이 진행 중
-                {
-                    StopCoroutine("Knockback");
-                }
-                StartCoroutine(Knockback(knockbackDist, knockbackTime));
-
-                float currHealthPercentage = currHealth / maxHealth;
-                float prevHealthPercentage = prevHealth / maxHealth;
-
-                foreach (float percentage in knockbackPercentage)
-                {
-                    if (currHealthPercentage > percentage) { break; }
-                    if (prevHealthPercentage > percentage)
-                    {
-                        animator.SetTrigger("DamagedTrigger");
-                        break;
-                    }
-                }
-                animator.SetTrigger("TrackTrigger");
+                break;
             }
         }
+        animator.SetTrigger("TrackTrigger");
     }
 
     public void GetDamaged(float damage)
     {
+        if (Invisible) { return; }
         float prevHealth = currHealth;
         currHealth -= damage;
         if (currHealth <= 0)
@@ -294,7 +273,11 @@ public abstract class Enemy : MonoBehaviour {
         StopAllCoroutines();
         enemyManager.EnemyDeadCount++; // 다른 enemy로 인해 소환되는 enemy가 추가될 경우 여기를 건드려야 함
 
+        currHealth = maxHealth;
+        Invisible = false;
         // Drop 아이템 결정. 인덱스 별 아이템은 맨 밑에 서술
+        if (dropTable == null) { return; }
+
         float denominator = dropTable[dropTable.Length - 1];
         float numerator = Random.Range(0, denominator);
         int indexOfItem = 0;
@@ -330,10 +313,6 @@ public abstract class Enemy : MonoBehaviour {
         {
             inventoryManager.AddonInstantiate((ItemQuality)(indexOfItem - 12), transform.parent.position, EnemyManager.dropObjStrength);
         }
-
-        currHealth = maxHealth;
-        Invisible = false;
-        return;
     }
 
     public void aaa()
