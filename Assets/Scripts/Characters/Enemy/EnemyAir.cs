@@ -3,26 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyAir : Enemy {
-
+    // for bumping attack
+    public bool bumped = false;
+    public bool prevBumped = false;
     protected override void Start()
     {
         base.Start();
-        StartCoroutine(BumpCheck());
+        prevBumped = bumped;
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-
-        if (bumpable)
+        if(prevBumped != bumped && bumped && !MovementLock)
         {
-            MovementLock = false;
+            StartCoroutine(Knockback(0.0f, 1.0f));
+            StartCoroutine(RecoverBump());
         }
-        else
-        {
-            ChangeVelocityXY_zero();
-            MovementLock = true;
-        }
+        prevBumped = bumped;
     }
 
     public void ChangeAngleZ_noOption(float val)
@@ -87,19 +85,15 @@ public class EnemyAir : Enemy {
         Vector2 knockbackVelocity = (knockbackDist / knockbackTime) * knockbackDir;
         ChangeAngleZ(Mathf.Atan2(knockbackDir.y, knockbackDir.x) * -1, new bool[] { MovementLock, KnockbackLock });
         ChangeVelocityXY(knockbackVelocity, lockArray);
-
+        
         yield return new WaitForSeconds(knockbackTime);
-
         MovementLock = false;
         ChangeVelocityXY(Vector2.zero, new bool[] { MovementLock, KnockbackLock });
     }
 
-    IEnumerator BumpCheck()
+    IEnumerator RecoverBump()
     {
-        while (true)
-        {
-            if (!bumpable) { bumpable = true; }
-            yield return new WaitForSeconds(1.0f);
-        }
+        yield return new WaitForSeconds(1.0f);
+        bumped = false;
     }
 }

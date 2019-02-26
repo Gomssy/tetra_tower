@@ -46,7 +46,6 @@ public class AttackProperty : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
         Bounds tmpBounds = new Bounds();
         if ((enemyLayer == (enemyLayer | 1 << collision.gameObject.layer)) && !collision.transform.GetChild(0).GetComponent<Enemy>().Invisible)
         {

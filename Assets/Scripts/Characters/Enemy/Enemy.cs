@@ -46,10 +46,6 @@ public class Enemy : MonoBehaviour {
     // drop item
     private int[] dropTable;
 
-    // for bumping attack
-    public bool bumped = false;
-    public bool bumpable = true;
-
     // method
     // Standard method
     protected virtual void Awake()

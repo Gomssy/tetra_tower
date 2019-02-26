@@ -32,7 +32,7 @@ TagManager:
   - EnemyTrigger
   - EnemyAttack
   - Player
-  - 
+  - EnemyColliderAir
   - 
   - 
   - 
