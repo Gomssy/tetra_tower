@@ -87,6 +87,7 @@ public abstract class Enemy : MonoBehaviour {
     // - Calculate value & Arrange information
     public void GetDamaged(PlayerAttackInfo attack)
     {
+        if (Invisible) { return; }
         string objectName = gameObject.transform.parent.name;
         float prevHealth = currHealth;
         currHealth -= attack.damage;
@@ -156,6 +157,7 @@ public abstract class Enemy : MonoBehaviour {
 
     public void GetDamaged(float damage)
     {
+        if (Invisible) { return; }
         float prevHealth = currHealth;
         currHealth -= damage;
         if (currHealth <= 0)
