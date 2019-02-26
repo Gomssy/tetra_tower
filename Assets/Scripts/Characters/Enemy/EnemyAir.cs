@@ -82,7 +82,7 @@ public class EnemyAir : Enemy {
     {
         MovementLock = true;
         bool[] lockArray = new bool[] { false, KnockbackLock };
-        Vector2 knockbackDir = (transform.parent.position - enemyManager.Player.transform.position).normalized;
+        Vector2 knockbackDir = (transform.parent.position - GameManager.Instance.player.transform.position).normalized;
         Vector2 knockbackVelocity = (knockbackDist / knockbackTime) * knockbackDir;
         ChangeAngleZ(Mathf.Atan2(knockbackDir.y, knockbackDir.x) * -1, new bool[] { MovementLock, KnockbackLock });
         ChangeVelocityXY(knockbackVelocity, lockArray);

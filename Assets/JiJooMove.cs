@@ -2,42 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAirTrack : StateMachineBehaviour {
-    float trackSpeed;
-    float trackRange;
-    float angle;
+public class JiJooMove : StateMachineBehaviour {
+    float horizontalSpeed;
+    float verticalSpeed;
     GameObject player;
     Transform animatorRoot;
-    EnemyAir enemy;
-    Vector2 direction;
+    JiJoo enemy;
+    Vector2Int dir;
+    Vector2Int destination;
 
-    int maxFrame = 10;
-    int frameCount;
-    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
+    float time;
+    float timer = 0;
+
+     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         animatorRoot = animator.transform.parent;
-        enemy = animator.GetComponent<EnemyAir>();
+        enemy = animator.GetComponent<JiJoo>();
         player = GameManager.Instance.player;
-        trackSpeed = enemy.trackSpeed;
-        frameCount = 0;
 
-        SetDirection();
+        horizontalSpeed = enemy.horizontalSpeed;
+        verticalSpeed = enemy.verticalSpeed;
+
+        dir = enemy.MoveDirection();
+        enemy.transform.eulerAngles = new Vector3(0, 0, JiJoo.Vector2ToZAngle(dir));
+        enemy.transform.parent.GetComponent<Rigidbody2D>().velocity = dir * new Vector2(horizontalSpeed, verticalSpeed);
+
+        destination = enemy.gridPosition + dir;
+
+        Vector2 realVector = JiJoo.RealPosition(destination) - JiJoo.RealPosition(enemy.gridPosition);
+        time = realVector.x / horizontalSpeed + realVector.y / verticalSpeed;
     }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        if (enemy.PlayerDistance > enemy.noticeRange)
+	    if (timer > time)
         {
-            animator.ResetTrigger("TrackTrigger");
+            enemy.transform.parent.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            enemy.gridPosition = destination;
+            enemy.transform.position = JiJoo.RealPosition(destination);
             animator.SetTrigger("IdleTrigger");
-            enemy.ChangeVelocityXY_noOption(Vector2.zero);
-            return;
         }
-
-        SetDirection();
-
-        Vector2 vel = direction.normalized * trackSpeed;
-        enemy.ChangeVelocityXY_noOption(vel);
 	}
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
@@ -54,11 +58,4 @@ public class EnemyAirTrack : StateMachineBehaviour {
 	//override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 	//
 	//}
-
-    private void SetDirection()
-    {
-        direction = player.transform.position - animatorRoot.position;
-        angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        enemy.ChangeAngleZ_noOption(angle - 90.0f);
-    }
 }

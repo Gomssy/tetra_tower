@@ -16,7 +16,7 @@ public class EnemyMeleeTrack : StateMachineBehaviour {
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         animatorRoot = animator.transform.parent;
         enemy = animator.GetComponent<EnemyGround>();
-        player = EnemyManager.Instance.Player;
+        player = GameManager.Instance.player;
 
         trackSpeed = enemy.trackSpeed;
         attackRange = enemy.attackRange;

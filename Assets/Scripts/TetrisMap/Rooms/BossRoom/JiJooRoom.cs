@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class JiJooRoom : BossRoomInGame {
+    
 
     protected override void Awake()
     {
@@ -13,10 +14,10 @@ public class JiJooRoom : BossRoomInGame {
     protected override void Start ()
     {
         base.Start();
-        phaseAction[0] += Phase1;
-        phaseAction[1] += Phase2;
-        transitionAction[0] += Phase1Transition;
-        transitionAction[1] += Phase2Transition;
+        transitionUpdate[0] += Phase1Transition;
+        //transitionUpdate[1] += Phase2Transition;
+        phaseUpdate[0] += Phase1;
+        //phaseUpdate[1] += Phase2;
     }
 	
 	// Update is called once per frame
@@ -27,7 +28,7 @@ public class JiJooRoom : BossRoomInGame {
 
     protected void Phase1Transition()
     {
-        
+        Debug.Log("come");
     }
     protected void Phase2Transition()
     {
@@ -35,10 +36,16 @@ public class JiJooRoom : BossRoomInGame {
     }
     protected void Phase1()
     {
-
+        if (bosses[0].currHealth <= 0 && bosses[1].currHealth <= 0)
+        {
+            CurPhase++;
+        }
     }
     protected void Phase2()
     {
-
+        if (bosses[0].currHealth <= 0 && bosses[1].currHealth <= 0)
+        {
+            CurPhase++;
+        }
     }
 }

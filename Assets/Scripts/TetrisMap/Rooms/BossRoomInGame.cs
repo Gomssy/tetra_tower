@@ -30,7 +30,7 @@ public class BossRoomInGame : RoomInGame {
         }
     }
     public bool isTransitionFinished;
-    // phaseUpdate 전(isTransitionFinished == false 일때) 매 프레임 호출됨; Update 대응
+    // phaseUpdate 전 매 프레임 호출됨; Update 대용
     public Action[] transitionUpdate;
     // 진행중인 phase coroutine에서 매 프레임 호출됨; Update 대용
     public Action[] phaseUpdate;
@@ -55,6 +55,7 @@ public class BossRoomInGame : RoomInGame {
     // Update is called once per frame
     protected virtual void Update()
     {
+        Debug.Log(CurPhase);
         if (!attackStart && attackTrigger)
         {
             StartCoroutine(BeforeBossFight());
@@ -74,14 +75,17 @@ public class BossRoomInGame : RoomInGame {
     IEnumerator Phase(int phase)
     {
         isTransitionFinished = false;
+        Debug.Log(transitionUpdate[phase].GetInvocationList().GetLength(0));
         while (!isTransitionFinished)
         {
-            transitionUpdate[phase]();
+            if (transitionUpdate[phase] != null)
+                transitionUpdate[phase]();
             yield return null;
         }
         while (CurPhase == phase)
         {
-            phaseUpdate[phase]();
+            if (phaseUpdate[phase] != null)
+                phaseUpdate[phase]();
             yield return null;
         }
     }
@@ -89,7 +93,8 @@ public class BossRoomInGame : RoomInGame {
     public override void RoomEnter()
     {
         base.RoomEnter();
-
+        //EnemyManager.Instance.SpawnEnemyToMap();
+        attackTrigger = true;
         //보스 만들어지면 구현할 것
     }
 
