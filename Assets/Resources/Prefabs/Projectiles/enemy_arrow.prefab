@@ -105,7 +105,7 @@ MonoBehaviour:
   knockBackMultiplier: 1
   vanishLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 524288
   stopLayer:
     serializedVersion: 2
     m_Bits: 2304
