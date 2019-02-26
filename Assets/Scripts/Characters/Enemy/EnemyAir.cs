@@ -42,7 +42,7 @@ public class EnemyAir : Enemy {
 
     private void ChangeAngleZ(float val, bool[] lockArray)
     {
-        foreach (var Lock in lockArray) { if (Lock) return; }
+        foreach (var Lock in lockArray) { if (Lock) { return; } }
         Vector3 tempAngle = transform.parent.eulerAngles;
         tempAngle.z = val;
         transform.parent.eulerAngles = tempAngle;
@@ -50,7 +50,7 @@ public class EnemyAir : Enemy {
 
     private void ChangeVelocityXY(Vector2 val, bool[] lockArray)
     {
-        foreach (var Lock in lockArray) { if (Lock) return; }
+        foreach (var Lock in lockArray) { if (Lock) { return; } }
         Vector3 tempVelocity = transform.parent.gameObject.GetComponent<Rigidbody2D>().velocity;
         tempVelocity.x = val.x;
         tempVelocity.y = val.y;

@@ -630,7 +630,12 @@ Prefab:
     - target: {fileID: 114402380471012178, guid: 3d077a5f727dd1e4780e9265ed26e036,
         type: 2}
       propertyPath: debuffTime.Array.data[2]
-      value: 3
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114402380471012178, guid: 3d077a5f727dd1e4780e9265ed26e036,
+        type: 2}
+      propertyPath: knockBackMultiplier
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d077a5f727dd1e4780e9265ed26e036, type: 2}
@@ -770,9 +775,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 17
       objectReference: {fileID: 0}
-    - target: {fileID: 1346522711063220, guid: e4298313f9e94c44fb057542ec7ad273, type: 2}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 50573848117970958, guid: e4298313f9e94c44fb057542ec7ad273,
+        type: 2}
+      propertyPath: m_AngularDrag
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4298313f9e94c44fb057542ec7ad273, type: 2}
@@ -979,6 +985,10 @@ Prefab:
         type: 2}
       propertyPath: m_AnchoredPosition.y
       value: -394
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083421967201116, guid: e6794ab8e2e4c6340a23b382e9497cbb, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6794ab8e2e4c6340a23b382e9497cbb, type: 2}
@@ -1622,6 +1632,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4542814694995438, guid: 29d5569197813594db51adf0d061bc36, type: 2}
       propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4242738345506188, guid: 29d5569197813594db51adf0d061bc36, type: 2}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
