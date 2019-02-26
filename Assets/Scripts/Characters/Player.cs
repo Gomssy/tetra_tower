@@ -10,6 +10,10 @@ public class Player : MonoBehaviour {
     public int ttx;
     public int tty;
     public Text displayText;
+
+    public GameObject particlePrefab;
+    GameObject[] particles;
+    bool gameover;
     
     public IEnumerator DisplayText(string _text)
     {
@@ -30,6 +34,15 @@ public class Player : MonoBehaviour {
         ttx = (int)(transform.position.x / 24f);
         tty = (int)(transform.position.y - 0.8f / 24f);
         lifeStoneManager = LifeStoneManager.Instance;
+
+
+        particles = new GameObject[40];
+        for(int i=0; i<particles.Length; i++)
+        {
+            particles[i] = Instantiate(particlePrefab,transform);
+            particles[i].SetActive(false);
+        }
+        gameover = false;
     }
 	
 	// Update is called once per frame
@@ -59,7 +72,27 @@ public class Player : MonoBehaviour {
         }
         ttx = tx;
         tty = ty;
-        if (lifeStoneManager.CountType() == 0)
-            GameManager.gameState = GameState.GameOver;
+        if (!gameover && lifeStoneManager.CountType() == 0)
+        {
+            gameover = true;
+            StartCoroutine(GameOverCoroutine());
+        }
+            
 	}
+
+    IEnumerator GameOverCoroutine()
+    {
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
+        foreach(GameObject obj in particles)
+        {
+            obj.SetActive(true);
+            obj.transform.localPosition = Vector3.zero;
+            obj.GetComponent<Rigidbody2D>().velocity = Random.insideUnitCircle.normalized * Random.Range(3f,7f);
+        }
+        yield return new WaitForSeconds(3f);
+        GameManager.gameState = GameState.GameOver;
+    }
+    
 }

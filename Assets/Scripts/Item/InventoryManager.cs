@@ -36,11 +36,13 @@ public class InventoryManager : Singleton<InventoryManager> {
         itemPool[0].Add("Bow");
         itemPool[0].Add("Dagger");
         
-        //itemPool[1].Add("ExplosionGloves");
+        itemPool[1].Add("ExplosionGloves");
+        itemPool[1].Add("OilCask");
 
-        //itemPool[2].Add("Ksanife");
+        itemPool[2].Add("ShockStick");
+        itemPool[2].Add("FeatherFan");
 
-        //itemPool[3].Add("");
+        itemPool[3].Add("BitSword");
 
 
         addonPool[0].Add("ParchmentPiece");
@@ -78,29 +80,19 @@ public class InventoryManager : Singleton<InventoryManager> {
     }
     IEnumerator TestCoroutine()
     {
-        ItemInstantiate(ItemQuality.Study, player.transform.position, 1f);
+        ItemInstantiate("FeatherFan", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
-        ItemInstantiate(ItemQuality.Study, player.transform.position, 1f);
+        ItemInstantiate("Dagger", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
-        AddonInstantiate(ItemQuality.Study, player.transform.position, 1f);
+        ItemInstantiate("Bow", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
-        AddonInstantiate(ItemQuality.Study, player.transform.position, 1f);
+        ItemInstantiate("OilCask", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
-        AddonInstantiate(ItemQuality.Ordinary, player.transform.position, 1f);
+        ItemInstantiate("ExplosionGloves", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
-        AddonInstantiate(ItemQuality.Ordinary, player.transform.position, 1f);
+        ItemInstantiate("BitSword", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
-        AddonInstantiate(ItemQuality.Ordinary, player.transform.position, 1f);
-        yield return new WaitForSeconds(0.3f);
-        AddonInstantiate(ItemQuality.Ordinary, player.transform.position, 1f);
-        yield return new WaitForSeconds(0.3f);
-        AddonInstantiate(ItemQuality.Ordinary, player.transform.position, 1f);
-        yield return new WaitForSeconds(0.3f);
-        AddonInstantiate(ItemQuality.Superior, player.transform.position, 1f);
-        yield return new WaitForSeconds(0.3f);
-        AddonInstantiate(ItemQuality.Superior, player.transform.position, 1f);
-        yield return new WaitForSeconds(0.3f);
-        AddonInstantiate(ItemQuality.Superior, player.transform.position, 1f);
+        AddonInstantiate("GlowingHerb", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
     }
 

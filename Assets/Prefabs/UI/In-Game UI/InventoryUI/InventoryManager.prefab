@@ -56,5 +56,4 @@ MonoBehaviour:
     type: 2}
   popoutStrengthMultiplier: 9
   popoutTime: 0.1
-  textCanvas: {fileID: 1326064071694500, guid: 51286afce3c9c8a4bae74feddf8b13af, type: 2}
   price: {fileID: 114275555228777956, guid: 4ec53eab8ea50de4ea5b9ff658d83ca0, type: 2}

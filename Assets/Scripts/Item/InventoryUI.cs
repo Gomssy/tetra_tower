@@ -155,6 +155,7 @@ public class InventoryUI : MonoBehaviour {
                 {
                     comboStringFrame[i].SetActive(true);
                     comboNameFrame[i].SetActive(true);
+                    comboNameFrame[i].GetComponent<Text>().text = itemList[selectedItem].comboName[i];
                     float tmpx = 0;
                     for (int j = 0; j < 8; j++)
                     {
@@ -165,16 +166,18 @@ public class InventoryUI : MonoBehaviour {
                             comboChars[i, j].GetComponent<RectTransform>().sizeDelta = comboCharPrefab[itemList[selectedItem].combo[i][j] - 'A'].GetComponent<RectTransform>().sizeDelta;
                             comboChars[i, j].GetComponent<RectTransform>().localPosition = new Vector3(tmpx, 0, 0);
                             tmpx += comboChars[i, j].GetComponent<RectTransform>().sizeDelta.x + pixelBetweenChar;
-                            comboNameFrame[i].GetComponent<Text>().text = itemList[selectedItem].comboName[i];
+                            
                         }
                         else
                         {
                             comboChars[i, j].SetActive(false);
+                            
                         }
                     }
                 }
                 else
                 {
+                    comboNameFrame[i].GetComponent<Text>().text = "";
                     comboStringFrame[i].SetActive(false);
                 }
             }
