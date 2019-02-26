@@ -219,7 +219,7 @@ public class MapManager : Singleton<MapManager> {
     /// Data of which item to spawn in gold room.
     /// </summary>
     [SerializeField]
-    private TextAsset GoldRoomItemSpawnData;
+    private TextAsset goldRoomItemSpawnData;
 
     /*
      * functions
@@ -987,7 +987,7 @@ public class MapManager : Singleton<MapManager> {
         Tetrimino.rotationInformation[6].horizontalLength = new int[4] { 3, 2, 3, 2 };  //Z
         Tetrimino.rotationInformation[7].horizontalLength = new int[4] { 1, 1, 1, 1 };  //Boss
         ItemRoomInGame.LoadItemRoomData(itemRoomItemSpawnData);
-        GoldRoomInGame.LoadGoldRoomData(GoldRoomItemSpawnData);
+        GoldRoomInGame.LoadGoldRoomData(goldRoomItemSpawnData);
         for (int i = 0; i < tetrisYCoord.Length; i++)
             tetrisYCoord[i] = i * tetrisMapSize;
         for (int i = 0; i < isRowDeleting.Length; i++)
@@ -1009,8 +1009,6 @@ public class MapManager : Singleton<MapManager> {
             portalDistributedVertical[i] = new List<int>();
         for (int i = 0; i < 10; i++)
             portalDistributedHorizontal[i] = new List<int>();
-
-        
         for (int concept = 0; concept < 4; concept++)
             for (int leftDoor = 0; leftDoor < 3; leftDoor++)
                 for (int rightDoor = 0; rightDoor < 3; rightDoor++)

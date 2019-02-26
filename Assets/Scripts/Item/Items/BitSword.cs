@@ -25,17 +25,24 @@ public class BitSword: Item
         comboName = new string[3] { "I", "", "" };
         comboCool = new float[3] { 50, 0, 0 };
         comboCurrentCool = new float[3] { 50, 0, 0 };
+        coolSprite[0] = Resources.Load<Sprite>("Sprites/Cools/bit sword_cool1");
     }
 
     public override void GlobalOtherEffect(string combo)
     {
         List<Item> itemList = InventoryManager.Instance.itemList;
 
-        if (MapManager.currentRoom.isRoomCleared)
+        if (combo.Equals("A")) return;
+
+        if (!MapManager.currentRoom.isRoomCleared)
         {
             for (int i = combo.Length; i >= 1; i--)
             {
-                if (combo[i - 1] == 'A') comboCurrentCool[0]++;
+                
+                if (combo[i - 1] == 'A')
+                {
+                    comboCurrentCool[0]++;
+                }
 
                 foreach (Item item in itemList)
                 {

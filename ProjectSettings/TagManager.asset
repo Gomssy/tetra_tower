@@ -30,8 +30,8 @@ TagManager:
   - PlayerAttack
   - EnemyCollider
   - EnemyTrigger
-  - PortalSurface
-  - 
+  - EnemyAttack
+  - Player
   - 
   - 
   - 
@@ -54,9 +54,6 @@ TagManager:
   - name: Background
     uniqueID: 2317547663
     locked: 0
-  - name: Spike
-    uniqueID: 3612720217
-    locked: 0
   - name: Wall
     uniqueID: 3278214247
     locked: 0
@@ -71,6 +68,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2216026111
+    locked: 0
+  - name: Spike
+    uniqueID: 3612720217
     locked: 0
   - name: Door
     uniqueID: 343148499

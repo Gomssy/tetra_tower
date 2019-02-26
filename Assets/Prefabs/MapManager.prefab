@@ -123,8 +123,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0345323fb9396ed4b9d66aa389016f36, type: 3}
   - {fileID: 21300000, guid: a205697d9c330cd47afc7bfafe83d718, type: 3}
   - {fileID: 21300000, guid: d1893a5ae6c5cdb478ac942867927405, type: 3}
-  - {fileID: 21300000, guid: 389f01375fa159b4d869c766ad6a489d, type: 3}
-  - {fileID: 21300000, guid: aaa436c3de13620499ccfa3154cb78af, type: 3}
+  - {fileID: 21300000, guid: 5d3d3bb16e5051045be1e72cca68b596, type: 3}
+  - {fileID: 21300000, guid: cad317806c8dd9b42b5b05234dee1997, type: 3}
   roomBackgroundSprite1:
   - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
   - {fileID: 21300000, guid: 7d94542039acd6a4b932cf9219b71799, type: 3}
@@ -132,7 +132,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7d94542039acd6a4b932cf9219b71799, type: 3}
   itemRoomItemSpawnData: {fileID: 4900000, guid: 50da557f52db710419c3374a903b3d22,
     type: 3}
-  GoldRoomItemSpawnData: {fileID: 4900000, guid: a89c82f77571a09438810f11ef1978e0,
+  goldRoomItemSpawnData: {fileID: 4900000, guid: a89c82f77571a09438810f11ef1978e0,
     type: 3}
 --- !u!114 &114476419532778440
 MonoBehaviour:
