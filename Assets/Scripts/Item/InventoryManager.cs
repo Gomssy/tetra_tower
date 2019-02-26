@@ -89,7 +89,7 @@ public class InventoryManager : Singleton<InventoryManager> {
         yield return new WaitForSeconds(0.3f);
         ItemInstantiate("Bow", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
-        ItemInstantiate("OilCask", player.transform.position, 1f);
+        ItemInstantiate("Dagger", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
         ItemInstantiate("ExplosionGloves", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
@@ -301,14 +301,14 @@ public class InventoryManager : Singleton<InventoryManager> {
                 for (int j = 0; j < tmpItem.skillNum; j++)
                     if (item.combo[i].Equals(tmpItem.combo[j]))
                     {
-                        GameManager.Instance.player.GetComponent<Player>().DisplayText(tmpItem.name + "와(과) 콤보가 중복됩니다!");
+                        StartCoroutine(GameManager.Instance.player.GetComponent<Player>().DisplayText(tmpItem.name + "와(과) 콤보가 중복됩니다!"));
                         return false;
                     }
 
 
         if (itemList.Count > 8)
         {
-            GameManager.Instance.player.GetComponent<Player>().DisplayText("아이템이 너무 많습니다!");
+            StartCoroutine(GameManager.Instance.player.GetComponent<Player>().DisplayText("아이템이 너무 많습니다!"));
             return false;
         }
 
@@ -326,7 +326,7 @@ public class InventoryManager : Singleton<InventoryManager> {
     {
         if (addonList.Count > 8)
         {
-            GameManager.Instance.player.GetComponent<Player>().DisplayText("애드온이 너무 많습니다!");
+            StartCoroutine(GameManager.Instance.player.GetComponent<Player>().DisplayText("예비 애드온이 너무 많습니다!"));
             return false;
         }
 
