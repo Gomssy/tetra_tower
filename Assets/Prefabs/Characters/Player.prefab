@@ -365,6 +365,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   attackCombo: 
+  changeDebuff: 0
+  debuffTime0: 0
+  debuffTime1: 0
+  debuffTime2: 0
+  debuffTime3: 0
+  debuffTime4: 0
 --- !u!114 &114574072693989902
 MonoBehaviour:
   m_ObjectHideFlags: 1

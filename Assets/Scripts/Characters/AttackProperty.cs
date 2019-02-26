@@ -14,6 +14,25 @@ public class AttackProperty : MonoBehaviour {
     public LayerMask stopLayer;
     public string attackCombo;
 
+    public bool changeDebuff;
+    public float debuffTime0;
+    public float debuffTime1;
+    public float debuffTime2;
+    public float debuffTime3;
+    public float debuffTime4;
+
+    private void Update()
+    {
+        if(changeDebuff)
+        {
+            debuffTime[0] = debuffTime0;
+            debuffTime[1] = debuffTime1;
+            debuffTime[2] = debuffTime2;
+            debuffTime[3] = debuffTime3;
+            debuffTime[4] = debuffTime4;
+        }
+    }
+
     private void Awake()
     {
         effectManager = EffectManager.Instance;

@@ -12,11 +12,20 @@ public class CoolUI : MonoBehaviour {
     public float size;
     public Color coolingColor;
 
-    List<CoolUIUnit> coolList;
+    GameObject[] coolList;
 
     private void Awake()
     {
-        coolList = new List<CoolUIUnit>();
+        coolList = new GameObject[27];
+        for (int i = 0; i < coolList.Length; i++)
+        {
+            coolList[i] = Instantiate(coolPrefab, transform);
+            
+            coolList[i].transform.GetChild(0).GetComponent<Image>().color = coolingColor;
+            coolList[i].transform.GetChild(0).GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(size, size);
+            coolList[i].GetComponent<RectTransform>().localPosition = -startPos - new Vector3(interval.x * (i % maxCol), interval.y * (i / 4));
+            coolList[i].SetActive(false);
+        }
     }
 
     private void Update()
@@ -24,31 +33,33 @@ public class CoolUI : MonoBehaviour {
         SetCoolOnPosition();
     }
 
-    public void InitCool(Item item, int skillNo)
-    {
-        CoolUIUnit tmpUnit = new CoolUIUnit(Instantiate(coolPrefab, transform), item, skillNo);
-        tmpUnit.obj.GetComponent<Image>().sprite = item.coolSprite[skillNo];
-        tmpUnit.obj.GetComponent<Image>().enabled = true;
-        tmpUnit.obj.GetComponent<RectTransform>().sizeDelta = new Vector2(size, size);
-
-        tmpUnit.obj.transform.GetChild(0).GetComponent<Image>().color = coolingColor;
-        tmpUnit.obj.transform.GetChild(0).GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(size, size);
-        coolList.Add(tmpUnit);
-    }
-
     public void SetCoolOnPosition()
     {
-        for(int i=0; i<coolList.Count; i++)
+        List<Item> itemList = InventoryManager.Instance.itemList;
+        int index = 0;
+
+        foreach (Item item in itemList)
         {
-            if (coolList[i].item.comboCurrentCool[coolList[i].skillNo] >= coolList[i].item.comboCool[coolList[i].skillNo])
+            for (int i = 0; i < item.skillNum; i++)
             {
-                Destroy(coolList[i].obj);
-                coolList.RemoveAt(i);
-                continue;
+                if (item.comboCurrentCool[i] < item.comboCool[i])
+                {
+                    coolList[index].SetActive(true);
+
+                    coolList[index].GetComponent<Image>().sprite = item.coolSprite[i];
+                    coolList[index].GetComponent<Image>().enabled = true;
+                    coolList[index].GetComponent<RectTransform>().sizeDelta = new Vector2(size, size);
+
+                    coolList[index].transform.GetChild(0).GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(size * (1 - (item.comboCurrentCool[i] / item.comboCool[i])), size);
+
+                    index++;
+                }
             }
-            Debug.Log(coolList[i].item.comboCurrentCool[coolList[i].skillNo]);
-            coolList[i].obj.GetComponent<RectTransform>().localPosition =  - startPos - new Vector3(interval.x * (i % maxCol), interval.y * (i / 4));
-            coolList[i].obj.transform.GetChild(0).GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(size * (1-(coolList[i].item.comboCurrentCool[coolList[i].skillNo] / coolList[i].item.comboCool[coolList[i].skillNo])), size);
+        }
+
+        for (; index < coolList.Length; index++)
+        {
+            coolList[index].SetActive(false);
         }
     }
 }
