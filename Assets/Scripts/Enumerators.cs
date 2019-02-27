@@ -21,6 +21,13 @@ public enum NumeratedDir
     Right = 1
 };
 
+public enum EnemyMovementLock
+{
+    Free,
+    Rigid,
+    Debuffed
+};
+
 public enum PlayerDebuffCase
 {
 

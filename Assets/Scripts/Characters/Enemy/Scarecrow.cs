@@ -5,17 +5,17 @@ using UnityEngine;
 public class Scarecrow : Enemy {
     public bool neverDie;
 
-    public override void GetDamaged(PlayerAttackInfo attack)
+    public override void GetHit(PlayerAttackInfo attack)
     {
         if (Invisible) { return; }
-        float prevHealth = currHealth;
-        currHealth -= attack.damage;
+        float prevHealth = CurrHealth;
+        CurrHealth -= attack.damage;
 
-        if (currHealth <= 0)
+        if (CurrHealth <= 0)
         {
             if (neverDie)
             {
-                currHealth = maxHealth;
+                CurrHealth = maxHealth;
             }
             else
             {

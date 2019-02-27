@@ -61,7 +61,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1734061800721222
 GameObject:
   m_ObjectHideFlags: 1
@@ -157,7 +157,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1636491341446076}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.88, y: 1.405, z: 0}
+  m_LocalPosition: {x: 11.29, y: -17.94, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4015301101001556}
@@ -299,10 +299,11 @@ MonoBehaviour:
   trackSpeed: 2.5
   knockbackPercentage:
   - 0.5
-  MovementLock: 0
-  bumped: 0
-  bumpable: 1
+  movementLock: 0
   attackRange: 1.2
+  rotatable: 1
+  WallTest: 
+  CliffTest: 
 --- !u!114 &114173716467154830
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -378,7 +379,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2078941185
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 71335108d30aa0e4a90179a09895440e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

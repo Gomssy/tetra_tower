@@ -20,9 +20,9 @@ public class EnemyMeleeIdle : StateMachineBehaviour {
         noticeRange = enemy.noticeRange;
         patrolSpeed = enemy.patrolSpeed;
 
-        enemy.ChangeDir_noOption(NumeratedDir.Left);
+        enemy.ChangeDir_movement(NumeratedDir.Left);
         if (enemy.patrolRange > 0) {
-            enemy.ChangeVelocityX_noOption(enemy.MoveDir * patrolSpeed);
+            enemy.ChangeVelocityX_movement(enemy.MoveDir * patrolSpeed);
         }
     }
 
@@ -33,7 +33,7 @@ public class EnemyMeleeIdle : StateMachineBehaviour {
 			animator.SetTrigger("TrackTrigger");
 			return;
 		}
-        if (!enemy.MovementLock && patrolRange > 0)
+        if (patrolRange > 0)
         {
             float span = animatorRoot.position.x - origin.x;
             
@@ -42,8 +42,8 @@ public class EnemyMeleeIdle : StateMachineBehaviour {
                 enemy.CliffTest[(enemy.MoveDir + 1) / 2]
             )
             {
-                enemy.ChangeDir_noOption(enemy.MoveDir * -1);
-                enemy.ChangeVelocityX_noOption(enemy.MoveDir * patrolSpeed);
+                enemy.ChangeDir_movement(enemy.MoveDir * -1);
+                enemy.ChangeVelocityX_movement(enemy.MoveDir * patrolSpeed);
             }
         }
 	}
