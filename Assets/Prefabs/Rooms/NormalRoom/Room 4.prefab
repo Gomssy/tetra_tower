@@ -991,8 +991,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomSize: {x: 24, y: 24}
-  leftDoorInfo: 010101
-  rightDoorInfo: 010101
+  leftDoorInfo: 010100
+  rightDoorInfo: 010100
   concept: 01000100
 --- !u!212 &212719427866913766
 SpriteRenderer:

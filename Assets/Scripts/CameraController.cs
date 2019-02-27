@@ -21,9 +21,9 @@ public class CameraController : MonoBehaviour {
 
     public Vector3 originPos;
     
-
     private void Awake()
     {
+
     }
 
     // Use this for initialization
@@ -80,6 +80,7 @@ public class CameraController : MonoBehaviour {
                 GameManager.Instance.minimap.SetActive(true);
                 MapManager.Instance.clock.GetComponent<RectTransform>().Translate(inGameClockCoord - tetrisClockCoord);
                 GameManager.Instance.leftRoomCount.rectTransform.Translate(inGameLeftRoomCoord - tetrisLeftRoomCoord);
+                InventoryManager.Instance.coolUI.GetComponent<CanvasGroup>().alpha = 0.7f;
                 GameManager.gameState = GameState.Ingame;
                 StartCoroutine(MapManager.Instance.RoomFadeIn(MapManager.currentRoom));
                 grid.transform.position = Vector3.zero;
@@ -97,6 +98,7 @@ public class CameraController : MonoBehaviour {
                 GameManager.Instance.minimap.SetActive(false);
                 MapManager.Instance.clock.GetComponent<RectTransform>().Translate(tetrisClockCoord - inGameClockCoord);
                 GameManager.Instance.leftRoomCount.rectTransform.Translate(tetrisLeftRoomCoord - inGameLeftRoomCoord);
+                InventoryManager.Instance.coolUI.GetComponent<CanvasGroup>().alpha = 0;
                 if (gameState == GameState.Tetris)
                     GameManager.gameState = GameState.Tetris;
                 else if(gameState == GameState.Portal)
@@ -116,7 +118,7 @@ public class CameraController : MonoBehaviour {
                     transform.position = new Vector3(coord.x, coord.y, -1);
                     GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, sizeDestination, Mathf.Sqrt(Time.deltaTime));
                 }
-                GetComponent<Camera>().cullingMask = 1 << LayerMask.NameToLayer("Tetris") | 1 << LayerMask.NameToLayer("Portal");
+                GetComponent<Camera>().cullingMask = 1 << LayerMask.NameToLayer("Tetris") | 1 << LayerMask.NameToLayer("Portal") | 1 << LayerMask.NameToLayer("UI");
                 transform.position = tetrisCameraCoord;
             }
             GetComponent<Camera>().orthographicSize = sizeDestination;

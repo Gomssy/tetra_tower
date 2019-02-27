@@ -331,7 +331,9 @@ public class MapManager : Singleton<MapManager> {
                 mapGrid[i, row].portal.SetActive(false);
             }
         leftPress.transform.localScale = new Vector3(0, 1, 1);
+        leftPress.pressHead.transform.localScale = new Vector3(-1, 1, 1);
         rightPress.transform.localScale = new Vector3(0, 1, 1);
+        rightPress.pressHead.transform.localScale = new Vector3(-1, 1, 1);
         float collapseRate = leftPress.transform.localScale.x;
         while (collapseRate < 20)
         {
@@ -345,7 +347,9 @@ public class MapManager : Singleton<MapManager> {
             else
                 collapseSpeed = (float)20 / collapseTime * Time.deltaTime;
             leftPress.transform.localScale += new Vector3(collapseSpeed, 0, 0);
+            leftPress.pressHead.transform.localScale = new Vector3(-1 / leftPress.transform.localScale.x, 1, 1);
             rightPress.transform.localScale += new Vector3(-collapseSpeed, 0, 0);
+            rightPress.pressHead.transform.localScale = new Vector3(-1 / rightPress.transform.localScale.x, 1, 1);
             collapseRate = leftPress.transform.localScale.x;
             if (collapseRate - doorCloseCounter * 4 >= (float)4 / 3)
             {
@@ -744,6 +748,8 @@ public class MapManager : Singleton<MapManager> {
             room.GetComponent<SpriteRenderer>().sprite = roomSurfaceSpritesDistributed[room.stage][(int)RoomSpriteType.Normal1 + room.roomConcept];
         else
             room.GetComponent<SpriteRenderer>().sprite = roomSurfaceSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
+        if (!room.isRoomCleared)
+            room.GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 0.5f);
         if (currentGhost != null)
             currentGhost.rooms[i].GetComponent<SpriteRenderer>().sprite = room.GetComponent<SpriteRenderer>().sprite;
     }

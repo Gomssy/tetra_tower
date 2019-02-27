@@ -48,7 +48,8 @@ public class Timer : MonoBehaviour {
     {
         float previousZRotation = clockHand.transform.eulerAngles.z;
         float startTime = Time.time, endTime = startTime + 0.5f;
-        while(Time.time < endTime)
+        GameManager.Instance.tetrisAlert.GetComponent<Animator>().SetBool("isAlertOn", false);
+        while (Time.time < endTime)
         {
             yield return null;
             if(tetriminoWaitedTime < timeToFallTetrimino)
@@ -77,6 +78,8 @@ public class Timer : MonoBehaviour {
             }
             tetriminoWaitedTime = Time.time - tetriminoCreatedTime;
             clockHand.transform.eulerAngles = new Vector3(0, 0, -360 * tetriminoWaitedTime / timeToFallTetrimino);
+            if (timeToFallTetrimino - tetriminoWaitedTime <= 3)
+                GameManager.Instance.tetrisAlert.GetComponent<Animator>().SetBool("isAlertOn", true);
         }
         if(tetriminoWaitedTime >= timeToFallTetrimino)
             clockHand.transform.eulerAngles = Vector3.zero;

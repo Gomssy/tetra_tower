@@ -50,6 +50,17 @@ public class RoomInGame : MonoBehaviour {
     /// </summary>
     public virtual void RoomClear()
     {
+        Room room = transform.parent.GetComponent<Room>();
 
+        Vector3 fogPosition = room.fog.transform.position;
+        Destroy(room.fog.gameObject);
+        room.fog = Instantiate(MapManager.Instance.clearedFog, fogPosition, Quaternion.identity, transform);
+        room.fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+        room.CreatePortal();
+        room.isRoomCleared = true;
+        GameManager.Instance.clock.clockSpeedStack -= 4;
+        if (GameManager.Instance.clock.clockSpeedStack < 0)
+            GameManager.Instance.clock.clockSpeedStack = 0;
+        room.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
     }
 }

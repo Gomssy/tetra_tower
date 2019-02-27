@@ -83,10 +83,10 @@ public class InventoryManager : Singleton<InventoryManager> {
     }
     IEnumerator TestCoroutine()
     {
-        ItemInstantiate("ShockStick", player.transform.position, 1f);
+        /*ItemInstantiate("ShockStick", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
         ItemInstantiate("BitSword", player.transform.position, 1f);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.3f);*/
         /*ItemInstantiate("Bow", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
         ItemInstantiate("OilCask", player.transform.position, 1f);
@@ -97,6 +97,7 @@ public class InventoryManager : Singleton<InventoryManager> {
         yield return new WaitForSeconds(0.3f);
         AddonInstantiate("GlowingHerb", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);*/
+        yield return null;
     }
 
     IEnumerator PopoutCoroutine(GameObject obj)

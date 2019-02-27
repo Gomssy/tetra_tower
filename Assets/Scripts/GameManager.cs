@@ -20,11 +20,14 @@ public class GameManager : Singleton<GameManager> {
 
     public GameObject player;
     public GameObject minimap;
+    public GameObject tetrisAlert;
     public Canvas gameOverCanvas;
     public Canvas inventoryCanvas;
     public Canvas textCanvas;
     public Timer clock;
     public Text leftRoomCount;
+    public Text displayText;
+    public Coroutine textCoroutine;
 
     // method
     // Constructor - protect calling raw constructor
@@ -40,6 +43,8 @@ public class GameManager : Singleton<GameManager> {
         isTutorial = false;
         Destroy(MapManager.currentRoom.gameObject);
         minimap.SetActive(true);
+        clock.gameObject.SetActive(true);
+        leftRoomCount.gameObject.SetActive(true);
         TetriminoSpawner.Instance.MakeInitialTetrimino();
         player.transform.position = MapManager.currentRoom.roomInGame.transform.Find("portal spot").position + spawnPosition;
         Camera.main.transform.position = player.transform.position + new Vector3(0, 0, -1);
@@ -55,7 +60,25 @@ public class GameManager : Singleton<GameManager> {
 
     public void CountLeftRoom()
     {
-        leftRoomCount.text = "Left Room : " + (MapManager.Instance.stageClearCondition[MapManager.currentStage] - MapManager.Instance.clearedRoomCount).ToString();
+        leftRoomCount.text = "x" + (MapManager.Instance.stageClearCondition[MapManager.currentStage] - MapManager.Instance.clearedRoomCount).ToString();
+    }
+    
+    public void DisplayText(string _text)
+    {
+        StopCoroutine(textCoroutine);
+        textCoroutine = StartCoroutine(DisplayTextCoroutine(_text));
+    }
+
+    public IEnumerator DisplayTextCoroutine(string _text)
+    {
+        displayText.text = _text;
+        for (int i = 255; i >= 0; i -= 10)
+        {
+            yield return null;
+            displayText.transform.position = player.transform.position + new Vector3(0, 2, 0);
+            displayText.color = new Color(displayText.color.r, displayText.color.g, displayText.color.b, (float)i / 255);
+        }
+        displayText.text = "";
     }
 
     void Awake()
@@ -64,24 +87,28 @@ public class GameManager : Singleton<GameManager> {
         gameOverCanvas = Instantiate(gameOverCanvas);
         textCanvas = Instantiate(textCanvas);
         InventoryManager.Instance.ui = inventoryCanvas.GetComponent<InventoryUI>();
-        inventoryCanvas.gameObject.SetActive(false);
-        gameOverCanvas.gameObject.SetActive(false);
         gameState = GameState.Ingame;
         minimap = GameObject.Find("Minimap");
-        minimap.SetActive(false);
         player = GameObject.Find("Player");
         MapManager.currentRoom = GameObject.Find("Room Tutorial").GetComponent<Room>();
-        player.transform.position = MapManager.currentRoom.roomInGame.transform.Find("player spot").position + spawnPosition;
-        Camera.main.transform.position = player.transform.position + new Vector3(0, 0, -1);
         clock = GameObject.Find("Clock").GetComponent<Timer>();
         leftRoomCount = GameObject.Find("LeftRoom").GetComponent<Text>();
-        isTutorial = true;
+        tetrisAlert = GameObject.Find("TetrisAlert");
     }
 
     // Use this for initialization
     void Start ()
     {
-
+        player.transform.position = MapManager.currentRoom.roomInGame.transform.Find("player spot").position + spawnPosition;
+        Camera.main.transform.position = player.transform.position + new Vector3(0, 0, -1);
+        inventoryCanvas.gameObject.SetActive(false);
+        gameOverCanvas.gameObject.SetActive(false);
+        minimap.SetActive(false);
+        clock.gameObject.SetActive(false);
+        leftRoomCount.gameObject.SetActive(false);
+        displayText = Instantiate(displayText, textCanvas.transform);
+        isTutorial = true;
+        textCoroutine = StartCoroutine(DisplayTextCoroutine(""));
     }
 	
 	// Update is called once per frame
