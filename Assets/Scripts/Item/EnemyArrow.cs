@@ -13,15 +13,15 @@ public class EnemyArrow : MonoBehaviour
     public LayerMask stopLayer;
     Rigidbody2D rb;
     Player target;
-    Vector2 moveDirection;
-    Vector2 changeAngle;
+    Vector3 moveDirection;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         target = GameObject.FindObjectOfType<Player>();
-        moveDirection = (target.transform.position - transform.position).normalized * moveSpeed;
-        rb.velocity = new Vector2(moveDirection.x, moveDirection.y);
+        moveDirection = transform.rotation.eulerAngles; 
+        rb.velocity = -moveSpeed *new Vector2(Mathf.Cos(Mathf.Deg2Rad * moveDirection.z), Mathf.Sin(Mathf.Deg2Rad * moveDirection.z));
     }
 
     /* void FixedUpdate()
@@ -59,5 +59,6 @@ public class EnemyArrow : MonoBehaviour
         yield return new WaitForSeconds(time);
         Destroy(gameObject);
     }
+
 }
 

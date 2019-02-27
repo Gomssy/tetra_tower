@@ -10,6 +10,9 @@ public class EnemyGround : Enemy {
     public bool[] WallTest;
     public bool[] CliffTest;
 
+    GameObject target;
+    private Quaternion _rotation;
+
     protected override void Awake()
     {
         base.Awake();
@@ -137,5 +140,28 @@ public class EnemyGround : Enemy {
         animator.speed = stunnedAnimLength / duration;
         yield return new WaitForSeconds(duration);
         OffDebuff(EnemyDebuffCase.Stun);
+    }
+
+    public void SetTarget()
+    {
+        
+        target = GameManager.Instance.player;
+        Vector2 direction = transform.GetChild(0).position - target.transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        _rotation = rotation;
+        Flip();
+    }
+
+    public void ArrowShot()
+    {
+        GameObject enemy_arrow = Resources.Load<GameObject>("Prefabs/Projectiles/enemy_arrow");
+        Instantiate(enemy_arrow, transform.GetChild(0).position, _rotation);
+    }
+
+    public void Flip()
+    {
+        NumeratedDir trackDir = (transform.GetChild(0).position.x - target.transform.position.x > 0) ? NumeratedDir.Left : NumeratedDir.Right;
+        ChangeDir_noOption(trackDir);
     }
 }
