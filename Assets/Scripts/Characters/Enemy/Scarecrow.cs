@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Scarecrow : Enemy {
-    public bool neverDie;
+    public bool scarecrow_or_statue; // true: scarecrow
 
     public override void GetHit(PlayerAttackInfo attack)
     {
         if (Invisible) { return; }
-        float prevHealth = CurrHealth;
         CurrHealth -= attack.damage;
 
         if (CurrHealth <= 0)
         {
-            if (neverDie)
+            if (scarecrow_or_statue)
             {
                 CurrHealth = maxHealth;
             }
@@ -26,5 +25,21 @@ public class Scarecrow : Enemy {
         }
 
         animator.SetTrigger("DamagedTrigger");
+    }
+
+    public override void DeadEvent()
+    {
+        if (scarecrow_or_statue)
+        {
+            base.DeadEvent();
+        }
+        else
+        {
+            if (transform.parent.GetComponentInChildren<HPBar>()) {
+                transform.parent.GetComponentInChildren<HPBar>().Inactivate();
+            }
+            MapManager.Instance.UpgradeRoom(RoomType.Gold);
+            Destroy(transform.parent.gameObject);
+        }
     }
 }

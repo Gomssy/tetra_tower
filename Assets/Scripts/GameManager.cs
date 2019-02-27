@@ -12,7 +12,7 @@ public class GameManager : Singleton<GameManager> {
     public static GameState gameState;
 
     public bool isTutorial = false;
-
+    private bool statueEvent = false;
     /// <summary>
     /// Position where portal would spawn player.
     /// </summary>
@@ -21,6 +21,7 @@ public class GameManager : Singleton<GameManager> {
     public GameObject player;
     public GameObject minimap;
     public GameObject tetrisAlert;
+    public GameObject statue;
     public Canvas gameOverCanvas;
     public Canvas inventoryCanvas;
     public Canvas textCanvas;
@@ -178,5 +179,22 @@ public class GameManager : Singleton<GameManager> {
             }
         }
         CountLeftRoom();
+
+        if(!statueEvent && MapManager.Instance.clearedRoomCount == 9)
+        {
+            foreach(Transform obj in MapManager.currentRoom.transform)
+            {
+                if (obj.CompareTag("Enemy")) {
+                    GameObject body = obj.GetChild(0).gameObject;
+                    if (body.GetComponent<EnemyGround>() != null && body.GetComponent<SpriteRenderer>().isVisible)
+                    {
+                        Vector3 pos = obj.position;
+                        body.gameObject.GetComponent<EnemyGround>().ResetForPool();
+                        GameObject tempStatue = Instantiate(statue, pos, Quaternion.identity);
+                        statueEvent = true;
+                    }
+                }
+            }
+        }
     }
 }
