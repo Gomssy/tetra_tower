@@ -6,7 +6,6 @@ using Random = UnityEngine.Random;
 public class Enemy : MonoBehaviour {
 
     // data
-
     // debuff
     readonly float[] immunity_time = new float[(int)EnemyDebuffCase.END_POINTER] { 0.0f, 3.0f, 6.0f, 6.0f, 6.0f };
     [SerializeField]
@@ -252,7 +251,13 @@ public class Enemy : MonoBehaviour {
     // Animation Event
 
     // - When dead
-    public void DeadEvent()
+    public virtual void DeadEvent()
+    {
+        ResetForPool();
+        DropItem();
+    }
+
+    public void ResetForPool()
     {
         if (transform.parent.GetComponentInChildren<HPBar>())
             transform.parent.GetComponentInChildren<HPBar>().Inactivate();
@@ -260,10 +265,12 @@ public class Enemy : MonoBehaviour {
         transform.parent.SetParent(null);
         StopAllCoroutines();
         enemyManager.EnemyDeadCount++;
-
         CurrHealth = maxHealth;
         Invisible = false;
-        // Drop 아이템 결정. 인덱스 별 아이템은 맨 밑에 서술
+    }
+
+    private void DropItem()
+    {
         if (dropTable == null) { return; }
 
         float denominator = dropTable[dropTable.Length - 1];
@@ -301,11 +308,6 @@ public class Enemy : MonoBehaviour {
         {
             inventoryManager.AddonInstantiate((ItemQuality)(indexOfItem - 12), transform.parent.position, EnemyManager.dropObjStrength);
         }
-    }
-
-    public void aaa()
-    {
-        Debug.Log("aaa");
     }
 }
 

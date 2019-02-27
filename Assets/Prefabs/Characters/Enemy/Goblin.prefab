@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212540714587432698}
   - component: {fileID: 95413729269184064}
   - component: {fileID: 114118738857420128}
+  - component: {fileID: 114537163463468708}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -61,7 +62,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1734061800721222
 GameObject:
   m_ObjectHideFlags: 1
@@ -284,7 +285,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1225288737757304}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a11d071a77ab21c48882c6c6e4db8f17, type: 3}
   m_Name: 
@@ -301,7 +302,6 @@ MonoBehaviour:
   - 0.5
   movementLock: 0
   attackRange: 1.2
-  rotatable: 1
   WallTest: 
   CliffTest: 
 --- !u!114 &114173716467154830
@@ -329,6 +329,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 4
   isBumpAttack: 0
+--- !u!114 &114537163463468708
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1225288737757304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf69b9b0b3af3664e89e16eab14c1b0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debuffState: 
+  monsterID: 251
+  maxHealth: 3
+  weight: 1
+  patrolRange: 0
+  noticeRange: 0
+  patrolSpeed: 0
+  trackSpeed: 0
+  knockbackPercentage: []
+  movementLock: 0
+  scarecrow_or_statue: 0
 --- !u!114 &114851997656688694
 MonoBehaviour:
   m_ObjectHideFlags: 1
