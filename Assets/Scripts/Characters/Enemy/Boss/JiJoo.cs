@@ -11,6 +11,8 @@ public abstract class JiJoo : Boss {
     public float horizontalSpeed;
     public float verticalSpeed;
 
+    public GameObject egg;
+
     public abstract bool IsAttackable();
 
     protected override void Awake()
@@ -60,36 +62,23 @@ public abstract class JiJoo : Boss {
         
     }
 
-    public override void GetDamaged(PlayerAttackInfo attack)
+    public override void GetHit(PlayerAttackInfo attack)
+    {
+        TakeDamage(attack.damage);
+        DebuffApply(attack.debuffTime);
+    }
+    public override void TakeDamage(float damage)
     {
         if (Invisible) { return; }
-        float prevHealth = currHealth;
-        currHealth -= attack.damage;
-
-        if (currHealth <= 0)
+        float prevHealth = CurrHealth;
+        CurrHealth -= damage;
+        if (CurrHealth <= 0)
         {
-            Invisible = true;
-            animator.SetTrigger("DeadTrigger");
-            StopCoroutine("OnFire");
-            GetComponent<SpriteRenderer>().color = Color.white;
-            if (bossRoom.CurPhase == bossRoom.totalPhase - 1)
-            {
-                currHealth = 1;
-            }
+            MakeDead();
+            return;
         }
-
-        DebuffApply(attack.debuffTime);
-
-        float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
-        float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
-
-        if (MovementLock) // 넉백이 진행 중
-        {
-            StopCoroutine("Knockback");
-        }
-        StartCoroutine(Knockback(knockbackDist, knockbackTime));
-
-        float currHealthPercentage = currHealth / maxHealth;
+        /*
+        float currHealthPercentage = CurrHealth / maxHealth;
         float prevHealthPercentage = prevHealth / maxHealth;
 
         foreach (float percentage in knockbackPercentage)
@@ -101,20 +90,20 @@ public abstract class JiJoo : Boss {
                 break;
             }
         }
-        animator.SetTrigger("TrackTrigger");
+        */
     }
 
     public abstract Vector2Int MoveDirection();
 
     public IEnumerator Heal(float hp, float time)
     {
-        float delta = hp - currHealth;
+        float delta = hp - CurrHealth;
         for (float t = 0; t <= time; t += Time.deltaTime)
         {
             yield return null;
-            currHealth += (delta * t / time);
+            CurrHealth += (delta * t / time);
         }
-        currHealth = hp;
+        CurrHealth = hp;
     }
 
     public static float Vector2ToZAngle(Vector2Int dir)

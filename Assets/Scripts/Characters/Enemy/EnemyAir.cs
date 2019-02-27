@@ -58,7 +58,7 @@ public class EnemyAir : Enemy {
     // - Knockback coroutine
     protected override IEnumerator Knockback(float knockbackDist, float knockbackTime)
     {
-        Vector2 knockbackDir = (transform.parent.position - enemyManager.Player.transform.position).normalized;
+        Vector2 knockbackDir = (transform.parent.position - GameManager.Instance.player.transform.position).normalized;
         Vector2 knockbackVelocity = (knockbackDist / knockbackTime) * knockbackDir;
 
         ChangeAngleZ(90 + Mathf.Rad2Deg * Mathf.Atan2(knockbackDir.y, knockbackDir.x));

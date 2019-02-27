@@ -7,10 +7,15 @@ public class Scarecrow : Enemy {
 
     public override void GetHit(PlayerAttackInfo attack)
     {
+        TakeDamage(attack.damage);
+        DebuffApply(attack.debuffTime);
+    }
+
+    public override void TakeDamage(float damage)
+    {
         if (Invisible) { return; }
         float prevHealth = CurrHealth;
-        CurrHealth -= attack.damage;
-
+        CurrHealth -= damage;
         if (CurrHealth <= 0)
         {
             if (neverDie)
@@ -19,12 +24,10 @@ public class Scarecrow : Enemy {
             }
             else
             {
-                Invisible = true;
-                animator.SetTrigger("DeadTrigger");
+                MakeDead();
                 return;
             }
         }
-
         animator.SetTrigger("DamagedTrigger");
     }
 }

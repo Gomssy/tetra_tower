@@ -36,13 +36,21 @@ public class JiJooMove : StateMachineBehaviour {
 
         enemy.transform.eulerAngles = new Vector3(0, 0, JiJoo.Vector2ToZAngle(dir));
         velocity = dir * new Vector2(horizontalSpeed, verticalSpeed);
+        Debug.Log(destination);
         Vector2 realVector = JiJoo.RealPosition(destination) - JiJoo.RealPosition(enemy.gridPosition);
         time = Mathf.Abs(realVector.x) / horizontalSpeed + Mathf.Abs(realVector.y) / verticalSpeed;
         timer = 0;
+        rb2D.MovePosition(rb2D.position + velocity * Time.deltaTime);
     }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        if (destination.x < 0 || destination.x >= 6 || destination.y < 0 || destination.y >= 6)
+        {
+            animator.SetTrigger("IdleTrigger");
+            return;
+        }
+
         rb2D.MovePosition(rb2D.position + velocity * Time.deltaTime);
         if (timer > time)
         {
