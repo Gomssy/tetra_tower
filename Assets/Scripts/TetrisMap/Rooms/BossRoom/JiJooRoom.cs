@@ -36,14 +36,14 @@ public class JiJooRoom : BossRoomInGame {
     }
     protected void Phase1()
     {
-        if (bosses[0].currHealth <= 0 && bosses[1].currHealth <= 0)
+        if (bosses[0].CurrHealth <= 0 && bosses[1].CurrHealth <= 0)
         {
             CurPhase++;
         }
     }
     protected void Phase2()
     {
-        if (bosses[0].currHealth <= 0 && bosses[1].currHealth <= 0)
+        if (bosses[0].CurrHealth <= 0 && bosses[1].CurrHealth <= 0)
         {
             CurPhase++;
         }

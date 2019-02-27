@@ -64,11 +64,11 @@ public abstract class JiJoo : Boss {
 
     public IEnumerator Heal(float hp, float time)
     {
-        float delta = hp - currHealth;
+        float delta = hp - CurrHealth;
         for (float t = 0; t <= time; t += Time.deltaTime)
         {
             yield return null;
-            currHealth += (delta * t / time);
+            CurrHealth += (delta * t / time);
         }
     }
 
