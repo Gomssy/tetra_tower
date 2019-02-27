@@ -9,8 +9,8 @@ public class ArcherTrack : StateMachineBehaviour
     GameObject player;
     Transform animatorRoot;
     EnemyGround enemy;
-    GameObject enemy_arrow;
-    EnemyArrow enemyArrow;
+   // GameObject enemy_arrow;
+
 
 
     readonly int maxFrame = 10;
@@ -22,13 +22,13 @@ public class ArcherTrack : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        enemy_arrow = Resources.Load<GameObject>("Prefabs/Projectiles/enemy_arrow");
-        waitBetweenShots = 1f;
-        shotCounter = waitBetweenShots;
+       // enemy_arrow = Resources.Load<GameObject>("Prefabs/Projectiles/enemy_arrow");
+      //  waitBetweenShots = 1f;
+       // shotCounter = waitBetweenShots;
 
         animatorRoot = animator.transform.parent;
         enemy = animator.GetComponent<EnemyGround>();
-        player = EnemyManager.Instance.Player;
+        player = GameManager.Instance.player;
 
 
         trackSpeed = enemy.trackSpeed;
@@ -49,12 +49,11 @@ public class ArcherTrack : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        shotCounter -= Time.deltaTime;
-        if (animator.GetComponent<Enemy>().PlayerDistance < attackRange && shotCounter < 0)
+        //shotCounter -= Time.deltaTime;
+        if (animator.GetComponent<Enemy>().PlayerDistance < attackRange/* && shotCounter < 0*/)
         {
             animator.SetTrigger("AttackTrigger");
-            GameManager.Instance.StartCoroutine(WaitforShot());
-
+          //  GameManager.Instance.StartCoroutine(WaitforShot());
             return;
 
         }
@@ -77,7 +76,7 @@ public class ArcherTrack : StateMachineBehaviour
         }
     }
 
-    IEnumerator WaitforShot()
+   /* IEnumerator WaitforShot()
     {
         yield return new WaitForSeconds(0.25f);
         Vector2 direction = enemy.transform.GetChild(0).position - player.transform.position;
@@ -90,7 +89,7 @@ public class ArcherTrack : StateMachineBehaviour
 
         shotCounter = waitBetweenShots;
     }
-
+    */
  
 
 

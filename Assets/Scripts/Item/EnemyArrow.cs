@@ -20,11 +20,7 @@ public class EnemyArrow : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         target = GameObject.FindObjectOfType<Player>();
-        moveDirection = transform.rotation.eulerAngles;
-       
-        
-          
-          
+        moveDirection = transform.rotation.eulerAngles; 
         rb.velocity = -moveSpeed *new Vector2(Mathf.Cos(Mathf.Deg2Rad * moveDirection.z), Mathf.Sin(Mathf.Deg2Rad * moveDirection.z));
     }
 
