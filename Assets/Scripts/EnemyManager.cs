@@ -75,6 +75,19 @@ public class EnemyManager : Singleton<EnemyManager>
         return (EnemyDeadCount == EnemySpawnCount);
     }
 
+    public int CountEnemyInMap()
+    {
+        int cnt = 0;
+        foreach(Transform obj in MapManager.currentRoom.transform)
+        {
+            if (obj.gameObject.CompareTag("enemy"))
+            {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
     // Object Pool
     private void CreateEnemyPool()
     {
