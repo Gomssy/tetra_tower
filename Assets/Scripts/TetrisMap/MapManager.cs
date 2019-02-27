@@ -210,6 +210,8 @@ public class MapManager : Singleton<MapManager> {
     public Sprite[] roomBackgroundSprite4;
     public Sprite[] roomBackgroundSprite5;*/
 
+    private AudioSource audioSource;
+
     /// <summary>
     /// Data of which item to spawn in item room.
     /// </summary>
@@ -646,6 +648,7 @@ public class MapManager : Singleton<MapManager> {
     public void EndTetrimino(Tetrimino te)
     {
         te.transform.position = new Vector3(te.mapCoord.x * tetrisMapSize, tetrisYCoord[(int)te.mapCoord.y], te.mapCoord.z * tetrisMapSize);
+        audioSource.PlayOneShot(audioSource.clip); // 오디오 소스 재생
         fallSpeed = initialFallSpeed;
         StopCoroutine(Timer.timer);
         UpdateMap(te);
@@ -1140,6 +1143,8 @@ public class MapManager : Singleton<MapManager> {
             roomBackgroundSpritesDistributed[4].Add(roomBackgroundSprite5[i]);*/
         currentStage = 0;
         grid = GameObject.Find("Grid").transform;
+
+        audioSource = GetComponent<AudioSource>(); // 오디오 소스 초기화
     }
 
     // Use this for initialization

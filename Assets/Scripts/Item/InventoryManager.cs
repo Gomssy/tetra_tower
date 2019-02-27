@@ -19,11 +19,16 @@ public class InventoryManager : Singleton<InventoryManager> {
 
     public GameObject coolUI;
 
+    private AudioSource audioSource; // 오디오 소스
+    public AudioClip[] audioClip = new AudioClip[2];
+
     private void Start()
     {
         player = GameManager.Instance.player;
         SetPool();
         StartCoroutine(TestCoroutine());
+
+        audioSource = GetComponent<AudioSource>(); // 오디오 소스 초기화
     }
     /// <summary>
     /// Set Item, Addon Pool and shuffle them
@@ -285,6 +290,7 @@ public class InventoryManager : Singleton<InventoryManager> {
     public void ItemSelect(int itemIndex)
     {
         ui.selectedItem = itemIndex;
+        PlayInventorySound(1);
         ui.SetOnPosition(itemList, addonList);
     }
     /// <summary>
@@ -304,7 +310,8 @@ public class InventoryManager : Singleton<InventoryManager> {
 
         itemList.Add(item);
         ui.SetOnPosition(itemList, addonList);
-        
+        PlayInventorySound(0);
+
         return true;
     }
     /// <summary>
@@ -318,6 +325,7 @@ public class InventoryManager : Singleton<InventoryManager> {
 
         addonList.Add(addon);
         ui.SetOnPosition(itemList, addonList);
+        PlayInventorySound(0);
         return true;
     }
     /// <summary>
@@ -375,6 +383,7 @@ public class InventoryManager : Singleton<InventoryManager> {
             addonList.RemoveAt(addonIndex);
         }
         ui.SetOnPosition(itemList, addonList);
+        PlayInventorySound(1);
     }
     /// <summary>
     /// dettach addon from item
@@ -389,5 +398,12 @@ public class InventoryManager : Singleton<InventoryManager> {
             itemList[itemIndex].addons[(int)addonType] = null;
         }
         ui.SetOnPosition(itemList, addonList);
+        PlayInventorySound(1);
+    }
+
+    public void PlayInventorySound(int type) // type: 0 = 아이템 드롭, 1 = 인벤토리에서 아이템 옮기기
+    {
+        audioSource.clip = audioClip[type]; // 오디오 클립 변경
+        audioSource.PlayOneShot(audioSource.clip, 0.2f * (type + 1)); // 오디오 재생, 볼륨이 너무 커서 20%, 40%로 줄임
     }
 }
