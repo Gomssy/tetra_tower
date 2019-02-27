@@ -30,7 +30,6 @@ public class ArcherTrack : StateMachineBehaviour
         enemy = animator.GetComponent<EnemyGround>();
         player = GameManager.Instance.player;
 
-
         trackSpeed = enemy.trackSpeed;
         attackRange = enemy.attackRange;
 
@@ -52,8 +51,8 @@ public class ArcherTrack : StateMachineBehaviour
         //shotCounter -= Time.deltaTime;
         if (animator.GetComponent<Enemy>().PlayerDistance < attackRange/* && shotCounter < 0*/)
         {
-            animator.SetTrigger("AttackTrigger");
-          //  GameManager.Instance.StartCoroutine(WaitforShot());
+            animator.SetTrigger("AttackTrigger");           
+            //  GameManager.Instance.StartCoroutine(WaitforShot());
             return;
 
         }
