@@ -25,7 +25,7 @@ public abstract class JiJoo : Boss {
         playerDirection = GameManager.Instance.player.transform.position - transform.position;
 
         bossRoom.transitionUpdate[0] += Phase1Transition;
-        //transitionUpdate[1] += Phase2Transition;
+        bossRoom.transitionUpdate[1] += Phase2Transition;
         bossRoom.phaseUpdate[0] += Phase1;
         //phaseUpdate[1] += Phase2;
     }
@@ -44,8 +44,8 @@ public abstract class JiJoo : Boss {
 
     protected void Phase1Transition()
     {
-        Debug.Log("aaa");
         animator.runtimeAnimatorController = animators[bossRoom.CurPhase];
+        bossRoom.isTransitionFinished = true;
     }
     protected void Phase2Transition()
     {
@@ -60,6 +60,50 @@ public abstract class JiJoo : Boss {
         
     }
 
+    public override void GetDamaged(PlayerAttackInfo attack)
+    {
+        if (Invisible) { return; }
+        float prevHealth = currHealth;
+        currHealth -= attack.damage;
+
+        if (currHealth <= 0)
+        {
+            Invisible = true;
+            animator.SetTrigger("DeadTrigger");
+            StopCoroutine("OnFire");
+            GetComponent<SpriteRenderer>().color = Color.white;
+            if (bossRoom.CurPhase == bossRoom.totalPhase - 1)
+            {
+                currHealth = 1;
+            }
+        }
+
+        DebuffApply(attack.debuffTime);
+
+        float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
+        float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
+
+        if (MovementLock) // 넉백이 진행 중
+        {
+            StopCoroutine("Knockback");
+        }
+        StartCoroutine(Knockback(knockbackDist, knockbackTime));
+
+        float currHealthPercentage = currHealth / maxHealth;
+        float prevHealthPercentage = prevHealth / maxHealth;
+
+        foreach (float percentage in knockbackPercentage)
+        {
+            if (currHealthPercentage > percentage) { break; }
+            if (prevHealthPercentage > percentage)
+            {
+                animator.SetTrigger("DamagedTrigger");
+                break;
+            }
+        }
+        animator.SetTrigger("TrackTrigger");
+    }
+
     public abstract Vector2Int MoveDirection();
 
     public IEnumerator Heal(float hp, float time)
@@ -70,6 +114,7 @@ public abstract class JiJoo : Boss {
             yield return null;
             currHealth += (delta * t / time);
         }
+        currHealth = hp;
     }
 
     public static float Vector2ToZAngle(Vector2Int dir)

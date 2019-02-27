@@ -28,7 +28,7 @@ public class JiJooRoom : BossRoomInGame {
 
     protected void Phase1Transition()
     {
-        Debug.Log("come");
+        
     }
     protected void Phase2Transition()
     {
