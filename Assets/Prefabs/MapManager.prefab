@@ -58,11 +58,11 @@ MonoBehaviour:
   gravity: 0.98
   collapseTime: 10
   clearedRoomCount: 0
-  stageClearCondition: 0a0000000a0000000a0000000a0000000a000000
+  stageClearCondition: 1200000012000000120000001200000012000000
   tetriminoCost: 1
   fog: {fileID: 1100171732424598, guid: b8ab69a93ba618c47b27cc04eb431b3f, type: 2}
   clearedFog: {fileID: 1767033925555920, guid: df8687fe46befb34eaf9d4d63938d946, type: 2}
-  portal: {fileID: 1285471223282336, guid: 93ba58b5e24488741a018d983b59c580, type: 2}
+  portal: {fileID: 1852332565035038, guid: 8028aef678f07ae4885587ec60c08d2a, type: 2}
   press: {fileID: 114990664041074520, guid: 8e750fd197a05d84c9fb8557eb95c666, type: 2}
   inGameDoorUp: {fileID: 1011110161276626, guid: 30d1850ce96755d4ea7675c706899cfb,
     type: 2}
@@ -128,8 +128,8 @@ MonoBehaviour:
   roomBackgroundSprite1:
   - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
   - {fileID: 21300000, guid: 7d94542039acd6a4b932cf9219b71799, type: 3}
-  - {fileID: 21300000, guid: c2e87589a128b824c8f621c5a34bfe5e, type: 3}
-  - {fileID: 21300000, guid: 7d94542039acd6a4b932cf9219b71799, type: 3}
+  - {fileID: 21300000, guid: 6a2ebda2105ccbf4baa07c0b9012d861, type: 3}
+  - {fileID: 21300000, guid: 2636fc5abc7f58240a5eceda6398c6a3, type: 3}
   itemRoomItemSpawnData: {fileID: 4900000, guid: 50da557f52db710419c3374a903b3d22,
     type: 3}
   goldRoomItemSpawnData: {fileID: 4900000, guid: a89c82f77571a09438810f11ef1978e0,

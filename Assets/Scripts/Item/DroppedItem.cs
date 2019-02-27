@@ -59,7 +59,7 @@ public class DroppedItem : DroppedObject, IPlayerInteraction
     public void Apply()
     {
         if(LifeStoneManager.Instance.CountType(LifeStoneType.Gold) < price)
-            StartCoroutine(GameManager.Instance.player.GetComponent<Player>().DisplayText("금 생명석이 부족합니다!"));
+            GameManager.Instance.DisplayText("금 생명석이 부족합니다!");
         else if (!itemAddon && inventoryManager.PushItem(item))
         {
             LifeStoneManager.Instance.ChangeToNormal(LifeStoneType.Gold, price);

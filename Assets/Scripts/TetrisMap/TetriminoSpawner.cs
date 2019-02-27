@@ -119,7 +119,7 @@ public class TetriminoSpawner : Singleton<TetriminoSpawner> {
         {
             MapManager.currentGhost.rooms[i].mapCoord = te.rooms[i].mapCoord;
             MapManager.currentGhost.rooms[i].GetComponent<SpriteRenderer>().sprite = MapManager.currentTetrimino.rooms[i].GetComponent<SpriteRenderer>().sprite;
-            MapManager.currentGhost.rooms[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
+            MapManager.currentGhost.rooms[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.3f);
         }
     }
     /// <summary>

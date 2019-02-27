@@ -17,7 +17,7 @@ public class EnemyAirTrack : StateMachineBehaviour {
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         animatorRoot = animator.transform.parent;
         enemy = animator.GetComponent<EnemyAir>();
-        player = EnemyManager.Instance.Player;
+        player = GameManager.Instance.player;
         trackSpeed = enemy.trackSpeed;
         frameCount = 0;
 

@@ -330,7 +330,11 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
 		for (int i = 0; i <= 3 - pSize.x; i++)
 			if (minRow[i] < selectedRow) selectedRow = minRow[i];
 
-        if (selectedRow == lifeStoneRowNum) return false;
+        if (selectedRow == lifeStoneRowNum)
+        {
+            GameManager.Instance.DisplayText("생명석 자리가 없습니다!");
+            return false;
+        }
 
 		for (int i = 0; i <= 3 - pSize.x; i++)
 			if (minRow[i] == selectedRow) selColCand.Add(i);

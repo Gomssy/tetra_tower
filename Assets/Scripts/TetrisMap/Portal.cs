@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Portal : MonoBehaviour, IPlayerInteraction  {
-    
+
+    public GameObject highlight;
     bool isPortalUsed = false;
 
     public void Apply()
@@ -19,7 +20,12 @@ public class Portal : MonoBehaviour, IPlayerInteraction  {
 
     public void HighlightSwitch(bool enabled)
     {
-
+        if (highlight)
+        {
+            highlight.SetActive(enabled);
+            highlight.GetComponent<SpriteRenderer>().sortingOrder = -1 + (enabled ? 2 : 0);
+            GetComponent<SpriteRenderer>().sortingOrder = (enabled ? 2 : 0);
+        }
     }
 
     // Use this for initialization

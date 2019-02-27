@@ -371,13 +371,13 @@ public class Room : MonoBehaviour
     /// </summary>
     public void FinishRoom()
     {
-        if(isRoomCleared != true)
+        OpenDoor("Up");
+        OpenDoor("Down");
+        OpenDoor("Left");
+        OpenDoor("Right");
+        if(!isRoomCleared)
         {
-            OpenDoor("Up");
-            OpenDoor("Down");
-            OpenDoor("Left");
-            OpenDoor("Right");
-            Vector3 fogPosition = fog.transform.position;
+            /*Vector3 fogPosition = fog.transform.position;
             Destroy(fog.gameObject);
             fog = Instantiate(MapManager.Instance.clearedFog, fogPosition, Quaternion.identity, transform);
             fog.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
@@ -386,6 +386,7 @@ public class Room : MonoBehaviour
             GameManager.Instance.clock.clockSpeedStack -= 3;
             if (GameManager.Instance.clock.clockSpeedStack < 0)
                 GameManager.Instance.clock.clockSpeedStack = 0;
+            GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 0.5f);*/
             roomInGame.RoomClear();
         }
         //Need to make extra works.
