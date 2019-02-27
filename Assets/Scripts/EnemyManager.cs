@@ -15,6 +15,9 @@ public class EnemyManager : Singleton<EnemyManager>
     // hold player for animation
     public GameObject player { get; private set; }
 
+    public LayerMask layerMaskPlatform;
+    public LayerMask layerMaskWall;
+
     // data of drop item
     [SerializeField]
     private TextAsset dropTableData;

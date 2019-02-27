@@ -161,7 +161,8 @@ public class EnemyGround : Enemy {
 
     public void Flip()
     {
-        NumeratedDir trackDir = (transform.GetChild(0).position.x - target.transform.position.x > 0) ? NumeratedDir.Left : NumeratedDir.Right;
-        ChangeDir_noOption(trackDir);
+        NumeratedDir trackDir = (transform.GetChild(0).position.x - 
+            target.transform.position.x > 0) ? NumeratedDir.Left : NumeratedDir.Right;
+        ChangeDir_movement(trackDir);
     }
 }

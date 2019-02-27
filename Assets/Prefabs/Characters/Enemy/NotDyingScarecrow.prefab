@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 4702549438788012}
   - component: {fileID: 212777808611083920}
   - component: {fileID: 95406922231436326}
-  - component: {fileID: 114232795469543294}
+  - component: {fileID: 114587357643134332}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -95,7 +95,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1146867442367080}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2.24, y: -4.407, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4702549438788012}
@@ -135,7 +135,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.040684164}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -146,7 +146,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.05, y: 1.51}
+  m_Size: {x: 1.05, y: 1.7813684}
   m_EdgeRadius: 0
 --- !u!95 &95406922231436326
 Animator:
@@ -157,7 +157,7 @@ Animator:
   m_GameObject: {fileID: 1382994494638876}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dd945695310e7314f8e3ae009064f45b, type: 2}
+  m_Controller: {fileID: 22100000, guid: 2cdfe73c8fc331c4eb6cdc10dc6e5be5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -166,7 +166,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114232795469543294
+--- !u!114 &114587357643134332
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1382994494638876}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a11d071a77ab21c48882c6c6e4db8f17, type: 3}
+  m_Script: {fileID: 11500000, guid: bf69b9b0b3af3664e89e16eab14c1b0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   debuffState: 
@@ -186,10 +186,8 @@ MonoBehaviour:
   patrolSpeed: 0
   trackSpeed: 0
   knockbackPercentage: []
-  MovementLock: 0
-  bumped: 0
-  bumpable: 1
-  attackRange: 0
+  movementLock: 0
+  scarecrow_or_statue: 1
 --- !u!114 &114799009846635808
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -242,7 +240,7 @@ SpriteRenderer:
   m_SortingLayerID: -612658245
   m_SortingLayer: 8
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8c9cb4fc97c794b4ebdf31c29c9804fd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 767cceb5bcd1b434e8c8741165e65b63, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

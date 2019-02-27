@@ -22,7 +22,7 @@ public class EffectManager : Singleton<EffectManager> {
         effectArray = new GameObject[effectPrefab.Length,20];
         for (int j = 0; j < effectPrefab.Length; j++)
         {
-            for (int i = 0; i < effectArray.Length; i++)
+            for (int i = 0; i < effectArray.GetLength(1); i++)
             {
                 effectArray[j,i] = Instantiate(effectPrefab[j], transform);
                 effectArray[j,i].SetActive(false);

@@ -77,7 +77,6 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
 	IEnumerator TestEnumerator()
 	{
         yield return null;
-        InstantiateFrame(GameManager.Instance.player.transform.position, 3, 1f);
     }
 
     /// <summary>
@@ -89,7 +88,7 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
         lifeStoneRowNum += rowNum;
         frameSuper.GetComponent<LifeStoneFrame>().AddRow(lifeStoneRowNum);
     }
-    public GameObject InstantiateFrame(Vector3 pos, int rowNum, float popoutStrength)
+    public GameObject InstantiateFrame(int rowNum, Vector3 pos, float popoutStrength)
     {
         GameObject tmpFrame = Instantiate(droppedFramePrefab);
         tmpFrame.GetComponent<DroppedLifeStoneFrame>().Init(rowNum, pos);

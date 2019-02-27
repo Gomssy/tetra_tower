@@ -303,14 +303,14 @@ public class InventoryManager : Singleton<InventoryManager> {
                 for (int j = 0; j < tmpItem.skillNum; j++)
                     if (item.combo[i].Equals(tmpItem.combo[j]))
                     {
-                        StartCoroutine(GameManager.Instance.player.GetComponent<Player>().DisplayText(tmpItem.name + "와(과) 콤보가 중복됩니다!"));
+                        GameManager.Instance.DisplayText(tmpItem.name + "와(과) 콤보가 중복됩니다!");
                         return false;
                     }
 
 
         if (itemList.Count > 8)
         {
-            StartCoroutine(GameManager.Instance.player.GetComponent<Player>().DisplayText("아이템이 너무 많습니다!"));
+            GameManager.Instance.DisplayText("아이템이 너무 많습니다!");
             return false;
         }
 
@@ -329,10 +329,9 @@ public class InventoryManager : Singleton<InventoryManager> {
     {
         if (addonList.Count > 8)
         {
-            StartCoroutine(GameManager.Instance.player.GetComponent<Player>().DisplayText("예비 애드온이 너무 많습니다!"));
+            GameManager.Instance.DisplayText("예비 애드온이 너무 많습니다!");
             return false;
         }
-
         addonList.Add(addon);
         ui.SetOnPosition(itemList, addonList);
         PlayInventorySound(0);

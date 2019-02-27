@@ -11,6 +11,23 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1623439448163086}
   m_IsPrefabAsset: 1
+--- !u!1 &1372247283591820
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4381696418870464}
+  - component: {fileID: 114566960235857702}
+  - component: {fileID: 82267628151008402}
+  m_Layer: 19
+  m_Name: AttackAudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1623439448163086
 GameObject:
   m_ObjectHideFlags: 0
@@ -53,6 +70,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4381696418870464
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1372247283591820}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4549734214569802}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4549734214569802
 Transform:
   m_ObjectHideFlags: 1
@@ -64,6 +94,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4710911479571038}
+  - {fileID: 4381696418870464}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -178,6 +209,101 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.53, y: 1}
   m_EdgeRadius: 0
+--- !u!82 &82267628151008402
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1372247283591820}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!82 &82529156342294766
 AudioSource:
   m_ObjectHideFlags: 1
@@ -351,13 +477,13 @@ MonoBehaviour:
   debuffTime:
   - 0
   - 0
-  - 0
+  - 3
   - 0
   - 0
   projectileType: 0
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 65536
+    m_Bits: 1114112
   vanishLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -371,6 +497,25 @@ MonoBehaviour:
   debuffTime2: 0
   debuffTime3: 0
   debuffTime4: 0
+--- !u!114 &114566960235857702
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1372247283591820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ac62dbb3205b6b449141595a4222630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClip:
+  - {fileID: 8300000, guid: 0cf34a382e05cdb4e80c61a05d3d150e, type: 3}
+  - {fileID: 8300000, guid: acdc2b464db7da345ac00967e2924c2e, type: 3}
+  - {fileID: 8300000, guid: bcf7f02d9e81f9349af2aa59ec102b55, type: 3}
+  - {fileID: 8300000, guid: b319bdc4f51f42f4a94af81c4dd67693, type: 3}
+  - {fileID: 0}
+  attackStatus: 0
+  playAudio: 0
 --- !u!114 &114574072693989902
 MonoBehaviour:
   m_ObjectHideFlags: 1

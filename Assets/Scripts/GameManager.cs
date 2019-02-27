@@ -12,7 +12,7 @@ public class GameManager : Singleton<GameManager> {
     public static GameState gameState;
 
     public bool isTutorial = false;
-    private bool statueEvent = false;
+    public int statueEvent = 0;
     /// <summary>
     /// Position where portal would spawn player.
     /// </summary>
@@ -180,21 +180,9 @@ public class GameManager : Singleton<GameManager> {
         }
         CountLeftRoom();
 
-        if(!statueEvent && MapManager.Instance.clearedRoomCount == 9)
+        if(statueEvent == 0 && MapManager.Instance.clearedRoomCount == 9)
         {
-            foreach(Transform obj in MapManager.currentRoom.transform)
-            {
-                if (obj.CompareTag("Enemy")) {
-                    GameObject body = obj.GetChild(0).gameObject;
-                    if (body.GetComponent<EnemyGround>() != null && body.GetComponent<SpriteRenderer>().isVisible)
-                    {
-                        Vector3 pos = obj.position;
-                        body.gameObject.GetComponent<EnemyGround>().ResetForPool();
-                        GameObject tempStatue = Instantiate(statue, pos, Quaternion.identity);
-                        statueEvent = true;
-                    }
-                }
-            }
+            statueEvent = 1;
         }
     }
 }

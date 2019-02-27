@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: ScareCrow
+  m_Controller: {fileID: 9100000, guid: dd945695310e7314f8e3ae009064f45b, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 1d49df58fd5d60044b995e16e1d37745, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e6edbc712162c2849b23e3686f0eab0e, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b2c0ddd05086e8d4392a28df35f98523, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4a9f272cf4f970240ad334416cef1556, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: abe7eea42bd6a454294248aed6afc05c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4a9f272cf4f970240ad334416cef1556, type: 2}

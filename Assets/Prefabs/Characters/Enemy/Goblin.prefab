@@ -291,7 +291,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debuffState: 
   monsterID: 101
-  maxHealth: 2
+  maxHealth: 15
   weight: 15
   patrolRange: 3
   noticeRange: 2
@@ -299,9 +299,7 @@ MonoBehaviour:
   trackSpeed: 2.5
   knockbackPercentage:
   - 0.5
-  MovementLock: 0
-  bumped: 0
-  bumpable: 1
+  movementLock: 0
   attackRange: 1.2
   WallTest: 
   CliffTest: 
