@@ -31,7 +31,7 @@ public class HPBar : MonoBehaviour {
             instBor.transform.localScale = new Vector3(width / instBor.GetComponent<SpriteRenderer>().size.x, height / instBor.GetComponent<SpriteRenderer>().size.y, 1);
             instBor.transform.position = transform.parent.position + new Vector3(0, yOffset, 0);
 
-            float cur = Mathf.Max(0,transform.parent.GetComponentInChildren<Enemy>().currHealth / transform.parent.GetComponentInChildren<Enemy>().maxHealth);
+            float cur = Mathf.Max(0,transform.parent.GetComponentInChildren<Enemy>().CurrHealth / transform.parent.GetComponentInChildren<Enemy>().maxHealth);
             instRed.SetActive(true);
             instRed.transform.localScale = new Vector3((width / instRed.GetComponent<SpriteRenderer>().size.x - height / instRed.GetComponent<SpriteRenderer>().size.y * 0.2f) * cur, height / instRed.GetComponent<SpriteRenderer>().size.y * 0.8f, 1);
             instRed.transform.position = transform.parent.position + new Vector3((width - height * 0.2f) / -2f, yOffset, 0);

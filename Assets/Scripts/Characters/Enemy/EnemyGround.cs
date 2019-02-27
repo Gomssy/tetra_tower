@@ -69,27 +69,27 @@ public class EnemyGround : Enemy {
 
 
     // - Change direction, and speed of rigidbody of enemy
-    public void ChangeVelocityX_noOption(float val)
+    public void ChangeVelocityX_movement(float val)
     {
-        ChangeVelocityX(val, new bool[] { MovementLock, KnockbackLock });
+        if(movementLock != EnemyMovementLock.Free) { return; }
+        ChangeVelocityX(val);
     }
 
-    public void ChangeDir_noOption(object dir)
+    public void ChangeDir_movement(object dir)
     {
-        ChangeDir(dir, new bool[] { MovementLock, KnockbackLock });
+        if (movementLock != EnemyMovementLock.Free) { return; }
+        ChangeDir(dir);
     }
 
-    private void ChangeVelocityX(float val, bool[] lockArray)
+    private void ChangeVelocityX(float val)
     {
-        foreach (var Lock in lockArray) { if (Lock) return; }
         Vector2 tempVelocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
         tempVelocity.x = val;
         transform.parent.GetComponent<Rigidbody2D>().velocity = tempVelocity;
     }
 
-    private void ChangeDir(object dir, bool[] lockArray)
+    private void ChangeDir(object dir)
     {
-        foreach (var Lock in lockArray) { if (Lock) return; }
         MoveDir = (int)dir;
         transform.parent.eulerAngles = ((NumeratedDir)dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
     }
@@ -97,32 +97,28 @@ public class EnemyGround : Enemy {
     // - Knockback coroutine
     protected override IEnumerator Knockback(float knockbackDist, float knockbackTime)
     {
-        MovementLock = true;
-        bool[] lockArray = new bool[] { false, KnockbackLock };
         int knockbackDir = (enemyManager.Player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
         float knockbackVelocity = knockbackDir * knockbackDist / knockbackTime;
-        ChangeDir(knockbackDir * -1, new bool[] { MovementLock, KnockbackLock });
-        ChangeVelocityX(knockbackVelocity, lockArray);
+        ChangeDir_movement(knockbackDir * -1);
+        ChangeVelocityX(knockbackVelocity);
 
         for (float timer = 0; timer <= knockbackTime; timer += Time.deltaTime)
         {
             if (CliffTest[(knockbackDir + 1) / 2])
             {
-                ChangeVelocityX(0.0f, lockArray);
+                ChangeVelocityX(0.0f);
                 yield return new WaitForSeconds(knockbackTime - timer);
                 break;
             }
             yield return new WaitForFixedUpdate();
         }
-        MovementLock = false;
-        ChangeVelocityX(0.0f, new bool[] { MovementLock, KnockbackLock });
+        ChangeVelocityX(0.0f);
+        if (movementLock != EnemyMovementLock.Debuffed) movementLock = EnemyMovementLock.Free;
     }
 
     protected override IEnumerator OnIce(float duration)
     {
         GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 1f);
-        ChangeVelocityX(0.0f, new bool[] { });
-        KnockbackLock = true;
         animator.SetTrigger("StunnedTrigger");
         animator.speed = stunnedAnimLength / duration;
         yield return new WaitForSeconds(duration);
@@ -131,11 +127,9 @@ public class EnemyGround : Enemy {
 
     protected override IEnumerator OnStun(float duration)
     {
-        ChangeVelocityX(0.0f, new bool[] { });
         animator.SetTrigger("StunnedTrigger");
         animator.speed = stunnedAnimLength / duration;
         yield return new WaitForSeconds(duration);
         OffDebuff(EnemyDebuffCase.Stun);
-        yield return null;
     }
 }

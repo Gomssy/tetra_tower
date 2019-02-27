@@ -22,7 +22,7 @@ public class Gluttony : Addon
     }
     public override void OtherEffect(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
-        if(attackInfo.damage >= enemyInfo.currHealth)
+        if(attackInfo.damage >= enemyInfo.CurrHealth)
         {
             lifeStoneManager.FillLifeStone(1, LifeStoneType.Normal);
         }

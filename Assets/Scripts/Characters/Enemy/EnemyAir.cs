@@ -15,85 +15,84 @@ public class EnemyAir : Enemy {
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        if(prevBumped != bumped && bumped && !MovementLock)
+        if(prevBumped != bumped && bumped && movementLock == EnemyMovementLock.Free)
         {
-            StartCoroutine(Knockback(0.0f, 1.0f));
+            StartCoroutine(Knockback(0.0f, 2.0f));
             StartCoroutine(RecoverBump());
         }
         prevBumped = bumped;
     }
 
-    public void ChangeAngleZ_noOption(float val)
-    {
-        ChangeAngleZ(val, new bool[] { MovementLock, KnockbackLock });
-    }
-
     public void ChangeVelocityXY_zero() // 망할 유니티 애니메이션 이벤트 Vec2를 parameter로 받는 함수를 못집어넣음
     {
-        ChangeVelocityXY(Vector2.zero, new bool[] { MovementLock, KnockbackLock });
+        ChangeVelocityXY_movement(Vector2.zero);
     }
 
-    public void ChangeVelocityXY_noOption(Vector2 val)
+    public void ChangeAngleZ_movement(float val)
     {
-        ChangeVelocityXY(val, new bool[] { MovementLock, KnockbackLock });
+        if (movementLock != EnemyMovementLock.Free) { return; }
+        ChangeAngleZ(val);
     }
 
-    private void ChangeAngleZ(float val, bool[] lockArray)
+    public void ChangeVelocityXY_movement(Vector2 val)
     {
-        foreach (var Lock in lockArray) { if (Lock) { return; } }
+        if (movementLock != EnemyMovementLock.Free) { return; }
+        ChangeVelocityXY(val);
+    }
+    
+    private void ChangeAngleZ(float val)
+    {
         Vector3 tempAngle = transform.parent.eulerAngles;
         tempAngle.z = val;
         transform.parent.eulerAngles = tempAngle;
     }
 
-    private void ChangeVelocityXY(Vector2 val, bool[] lockArray)
+    private void ChangeVelocityXY(Vector2 val)
     {
-        foreach (var Lock in lockArray) { if (Lock) { return; } }
         Vector3 tempVelocity = transform.parent.gameObject.GetComponent<Rigidbody2D>().velocity;
         tempVelocity.x = val.x;
         tempVelocity.y = val.y;
         transform.parent.gameObject.GetComponent<Rigidbody2D>().velocity = tempVelocity;
     }
 
+    // - Knockback coroutine
+    protected override IEnumerator Knockback(float knockbackDist, float knockbackTime)
+    {
+        Vector2 knockbackDir = (transform.parent.position - enemyManager.Player.transform.position).normalized;
+        Vector2 knockbackVelocity = (knockbackDist / knockbackTime) * knockbackDir;
+
+        ChangeAngleZ(90 + Mathf.Rad2Deg * Mathf.Atan2(knockbackDir.y, knockbackDir.x));
+        ChangeVelocityXY(knockbackVelocity);
+        yield return new WaitForSeconds(knockbackTime);
+        ChangeVelocityXY(Vector2.zero);
+        if (movementLock != EnemyMovementLock.Debuffed) movementLock = EnemyMovementLock.Free;
+    }
+
     protected override IEnumerator OnIce(float duration)
     {
         GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 1f);
-        ChangeVelocityXY(Vector2.zero, new bool[] { });
-        KnockbackLock = true;
+        bumped = true;
         animator.SetTrigger("StunnedTrigger");
         animator.speed = stunnedAnimLength / duration;
         yield return new WaitForSeconds(duration);
+        bumped = false;
         OffDebuff(EnemyDebuffCase.Ice);
     }
 
     protected override IEnumerator OnStun(float duration)
     {
-        ChangeVelocityXY(Vector2.zero, new bool[] { });
+        bumped = true;
         animator.SetTrigger("StunnedTrigger");
         animator.speed = stunnedAnimLength / duration;
         yield return new WaitForSeconds(duration);
         OffDebuff(EnemyDebuffCase.Stun);
+        bumped = false;
         yield return null;
-    }
-
-    // - Knockback coroutine
-    protected override IEnumerator Knockback(float knockbackDist, float knockbackTime)
-    {
-        MovementLock = true;
-        bool[] lockArray = new bool[] { false, KnockbackLock };
-        Vector2 knockbackDir = (transform.parent.position - enemyManager.Player.transform.position).normalized;
-        Vector2 knockbackVelocity = (knockbackDist / knockbackTime) * knockbackDir;
-        ChangeAngleZ(Mathf.Atan2(knockbackDir.y, knockbackDir.x) * -1, new bool[] { MovementLock, KnockbackLock });
-        ChangeVelocityXY(knockbackVelocity, lockArray);
-        
-        yield return new WaitForSeconds(knockbackTime);
-        MovementLock = false;
-        ChangeVelocityXY(Vector2.zero, new bool[] { MovementLock, KnockbackLock });
     }
 
     IEnumerator RecoverBump()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(2.0f);
         bumped = false;
     }
 }

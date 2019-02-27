@@ -65,7 +65,7 @@ public class ShockStick : Item {
             {
                 PlayerAttackInfo attack = new PlayerAttackInfo(20f, 0f, new float[(int)EnemyDebuffCase.END_POINTER] { 0, 0, 2, 0, 0 });
                 AttackCalculation(attack, enemy, combo[1]);
-                enemy.GetDamaged(attack);
+                enemy.GetHit(attack);
                 EffectManager.Instance.StartEffect(0, enemy.gameObject.transform.position);
                 EffectManager.Instance.StartNumber(1, enemy.gameObject.transform.position, attack.damage);
             }

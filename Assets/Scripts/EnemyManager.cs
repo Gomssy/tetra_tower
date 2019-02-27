@@ -65,7 +65,7 @@ public class EnemyManager : Singleton<EnemyManager>
             {
                 GameObject clone = PickFromPool(enemy);
                 clone.transform.position = location.position;
-                clone.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
+                clone.transform.SetParent(MapManager.currentRoom.transform);
             }
         }
     }

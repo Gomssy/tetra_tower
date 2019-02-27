@@ -3,22 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyAirIdle : StateMachineBehaviour {
-    float patrolRange;
-    float patrolSpeed;
     float noticeRange;
-    Vector2 origin;
-    Transform animatorRoot;
     EnemyAir enemy;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-        origin = animator.transform.position;
-        animatorRoot = animator.transform.parent;
         enemy = animator.GetComponent<EnemyAir>();
-
-        patrolRange = enemy.patrolRange;
         noticeRange = enemy.noticeRange;
-        patrolSpeed = enemy.patrolSpeed;
     }
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

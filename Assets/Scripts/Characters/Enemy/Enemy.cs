@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour {
     public float patrolSpeed;
     public float trackSpeed;
     public float[] knockbackPercentage;
-    public float currHealth { get; protected set; }
+    public float CurrHealth { get; protected set; }
 
     // manager
     protected InventoryManager inventoryManager;
@@ -37,9 +37,8 @@ public class Enemy : MonoBehaviour {
     // for movement
     protected Animator animator;
     protected float stunnedAnimLength;
-    public bool MovementLock;
+    public EnemyMovementLock movementLock;
     public bool Invisible { get; protected set; }
-    public bool KnockbackLock { get; protected set; }
     public float PlayerDistance { get; protected set; }
     protected virtual IEnumerator Knockback(float knockbackDist, float knockbackTime) { yield return 0; }
 
@@ -67,8 +66,9 @@ public class Enemy : MonoBehaviour {
 
     protected virtual void Start()
     { 
-        currHealth = maxHealth;
-        Invisible = MovementLock = KnockbackLock = false;
+        CurrHealth = maxHealth;
+        Invisible = false;
+        movementLock = EnemyMovementLock.Free;
         if (enemyManager.DropTableByID.ContainsKey(monsterID)) { dropTable = enemyManager.DropTableByID[monsterID]; }
         PlayerDistance = Vector2.Distance(GameManager.Instance.player.transform.position, transform.parent.position);
     }
@@ -81,62 +81,41 @@ public class Enemy : MonoBehaviour {
     // When damaged
 
     // - Calculate value & Arrange information
-    public virtual void GetDamaged(PlayerAttackInfo attack)
+    public virtual void GetHit(PlayerAttackInfo attack)
     {
-        if (Invisible) { return; }
-        float prevHealth = currHealth;
-        currHealth -= attack.damage;
-
-        if (currHealth <= 0)
-        {
-            Invisible = true;
-            animator.SetTrigger("DeadTrigger");
-            StopCoroutine("OnFire");
-            GetComponent<SpriteRenderer>().color = Color.white;
-            return;
-        }
-        
-        DebuffApply(attack.debuffTime);
+        TakeDamage(attack.damage);
 
         float knockbackDist = attack.damage * attack.knockBackMultiplier / weight;
         float knockbackTime = (knockbackDist >= 0.5f) ? 0.5f : knockbackDist;
 
-        if (MovementLock) // 넉백이 진행 중
+        if (movementLock == EnemyMovementLock.Rigid) // 넉백이 진행 중
         {
             StopCoroutine("Knockback");
         }
-        StartCoroutine(Knockback(knockbackDist, knockbackTime));
 
-        float currHealthPercentage = currHealth / maxHealth;
-        float prevHealthPercentage = prevHealth / maxHealth;
-
-        foreach (float percentage in knockbackPercentage)
+        if (movementLock < EnemyMovementLock.Debuffed)
         {
-            if (currHealthPercentage > percentage) { break; }
-            if (prevHealthPercentage > percentage)
-            {
-                animator.SetTrigger("DamagedTrigger");
-                break;
-            }
+            movementLock = EnemyMovementLock.Rigid;
+            StartCoroutine(Knockback(knockbackDist, knockbackTime));
         }
+
+        DebuffApply(attack.debuffTime);
+
         animator.SetTrigger("TrackTrigger");
     }
 
-    public void GetDamaged(float damage)
+    public void TakeDamage(float damage)
     {
         if (Invisible) { return; }
-        float prevHealth = currHealth;
-        currHealth -= damage;
-        if (currHealth <= 0)
+        float prevHealth = CurrHealth;
+        CurrHealth -= damage;
+        if (CurrHealth <= 0)
         {
-            Invisible = true;
-            animator.SetTrigger("DeadTrigger");
-            StopCoroutine("OnFire");
-            GetComponent<SpriteRenderer>().color = Color.white;
+            MakeDead();
             return;
         }
 
-        float currHealthPercentage = currHealth / maxHealth;
+        float currHealthPercentage = CurrHealth / maxHealth;
         float prevHealthPercentage = prevHealth / maxHealth;
 
         foreach (float percentage in knockbackPercentage)
@@ -148,6 +127,15 @@ public class Enemy : MonoBehaviour {
                 break;
             }
         }
+    }
+
+    public void MakeDead()
+    {
+        Invisible = true;
+        animator.SetTrigger("DeadTrigger");
+        StopCoroutine("OnFire");
+        GetComponent<SpriteRenderer>().color = Color.white;
+        return;
     }
 
     // - Apply debuff
@@ -176,11 +164,13 @@ public class Enemy : MonoBehaviour {
                     break;
                 case EnemyDebuffCase.Ice:
                     debuffState[debuff] = DebuffState.On;
+                    movementLock = EnemyMovementLock.Debuffed;
                     StartCoroutine(OnIce(duration));
                     break;
                 case EnemyDebuffCase.Stun:
                     if(debuffState[debuff] != DebuffState.On) {
                         debuffState[debuff] = DebuffState.On;
+                        movementLock = EnemyMovementLock.Debuffed;
                         StartCoroutine(OnStun(duration));
                     } 
                     break;
@@ -222,7 +212,7 @@ public class Enemy : MonoBehaviour {
             foreach (Item item in inventoryManager.itemList)
                 damageMultiplier *= item.GlobalFireDamageMultiplier();
 
-            GetDamaged(lifeStoneManager.lifeStoneRowNum * 0.3f * damageMultiplier);
+            TakeDamage(lifeStoneManager.lifeStoneRowNum * 0.3f * damageMultiplier);
             EffectManager.Instance.StartNumber(0, gameObject.transform.parent.position, lifeStoneManager.lifeStoneRowNum * 0.3f);
         }
         debuffState[(int)EnemyDebuffCase.Fire] = DebuffState.Off;
@@ -244,12 +234,13 @@ public class Enemy : MonoBehaviour {
             case EnemyDebuffCase.Ice:
                 GetComponent<SpriteRenderer>().color = Color.white;
                 StopCoroutine("OnIce");
-                KnockbackLock = false;
+                movementLock = EnemyMovementLock.Free;
                 animator.speed = 1.0f;
                 animator.SetTrigger("DisableStunTrigger");
                 break;
             case EnemyDebuffCase.Stun:
                 StopCoroutine("OnStun");
+                movementLock = EnemyMovementLock.Free;
                 animator.speed = 1.0f;
                 animator.SetTrigger("DisableStunTrigger");
                 break;
@@ -266,10 +257,11 @@ public class Enemy : MonoBehaviour {
         if (transform.parent.GetComponentInChildren<HPBar>())
             transform.parent.GetComponentInChildren<HPBar>().Inactivate();
         transform.parent.gameObject.SetActive(false);
+        transform.parent.SetParent(null);
         StopAllCoroutines();
-        enemyManager.EnemyDeadCount++; // 다른 enemy로 인해 소환되는 enemy가 추가될 경우 여기를 건드려야 함
+        enemyManager.EnemyDeadCount++;
 
-        currHealth = maxHealth;
+        CurrHealth = maxHealth;
         Invisible = false;
         // Drop 아이템 결정. 인덱스 별 아이템은 맨 밑에 서술
         if (dropTable == null) { return; }
