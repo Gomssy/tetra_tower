@@ -33,6 +33,9 @@ public class EnemyManager : Singleton<EnemyManager>
     private uint EnemySpawnCount;
     public uint EnemyDeadCount;
 
+    // wall or platform
+    public LayerMask layerMaskWall;
+    public LayerMask layerMaskPlatform;
 
     // method
     // Constructor - protect calling raw constructor
@@ -62,25 +65,7 @@ public class EnemyManager : Singleton<EnemyManager>
             {
                 GameObject clone = PickFromPool(enemy);
                 clone.transform.position = location.position;
-                clone.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
-            }
-        }
-    }
-
-    // Spawn Enemy to Map
-    public void SpawnEnemyToMap_forTest()
-    {
-        EnemySpawnCount = EnemyDeadCount = 0;
-        Transform enemySpots = GameObject.Find("Grid").transform.GetChild(0).GetChild(0).Find("enemy spot");
-        foreach (Transform enemySpot in enemySpots)
-        {
-            if (!enemySpot.gameObject.activeSelf) continue;
-            GameObject enemy = enemySpot.gameObject.GetComponent<enemySpot>().enemyPrefab;
-            foreach (Transform location in enemySpot)
-            {
-                GameObject clone = PickFromPool(enemy);
-                clone.transform.position = location.position;
-                clone.transform.SetParent(MapManager.currentRoom.roomInGame.transform);
+                clone.transform.SetParent(MapManager.currentRoom.transform);
             }
         }
     }
@@ -88,6 +73,19 @@ public class EnemyManager : Singleton<EnemyManager>
     public bool IsClear()
     {
         return (EnemyDeadCount == EnemySpawnCount);
+    }
+
+    public int CountEnemyInMap()
+    {
+        int cnt = 0;
+        foreach(Transform obj in MapManager.currentRoom.transform)
+        {
+            if (obj.gameObject.CompareTag("enemy"))
+            {
+                cnt++;
+            }
+        }
+        return cnt;
     }
 
     // Object Pool

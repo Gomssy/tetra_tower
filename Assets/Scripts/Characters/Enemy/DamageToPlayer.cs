@@ -17,20 +17,11 @@ public class DamageToPlayer : MonoBehaviour {
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && isBumpAttack && transform.parent.gameObject.GetComponent<Enemy>().bumpable)
+        if (collision.CompareTag("Player") && isBumpAttack && !transform.parent.gameObject.GetComponent<EnemyAir>().bumped)
         {
             EnemyAttackInfo attack = new EnemyAttackInfo(damage, 1f, 0, null, null);
             collision.gameObject.GetComponent<PlayerAttack>().TakeDamage(attack);
             transform.parent.gameObject.GetComponent<EnemyAir>().bumped = true;
-            transform.parent.gameObject.GetComponent<EnemyAir>().bumpable = false;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player") && isBumpAttack)
-        {
-            transform.parent.gameObject.GetComponent<Enemy>().bumped = false;
         }
     }
 }

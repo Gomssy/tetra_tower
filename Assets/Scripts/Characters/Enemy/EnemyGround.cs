@@ -6,10 +6,9 @@ using System;
 public class EnemyGround : Enemy {
 
     public float attackRange;
-
     public int MoveDir { get; private set; }
-    public bool[] WallTest { get; private set; }
-    public bool[] CliffTest { get; private set; }
+    public bool[] WallTest;
+    public bool[] CliffTest;
 
     protected override void Awake()
     {
@@ -38,7 +37,6 @@ public class EnemyGround : Enemy {
     // - Check whether enemy is near to cliff
     private void CheckCliff()
     {
-        Vector2 velocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
         Vector2 colliderSize = transform.parent.GetComponent<BoxCollider2D>().size;
 
         foreach (int Dir in Enum.GetValues(typeof(NumeratedDir)))
@@ -46,8 +44,7 @@ public class EnemyGround : Enemy {
             Vector2 origin = (Vector2)transform.parent.position + Dir * new Vector2(colliderSize.x / 2.0f, 0);
             Vector2 direction = Vector2.down;
             float distance = colliderSize.y / 4.0f;
-            int layerMask = LayerMask.NameToLayer("platform");
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, enemyManager.layerMaskPlatform);
 
             CliffTest[(Dir + 1) / 2] = (hit.collider == null);
         }
@@ -60,11 +57,10 @@ public class EnemyGround : Enemy {
 
         foreach (int Dir in Enum.GetValues(typeof(NumeratedDir)))
         {
-            Vector2 origin = (Vector2)transform.parent.position + new Vector2(Dir * colliderSize.x / 2.0f, colliderSize.y);
+            Vector2 origin = (Vector2)transform.parent.position + new Vector2(Dir * colliderSize.x / 2.0f, colliderSize.y / 2.0f);
             Vector2 direction = Vector2.right * Dir;
-            float distance = 0.5f;
-            LayerMask layerMask = LayerMask.GetMask("Wall", "OuterWall");
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, layerMask);
+            float distance = 0.2f;
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, enemyManager.layerMaskWall);
 
             WallTest[(Dir + 1) / 2] = (hit.collider != null);
         }
@@ -72,73 +68,74 @@ public class EnemyGround : Enemy {
 
 
     // - Change direction, and speed of rigidbody of enemy
-    public void ChangeVelocityX_noOption(float val)
+    public void ChangeVelocityX_movement(float val)
     {
-        ChangeVelocityX(val, new bool[] { MovementLock, KnockbackLock });
+        if(movementLock != EnemyMovementLock.Free) { return; }
+        ChangeVelocityX(val);
     }
 
-    public void ChangeDir_noOption(object dir)
+    public void ChangeDir_movement(object dir)
     {
-        ChangeDir(dir, new bool[] { MovementLock, KnockbackLock });
+        if (movementLock != EnemyMovementLock.Free) { return; }
+        ChangeDir(dir);
     }
 
-    private void ChangeVelocityX(float val, bool[] lockArray)
+    private void ChangeVelocityX(float val)
     {
-        foreach (var Lock in lockArray) { if (Lock) return; }
         Vector2 tempVelocity = transform.parent.GetComponent<Rigidbody2D>().velocity;
         tempVelocity.x = val;
         transform.parent.GetComponent<Rigidbody2D>().velocity = tempVelocity;
     }
 
-    private void ChangeDir(object dir, bool[] lockArray)
+    private void ChangeDir(object dir)
     {
-        foreach (var Lock in lockArray) { if (Lock) return; }
         MoveDir = (int)dir;
         transform.parent.eulerAngles = ((NumeratedDir)dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
+    }
+
+    private void ChangeDir_forAnimation()
+    {
+        int knockbackDir = (GameManager.Instance.player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
+        ChangeDir(knockbackDir * -1);
     }
 
     // - Knockback coroutine
     protected override IEnumerator Knockback(float knockbackDist, float knockbackTime)
     {
-        MovementLock = true;
-        bool[] lockArray = new bool[] { false, KnockbackLock };
         int knockbackDir = (GameManager.Instance.player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
         float knockbackVelocity = knockbackDir * knockbackDist / knockbackTime;
-        ChangeDir(knockbackDir * -1, new bool[] { MovementLock, KnockbackLock });
-        ChangeVelocityX(knockbackVelocity, lockArray);
+         //ChangeDir(knockbackDir * -1);
+        ChangeVelocityX(knockbackVelocity);
 
         for (float timer = 0; timer <= knockbackTime; timer += Time.deltaTime)
         {
             if (CliffTest[(knockbackDir + 1) / 2])
             {
-                ChangeVelocityX(0.0f, lockArray);
+                ChangeVelocityX(0.0f);
                 yield return new WaitForSeconds(knockbackTime - timer);
                 break;
             }
             yield return new WaitForFixedUpdate();
         }
-        MovementLock = false;
-        ChangeVelocityX(0.0f, new bool[] { MovementLock, KnockbackLock });
+        ChangeVelocityX(0.0f);
+        if (movementLock != EnemyMovementLock.Debuffed) movementLock = EnemyMovementLock.Free;
     }
 
     protected override IEnumerator OnIce(float duration)
     {
         GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 1f);
-        ChangeVelocityX(0.0f, new bool[] { });
-        KnockbackLock = true;
         animator.SetTrigger("StunnedTrigger");
         animator.speed = stunnedAnimLength / duration;
         yield return new WaitForSeconds(duration);
-        OffDebuff(EnemyDebuffCase.Ice);
+        OffDebuff(EnemyDebuffCase.Ice); 
     }
 
     protected override IEnumerator OnStun(float duration)
     {
-        ChangeVelocityX(0.0f, new bool[] { });
         animator.SetTrigger("StunnedTrigger");
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName("Stunned"));
         animator.speed = stunnedAnimLength / duration;
         yield return new WaitForSeconds(duration);
         OffDebuff(EnemyDebuffCase.Stun);
-        yield return null;
     }
 }

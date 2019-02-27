@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4804976410232030}
   - component: {fileID: 50573848117970958}
   - component: {fileID: 61188111102399610}
-  m_Layer: 16
+  m_Layer: 20
   m_Name: Spider
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4205286087293746}
   - component: {fileID: 114337624805266014}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: HPBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 212993065858080250}
   - component: {fileID: 95156341909549574}
   - component: {fileID: 114803474034076246}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 4370838883948786}
   - component: {fileID: 61019308264186112}
   - component: {fileID: 114106922099255344}
-  m_Layer: 18
+  m_Layer: 17
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

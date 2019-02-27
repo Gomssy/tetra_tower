@@ -35,14 +35,14 @@ public class Jollarcher2Track : StateMachineBehaviour
         attackRange = enemy.attackRange;
 
         NumeratedDir trackDir = (animatorRoot.position.x - player.transform.position.x > 0) ? NumeratedDir.Left : NumeratedDir.Right;
-        enemy.ChangeDir_noOption(trackDir);
+        enemy.ChangeDir_movement(trackDir);
         if (enemy.CliffTest[(enemy.MoveDir + 1) / 2] || animator.GetComponent<Enemy>().PlayerDistance < attackRange)
         {
-            enemy.ChangeVelocityX_noOption(0.0f);
+            enemy.ChangeVelocityX_movement(0.0f);
         }
         else
         {
-            enemy.ChangeVelocityX_noOption(enemy.MoveDir * trackSpeed);
+            enemy.ChangeVelocityX_movement(enemy.MoveDir * trackSpeed);
         }
     }
 
@@ -62,18 +62,18 @@ public class Jollarcher2Track : StateMachineBehaviour
         int integerDir = enemy.MoveDir;
         if (enemy.WallTest[(integerDir + 1) / 2] || enemy.CliffTest[(integerDir + 1) / 2])
         {
-            enemy.ChangeVelocityX_noOption(0.0f);
+            enemy.ChangeVelocityX_movement(0.0f);
         }
         else
         {
-            enemy.ChangeVelocityX_noOption(enemy.MoveDir * trackSpeed);
+            enemy.ChangeVelocityX_movement(enemy.MoveDir * trackSpeed);
         }
 
         frameCounter += 1;
         if (frameCounter >= maxFrame)
         {
             NumeratedDir trackDir = (animatorRoot.position.x - player.transform.position.x > 0) ? NumeratedDir.Left : NumeratedDir.Right;
-            enemy.ChangeDir_noOption(trackDir);
+            enemy.ChangeDir_movement(trackDir);
             frameCounter = 0;
         }
     }

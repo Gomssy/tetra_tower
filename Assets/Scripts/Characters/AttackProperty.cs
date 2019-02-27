@@ -46,7 +46,6 @@ public class AttackProperty : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
         Bounds tmpBounds = new Bounds();
         if ((enemyLayer == (enemyLayer | 1 << collision.gameObject.layer)) && !collision.transform.GetChild(0).GetComponent<Enemy>().Invisible)
         {
@@ -63,7 +62,7 @@ public class AttackProperty : MonoBehaviour {
                     }
                 }
 
-            collision.transform.GetChild(0).GetComponent<Enemy>().GetDamaged(curAttack);
+            collision.transform.GetChild(0).GetComponent<Enemy>().GetHit(curAttack);
 
             //make effect
             foreach (Collider2D col in GetComponents<Collider2D>())

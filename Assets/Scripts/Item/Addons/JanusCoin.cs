@@ -26,7 +26,7 @@ public class JanusCoin : Addon
         }
         else
         {
-            return enemyInfo.currHealth * 0.25f;
+            return enemyInfo.CurrHealth * 0.25f;
         }
     }
 }

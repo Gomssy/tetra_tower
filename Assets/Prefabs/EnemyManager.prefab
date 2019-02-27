@@ -60,3 +60,9 @@ MonoBehaviour:
   - {fileID: 1896221696921858, guid: 6051c7354232afa45bf71a1032a49418, type: 2}
   EnemySpawnCount: 0
   EnemyDeadCount: 0
+  layerMaskWall:
+    serializedVersion: 2
+    m_Bits: 256
+  layerMaskPlatform:
+    serializedVersion: 2
+    m_Bits: 2304
