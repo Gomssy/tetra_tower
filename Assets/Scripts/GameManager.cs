@@ -20,6 +20,7 @@ public class GameManager : Singleton<GameManager> {
 
     public GameObject player;
     public GameObject minimap;
+    public GameObject statue;
     public Canvas gameOverCanvas;
     public Canvas inventoryCanvas;
     public Canvas textCanvas;
@@ -156,12 +157,15 @@ public class GameManager : Singleton<GameManager> {
         {
             foreach(Transform obj in MapManager.currentRoom.transform)
             {
-                if (obj.gameObject.GetComponent<EnemyGround>() != null && obj.gameObject.GetComponent<SpriteRenderer>().isVisible)
-                {
-                    Vector3 pos = obj.position;
-                    obj.gameObject.GetComponent<Enemy>().ResetForPool();
-                    // Instantiate;
-                    statueEvent = true;
+                if (obj.CompareTag("Enemy")) {
+                    GameObject body = obj.GetChild(0).gameObject;
+                    if (body.GetComponent<EnemyGround>() != null && body.GetComponent<SpriteRenderer>().isVisible)
+                    {
+                        Vector3 pos = obj.position;
+                        body.gameObject.GetComponent<EnemyGround>().ResetForPool();
+                        GameObject tempStatue = Instantiate(statue, pos, Quaternion.identity);
+                        statueEvent = true;
+                    }
                 }
             }
         }

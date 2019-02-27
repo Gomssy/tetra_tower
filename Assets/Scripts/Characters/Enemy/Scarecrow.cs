@@ -35,6 +35,9 @@ public class Scarecrow : Enemy {
         }
         else
         {
+            if (transform.parent.GetComponentInChildren<HPBar>()) {
+                transform.parent.GetComponentInChildren<HPBar>().Inactivate();
+            }
             MapManager.Instance.UpgradeRoom(RoomType.Gold);
             Destroy(transform.parent.gameObject);
         }
