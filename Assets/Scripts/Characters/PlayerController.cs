@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private float doubleJumpSpeed;
     [SerializeField]
     private float dashAcceleration;
+    private float slowRatio = 1;
     public Collider2D platformCollider;
     // Bool values for jump & doublejump
     private bool isGrounded = true;
@@ -217,7 +218,7 @@ public class PlayerController : MonoBehaviour
                         if (isGrounded) playerState = PlayerState.Walk;
                     }
 
-                    rb.velocity = new Vector2(xVelocity, yVelocity);
+                    rb.velocity = slowRatio * new Vector2(xVelocity, yVelocity);
                 }
                 if (playerState != PlayerState.GoingUp && playerState != PlayerState.GoingDown && playerState != PlayerState.Attack)
                     airAttack = true;
@@ -349,5 +350,12 @@ public class PlayerController : MonoBehaviour
         isJumpable = true;
         yield return new WaitForSeconds(0.3f);
         ropeEnabled = true;
+    }
+
+    public IEnumerator OnSlow(float time, float ratio)
+    {
+        slowRatio = ratio;
+        yield return new WaitForSeconds(time);
+        slowRatio = 1;
     }
  }

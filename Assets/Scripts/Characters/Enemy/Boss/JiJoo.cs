@@ -11,6 +11,8 @@ public abstract class JiJoo : Boss {
     public float horizontalSpeed;
     public float verticalSpeed;
 
+    public GameObject egg;
+
     public abstract bool IsAttackable();
 
     protected override void Awake()
@@ -25,7 +27,7 @@ public abstract class JiJoo : Boss {
         playerDirection = GameManager.Instance.player.transform.position - transform.position;
 
         bossRoom.transitionUpdate[0] += Phase1Transition;
-        //transitionUpdate[1] += Phase2Transition;
+        bossRoom.transitionUpdate[1] += Phase2Transition;
         bossRoom.phaseUpdate[0] += Phase1;
         //phaseUpdate[1] += Phase2;
     }
@@ -44,8 +46,8 @@ public abstract class JiJoo : Boss {
 
     protected void Phase1Transition()
     {
-        Debug.Log("aaa");
         animator.runtimeAnimatorController = animators[bossRoom.CurPhase];
+        bossRoom.isTransitionFinished = true;
     }
     protected void Phase2Transition()
     {
@@ -60,6 +62,37 @@ public abstract class JiJoo : Boss {
         
     }
 
+    public override void GetHit(PlayerAttackInfo attack)
+    {
+        TakeDamage(attack.damage);
+        DebuffApply(attack.debuffTime);
+    }
+    public override void TakeDamage(float damage)
+    {
+        if (Invisible) { return; }
+        float prevHealth = CurrHealth;
+        CurrHealth -= damage;
+        if (CurrHealth <= 0)
+        {
+            MakeDead();
+            return;
+        }
+        /*
+        float currHealthPercentage = CurrHealth / maxHealth;
+        float prevHealthPercentage = prevHealth / maxHealth;
+
+        foreach (float percentage in knockbackPercentage)
+        {
+            if (currHealthPercentage > percentage) { break; }
+            if (prevHealthPercentage > percentage)
+            {
+                animator.SetTrigger("DamagedTrigger");
+                break;
+            }
+        }
+        */
+    }
+
     public abstract Vector2Int MoveDirection();
 
     public IEnumerator Heal(float hp, float time)
@@ -70,6 +103,7 @@ public abstract class JiJoo : Boss {
             yield return null;
             CurrHealth += (delta * t / time);
         }
+        CurrHealth = hp;
     }
 
     public static float Vector2ToZAngle(Vector2Int dir)

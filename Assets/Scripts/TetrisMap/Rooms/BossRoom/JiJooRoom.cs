@@ -28,7 +28,7 @@ public class JiJooRoom : BossRoomInGame {
 
     protected void Phase1Transition()
     {
-        Debug.Log("come");
+        
     }
     protected void Phase2Transition()
     {
@@ -36,14 +36,14 @@ public class JiJooRoom : BossRoomInGame {
     }
     protected void Phase1()
     {
-        if (bosses[0].CurrHealth <= 0 && bosses[1].CurrHealth <= 0)
+        if (bosses[0].animator.GetBool("PhaseEnd") && bosses[1].animator.GetBool("PhaseEnd"))
         {
             CurPhase++;
         }
     }
     protected void Phase2()
     {
-        if (bosses[0].CurrHealth <= 0 && bosses[1].CurrHealth <= 0)
+        if (bosses[0].animator.GetBool("PhaseEnd") && bosses[1].animator.GetBool("PhaseEnd"))
         {
             CurPhase++;
         }

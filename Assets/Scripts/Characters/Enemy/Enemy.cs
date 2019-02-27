@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour {
     protected EnemyManager enemyManager;
 
     // for movement
-    protected Animator animator;
+    public Animator animator;
     protected float stunnedAnimLength;
     public EnemyMovementLock movementLock;
     public bool Invisible { get; protected set; }
@@ -103,7 +103,7 @@ public class Enemy : MonoBehaviour {
         animator.SetTrigger("TrackTrigger");
     }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         if (Invisible) { return; }
         float prevHealth = CurrHealth;
@@ -134,7 +134,6 @@ public class Enemy : MonoBehaviour {
         animator.SetTrigger("DeadTrigger");
         StopCoroutine("OnFire");
         GetComponent<SpriteRenderer>().color = Color.white;
-        return;
     }
 
     // - Apply debuff

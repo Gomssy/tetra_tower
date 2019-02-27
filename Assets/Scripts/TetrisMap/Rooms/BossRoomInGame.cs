@@ -75,7 +75,7 @@ public class BossRoomInGame : RoomInGame {
     IEnumerator Phase(int phase)
     {
         isTransitionFinished = false;
-        Debug.Log(transitionUpdate[phase].GetInvocationList().GetLength(0));
+        Debug.Log(transitionUpdate[phase].GetInvocationList().Length);
         while (!isTransitionFinished)
         {
             if (transitionUpdate[phase] != null)

@@ -206,7 +206,7 @@ MonoBehaviour:
   - {fileID: 114384035641513528, guid: a2dadbc92c7cc7e449233fae6430dee7, type: 2}
   - {fileID: 114704192105535744, guid: a121f45347e4c3d4faf83b4e681c84f0, type: 2}
   - {fileID: 114453972306455548, guid: f6834170b7152ee4db0dc7e165dcca70, type: 2}
-  - {fileID: 114902494803447852, guid: 8e573eb3b8b071c47a4ee92adf1a9644, type: 2}
+  - {fileID: 114367142578803744, guid: 8e573eb3b8b071c47a4ee92adf1a9644, type: 2}
   roomSurfaceSprite1:
   - {fileID: 21300000, guid: 5e6d29c00a95b8140a33c81d93aac0b2, type: 3}
   - {fileID: 21300000, guid: 45c68bb908319e942b8dcdaba688c080, type: 3}
