@@ -144,9 +144,9 @@ public class InventoryManager : Singleton<InventoryManager> {
         {
             return AddonInstantiate(quality, pos, popoutStrength);
         }
-        else if(quality != ItemQuality.Study)
+        else if(quality != ItemQuality.Masterpiece)
         {
-            return ItemInstantiate(quality - 1, pos, popoutStrength);
+            return ItemInstantiate(quality + 1, pos, popoutStrength);
         }
         return null;
     }
@@ -215,9 +215,9 @@ public class InventoryManager : Singleton<InventoryManager> {
         {
             return ItemInstantiate(quality, pos, popoutStrength);
         }
-        else if (quality != ItemQuality.Study)
+        else if (quality != ItemQuality.Masterpiece)
         {
-            return AddonInstantiate(quality - 1, pos, popoutStrength);
+            return AddonInstantiate(quality + 1, pos, popoutStrength);
         }
         return null;
     }

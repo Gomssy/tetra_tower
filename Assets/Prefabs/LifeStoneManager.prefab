@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1420923890547556}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -6.9766555, y: 2.569394, z: 0.0049343775}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -65,6 +65,8 @@ MonoBehaviour:
   lifeUnitPrefab: {fileID: 1274079429510600, guid: c1fa87a24452e5745859b739e4a5254b,
     type: 2}
   goldPotionPrefab: {fileID: 1778675533210814, guid: 57c0f65ad47e39943a69b5b0a6fa0e47,
+    type: 2}
+  droppedFramePrefab: {fileID: 1356237453793910, guid: a142a989cdc2e0c4ba0aabbcde26010e,
     type: 2}
   vibrationVariable: 0.1
   droppedLifeStonePrefab: {fileID: 1149595688849768, guid: 8255a117a93935941b32b4aed9b299a0,

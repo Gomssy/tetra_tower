@@ -56,7 +56,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -101,5 +101,7 @@ MonoBehaviour:
   price: 0
   priceTag: {fileID: 0}
   priceSign: {fileID: 0}
-  frames: []
-  borderSize: 0
+  frames:
+  - {fileID: 1366103144126518, guid: 830ffee34763ed741ab4a375a0dbac22, type: 2}
+  - {fileID: 1690566668189580, guid: deaaed06a4e2692439983f8416ddd232, type: 2}
+  - {fileID: 1976803328805560, guid: a7f047a9f533d4c448d09f13f288eb2f, type: 2}

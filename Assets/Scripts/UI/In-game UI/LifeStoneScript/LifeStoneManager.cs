@@ -35,6 +35,7 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
 	/// </summary>
 	public GameObject lifeUnitPrefab;
     public GameObject goldPotionPrefab;
+    public GameObject droppedFramePrefab;
 	/// <summary>
 	/// strength of vibration when Lifestone falls
 	/// </summary>
@@ -70,13 +71,13 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
         lifeStoneArray = new int[50, 3];
 		lifeStoneUnit = new GameObject[50, 3];
         for (int i = 0; i < 50; i++) for (int j = 0; j < 3; j++) lifeStoneArray[i, j] = 0;
-        PushLifeStone(CreateLifeStoneInfo(new Vector2Int(3, 6), 0, 0));
+        PushLifeStone(new LifeStoneInfo(new Vector2Int(3,6),"AAAAAAAAAAAAAA A  "));
         StartCoroutine("TestEnumerator");
     }
 	IEnumerator TestEnumerator()
 	{
         yield return null;
-
+        InstantiateFrame(GameManager.Instance.player.transform.position, 3, 1f);
     }
 
     /// <summary>
@@ -87,6 +88,13 @@ public class LifeStoneManager : Singleton<LifeStoneManager> {
     {
         lifeStoneRowNum += rowNum;
         frameSuper.GetComponent<LifeStoneFrame>().AddRow(lifeStoneRowNum);
+    }
+    public GameObject InstantiateFrame(Vector3 pos, int rowNum, float popoutStrength)
+    {
+        GameObject tmpFrame = Instantiate(droppedFramePrefab);
+        tmpFrame.GetComponent<DroppedLifeStoneFrame>().Init(rowNum, pos);
+        PopoutGenerator(tmpFrame, popoutStrength);
+        return tmpFrame;
     }
 
     public GameObject InstantiatePotion(Vector3 pos, float popoutStrength)
