@@ -11,22 +11,6 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1401848893116652}
   m_IsPrefabAsset: 1
---- !u!1 &1162659259063058
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4005902780579934}
-  - component: {fileID: 114561536863273304}
-  m_Layer: 0
-  m_Name: HPBar
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1298248310005788
 GameObject:
   m_ObjectHideFlags: 1
@@ -79,19 +63,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4005902780579934
-Transform:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1162659259063058}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4836495397386794}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4202602386941338
 Transform:
   m_ObjectHideFlags: 1
@@ -112,11 +83,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1401848893116652}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.29, y: -17.94, z: 0}
+  m_LocalPosition: {x: 11.038, y: -21.531, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4995664760293086}
-  - {fileID: 4005902780579934}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -127,7 +97,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1917537518207390}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.142, y: 0.626, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4202602386941338}
@@ -191,7 +161,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.170115, y: 0.378891}
+  m_Offset: {x: 0, y: 0.85}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -234,23 +204,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushForce: 0
---- !u!114 &114561536863273304
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1162659259063058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 493db5529c03fce44a56a2211507667e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  width: 0.4
-  height: 0.1
-  yOffset: 1.3
-  barPrefab: {fileID: 1489501648010076, guid: bd708b07601179842bbd803b54afda40, type: 2}
-  bor: {fileID: 21300000, guid: f978754916ff69444aa0bd613b44f2c5, type: 3}
-  red: {fileID: 21300000, guid: 014c5204ddcb6e54e86aadaa34227552, type: 3}
 --- !u!114 &114639627468642258
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -271,6 +224,7 @@ MonoBehaviour:
   patrolSpeed: 0
   trackSpeed: 0
   knockbackPercentage: []
+  animator: {fileID: 0}
   movementLock: 0
   scarecrow_or_statue: 0
 --- !u!212 &212389034539557544

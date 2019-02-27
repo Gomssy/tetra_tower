@@ -135,7 +135,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.040684164}
+  m_Offset: {x: 0, y: 0.89}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -186,6 +186,7 @@ MonoBehaviour:
   patrolSpeed: 0
   trackSpeed: 0
   knockbackPercentage: []
+  animator: {fileID: 0}
   movementLock: 0
   scarecrow_or_statue: 1
 --- !u!114 &114799009846635808
@@ -201,7 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 0.5
   height: 0.1
-  yOffset: 0.92
+  yOffset: 2
   barPrefab: {fileID: 1489501648010076, guid: bd708b07601179842bbd803b54afda40, type: 2}
   bor: {fileID: 21300000, guid: f978754916ff69444aa0bd613b44f2c5, type: 3}
   red: {fileID: 21300000, guid: 014c5204ddcb6e54e86aadaa34227552, type: 3}
