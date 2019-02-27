@@ -6,7 +6,6 @@ using System;
 public class EnemyGround : Enemy {
 
     public float attackRange;
-
     public int MoveDir { get; private set; }
     public bool[] WallTest;
     public bool[] CliffTest;
@@ -94,12 +93,18 @@ public class EnemyGround : Enemy {
         transform.parent.eulerAngles = ((NumeratedDir)dir == NumeratedDir.Left) ? new Vector2(0, 0) : new Vector2(0, 180);
     }
 
+    private void ChangeDir_forAnimation()
+    {
+        int knockbackDir = (GameManager.Instance.player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
+        ChangeDir(knockbackDir * -1);
+    }
+
     // - Knockback coroutine
     protected override IEnumerator Knockback(float knockbackDist, float knockbackTime)
     {
-        int knockbackDir = (enemyManager.Player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
+        int knockbackDir = (GameManager.Instance.player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
         float knockbackVelocity = knockbackDir * knockbackDist / knockbackTime;
-        ChangeDir(knockbackDir * -1);
+         //ChangeDir(knockbackDir * -1);
         ChangeVelocityX(knockbackVelocity);
 
         for (float timer = 0; timer <= knockbackTime; timer += Time.deltaTime)
@@ -122,7 +127,7 @@ public class EnemyGround : Enemy {
         animator.SetTrigger("StunnedTrigger");
         animator.speed = stunnedAnimLength / duration;
         yield return new WaitForSeconds(duration);
-        OffDebuff(EnemyDebuffCase.Ice);
+        OffDebuff(EnemyDebuffCase.Ice); 
     }
 
     protected override IEnumerator OnStun(float duration)

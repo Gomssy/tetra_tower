@@ -301,6 +301,7 @@ MonoBehaviour:
   - 0.5
   movementLock: 0
   attackRange: 1.2
+  rotatable: 1
   WallTest: 
   CliffTest: 
 --- !u!114 &114173716467154830
