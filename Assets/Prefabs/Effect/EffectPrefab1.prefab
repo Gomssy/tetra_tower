@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212967503221820828}
   - component: {fileID: 95997641238677140}
   m_Layer: 0
-  m_Name: EffectPrefab
+  m_Name: EffectPrefab1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +50,7 @@ Animator:
   m_GameObject: {fileID: 1383143382242174}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 01e9a9d984d5f904daeaa1db1b5be12f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6cb700dae53143a49adb757f0a780a7f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

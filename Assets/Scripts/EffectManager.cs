@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class EffectManager : Singleton<EffectManager> {
-    public GameObject effectPrefab;
+    public GameObject[] effectPrefab;
     public GameObject numberPrefab;
     public GameObject numberCanvasPrefab;
 
-    GameObject[] effectArray;
+    GameObject[,] effectArray;
     GameObject[] numberArray;
     GameObject numberCanvas;
 
@@ -18,11 +18,15 @@ public class EffectManager : Singleton<EffectManager> {
     {
         numberCanvas = Instantiate(numberCanvasPrefab);
 
-        effectArray = new GameObject[20];
-        for (int i = 0; i < effectArray.Length; i++)
+
+        effectArray = new GameObject[effectPrefab.Length,20];
+        for (int j = 0; j < effectPrefab.Length; j++)
         {
-            effectArray[i] = Instantiate(effectPrefab, transform);
-            effectArray[i].SetActive(false);
+            for (int i = 0; i < effectArray.Length; i++)
+            {
+                effectArray[j,i] = Instantiate(effectPrefab[j], transform);
+                effectArray[j,i].SetActive(false);
+            }
         }
         numberArray = new GameObject[30];
         for (int i = 0; i < numberArray.Length; i++)
@@ -38,13 +42,13 @@ public class EffectManager : Singleton<EffectManager> {
     }
     public bool StartEffect(int type, Vector3 pos)
     {
-        foreach (GameObject obj in effectArray)
+        for (int i=0; i<effectArray.GetLength(1); i++)
         {
-            if (!obj.activeSelf)
+            if (!effectArray[type,i].activeSelf)
             {
-                obj.transform.position = pos;
-                obj.SetActive(true);
-                obj.GetComponent<Animator>().SetTrigger("start");
+                effectArray[type, i].transform.position = pos;
+                effectArray[type, i].SetActive(true);
+                effectArray[type, i].GetComponent<Animator>().SetTrigger("start");
                 return true;
             }
         }

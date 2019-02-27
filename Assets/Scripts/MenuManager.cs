@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour {
 
+    public GameObject particlePrefab;
+    public GameObject spawnPosition;
+
+    GameObject[] particles;
+
+
     public void StartGame()
     {
         SceneManager.LoadScene("PlayScene");
@@ -20,17 +26,17 @@ public class MenuManager : MonoBehaviour {
 
 		}
 	}
-
-	// Use this for initialization
+    
 	void Start () {
+        particles = new GameObject[30];
+        for(int i=0; i<30; i++)
+        {
+            particles[i] = Instantiate(particlePrefab);
+            particles[i].GetComponent<MenuParticle>().Init(spawnPosition.transform.position);
+        }
 	}
 	
-	// Update is called once per frame
 	void Update ()
 	{
-		Camera.main.backgroundColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-		GameObject.Find("Text").GetComponent<Text>().color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-		GameObject.Find("Title").GetComponent<Text>().color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-		GameObject.Find("Button").GetComponent<Button>().image.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
 	}
 }
