@@ -65,7 +65,10 @@ public class EnemyAir : Enemy {
         ChangeVelocityXY(knockbackVelocity);
         yield return new WaitForSeconds(knockbackTime);
         ChangeVelocityXY(Vector2.zero);
-        if (movementLock != EnemyMovementLock.Debuffed) movementLock = EnemyMovementLock.Free;
+        if (movementLock != EnemyMovementLock.Debuffed)
+        {
+            movementLock = EnemyMovementLock.Free;
+        }
     }
 
     protected override IEnumerator OnIce(float duration)

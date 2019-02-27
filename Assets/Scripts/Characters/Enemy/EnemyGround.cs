@@ -99,7 +99,7 @@ public class EnemyGround : Enemy {
     {
         int knockbackDir = (enemyManager.Player.transform.position.x - transform.parent.position.x >= 0) ? -1 : 1;
         float knockbackVelocity = knockbackDir * knockbackDist / knockbackTime;
-        ChangeDir_movement(knockbackDir * -1);
+        ChangeDir(knockbackDir * -1);
         ChangeVelocityX(knockbackVelocity);
 
         for (float timer = 0; timer <= knockbackTime; timer += Time.deltaTime)
@@ -128,6 +128,7 @@ public class EnemyGround : Enemy {
     protected override IEnumerator OnStun(float duration)
     {
         animator.SetTrigger("StunnedTrigger");
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName("Stunned"));
         animator.speed = stunnedAnimLength / duration;
         yield return new WaitForSeconds(duration);
         OffDebuff(EnemyDebuffCase.Stun);
