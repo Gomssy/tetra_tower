@@ -15,8 +15,7 @@ public class CoollyPride : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/coolly pride");
         highlight = Resources.Load<Sprite>("Sprites/Addons/coolly pride_border");
         sizeInventory = new Vector2(55, 80);
-        addonDescription = "꺼지지 않을 것 처럼 타올랐지만, 이제는 완전히 식어버린 차숀의 긍지.";
-        addonInfo = "기본 피해량이 4 미만이면 적을 2초간 빙결시킵니다.";
+        addonInfo = "기본 피해량이 4 미만일 때, 적을 2초간 빙결시킨다.";
     }
 
     public override float[] DebuffAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)

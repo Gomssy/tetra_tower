@@ -212,8 +212,8 @@ public class Enemy : MonoBehaviour {
             foreach (Item item in inventoryManager.itemList)
                 damageMultiplier *= item.GlobalFireDamageMultiplier();
 
-            TakeDamage(lifeStoneManager.lifeStoneRowNum * 0.3f * damageMultiplier);
-            EffectManager.Instance.StartNumber(0, gameObject.transform.parent.position, lifeStoneManager.lifeStoneRowNum * 0.3f);
+            TakeDamage(lifeStoneManager.lifeStoneRowNum * 0.15f * damageMultiplier);
+            EffectManager.Instance.StartNumber(0, gameObject.transform.parent.position, lifeStoneManager.lifeStoneRowNum * 0.15f);
         }
         debuffState[(int)EnemyDebuffCase.Fire] = DebuffState.Off;
         GetComponent<SpriteRenderer>().color = Color.white;

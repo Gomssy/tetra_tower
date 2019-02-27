@@ -12,7 +12,7 @@ public class ShockStick : Item {
 
     public override void Declare()
     {
-        id = 52; name = "감전 봉";
+        id = 52; name = "감전봉";
         quality = ItemQuality.Superior;
         skillNum = 2;
         combo = new string[3] { "ABA", "CBABB", "" };
@@ -23,7 +23,7 @@ public class ShockStick : Item {
         animation[1] = Resources.Load<AnimationClip>("Animations/shockStickAttack2");
         animation[2] = null;
         sizeInventory = new Vector2(140f, 140f);
-        itemInfo = "몸이 타는 것 같은 수준으로 아프다. 명령을 내릴 때 효과적일 것 같다.";
+        itemInfo = "적을 2초간 기절시킨다. 충전 5회 적중 시 방전을 사용할 수 있다.";
         comboName = new string[3] { "충전", "방전", "" };
 
         comboCool = new float[3] { 0, 5, 0 };
@@ -63,7 +63,7 @@ public class ShockStick : Item {
         {
             if(Vector3.Distance(enemy.gameObject.transform.position,player.transform.position) <= 6f)
             {
-                PlayerAttackInfo attack = new PlayerAttackInfo(20f, 0f, new float[(int)EnemyDebuffCase.END_POINTER] { 0, 0, 2, 0, 0 });
+                PlayerAttackInfo attack = new PlayerAttackInfo(30f, 0f, new float[(int)EnemyDebuffCase.END_POINTER] { 0, 0, 2, 0, 0 });
                 AttackCalculation(attack, enemy, combo[1]);
                 enemy.GetHit(attack);
                 EffectManager.Instance.StartEffect(0, enemy.gameObject.transform.position);

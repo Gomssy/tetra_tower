@@ -21,10 +21,10 @@ public class BitSword: Item
         animation[1] = null;
         animation[2] = null;
         sizeInventory = new Vector2(135f, 135f);
-        itemInfo = "";
-        comboName = new string[3] { "I", "", "" };
-        comboCool = new float[3] { 50, 0, 0 };
-        comboCurrentCool = new float[3] { 50, 0, 0 };
+        itemInfo = "A x 25 = i";
+        comboName = new string[3] { "i", "", "" };
+        comboCool = new float[3] { 25, 0, 0 };
+        comboCurrentCool = new float[3] { 25, 0, 0 };
         coolSprite[0] = Resources.Load<Sprite>("Sprites/Cools/bit sword_cool1");
     }
 

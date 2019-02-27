@@ -10,7 +10,6 @@ public abstract class Addon {
     public Sprite sprite;
     public Sprite highlight;
     public Vector2 sizeInventory;
-    public string addonDescription;
     public string addonInfo;
 
     public Addon()
@@ -25,7 +24,6 @@ public abstract class Addon {
         sprite = null;
         highlight = null;
         sizeInventory = new Vector2(0, 0);
-        addonDescription = null;
         addonInfo = null;
     }
     public virtual float DamageAdder(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)

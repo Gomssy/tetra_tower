@@ -15,6 +15,7 @@ public class Sandbag : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/sandbag"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/sandbag_border"); ;
         sizeInventory = new Vector2(80, 80);
+        addonInfo = "직후의 연계 시간이 50% 감소하지만, 피해량이 150% 증가한다.";
     }
     public override void OtherEffect(string combo)
     {
@@ -22,6 +23,6 @@ public class Sandbag : Addon
     }
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
     {
-        return 2f;
+        return 2.5f;
     }
 }

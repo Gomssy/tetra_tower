@@ -31,6 +31,14 @@ public class AttackProperty : MonoBehaviour {
             debuffTime[3] = debuffTime3;
             debuffTime[4] = debuffTime4;
         }
+        else
+        {
+            for(int i = 0; i < (int)EnemyDebuffCase.END_POINTER; i++)
+            {
+                debuffTime[i] = 0;
+            }
+                
+        }
     }
 
     private void Awake()

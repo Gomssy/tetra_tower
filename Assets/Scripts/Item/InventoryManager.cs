@@ -66,7 +66,7 @@ public class InventoryManager : Singleton<InventoryManager> {
         addonPool[2].Add("DesignofRagur");
         addonPool[2].Add("Sandbag");
 
-        //addonPool[3].Add("");
+        addonPool[3].Add("BitMemory");
 
 
         for (int i = 0; i < 4; i++)
@@ -91,14 +91,12 @@ public class InventoryManager : Singleton<InventoryManager> {
         /*ItemInstantiate("ShockStick", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
         ItemInstantiate("BitSword", player.transform.position, 1f);
-        yield return new WaitForSeconds(0.3f);*/
-        /*ItemInstantiate("Bow", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
-        ItemInstantiate("OilCask", player.transform.position, 1f);
+        ItemInstantiate("Bow", player.transform.position, 1f);
+        yield return new WaitForSeconds(0.3f);
+        ItemInstantiate("Dagger", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
         ItemInstantiate("ExplosionGloves", player.transform.position, 1f);
-        yield return new WaitForSeconds(0.3f);
-        ItemInstantiate("BitSword", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);
         AddonInstantiate("GlowingHerb", player.transform.position, 1f);
         yield return new WaitForSeconds(0.3f);*/
@@ -147,9 +145,9 @@ public class InventoryManager : Singleton<InventoryManager> {
         {
             return AddonInstantiate(quality, pos, popoutStrength);
         }
-        else if(quality != ItemQuality.Study)
+        else if(quality != ItemQuality.Masterpiece)
         {
-            return ItemInstantiate(quality - 1, pos, popoutStrength);
+            return ItemInstantiate(quality + 1, pos, popoutStrength);
         }
         return null;
     }
@@ -218,9 +216,9 @@ public class InventoryManager : Singleton<InventoryManager> {
         {
             return ItemInstantiate(quality, pos, popoutStrength);
         }
-        else if (quality != ItemQuality.Study)
+        else if (quality != ItemQuality.Masterpiece)
         {
-            return AddonInstantiate(quality - 1, pos, popoutStrength);
+            return AddonInstantiate(quality + 1, pos, popoutStrength);
         }
         return null;
     }
@@ -304,9 +302,17 @@ public class InventoryManager : Singleton<InventoryManager> {
             foreach (Item tmpItem in itemList)
                 for (int j = 0; j < tmpItem.skillNum; j++)
                     if (item.combo[i].Equals(tmpItem.combo[j]))
+                    {
+                        StartCoroutine(GameManager.Instance.player.GetComponent<Player>().DisplayText(tmpItem.name + "와(과) 콤보가 중복됩니다!"));
                         return false;
+                    }
 
-        if (itemList.Count > 8) return false;
+
+        if (itemList.Count > 8)
+        {
+            StartCoroutine(GameManager.Instance.player.GetComponent<Player>().DisplayText("아이템이 너무 많습니다!"));
+            return false;
+        }
 
         itemList.Add(item);
         ui.SetOnPosition(itemList, addonList);
@@ -321,7 +327,11 @@ public class InventoryManager : Singleton<InventoryManager> {
     /// <returns></returns>
     public bool PushAddon(Addon addon)
     {
-        if (addonList.Count > 8) return false;
+        if (addonList.Count > 8)
+        {
+            StartCoroutine(GameManager.Instance.player.GetComponent<Player>().DisplayText("예비 애드온이 너무 많습니다!"));
+            return false;
+        }
 
         addonList.Add(addon);
         ui.SetOnPosition(itemList, addonList);

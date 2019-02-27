@@ -15,6 +15,7 @@ public class FeatherofRheA : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/feather of rhea"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/feather of rhea_border"); ;
         sizeInventory = new Vector2(77.5f, 77.5f);
+        addonInfo = "체공 중에 공격할 때, 피해량이 75% 증가한다.";
     }
 
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)

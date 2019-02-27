@@ -20,7 +20,7 @@ public class Dagger : Item
         animation[1] = Resources.Load<AnimationClip>("Animations/daggerAttack2");
         animation[2] = null;
         sizeInventory = new Vector2(127.5f, 125);
-        itemInfo = "옛날 옛적 호랑이 담배 피던 시절부터 존재하던 단검이다.";
+        itemInfo = "가장 기본적인 무기. 그러나 준수한 콤보 공격이 가능하다.";
         comboName = new string[3] { "베기", "찌르기", "" };
     }
 }

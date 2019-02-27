@@ -15,6 +15,7 @@ public class ApprenticesMark : Addon
         sprite = Resources.Load<Sprite>("Sprites/Addons/apprentice's mark"); ;
         highlight = Resources.Load<Sprite>("Sprites/Addons/apprentice's mark_border"); ;
         sizeInventory = new Vector2(65, 80);
+        addonInfo = "피해량이 25% 증가한다.";
     }
 
     public override float DamageMultiplier(PlayerAttackInfo attackInfo, Enemy enemyInfo, string combo)
