@@ -111,14 +111,20 @@ MonoBehaviour:
   projectileType: 1
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 65536
+    m_Bits: 1114112
   vanishLayer:
     serializedVersion: 2
-    m_Bits: 65536
+    m_Bits: 1114112
   stopLayer:
     serializedVersion: 2
     m_Bits: 256
   attackCombo: 
+  changeDebuff: 0
+  debuffTime0: 0
+  debuffTime1: 0
+  debuffTime2: 0
+  debuffTime3: 0
+  debuffTime4: 0
 --- !u!114 &114988624070961888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -164,7 +170,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2145601713
-  m_SortingLayer: 9
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2418f9e3c1a176b4aba87f0298534132, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

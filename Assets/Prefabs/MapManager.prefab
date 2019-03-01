@@ -52,7 +52,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 42fb77e989117a04390dac9f9b1aa4a0, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -154,7 +154,7 @@ MonoBehaviour:
   gravity: 0.98
   collapseTime: 10
   clearedRoomCount: 0
-  stageClearCondition: 1200000012000000120000001200000012000000
+  stageClearCondition: 0500000012000000120000001200000012000000
   tetriminoCost: 1
   fog: {fileID: 1100171732424598, guid: b8ab69a93ba618c47b27cc04eb431b3f, type: 2}
   clearedFog: {fileID: 1767033925555920, guid: df8687fe46befb34eaf9d4d63938d946, type: 2}

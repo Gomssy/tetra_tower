@@ -49,6 +49,7 @@ public class GameManager : Singleton<GameManager> {
         TetriminoSpawner.Instance.MakeInitialTetrimino();
         player.transform.position = MapManager.currentRoom.roomInGame.transform.Find("portal spot").position + spawnPosition;
         Camera.main.transform.position = player.transform.position + new Vector3(0, 0, -1);
+        StartCoroutine(TestCoroutine());
     }
 
     /// <summary>
@@ -110,6 +111,12 @@ public class GameManager : Singleton<GameManager> {
         displayText = Instantiate(displayText, textCanvas.transform);
         isTutorial = true;
         textCoroutine = StartCoroutine(DisplayTextCoroutine(""));
+    }
+
+    IEnumerator TestCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(Camera.main.GetComponent<CameraController>().ChangeScene(GameState.Tetris));
     }
 	
 	// Update is called once per frame

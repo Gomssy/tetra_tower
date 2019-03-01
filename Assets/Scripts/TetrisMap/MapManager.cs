@@ -752,7 +752,7 @@ public class MapManager : Singleton<MapManager> {
         else
             room.GetComponent<SpriteRenderer>().sprite = roomSurfaceSpritesDistributed[room.stage][(int)room.specialRoomType - 1];
         if (!room.isRoomCleared)
-            room.GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 0.5f);
+            room.GetComponent<SpriteRenderer>().color = new Color(0.7f, 0.7f, 0.7f);
         if (currentGhost != null)
             currentGhost.rooms[i].GetComponent<SpriteRenderer>().sprite = room.GetComponent<SpriteRenderer>().sprite;
     }
