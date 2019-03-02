@@ -165,8 +165,6 @@ public class TileManager : MonoBehaviour {
     {
         int stage = MapManager.currentStage;
         int concept = room.roomConcept;
-        if (concept == 3)
-            concept = 0;
         RoomInGame roomInGame = room.roomInGame;
         Tilemap wallTileMap = roomInGame.transform.Find("wall").GetComponent<Tilemap>();
         Tilemap platformTileMap = roomInGame.transform.Find("platform").GetComponent<Tilemap>();
